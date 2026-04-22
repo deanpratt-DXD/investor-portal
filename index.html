@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deus X Defense — Investor Portal</title>
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #14181d;
+      --border: #232a32;
+      --text: #e8ecf1;
+      --muted: #8a93a0;
+      --accent: #e0b04a;
+      --accent-bg: #1a1f26;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      flex: 0 0 auto;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+    }
+    .brand {
+      padding: 12px 20px 4px;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .brand strong { color: var(--text); }
+    nav.tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      padding: 8px 12px 0;
+    }
+    .tab {
+      appearance: none;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid transparent;
+      border-bottom: none;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .tab.active {
+      color: var(--accent);
+      background: var(--accent-bg);
+      border-color: var(--border);
+      position: relative;
+      top: 1px;
+    }
+    main {
+      flex: 1 1 auto;
+      position: relative;
+      background: var(--bg);
+    }
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #fff;
+      display: none;
+    }
+    iframe.active { display: block; }
+    .loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 14px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><strong>Deus X Defense</strong> &middot; Investor Portal</div>
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+  </header>
+  <main id="main">
+    <div class="loading">Loading…</div>
+  </main>
+
+  <script>
+    // Each tab maps a label to a file in the repo root.
+    // Files are loaded lazily on first activation, then cached in the DOM
+    // so switching tabs is instant and no single response is "too big".
+    const TABS = [
+      { id: "portal",       label: "Investor Portal",     src: "DxD-Investor-Portal-v4.html" },
+      { id: "pitch",        label: "Pitch (Apr 2026)",    src: "Pitch vAPR20.html" },
+      { id: "story",        label: "Story",               src: "Hi-Fi - Story.html" },
+      { id: "architecture", label: "Product Architecture",src: "DXD-Product-Architecture-4-2.html" },
+      { id: "index2",       label: "Index 2",             src: "index 2.html" }
+    ];
+
+    const tabsEl = document.getElementById("tabs");
+    const mainEl = document.getElementById("main");
+    const frames = new Map();
+
+    function activate(id) {
+      // Update tab buttons
+      for (const btn of tabsEl.querySelectorAll(".tab")) {
+        btn.classList.toggle("active", btn.dataset.id === id);
+        btn.setAttribute("aria-selected", btn.dataset.id === id ? "true" : "false");
+      }
+      // Lazy-create iframe on first activation
+      let frame = frames.get(id);
+      if (!frame) {
+        const tab = TABS.find(t => t.id === id);
+        frame = document.createElement("iframe");
+        frame.title = tab.label;
+        frame.src = tab.src;
+        frame.loading = "lazy";
+        mainEl.appendChild(frame);
+        frames.set(id, frame);
+      }
+      // Show only the active iframe
+      for (const [tid, f] of frames) {
+        f.classList.toggle("active", tid === id);
+      }
+      // Reflect in URL hash for shareable links
+      if (location.hash.slice(1) !== id) {
+        history.replaceState(null, "", "#" + id);
+      }
+    }
+
+    // Build tab buttons
+    for (const tab of TABS) {
+      const btn = document.createElement("button");
+      btn.className = "tab";
+      btn.type = "button";
+      btn.role = "tab";
+      btn.dataset.id = tab.id;
+      btn.textContent = tab.label;
+      btn.addEventListener("click", () => activate(tab.id));
+      tabsEl.appendChild(btn);
+    }
+
+    // Remove initial loading placeholder once a tab is shown
+    const loadingEl = mainEl.querySelector(".loading");
+    if (loadingEl) loadingEl.remove();
+
+    // Initial selection from URL hash, else first tab
+    const initial = TABS.find(t => t.id === location.hash.slice(1)) ? location.hash.slice(1) : TABS[0].id;
+    activate(initial);
+
+    window.addEventListener("hashchange", () => {
+      const id = location.hash.slice(1);
+      if (TABS.find(t => t.id === id)) activate(id);
+    });
+  </script>
+</body>
+</html>

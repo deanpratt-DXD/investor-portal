@@ -1,0 +1,12 @@
+{
+  "name": "investor-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static investor portal for Deus X Defense — serves the HTML decks as separate tabs.",
+  "scripts": {
+    "start": "serve . -l ${PORT:-3000}"
+  },
+  "dependencies": {
+    "serve": "14.2.4"
+  }
+}
