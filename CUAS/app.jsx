@@ -89,12 +89,7 @@ function App() {
       <header className="chrome-header">
         <div className="left">
           <img src="assets/dxd-wordmark-white.png" alt="Deus X Defense" className="logo"/>
-          <div className="hdr-x">×</div>
-          <img src="assets/dominion-logo.svg" alt="Dominion Energy" className="dominion-logo"/>
           <div className="classifier">UNCLAS // FOUO</div>
-          <div className="classifier" style={{color: 'var(--dxd-red)', borderColor: 'rgba(200,16,46,0.4)'}}>
-            DOMINION-CUAS-RCH-2026
-          </div>
         </div>
         <div className="right">
           <span className="mono">SCENE {String(currentScene+1).padStart(2,'0')}/{String(scenes.length).padStart(2,'0')}</span>
