@@ -111,10 +111,10 @@
     // Files are loaded lazily on first activation, then cached in the DOM
     // so switching tabs is instant and no single response is "too big".
     const TABS = [
-      { id: "story",                label: "Story",                src: "Hi-Fi - Story.html" },
-      { id: "investor-information", label: "Investor Information", src: "index 2.html" },
-      { id: "pitch",                label: "Pitch",                src: "Pitch vAPR20.html" },
-      { id: "product",              label: "Product",              src: "DXD-Product-Architecture-4-2.html" }
+      { id: "story",                label: "Story",                src: "story.b64",        fallbackSrc: "Hi-Fi - Story.html" },
+      { id: "investor-information", label: "Investor Information", src: "design2.b64",      fallbackSrc: "index 2.html" },
+      { id: "pitch",                label: "Pitch",                src: "pitch.b64",        fallbackSrc: "Pitch vAPR20.html" },
+      { id: "product",              label: "Product",              src: "architecture.b64", fallbackSrc: "DXD-Product-Architecture-4-2.html" }
     ];
     const LEGACY_TAB_IDS = {
       design2: "investor-information",
@@ -124,9 +124,35 @@
     const tabsEl = document.getElementById("tabs");
     const mainEl = document.getElementById("main");
     const frames = new Map();
+    const frameLoads = new Map();
 
     function normalizeTabId(id) {
       return LEGACY_TAB_IDS[id] || id;
+    }
+
+    async function loadFrameContent(frame, tab) {
+      if (frameLoads.has(tab.id)) return frameLoads.get(tab.id);
+
+      const loadPromise = (async () => {
+        try {
+          const response = await fetch(tab.src, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+          const encoded = (await response.text()).replace(/\s+/g, "");
+          const binary = atob(encoded);
+          const bytes = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+
+          frame.srcdoc = new TextDecoder("utf-8").decode(bytes);
+        } catch (error) {
+          console.error(`Failed to load ${tab.src}; falling back to ${tab.fallbackSrc}.`, error);
+          frame.removeAttribute("srcdoc");
+          frame.src = tab.fallbackSrc;
+        }
+      })();
+
+      frameLoads.set(tab.id, loadPromise);
+      return loadPromise;
     }
 
     function activate(id) {
@@ -142,10 +168,10 @@
         const tab = TABS.find(t => t.id === id);
         frame = document.createElement("iframe");
         frame.title = tab.label;
-        frame.src = tab.src;
         frame.loading = "lazy";
         mainEl.appendChild(frame);
         frames.set(id, frame);
+        loadFrameContent(frame, tab);
       }
       // Show only the active iframe
       for (const [tid, f] of frames) {
