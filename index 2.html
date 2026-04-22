@@ -4,10 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deus X Defense</title>
+  <script>
+    (function() {
+      const CANONICAL_ORIGIN = "https://investor.deusxdefense.com";
+      if (/\.railway\.app$/i.test(window.location.hostname)) {
+        window.location.replace(
+          CANONICAL_ORIGIN +
+          window.location.pathname +
+          window.location.search +
+          window.location.hash
+        );
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js"></script>
+
+  <!-- When embedded inside the investor portal shell (index.html), hide
+       the inner top navigation so we don't render two stacked tab bars. -->
+  <script>
+    (function() {
+      try { if (window.self !== window.top) document.documentElement.classList.add('embedded'); } catch (_) { document.documentElement.classList.add('embedded'); }
+    })();
+  </script>
+  <style>
+    html.embedded .portal-nav { display: none !important; }
+    html.embedded .portal-content { padding-top: 0 !important; }
+  </style>
 
   <!-- PORTAL SHELL CSS -->
   <style>
@@ -387,6 +413,271 @@
         }
         .card-status.request { color: var(--red); }
         .card-status.available { color: #4ade80; }
+
+        /* ═════════════════════════════════════════════
+           APPENDIX — refined visual layer
+           ═════════════════════════════════════════════ */
+        #tab-appendix .fin-container { padding: 56px 40px 80px; }
+
+        .appendix-hero {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 32px;
+            align-items: end;
+            padding: 0 0 28px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--bg-dark-border);
+        }
+        .appendix-eyebrow {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 12px;
+        }
+        .appendix-hero h2 {
+            font-family: var(--heading);
+            font-weight: 700;
+            font-size: clamp(32px, 4vw, 48px);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--text-dark-primary);
+            margin: 0 0 12px;
+        }
+        .appendix-hero .lead {
+            color: var(--text-dark-secondary);
+            font-size: 15px;
+            line-height: 1.65;
+            max-width: 680px;
+            margin: 0;
+        }
+        .appendix-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-dark-tertiary);
+            text-align: right;
+            white-space: nowrap;
+        }
+        .appendix-meta strong { color: var(--text-dark-primary); font-weight: 600; }
+
+        /* Card grid */
+        .appendix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-bottom: 48px;
+        }
+        .appendix-card {
+            position: relative;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid var(--bg-dark-border);
+            border-radius: 10px;
+            padding: 24px 24px 20px;
+            cursor: pointer;
+            text-align: left;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            min-height: 240px;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+            overflow: hidden;
+        }
+        .appendix-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--red) 0%, transparent 100%);
+            opacity: 0.55;
+            transition: opacity 0.2s ease;
+        }
+        .appendix-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(210,35,42,0.35);
+            background: linear-gradient(180deg, rgba(210,35,42,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+        }
+        .appendix-card:hover::before { opacity: 1; }
+        .appendix-card.is-open {
+            border-color: var(--red);
+            background: linear-gradient(180deg, rgba(210,35,42,0.08) 0%, rgba(255,255,255,0.01) 100%);
+        }
+        .appendix-card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .appendix-card-letter {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--red);
+            border: 1px solid rgba(210,35,42,0.35);
+            border-radius: 6px;
+            background: rgba(210,35,42,0.08);
+            flex-shrink: 0;
+        }
+        .appendix-card-title {
+            font-family: var(--heading);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark-primary);
+            line-height: 1.25;
+        }
+        .appendix-card-body {
+            font-size: 13px;
+            color: var(--text-dark-secondary);
+            line-height: 1.6;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+        .appendix-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .appendix-card-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dark-tertiary);
+            border: 1px solid var(--bg-dark-border);
+            padding: 3px 7px;
+            border-radius: 3px;
+        }
+        .appendix-card-cta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--red);
+            border-top: 1px solid var(--bg-dark-border);
+            padding-top: 12px;
+        }
+        .appendix-card-cta .arrow {
+            transition: transform 0.2s ease;
+        }
+        .appendix-card:hover .appendix-card-cta .arrow { transform: translateX(4px); }
+        .appendix-card.is-open .appendix-card-cta .arrow { transform: rotate(90deg); }
+
+        /* Expanded section */
+        .appendix-section {
+            position: relative;
+            background: var(--bg-dark-card);
+            border: 1px solid var(--bg-dark-border);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 28px;
+            scroll-margin-top: 80px;
+        }
+        .appendix-section-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--bg-dark-border);
+        }
+        .appendix-section-head h2 {
+            font-family: var(--heading);
+            font-size: clamp(24px, 3vw, 34px);
+            font-weight: 700;
+            color: var(--text-dark-primary);
+            margin: 6px 0 8px;
+            line-height: 1.15;
+        }
+        .appendix-section-head .sub {
+            color: var(--text-dark-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+            max-width: 720px;
+        }
+        .appendix-section-eyebrow {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--red);
+        }
+        .appendix-close {
+            background: transparent;
+            border: 1px solid var(--bg-dark-border);
+            color: var(--text-dark-secondary);
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .appendix-close:hover {
+            border-color: var(--red);
+            color: var(--red);
+            background: rgba(210,35,42,0.08);
+        }
+        .appendix-h3 {
+            font-family: var(--heading);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-dark-primary);
+            margin: 28px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--bg-dark-border);
+        }
+        .appendix-h3:first-child { margin-top: 0; }
+
+        .appendix-cta-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 24px;
+            padding: 16px 20px;
+            background: rgba(210,35,42,0.06);
+            border: 1px solid rgba(210,35,42,0.2);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-dark-secondary);
+            line-height: 1.6;
+        }
+        .appendix-cta-row a {
+            color: var(--red);
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .appendix-cta-row a:hover { text-decoration: underline; }
+
+        @media (max-width: 720px) {
+            .appendix-hero { grid-template-columns: 1fr; align-items: start; }
+            .appendix-meta { text-align: left; }
+            .appendix-section { padding: 24px; }
+            .appendix-section-head { flex-direction: column; }
+        }
 
         .scenario-buttons {
             display: flex;
@@ -13405,53 +13696,111 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
     <!-- 6. APPENDIX -->
     <div class="tab-pane" id="tab-appendix">
       <div class="fin-container">
-        <h2 class="fin-title">Appendix</h2>
-        <p style="color:var(--light-body);margin-bottom:36px;line-height:1.7;max-width:720px;font-size:14px;">Deep-dive reference materials for diligence review.</p>
 
-        <div class="cards-grid" style="margin-bottom:48px;">
-          <div class="card clickable" onclick="toggleCuas(this)">
-            <div class="card-label">A. cUAS / HALO Market Primer</div>
-            <div class="card-detail">Deus Halo IADS deep-dive: three-layer kill chain, cost exchange analysis, combat-validated demand, competitive landscape, DxD production model, and Orcrist specifications.<br><br><strong style="color:var(--red);"><span class="cuas-toggle-label">Click to expand &#8594;</span></strong></div>
+        <header class="appendix-hero">
+          <div>
+            <div class="appendix-eyebrow">Appendix &middot; Diligence Reference</div>
+            <h2>Deep-dive materials</h2>
+            <p class="lead">Background context for the investor narrative. Click any card to expand a focused brief inline. Full files are released under NDA.</p>
           </div>
-          <div class="card" style="opacity:0.65;">
-            <div class="card-label">B. Partnership Ecosystem</div>
-            <div class="card-detail">26-partner ecosystem across 5 strategic pillars. 7 MOUs signed, $23M+ hardware revenue modeled.<br><br><span style="color:var(--light-muted);font-size:11px;letter-spacing:0.05em;text-transform:uppercase;font-family:var(--mono);">Available in diligence</span></div>
+          <div class="appendix-meta">
+            <span><strong>4</strong> &nbsp;Briefs</span>
+            <span>Updated &nbsp;<strong>Apr 2026</strong></span>
+            <span>Confidential</span>
           </div>
-          <div class="card" style="opacity:0.65;">
-            <div class="card-label">C. Case Studies</div>
-            <div class="card-detail">Customer deployment case studies with quantified outcomes across energy, public safety, and critical infrastructure.<br><br><span style="color:var(--light-muted);font-size:11px;letter-spacing:0.05em;text-transform:uppercase;font-family:var(--mono);">Available in diligence</span></div>
-          </div>
-          <div class="card" style="opacity:0.65;">
-            <div class="card-label">D. Demo Videos</div>
-            <div class="card-detail">Product demonstrations and deployment footage across DaaS, DFR, cUAS, and platform operations.<br><br><span style="color:var(--light-muted);font-size:11px;letter-spacing:0.05em;text-transform:uppercase;font-family:var(--mono);">Available in diligence</span></div>
-          </div>
+        </header>
+
+        <div class="appendix-grid">
+          <button type="button" class="appendix-card" onclick="toggleAppendix(this, 'cuas-section')">
+            <div class="appendix-card-head">
+              <span class="appendix-card-letter">A</span>
+              <span class="appendix-card-title">cUAS / HALO Market Primer</span>
+            </div>
+            <div class="appendix-card-body">Deus Halo IADS deep-dive: three-layer kill chain, cost-exchange analysis, combat-validated demand signals, competitive landscape, and the DxD production model.</div>
+            <div class="appendix-card-tags">
+              <span class="appendix-card-tag">3-Layer Kill Chain</span>
+              <span class="appendix-card-tag">Cost Exchange</span>
+              <span class="appendix-card-tag">Orcrist</span>
+            </div>
+            <div class="appendix-card-cta"><span>Open Brief</span><span class="arrow">&#8594;</span></div>
+          </button>
+
+          <button type="button" class="appendix-card" onclick="toggleAppendix(this, 'partnership-section')">
+            <div class="appendix-card-head">
+              <span class="appendix-card-letter">B</span>
+              <span class="appendix-card-title">Partnership Ecosystem</span>
+            </div>
+            <div class="appendix-card-body">26 partners across 5 strategic pillars. 7 MOUs signed. Includes Accenture distribution, the M&amp;A pipeline, and channel coverage.</div>
+            <div class="appendix-card-tags">
+              <span class="appendix-card-tag">Accenture</span>
+              <span class="appendix-card-tag">LAPD</span>
+              <span class="appendix-card-tag">M&amp;A</span>
+            </div>
+            <div class="appendix-card-cta"><span>Open Brief</span><span class="arrow">&#8594;</span></div>
+          </button>
+
+          <button type="button" class="appendix-card" onclick="toggleAppendix(this, 'casestudies-section')">
+            <div class="appendix-card-head">
+              <span class="appendix-card-letter">C</span>
+              <span class="appendix-card-title">Case Studies</span>
+            </div>
+            <div class="appendix-card-body">Quantified deployment outcomes across public safety (LAPD &middot; World Cup &rsquo;26), critical infrastructure, and enterprise via Accenture.</div>
+            <div class="appendix-card-tags">
+              <span class="appendix-card-tag">World Cup &rsquo;26</span>
+              <span class="appendix-card-tag">BVLOS @ 400ft</span>
+              <span class="appendix-card-tag">Enterprise</span>
+            </div>
+            <div class="appendix-card-cta"><span>Open Brief</span><span class="arrow">&#8594;</span></div>
+          </button>
+
+          <button type="button" class="appendix-card" onclick="toggleAppendix(this, 'demos-section')">
+            <div class="appendix-card-head">
+              <span class="appendix-card-letter">D</span>
+              <span class="appendix-card-title">Product Demos</span>
+            </div>
+            <div class="appendix-card-body">Walkthroughs and deployment footage across PUPPETMASTER C2, Deus Halo IADS, Drone-as-First-Responder, and DaaS field operations.</div>
+            <div class="appendix-card-tags">
+              <span class="appendix-card-tag">PUPPETMASTER</span>
+              <span class="appendix-card-tag">DFR</span>
+              <span class="appendix-card-tag">DaaS</span>
+            </div>
+            <div class="appendix-card-cta"><span>Open Brief</span><span class="arrow">&#8594;</span></div>
+          </button>
         </div>
 
-        <!-- cUAS Primer (expandable inline) -->
-        <div id="cuas-section" style="display:none;">
-          <hr style="border:none;border-top:2px solid var(--light-border);margin-bottom:40px;">
-          <h2 class="cuas-title">A. Deus Halo IADS &amp; Counter-UAS Market Primer</h2>
-          <p class="cuas-subtitle">Investment Committee Briefing &#8212; April 2026</p>
-          <p style="color:var(--light-body);margin-bottom:24px;line-height:1.7;max-width:900px;font-size:14px;">HALO is one module within PUPPETMASTER &#8212; DxD&#39;s heterogeneous command &amp; control platform. This primer focuses specifically on the counter-UAS capability and market opportunity.</p>
-          <h3 class="section-sub">The Deus Halo IADS: A Three-Layer Kill Chain</h3>
+        <!-- A. cUAS Primer -->
+        <section id="cuas-section" class="appendix-section" style="display:none;">
+          <div class="appendix-section-head">
+            <div>
+              <div class="appendix-section-eyebrow">Brief A &middot; Investment Committee &middot; April 2026</div>
+              <h2>Deus Halo IADS &amp; Counter-UAS Market Primer</h2>
+              <p class="sub">HALO is one module within PUPPETMASTER &mdash; DxD&rsquo;s heterogeneous command &amp; control platform. This brief focuses on the counter-UAS capability and its market.</p>
+            </div>
+            <button type="button" class="appendix-close" onclick="closeAppendix('cuas-section')">&times; Close</button>
+          </div>
+
+          <h3 class="appendix-h3">Three-Layer Kill Chain</h3>
           <div class="kill-chain">
             <div class="kc-step"><div class="kc-num">LAYER 01</div><div class="kc-label">SENSE</div><div class="kc-name">Halo C2 &ldquo;Oracle&rdquo;</div><div class="kc-desc">Single pane of glass, ATAK plugin, AES-256 encrypted MAVLink 2.0</div></div>
             <div class="kc-step"><div class="kc-num">LAYER 02</div><div class="kc-label">SLEW</div><div class="kc-name">M-ALS &ldquo;Machina&rdquo;</div><div class="kc-desc">Autonomous slew-to-cue, multi-modal mobility, voice commands</div></div>
             <div class="kc-step"><div class="kc-num">LAYER 03</div><div class="kc-label">STRIKE</div><div class="kc-name">SEAM-1 &ldquo;Orcrist&rdquo;</div><div class="kc-desc">$30K per unit, NATO-sourced COTS, IP-67, &lt;5 min operator training</div></div>
           </div>
-          <div class="cost-exchange">
-            <div class="ce-label">Cost Exchange Ratio &#8212; Operation Epic Fury</div>
+
+          <div class="cost-exchange" style="margin-top:24px;">
+            <div class="ce-label">Cost Exchange Ratio &mdash; Operation Epic Fury</div>
             <div class="ce-stat">$2,000 : $2,000,000</div>
             <div class="ce-desc">Orcrist intercept cost vs. legacy interceptor cost per engagement</div>
           </div>
-          <h3 class="section-sub">Validated Demand Signal</h3>
+
+          <h3 class="appendix-h3">Validated Demand Signal</h3>
           <div class="demand-grid">
             <div class="demand-card"><div class="demand-source">Pentagon FY2026</div><div class="demand-stat">$3.1B</div><div class="demand-detail">Dedicated C-UAS budget. JIATF-401 directive mandates drone interceptor procurement across all services.</div></div>
             <div class="demand-card"><div class="demand-source">Raytheon Coyote</div><div class="demand-stat">$5B</div><div class="demand-detail">Army contract for Coyote interceptors. Demand exceeds production capacity at every tier.</div></div>
             <div class="demand-card"><div class="demand-source">Anduril Bolt</div><div class="demand-stat">175+/mo</div><div class="demand-detail">Target production rate for 2026. Reusable VTOL kinetic interceptor.</div></div>
-            <div class="demand-card"><div class="demand-source">DxD Orcrist Target</div><div class="demand-stat">~667/mo</div><div class="demand-detail">Q2 2027 steady-state. 22% of TYTAN rate &#8212; conservative positioning in a demand-constrained market.</div></div>
+            <div class="demand-card"><div class="demand-source">DxD Orcrist Target</div><div class="demand-stat">~667/mo</div><div class="demand-detail">Q2 2027 steady-state. 22% of TYTAN rate &mdash; conservative positioning in a demand-constrained market.</div></div>
           </div>
-          <h3 class="section-sub">Competitive Landscape</h3>
+
+          <h3 class="appendix-h3">Competitive Landscape</h3>
           <div class="comp-table-wrap">
             <table class="comp-table">
               <thead><tr><th>System</th><th>Type</th><th>Production Rate</th><th>Notes</th></tr></thead>
@@ -13460,11 +13809,122 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
                 <tr><td>Anduril Bolt</td><td>Reusable VTOL kinetic</td><td>175+/mo target</td><td>2026 sustained rate goal</td></tr>
                 <tr><td>Merops</td><td>Expendable prop-driven</td><td>~2,000+/mo implied</td><td>10,000 deployed in 5 days</td></tr>
                 <tr><td>TYTAN (Germany)</td><td>Autonomous kinetic</td><td>3,000/mo target</td><td>Bundeswehr contract</td></tr>
-                <tr class="dxd-row"><td>Deus X (Orcrist)</td><td>Reusable kinetic</td><td>~667/mo (Q1 2027 target)</td><td>22% of TYTAN &#8212; conservative</td></tr>
+                <tr class="dxd-row"><td>Deus X (Orcrist)</td><td>Reusable kinetic</td><td>~667/mo (Q1 2027 target)</td><td>22% of TYTAN &mdash; conservative</td></tr>
               </tbody>
             </table>
           </div>
-        </div><!-- /cuas-section -->
+        </section>
+
+        <!-- B. Partnership Ecosystem -->
+        <section id="partnership-section" class="appendix-section" style="display:none;">
+          <div class="appendix-section-head">
+            <div>
+              <div class="appendix-section-eyebrow">Brief B &middot; 26 partners &middot; 7 MOUs signed</div>
+              <h2>Partnership Ecosystem</h2>
+              <p class="sub">DxD&rsquo;s moat is a stack of partners that each compress one of the four frictions blocking competitors: regulatory, operational, deployment, and integration.</p>
+            </div>
+            <button type="button" class="appendix-close" onclick="closeAppendix('partnership-section')">&times; Close</button>
+          </div>
+
+          <h3 class="appendix-h3">Distribution &amp; Go-to-Market</h3>
+          <div class="demand-grid">
+            <div class="demand-card"><div class="demand-source">Accenture</div><div class="demand-stat">8,000+</div><div class="demand-detail">Enterprise client access through existing trust relationships. Moves customers from Security Budget to Capital Plan. Live Q3 &rsquo;26.</div></div>
+            <div class="demand-card"><div class="demand-source">LAPD &middot; World Cup &rsquo;26</div><div class="demand-stat">Public Sector</div><div class="demand-detail">&ldquo;If you&rsquo;re successful, we&rsquo;ll parade you around the world.&rdquo; Sets the public-sector reference standard.</div></div>
+            <div class="demand-card"><div class="demand-source">Orcrist (Exclusive)</div><div class="demand-stat">$30K</div><div class="demand-detail">Only commercially available hard-kill cUAS interceptor at this price point. DxD holds exclusive global commercial distribution rights.</div></div>
+          </div>
+
+          <h3 class="appendix-h3">M&amp;A Pipeline &mdash; Guard-Force Distribution</h3>
+          <div class="demand-grid">
+            <div class="demand-card"><div class="demand-source">Cascadia Global Security</div><div class="demand-stat">Closed</div><div class="demand-detail">Adds revenue, geographic reach, and guard force for the DaaS upsell engine.</div></div>
+            <div class="demand-card"><div class="demand-source">Holdfast</div><div class="demand-stat">Closed</div><div class="demand-detail">Expands the manned-guarding base &mdash; the distribution channel for autonomous leverage.</div></div>
+            <div class="demand-card"><div class="demand-source">Invictus International Holdings</div><div class="demand-stat">In Diligence</div><div class="demand-detail">Final diligence stage. Each acquisition compounds the operator pool that PUPPETMASTER C2 multiplies.</div></div>
+          </div>
+
+          <div class="appendix-cta-row">
+            <span>Full 26-partner roster, MOU summaries, and revenue attribution by partner available under NDA.</span>
+            <a href="mailto:pat@deusxdefense.com?subject=Partnership%20Ecosystem%20%E2%80%94%20Diligence%20Request">Request file &#8594;</a>
+          </div>
+        </section>
+
+        <!-- C. Case Studies -->
+        <section id="casestudies-section" class="appendix-section" style="display:none;">
+          <div class="appendix-section-head">
+            <div>
+              <div class="appendix-section-eyebrow">Brief C &middot; Quantified outcomes</div>
+              <h2>Case Studies</h2>
+              <p class="sub">Deployment outcomes across three verticals: public safety, critical infrastructure, and enterprise distribution.</p>
+            </div>
+            <button type="button" class="appendix-close" onclick="closeAppendix('casestudies-section')">&times; Close</button>
+          </div>
+
+          <div class="demand-grid">
+            <div class="demand-card">
+              <div class="demand-source">Public Safety &middot; LAPD</div>
+              <div class="demand-stat">World Cup &rsquo;26</div>
+              <div class="demand-detail">Deus Halo air-defense deployment. Deputy Chief: &ldquo;I&rsquo;ve seen enough. We need you.&rdquo; Pilot ended early in DxD&rsquo;s favor &mdash; sets the public-sector reference standard.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Critical Infrastructure</div>
+              <div class="demand-stat">BVLOS @ 400ft</div>
+              <div class="demand-detail">One of fewer than five nationwide BVLOS waivers ever issued at this altitude. 18 months to earn. Enables Drone-as-First-Responder coverage across distributed sites.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Enterprise &middot; via Accenture</div>
+              <div class="demand-stat">Capital Plan</div>
+              <div class="demand-detail">Migrating clients from a recurring Security OpEx line to a multi-year Capital Plan. PUPPETMASTER as the unifying control surface across guards, drones, sensors, and cUAS.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Manned Guarding Base</div>
+              <div class="demand-stat">~$25M TTM</div>
+              <div class="demand-detail">Combined-entity revenue. Low-margin guarding (~7% EBITDA) becomes the distribution channel; PUPPETMASTER layers in &gt;30% GM tech revenue scaling toward 50&ndash;60%.</div>
+            </div>
+          </div>
+
+          <div class="appendix-cta-row">
+            <span>Named-customer case studies with full deployment metrics, contract terms, and reference contacts available under NDA.</span>
+            <a href="mailto:pat@deusxdefense.com?subject=Case%20Studies%20%E2%80%94%20Diligence%20Request">Request file &#8594;</a>
+          </div>
+        </section>
+
+        <!-- D. Demo Videos -->
+        <section id="demos-section" class="appendix-section" style="display:none;">
+          <div class="appendix-section-head">
+            <div>
+              <div class="appendix-section-eyebrow">Brief D &middot; Product walkthroughs</div>
+              <h2>Product Demos</h2>
+              <p class="sub">Demonstrations and field deployment footage. Live demos available on request.</p>
+            </div>
+            <button type="button" class="appendix-close" onclick="closeAppendix('demos-section')">&times; Close</button>
+          </div>
+
+          <div class="demand-grid">
+            <div class="demand-card">
+              <div class="demand-source">PUPPETMASTER C2</div>
+              <div class="demand-stat">Live April</div>
+              <div class="demand-detail">Single pane of glass that unifies guards, drones, sensors, and cUAS into one command surface. Operator clicks &ldquo;respond&rdquo; &mdash; PUPPETMASTER selects the right platform based on mission profile, distance, weather, airspace, and availability.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Deus Halo IADS</div>
+              <div class="demand-stat">3-Layer Kill Chain</div>
+              <div class="demand-detail">Sense (Oracle C2) &rarr; Slew (Machina M-ALS) &rarr; Strike (Orcrist SEAM-1). Footage of integrated sense-slew-strike sequence against representative threat profiles.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Drone-as-First-Responder</div>
+              <div class="demand-stat">DFR</div>
+              <div class="demand-detail">Autonomous response from rooftop docks under nationwide BVLOS waiver. Removes the human from the point of threat &mdash; 30-second arrival vs. 60-second human dispatch.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">DaaS Field Operations</div>
+              <div class="demand-stat">In Production</div>
+              <div class="demand-detail">Drone-as-a-Service deployment footage. CJIS-certified law-enforcement operators in the loop. Site-specific training &mdash; works in the mud, not just the demo room.</div>
+            </div>
+          </div>
+
+          <div class="appendix-cta-row">
+            <span>Video links and live demo scheduling available on request.</span>
+            <a href="mailto:pat@deusxdefense.com?subject=Demo%20Videos%20%E2%80%94%20Access%20Request">Schedule walkthrough &#8594;</a>
+          </div>
+        </section>
 
       </div>
     </div>
@@ -13478,36 +13938,36 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
           <p style="color:var(--text-dark-secondary);max-width:640px;font-size:14px;line-height:1.7;">Detailed diligence materials available under NDA. Contact <a href="mailto:pat@deusxdefense.com" style="color:var(--red);text-decoration:none;">pat@deusxdefense.com</a> to request access credentials.</p>
         </div>
         <div class="cards-grid">
-          <div class="card">
+          <a class="card clickable" href="mailto:pat@deusxdefense.com?subject=Data%20Room%20Access%20%E2%80%94%20Financial%20Model%20%26%20Projections&body=Hi%20Patrick%2C%0A%0APlease%20grant%20data-room%20access%20to%20the%20Financial%20Model%20%26%20Projections.%0A%0AFund%2FFirm%3A%0AArea%20of%20focus%3A%0ANDA%20status%3A%0A%0AThanks%2C" style="text-decoration:none;color:inherit;display:block;">
             <div class="card-label">Financial Model &amp; Projections</div>
             <div class="card-detail">Detailed financial model, revenue projections, unit economics, and scenario analysis across Base, Bull, and Bear cases.</div>
             <div class="card-status request">&#8594; Request Access</div>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card clickable" href="mailto:pat@deusxdefense.com?subject=Data%20Room%20Access%20%E2%80%94%20Cap%20Table%20%26%20Ownership&body=Hi%20Patrick%2C%0A%0APlease%20grant%20data-room%20access%20to%20the%20Cap%20Table%20%26%20Ownership%20file.%0A%0AFund%2FFirm%3A%0AArea%20of%20focus%3A%0ANDA%20status%3A%0A%0AThanks%2C" style="text-decoration:none;color:inherit;display:block;">
             <div class="card-label">Cap Table &amp; Ownership</div>
             <div class="card-detail">Current capitalization table, ownership structure, equity allocation, and dilution schedule.</div>
             <div class="card-status request">&#8594; Request Access</div>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card clickable" href="mailto:pat@deusxdefense.com?subject=Data%20Room%20Access%20%E2%80%94%20Legal%20%26%20Partnership%20Agreements&body=Hi%20Patrick%2C%0A%0APlease%20grant%20data-room%20access%20to%20Legal%20%26%20Partnership%20Agreements.%0A%0AFund%2FFirm%3A%0AArea%20of%20focus%3A%0ANDA%20status%3A%0A%0AThanks%2C" style="text-decoration:none;color:inherit;display:block;">
             <div class="card-label">Legal &amp; Partnership Agreements</div>
             <div class="card-detail">Partnership MOUs, strategic agreements, IP licenses, and corporate governance documentation.</div>
             <div class="card-status request">&#8594; Request Access</div>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card clickable" href="mailto:pat@deusxdefense.com?subject=Data%20Room%20Access%20%E2%80%94%20IP%20%26%20Technology&body=Hi%20Patrick%2C%0A%0APlease%20grant%20data-room%20access%20to%20IP%20%26%20Technology%20materials.%0A%0AFund%2FFirm%3A%0AArea%20of%20focus%3A%0ANDA%20status%3A%0A%0AThanks%2C" style="text-decoration:none;color:inherit;display:block;">
             <div class="card-label">IP &amp; Technology</div>
             <div class="card-detail">Patent filings, technology licenses, software architecture documentation, and IP assignment agreements.</div>
             <div class="card-status request">&#8594; Request Access</div>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card clickable" href="mailto:pat@deusxdefense.com?subject=Data%20Room%20Access%20%E2%80%94%20Customer%20Contracts&body=Hi%20Patrick%2C%0A%0APlease%20grant%20data-room%20access%20to%20Customer%20Contracts.%0A%0AFund%2FFirm%3A%0AArea%20of%20focus%3A%0ANDA%20status%3A%0A%0AThanks%2C" style="text-decoration:none;color:inherit;display:block;">
             <div class="card-label">Customer Contracts</div>
             <div class="card-detail">Executed service agreements, LOIs, and active contract summaries across all verticals and geographies.</div>
             <div class="card-status request">&#8594; Request Access</div>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card clickable" href="mailto:pat@deusxdefense.com?subject=Data%20Room%20Access%20%E2%80%94%20Team%20%26%20HR&body=Hi%20Patrick%2C%0A%0APlease%20grant%20data-room%20access%20to%20Team%20%26%20HR%20materials.%0A%0AFund%2FFirm%3A%0AArea%20of%20focus%3A%0ANDA%20status%3A%0A%0AThanks%2C" style="text-decoration:none;color:inherit;display:block;">
             <div class="card-label">Team &amp; HR</div>
             <div class="card-detail">Org chart, key employee agreements, advisory board bios, and compensation structure.</div>
             <div class="card-status request">&#8594; Request Access</div>
-          </div>
+          </a>
         </div>
         <div style="margin-top:48px;padding:24px 28px;background:rgba(210,35,42,0.06);border:1px solid rgba(210,35,42,0.2);border-radius:8px;max-width:600px;">
           <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--red);text-transform:uppercase;margin-bottom:8px;">Access Protocol</div>
@@ -13533,7 +13993,7 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
 <script>
 
 /* ── Portal Boot ── */
-// Auth is handled at the platform layer (Railway). The portal renders
+// Auth is handled at the platform layer. The portal renders
 // directly; tab routing initializes once the DOM is ready.
 const portal = document.getElementById('portal');
 
@@ -13577,15 +14037,45 @@ if (document.readyState === 'loading') {
   initPortal();
 }
 
-/* ── cUAS toggle ── */
-function toggleCuas(card) {
-  const section = document.getElementById('cuas-section');
-  const label   = card.querySelector('.cuas-toggle-label');
-  const open    = section.style.display === 'none' || section.style.display === '';
+/* ── Appendix expandable sections ── */
+function toggleAppendix(card, sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+  const open = section.style.display === 'none' || section.style.display === '';
+
+  // Close all other open sections + reset their cards.
+  document.querySelectorAll('#tab-appendix .appendix-section').forEach(s => {
+    if (s.id !== sectionId) s.style.display = 'none';
+  });
+  document.querySelectorAll('#tab-appendix .appendix-card').forEach(c => {
+    if (c !== card) c.classList.remove('is-open');
+  });
+  // Backward-compat for any old `.cuas-toggle-label` markup.
+  document.querySelectorAll('#tab-appendix .cuas-toggle-label, #tab-appendix .appendix-toggle-label').forEach(l => {
+    if (!card.contains(l)) l.textContent = 'Click to expand \u2192';
+  });
+
   section.style.display = open ? 'block' : 'none';
+  card.classList.toggle('is-open', open);
+
+  // Legacy text-label support inside the new card markup (if present).
+  const label = card.querySelector('.appendix-toggle-label, .cuas-toggle-label');
   if (label) label.textContent = open ? 'Click to collapse \u2191' : 'Click to expand \u2192';
+
   if (open) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+function closeAppendix(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (section) section.style.display = 'none';
+  document.querySelectorAll('#tab-appendix .appendix-card').forEach(c => c.classList.remove('is-open'));
+  // Scroll back to the cards grid.
+  const grid = document.querySelector('#tab-appendix .appendix-grid');
+  if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Backward-compat alias for any cached pages still calling toggleCuas.
+function toggleCuas(card) { toggleAppendix(card, 'cuas-section'); }
 
 /* ── Product Sub-tabs ── */
 function initProductTabs() {

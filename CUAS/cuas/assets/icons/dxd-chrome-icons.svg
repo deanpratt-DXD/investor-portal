@@ -1,0 +1,246 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <defs>
+    
+  </defs>
+
+  
+  <symbol id="arrow-right" viewBox="0 0 640 640">
+    <path d="M80 320 L460 320 L460 180 L600 320 L460 460 L460 320 Z" fill="#C8102E" stroke="#C8102E" stroke-width="40" stroke-linejoin="round"></path>
+    <rect x="80" y="280" width="380" height="80" rx="16" fill="#C8102E"></rect>
+  </symbol>
+  <symbol id="arrow-left" viewBox="0 0 640 640">
+    <path d="M560 320 L180 320 L180 180 L40 320 L180 460 L180 320 Z" fill="#C8102E" stroke="#C8102E" stroke-width="40" stroke-linejoin="round"></path>
+    <rect x="180" y="280" width="380" height="80" rx="16" fill="#C8102E"></rect>
+  </symbol>
+  <symbol id="arrow-up" viewBox="0 0 640 640">
+    <path d="M320 40 L180 180 L260 180 L260 560 L380 560 L380 180 L460 180 Z" fill="#C8102E" stroke="#C8102E" stroke-width="40" stroke-linejoin="round"></path>
+  </symbol>
+  <symbol id="arrow-down" viewBox="0 0 640 640">
+    <path d="M320 600 L180 460 L260 460 L260 80 L380 80 L380 460 L460 460 Z" fill="#C8102E" stroke="#C8102E" stroke-width="40" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="chevron-right" viewBox="0 0 640 640">
+    <path d="M220 80 L460 320 L220 560" fill="none" stroke="#C8102E" stroke-width="100" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+  <symbol id="chevron-left" viewBox="0 0 640 640">
+    <path d="M420 80 L180 320 L420 560" fill="none" stroke="#C8102E" stroke-width="100" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+  <symbol id="chevron-up" viewBox="0 0 640 640">
+    <path d="M80 420 L320 180 L560 420" fill="none" stroke="#C8102E" stroke-width="100" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+  <symbol id="chevron-down" viewBox="0 0 640 640">
+    <path d="M80 220 L320 460 L560 220" fill="none" stroke="#C8102E" stroke-width="100" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="close" viewBox="0 0 640 640">
+    <path d="M140 140 L500 500 M500 140 L140 500" stroke="#C8102E" stroke-width="100" stroke-linecap="round"></path>
+  </symbol>
+
+  
+  <symbol id="menu" viewBox="0 0 640 640">
+    <rect x="80" y="160" width="480" height="80" rx="40" fill="#C8102E"></rect>
+    <rect x="80" y="280" width="480" height="80" rx="40" fill="#C8102E"></rect>
+    <rect x="80" y="400" width="480" height="80" rx="40" fill="#C8102E"></rect>
+  </symbol>
+
+  
+  <symbol id="more" viewBox="0 0 640 640">
+    <circle cx="320" cy="140" r="64" fill="#C8102E"></circle>
+    <circle cx="320" cy="320" r="64" fill="#C8102E"></circle>
+    <circle cx="320" cy="500" r="64" fill="#C8102E"></circle>
+  </symbol>
+  <symbol id="more-horizontal" viewBox="0 0 640 640">
+    <circle cx="140" cy="320" r="64" fill="#C8102E"></circle>
+    <circle cx="320" cy="320" r="64" fill="#C8102E"></circle>
+    <circle cx="500" cy="320" r="64" fill="#C8102E"></circle>
+  </symbol>
+
+  
+  <symbol id="check" viewBox="0 0 640 640">
+    <path d="M100 340 L260 500 L540 160" fill="none" stroke="#C8102E" stroke-width="100" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="plus" viewBox="0 0 640 640">
+    <rect x="280" y="80" width="80" height="480" rx="40" fill="#C8102E"></rect>
+    <rect x="80" y="280" width="480" height="80" rx="40" fill="#C8102E"></rect>
+  </symbol>
+
+  
+  <symbol id="minus" viewBox="0 0 640 640">
+    <rect x="80" y="280" width="480" height="80" rx="40" fill="#C8102E"></rect>
+  </symbol>
+
+  
+  <symbol id="search" viewBox="0 0 640 640">
+    <circle cx="260" cy="260" r="160" fill="none" stroke="#C8102E" stroke-width="80"></circle>
+    <path d="M380 380 L560 560" stroke="#C8102E" stroke-width="100" stroke-linecap="round"></path>
+  </symbol>
+
+  
+  <symbol id="settings" viewBox="0 0 640 640">
+    <path d="M320 80 L360 80 L380 160 L440 180 L500 140 L540 180 L500 240 L520 300 L600 320 L600 360 L520 380 L500 440 L540 500 L500 540 L440 500 L380 520 L360 600 L320 600 L280 600 L260 520 L200 500 L140 540 L100 500 L140 440 L120 380 L40 360 L40 320 L120 300 L140 240 L100 180 L140 140 L200 180 L260 160 L280 80 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+    <circle cx="320" cy="340" r="90" fill="#fff"></circle>
+  </symbol>
+
+  
+  <symbol id="filter" viewBox="0 0 640 640">
+    <path d="M80 120 L560 120 L400 320 L400 520 L240 460 L240 320 Z" fill="#C8102E" stroke="#C8102E" stroke-width="40" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="download" viewBox="0 0 640 640">
+    <rect x="280" y="80" width="80" height="280" rx="20" fill="#C8102E"></rect>
+    <path d="M160 280 L320 440 L480 280" fill="none" stroke="#C8102E" stroke-width="90" stroke-linecap="round" stroke-linejoin="round"></path>
+    <rect x="100" y="500" width="440" height="80" rx="20" fill="#C8102E"></rect>
+  </symbol>
+
+  
+  <symbol id="upload" viewBox="0 0 640 640">
+    <rect x="280" y="200" width="80" height="280" rx="20" fill="#C8102E"></rect>
+    <path d="M160 280 L320 120 L480 280" fill="none" stroke="#C8102E" stroke-width="90" stroke-linecap="round" stroke-linejoin="round"></path>
+    <rect x="100" y="500" width="440" height="80" rx="20" fill="#C8102E"></rect>
+  </symbol>
+
+  
+  <symbol id="external" viewBox="0 0 640 640">
+    <path d="M100 200 L100 540 L440 540 L440 360" fill="none" stroke="#C8102E" stroke-width="80" stroke-linejoin="round"></path>
+    <path d="M300 340 L560 80" stroke="#C8102E" stroke-width="90" stroke-linecap="round"></path>
+    <path d="M380 80 L560 80 L560 260" fill="none" stroke="#C8102E" stroke-width="80" stroke-linejoin="round" stroke-linecap="round"></path>
+  </symbol>
+
+  
+  <symbol id="user" viewBox="0 0 640 640">
+    <circle cx="320" cy="220" r="140" fill="#C8102E"></circle>
+    <path d="M80 580 C 80 420, 180 360, 320 360 C 460 360, 560 420, 560 580 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="lock" viewBox="0 0 640 640">
+    <rect x="120" y="280" width="400" height="280" rx="30" fill="#C8102E"></rect>
+    <path d="M200 280 L200 200 C 200 130, 260 80, 320 80 C 380 80, 440 130, 440 200 L440 280" fill="none" stroke="#C8102E" stroke-width="70" stroke-linejoin="round"></path>
+    <circle cx="320" cy="400" r="40" fill="#fff"></circle>
+    <rect x="300" y="400" width="40" height="80" fill="#fff"></rect>
+  </symbol>
+
+  
+  <symbol id="unlock" viewBox="0 0 640 640">
+    <rect x="120" y="280" width="400" height="280" rx="30" fill="#C8102E"></rect>
+    <path d="M200 280 L200 200 C 200 130, 260 80, 320 80 C 380 80, 440 130, 440 200" fill="none" stroke="#C8102E" stroke-width="70" stroke-linejoin="round" stroke-linecap="round"></path>
+    <circle cx="320" cy="400" r="40" fill="#fff"></circle>
+  </symbol>
+
+  
+  <symbol id="shield" viewBox="0 0 640 640">
+    <path d="M320 60 L100 140 L100 320 C 100 460, 200 540, 320 580 C 440 540, 540 460, 540 320 L540 140 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="alert" viewBox="0 0 640 640">
+    <path d="M320 60 L600 560 L40 560 Z" fill="#C8102E" stroke="#C8102E" stroke-width="30" stroke-linejoin="round"></path>
+    <rect x="300" y="220" width="40" height="180" fill="#fff" rx="10"></rect>
+    <circle cx="320" cy="470" r="30" fill="#fff"></circle>
+  </symbol>
+
+  
+  <symbol id="bell" viewBox="0 0 640 640">
+    <path d="M140 440 C 140 340, 180 280, 180 200 C 180 120, 240 60, 320 60 C 400 60, 460 120, 460 200 C 460 280, 500 340, 500 440 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+    <rect x="100" y="440" width="440" height="60" rx="20" fill="#C8102E"></rect>
+    <path d="M260 540 C 280 580, 360 580, 380 540" fill="none" stroke="#C8102E" stroke-width="50" stroke-linecap="round"></path>
+  </symbol>
+
+  
+  <symbol id="calendar" viewBox="0 0 640 640">
+    <rect x="80" y="140" width="480" height="420" rx="20" fill="#C8102E"></rect>
+    <rect x="80" y="140" width="480" height="100" fill="#C8102E"></rect>
+    <rect x="160" y="80" width="50" height="120" rx="20" fill="#C8102E"></rect>
+    <rect x="430" y="80" width="50" height="120" rx="20" fill="#C8102E"></rect>
+    <rect x="140" y="300" width="80" height="60" rx="10" fill="#fff"></rect>
+    <rect x="280" y="300" width="80" height="60" rx="10" fill="#fff"></rect>
+    <rect x="420" y="300" width="80" height="60" rx="10" fill="#fff"></rect>
+    <rect x="140" y="400" width="80" height="60" rx="10" fill="#fff"></rect>
+    <rect x="280" y="400" width="80" height="60" rx="10" fill="#fff"></rect>
+  </symbol>
+
+  
+  <symbol id="clock" viewBox="0 0 640 640">
+    <circle cx="320" cy="320" r="260" fill="none" stroke="#C8102E" stroke-width="70"></circle>
+    <path d="M320 160 L320 320 L440 400" fill="none" stroke="#C8102E" stroke-width="70" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="pin" viewBox="0 0 640 640">
+    <path d="M320 60 C 200 60, 100 160, 100 280 C 100 420, 320 600, 320 600 C 320 600, 540 420, 540 280 C 540 160, 440 60, 320 60 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+    <circle cx="320" cy="270" r="80" fill="#fff"></circle>
+  </symbol>
+
+  
+  <symbol id="camera" viewBox="0 0 640 640">
+    <rect x="60" y="180" width="380" height="280" rx="30" fill="#C8102E"></rect>
+    <path d="M440 280 L600 180 L600 460 L440 360 Z" fill="#C8102E" stroke="#C8102E" stroke-width="30" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="play" viewBox="0 0 640 640">
+    <path d="M160 100 L540 320 L160 540 Z" fill="#C8102E" stroke="#C8102E" stroke-width="30" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="pause" viewBox="0 0 640 640">
+    <rect x="140" y="100" width="120" height="440" rx="20" fill="#C8102E"></rect>
+    <rect x="380" y="100" width="120" height="440" rx="20" fill="#C8102E"></rect>
+  </symbol>
+
+  
+  <symbol id="stop" viewBox="0 0 640 640">
+    <rect x="120" y="120" width="400" height="400" rx="30" fill="#C8102E"></rect>
+  </symbol>
+
+  
+  <symbol id="document" viewBox="0 0 640 640">
+    <path d="M140 60 L400 60 L540 200 L540 580 L140 580 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+    <path d="M400 60 L400 200 L540 200" fill="#96021A" stroke="#96021A" stroke-width="20" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="info" viewBox="0 0 640 640">
+    <circle cx="320" cy="320" r="260" fill="#C8102E"></circle>
+    <circle cx="320" cy="200" r="35" fill="#fff"></circle>
+    <rect x="290" y="270" width="60" height="200" rx="20" fill="#fff"></rect>
+  </symbol>
+
+  
+  <symbol id="refresh" viewBox="0 0 640 640">
+    <path d="M540 200 C 500 120, 420 70, 320 70 C 180 70, 70 180, 70 320" fill="none" stroke="#C8102E" stroke-width="80" stroke-linecap="round"></path>
+    <path d="M540 70 L540 220 L400 220" fill="none" stroke="#C8102E" stroke-width="80" stroke-linejoin="round" stroke-linecap="round"></path>
+    <path d="M100 440 C 140 520, 220 570, 320 570 C 460 570, 570 460, 570 320" fill="none" stroke="#C8102E" stroke-width="80" stroke-linecap="round"></path>
+    <path d="M100 570 L100 420 L240 420" fill="none" stroke="#C8102E" stroke-width="80" stroke-linejoin="round" stroke-linecap="round"></path>
+  </symbol>
+
+  
+  <symbol id="signal" viewBox="0 0 640 640">
+    <circle cx="320" cy="500" r="50" fill="#C8102E"></circle>
+    <path d="M180 500 C 180 420, 240 360, 320 360 C 400 360, 460 420, 460 500" fill="none" stroke="#C8102E" stroke-width="60" stroke-linecap="round"></path>
+    <path d="M100 500 C 100 380, 180 280, 320 280 C 460 280, 540 380, 540 500" fill="none" stroke="#C8102E" stroke-width="60" stroke-linecap="round"></path>
+    <path d="M40 500 C 40 340, 140 200, 320 200 C 500 200, 600 340, 600 500" fill="none" stroke="#C8102E" stroke-width="60" stroke-linecap="round"></path>
+  </symbol>
+
+  
+  <symbol id="edit" viewBox="0 0 640 640">
+    <path d="M80 480 L80 560 L160 560 L500 220 L420 140 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+    <path d="M450 110 L500 60 C 520 40, 560 40, 580 60 C 600 80, 600 120, 580 140 L530 190 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+  </symbol>
+
+  
+  <symbol id="trash" viewBox="0 0 640 640">
+    <rect x="240" y="60" width="160" height="50" rx="15" fill="#C8102E"></rect>
+    <rect x="100" y="140" width="440" height="60" rx="20" fill="#C8102E"></rect>
+    <path d="M140 200 L160 580 L480 580 L500 200 Z" fill="#C8102E" stroke="#C8102E" stroke-width="20" stroke-linejoin="round"></path>
+    <rect x="240" y="260" width="30" height="260" rx="10" fill="#fff"></rect>
+    <rect x="305" y="260" width="30" height="260" rx="10" fill="#fff"></rect>
+    <rect x="370" y="260" width="30" height="260" rx="10" fill="#fff"></rect>
+  </symbol>
+</svg>

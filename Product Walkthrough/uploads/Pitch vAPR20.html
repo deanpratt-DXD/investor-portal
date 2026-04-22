@@ -4,88 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deus X Defense — Investor Pitch · April 2026</title>
-  <script>
-    (function() {
-      const CANONICAL_ORIGIN = "https://investor.deusxdefense.com";
-      if (/\.railway\.app$/i.test(window.location.hostname)) {
-        window.location.replace(
-          CANONICAL_ORIGIN +
-          window.location.pathname +
-          window.location.search +
-          window.location.hash
-        );
-      }
-    })();
-  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- When embedded inside the investor portal shell, hide the deck's own
-       top nav so we don't render two stacked nav bars, and reclaim that space. -->
-  <script>
-    (function() {
-      try { if (window.self !== window.top) document.documentElement.classList.add('embedded'); } catch (_) { document.documentElement.classList.add('embedded'); }
-    })();
-  </script>
   <style>
-    html.embedded .slide-nav { display: none !important; }
-    html.embedded .slides-wrapper { top: 0 !important; }
-
-    /* Red bottom navigation: arrows + slide counter */
-    .nav-btn {
-      color: var(--red) !important;
-      border-color: var(--red-border) !important;
-    }
-    .nav-btn:hover:not(:disabled) {
-      color: #fff !important;
-      border-color: var(--red) !important;
-      background: rgba(210,35,42,0.15) !important;
-    }
-    .nav-btn:disabled {
-      color: var(--red) !important;
-      opacity: 0.35 !important;
-    }
-    .slide-progress {
-      color: var(--red) !important;
-    }
-
-    /* Autoplay countdown ring — only visible while autoplay is running */
-    .autoplay-timer {
-      width: 22px;
-      height: 22px;
-      margin-left: 8px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-    .autoplay-timer.active { display: inline-flex; }
-    .autoplay-timer svg { transform: rotate(-90deg); display: block; }
-    .autoplay-timer-track {
-      fill: none;
-      stroke: rgba(210,35,42,0.18);
-      stroke-width: 3;
-    }
-    .autoplay-timer-fill {
-      fill: none;
-      stroke: var(--red);
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-dasharray: 88;
-      stroke-dashoffset: 88;
-      transition: stroke-dashoffset 0.1s linear;
-    }
-
-    /* Attention pulse on load — runs 3 times */
-    @keyframes navAttentionPulse {
-      0%   { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(210,35,42,0)); }
-      50%  { transform: scale(1.18); filter: drop-shadow(0 0 10px rgba(210,35,42,0.8)); }
-      100% { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(210,35,42,0)); }
-    }
-    .nav-controls .pulse-attention {
-      animation: navAttentionPulse 0.7s ease-in-out 3;
-      transform-origin: center;
-    }
-  </style>  <style>
     /* ═══════════════════════════════════════════
        DXD PITCH DECK — DESIGN SYSTEM
        Matches Investor Portal vAPR15
@@ -1091,26 +1013,6 @@
       z-index: 1000;
     }
     .nav-center { display: flex; align-items: center; gap: 16px; }
-    /* One-shot intro: nav controls load huge then shrink to normal so users notice them */
-    .nav-center { transform-origin: center center; }
-    .nav-controls.intro-pulse .nav-center {
-      animation: navCenterIntro 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
-    }
-    @keyframes navCenterIntro {
-      0%   { transform: scale(4.2); opacity: 0; }
-      18%  { transform: scale(4.2); opacity: 1; }
-      55%  { transform: scale(2.4); opacity: 1; }
-      100% { transform: scale(1);   opacity: 1; }
-    }
-    /* While the intro is playing, lift the bar above slide content so the
-       enlarged controls don't clip behind anything. */
-    .nav-controls.intro-pulse {
-      overflow: visible;
-      z-index: 2000;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .nav-controls.intro-pulse .nav-center { animation: none; }
-    }
     .nav-side { display: flex; align-items: center; gap: 8px; }
     .nav-btn {
       background: none;
@@ -2613,7 +2515,7 @@
   <span class="kbd-key"><kbd>T</kbd> Thumbnails</span>
 </div>
 
-<div class="nav-controls intro-pulse" id="navControls">
+<div class="nav-controls">
   <div class="nav-side">
     <button class="nav-icon-btn" id="thumbBtn" title="Toggle thumbnails (T)" onclick="toggleThumbs()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="5"/><rect x="14" y="3" width="7" height="5"/><rect x="3" y="12" width="7" height="5"/><rect x="14" y="12" width="7" height="5"/></svg>
@@ -2622,56 +2524,21 @@
   </div>
   <div class="nav-center">
     <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" title="Previous (&#8592;)" disabled>&#8592;</button>
+    <div class="autoplay-ring" id="autoplayRing" title="Auto-play (Space)" onclick="toggleAutoplay()" style="cursor:pointer;">
+      <svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" id="autoplayCircle"/></svg>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" id="autoplayIcon" style="color:var(--white-faint);transition:color 0.2s;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+    </div>
     <div class="slide-progress">
       <span id="currentSlide">1</span> / <span id="totalSlides">15</span>
     </div>
     <button class="nav-btn" id="nextBtn" onclick="navigate(1)" title="Next (→)">&#8594;</button>
-    <button class="nav-btn autoplay-text-btn" id="autoplayRing" title="Auto-play (Space)" onclick="toggleAutoplay()" style="margin-left:8px;width:auto;padding:0 12px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;">
-      <span id="autoplayLabel">Auto-Play</span>
-      <svg width="0" height="0" style="position:absolute;visibility:hidden;"><polygon points="5 3 19 12 5 21 5 3" id="autoplayIcon"/></svg>
-    </button>
-    <div class="autoplay-timer" id="autoplayTimer" aria-hidden="true">
-      <svg width="22" height="22" viewBox="0 0 32 32">
-        <circle cx="16" cy="16" r="14" class="autoplay-timer-track"/>
-        <circle cx="16" cy="16" r="14" class="autoplay-timer-fill" id="autoplayCircle"/>
-      </svg>
-    </div>
   </div>
   <div class="nav-side" style="justify-content:flex-end;">
     <span style="font-family:var(--font-mono);font-size:9px;color:var(--white-faint);letter-spacing:0.1em;">Apr 2026</span>
   </div>
 </div>
-<script>
-  (function () {
-    var nc = document.getElementById('navControls');
-    if (!nc) return;
-    var center = nc.querySelector('.nav-center');
-    if (!center) return;
-
-    function playIntro() {
-      // Restart the CSS animation by toggling the class.
-      nc.classList.remove('intro-pulse');
-      // Force reflow so the animation can re-trigger.
-      void nc.offsetWidth;
-      nc.classList.add('intro-pulse');
-    }
-
-    center.addEventListener('animationend', function () {
-      nc.classList.remove('intro-pulse');
-    });
-
-    // Replay every time the portal shell signals this tab became active.
-    window.addEventListener('message', function (e) {
-      if (e && e.data && e.data.type === 'dxd:tab-activated') playIntro();
-    });
-
-    // Also replay when the page becomes visible (browser tab switch / bfcache).
-    document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible') playIntro();
-    });
-    window.addEventListener('pageshow', playIntro);
-  })();
-</script>
 
 <div class="progress-bar-wrap">
   <div class="progress-bar-fill" id="progressFill"></div>
@@ -2823,10 +2690,6 @@ function startAutoplay() {
   autoplayActive = true;
   document.getElementById('autoplayIcon').style.color = 'var(--red)';
   document.getElementById('autoplayRing').classList.add('active');
-  const lbl = document.getElementById('autoplayLabel');
-  if (lbl) lbl.textContent = 'Pause';
-  const timer = document.getElementById('autoplayTimer');
-  if (timer) timer.classList.add('active');
   scheduleAutoplay();
 }
 
@@ -2834,10 +2697,6 @@ function stopAutoplay() {
   autoplayActive = false;
   document.getElementById('autoplayIcon').style.color = 'var(--white-faint)';
   document.getElementById('autoplayRing').classList.remove('active');
-  const lbl = document.getElementById('autoplayLabel');
-  if (lbl) lbl.textContent = 'Auto-Play';
-  const timer = document.getElementById('autoplayTimer');
-  if (timer) timer.classList.remove('active');
   if (autoplayTimer) { clearTimeout(autoplayTimer); autoplayTimer = null; }
   if (autoplayRaf) { cancelAnimationFrame(autoplayRaf); autoplayRaf = null; }
   document.getElementById('autoplayCircle').style.strokeDashoffset = '88';
@@ -3004,20 +2863,6 @@ buildThumbs();
 slides[0].classList.add('active');
 updateUI(0);
 triggerSlideAnimations(0);
-
-// ─── ATTENTION PULSE on load ───
-// Pulse the prev/counter/next/play controls 3 times to draw the user's eye.
-setTimeout(() => {
-  const targets = ['prevBtn', 'currentSlide', 'nextBtn', 'autoplayRing']
-    .map(id => document.getElementById(id))
-    .filter(Boolean);
-  // Pulse counter via its parent so the whole "1 / 15" group animates.
-  const progressEl = document.querySelector('.slide-progress');
-  const animEls = targets.map(el => el.id === 'currentSlide' ? progressEl : el);
-  animEls.forEach(el => el.classList.add('pulse-attention'));
-  // Total animation length: 0.7s * 3 = 2.1s — clean up so it doesn't replay on re-render.
-  setTimeout(() => animEls.forEach(el => el.classList.remove('pulse-attention')), 2300);
-}, 400);
 
 // Dismiss keyboard hint after 4 seconds
 setTimeout(() => {

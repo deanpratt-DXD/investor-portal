@@ -4,6 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Deus X Defense &middot; Investor Portal</title>
+  <link rel="canonical" href="https://investor.deusxdefense.com/" />
+  <meta property="og:url" content="https://investor.deusxdefense.com/" />
+  <script>
+    (function() {
+      const CANONICAL_ORIGIN = "https://investor.deusxdefense.com";
+      if (/\.railway\.app$/i.test(window.location.hostname)) {
+        window.location.replace(
+          CANONICAL_ORIGIN +
+          window.location.pathname +
+          window.location.search +
+          window.location.hash
+        );
+      }
+    })();
+  </script>
   <style>
     :root {
       --bg: #0b0d10;
@@ -112,11 +127,74 @@
       inset: 0;
       width: 100%;
       height: 100%;
+      overflow: hidden;
     }
-    #gate .hero svg {
+    #gate .hero iframe {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
+      border: 0;
       display: block;
+      background: #000;
+      pointer-events: auto;
+    }
+    /* Vignette to suppress any tagline/subtext rendered inside the hero iframe */
+    #gate .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.95) 65%, #000 72%),
+        radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 100%);
+    }
+    #gate .hero-title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 6vh;
+      z-index: 1;
+      text-align: center;
+      font-family: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+      font-size: clamp(36px, 7vw, 88px);
+      letter-spacing: -1px;
+      color: #FFFFFF;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.8);
+      pointer-events: none;
+      line-height: 1;
+    }
+    #gate .hero-logo {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 5vh;
+      z-index: 1;
+      text-align: center;
+      pointer-events: none;
+      color: #FFFFFF;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      letter-spacing: 0.42em;
+      font-weight: 600;
+      font-size: clamp(12px, 1.4vw, 16px);
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+    }
+    #gate .hero-logo .mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6em;
+    }
+    #gate .hero-logo .x {
+      color: #C8102E;
+      font-family: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+      font-size: 1.5em;
+      letter-spacing: 0;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+    #gate .panel {
+      pointer-events: auto;
     }
     #gate .panel {
       position: relative;
@@ -128,7 +206,6 @@
       border-radius: 4px;
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
-      margin-top: 18vh;
     }
     #gate .eyebrow {
       font-size: 11px;
@@ -195,24 +272,13 @@
 <body>
   <div id="gate" hidden role="dialog" aria-modal="true" aria-label="Investor Portal sign in — Threats Don't Wait">
     <div class="hero" aria-hidden="true">
-      <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <rect width="1200" height="800" fill="#000"></rect>
-        <g transform="translate(600 400)">
-          <circle r="240" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.35"></circle>
-          <circle r="180" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.25"></circle>
-          <circle r="120" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.2"></circle>
-          <circle r="60" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.15"></circle>
-          <line x1="0" y1="0" x2="240" y2="0" stroke="#E01933" stroke-width="2"></line>
-          <circle cx="120" cy="-70" r="6" fill="#FF506E"></circle>
-        </g>
-        <text x="60" y="720" font-family="Impact, sans-serif" font-size="72" fill="#FFFFFF" letter-spacing="-2">THREATS DON'T WAIT.</text>
-      </svg>
+      <iframe id="gate-bg" src="Threats Dont Wait.html" title="" tabindex="-1" scrolling="no"></iframe>
+      <div class="hero-logo"><span class="mark">DEUS<span class="x">X</span>DEFENSE</span></div>
+      <div class="hero-title">THREATS DON'T WAIT.</div>
     </div>
     <form class="panel" id="gate-form" autocomplete="off">
-      <div class="eyebrow">Deus X Defense &middot; Investor Portal</div>
       <div class="title">SIGN IN</div>
-      <label for="gate-password">Access code</label>
-      <input id="gate-password" type="password" autocomplete="current-password" autofocus required />
+      <input id="gate-password" type="password" autocomplete="current-password" autofocus required aria-label="Access code" placeholder="Access code" />
       <button type="submit">Enter</button>
       <div class="error" id="gate-error" role="alert" aria-live="polite"></div>
     </form>
@@ -245,6 +311,35 @@
       gateEl.hidden = false;
       // Defer focus so it works after layout
       setTimeout(() => gatePassword.focus(), 0);
+      // Strip text content from the hero iframe, leaving only the radar/canvas/svg.
+      const bg = document.getElementById("gate-bg");
+      if (bg) {
+        const sanitize = () => {
+          try {
+            const doc = bg.contentDocument;
+            if (!doc) return;
+            const style = doc.createElement("style");
+            style.textContent = `
+              body { background: #000 !important; overflow: hidden !important; }
+              h1, h2, h3, h4, h5, h6, p, li, blockquote, span, small, strong, em, label, button, a, figcaption, time, address {
+                color: transparent !important;
+                text-shadow: none !important;
+                background: transparent !important;
+                border: 0 !important;
+                box-shadow: none !important;
+                visibility: hidden !important;
+              }
+            `;
+            (doc.head || doc.documentElement).appendChild(style);
+          } catch (_) { /* cross-origin or not ready */ }
+        };
+        bg.addEventListener("load", () => {
+          sanitize();
+          // Bundle replaces document after load; re-apply a few times.
+          let n = 0;
+          const iv = setInterval(() => { sanitize(); if (++n > 20) clearInterval(iv); }, 250);
+        });
+      }
     }
 
     if (sessionStorage.getItem(STORAGE_KEY) === "1") {
@@ -267,38 +362,78 @@
     // Each tab maps a label to a file in the repo root.
     // Files are loaded lazily on first activation, then cached in the DOM
     // so switching tabs is instant and no single response is "too big".
+    // Each tab maps a label to a source file (and optional in-page hash).
+    // Tabs that share the same `src` reuse a single iframe instance —
+    // switching just updates the iframe's hash so the inner page can
+    // navigate without reloading. The Q1 2026 quarterly portal
+    // (`index 2.html`) listens for hashchange and switches its own
+    // sub-tabs accordingly.
     const TABS = [
-      { id: "story",        label: "Story",               src: "Hi-Fi - Story.html" },
-      { id: "design2",      label: "Investor Information", src: "index 2.html" },
-      { id: "pitch",        label: "Pitch",               src: "Pitch vAPR20.html" },
-      { id: "architecture", label: "Product",              src: "DXD-Product-Architecture-4-2.html" }
+      { id: "origin",       label: "Origin",               src: "Hi-Fi - Story.html" },
+      { id: "story",        label: "About Us",             src: "index 2.html", hash: "story" },
+      { id: "product",      label: "Product",              src: "Product Walkthrough/Immune System Scroller.html" },
+      { id: "cuas",         label: "C-UAS",                src: "CUAS/index.html" },
+      { id: "pitch",        label: "Deck",                 src: "Pitch vAPR20.html" },
+      { id: "investor",     label: "Shareholder Letter · Q1 2026", src: "index 2.html", hash: "letter" },
+      { id: "financials",   label: "Financials",           src: "index 2.html", hash: "financials" },
+      { id: "dataroom",     label: "Data Room",            src: "index 2.html", hash: "dataroom" },
+      { id: "appendix",     label: "Appendix",             src: "index 2.html", hash: "appendix" }
     ];
 
     const tabsEl = document.getElementById("tabs");
     const mainEl = document.getElementById("main");
+    // Frames are keyed by `src` so multiple tabs that share a source file
+    // reuse the same iframe instance.
     const frames = new Map();
 
     function activate(id) {
+      const tab = TABS.find(t => t.id === id);
+      if (!tab) return;
+
       // Update tab buttons
       for (const btn of tabsEl.querySelectorAll(".tab")) {
         btn.classList.toggle("active", btn.dataset.id === id);
         btn.setAttribute("aria-selected", btn.dataset.id === id ? "true" : "false");
       }
-      // Lazy-create iframe on first activation
-      let frame = frames.get(id);
+
+      // Lazy-create iframe on first activation of this src
+      let frame = frames.get(tab.src);
+      const targetSrc = tab.src + (tab.hash ? "#" + tab.hash : "");
       if (!frame) {
-        const tab = TABS.find(t => t.id === id);
         frame = document.createElement("iframe");
         frame.title = tab.label;
-        frame.src = tab.src;
+        frame.src = targetSrc;
         frame.loading = "lazy";
         mainEl.appendChild(frame);
-        frames.set(id, frame);
+        frames.set(tab.src, frame);
+      } else if (tab.hash) {
+        // Same iframe, different sub-tab — update hash without reloading.
+        try {
+          const cw = frame.contentWindow;
+          if (cw && cw.location && cw.location.hash !== "#" + tab.hash) {
+            cw.location.hash = tab.hash;
+          }
+        } catch (_) {
+          // Fallback: setting src with a new hash on same document doesn't reload.
+          frame.src = targetSrc;
+        }
       }
+
       // Show only the active iframe
-      for (const [tid, f] of frames) {
-        f.classList.toggle("active", tid === id);
+      for (const [src, f] of frames) {
+        f.classList.toggle("active", src === tab.src);
       }
+
+      // Notify the active iframe it just became visible so it can replay
+      // any "intro" animations (e.g. the deck nav-controls pulse).
+      const notify = () => {
+        try { frame.contentWindow && frame.contentWindow.postMessage({ type: "dxd:tab-activated", id }, "*"); } catch (_) {}
+      };
+      // Defer to next frame so the iframe is laid out before the message.
+      requestAnimationFrame(notify);
+      // And once more after the iframe finishes loading the first time.
+      frame.addEventListener("load", notify, { once: true });
+
       // Reflect in URL hash for shareable links
       if (location.hash.slice(1) !== id) {
         history.replaceState(null, "", "#" + id);

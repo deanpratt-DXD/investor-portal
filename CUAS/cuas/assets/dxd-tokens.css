@@ -1,0 +1,286 @@
+/* =========================================================
+   DEUS X DEFENSE — Design tokens
+   Colors, typography, spacing, elevation, motion.
+   Import this file wherever the DXD system is used.
+   ========================================================= */
+
+/* ---------- Typography imports ---------- */
+/* Oswald — headline substitute (condensed, heavy presence).
+   Figtree  — body substitute (humanist, clean geometric).
+   Both are open-source Google Fonts. Swap for the real foundry
+   files (placed in /fonts) when the user provides them.         */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Figtree:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* =====================================================
+     COLOR SYSTEM
+     DXD palette is deliberately small: deep neutrals +
+     a single signature red accent. No purples, no gradients.
+     ===================================================== */
+
+  /* --- Brand ---------------------------------------------- */
+  --dxd-red:        #C8102E;   /* primary accent — the "X" */
+  --dxd-red-bright: #E01933;   /* hover / active lift */
+  --dxd-red-deep:   #96021A;   /* pressed / shadow */
+  --dxd-red-muted:  #6B0A18;   /* dark-bg subdued accent */
+
+  /* --- Neutrals (true black stack) ------------------------ */
+  --dxd-black:      #000000;   /* page background */
+  --dxd-ink:        #0A0A0B;   /* primary surface on black pages */
+  --dxd-ink-2:      #141416;   /* card / elevated surface */
+  --dxd-ink-3:      #1E1E22;   /* hover surface */
+  --dxd-ink-4:      #2A2A2F;   /* borders on dark */
+  --dxd-graphite:   #3F3F46;   /* dividers */
+  --dxd-steel:      #6B6B73;   /* tertiary text on dark */
+  --dxd-silver:     #9A9AA3;   /* secondary text on dark */
+  --dxd-bone:       #D4D4D8;   /* body text on dark */
+  --dxd-fog:        #E9E9EC;   /* dim body text on light */
+  --dxd-paper:      #F5F5F5;   /* light page background */
+  --dxd-white:      #FFFFFF;
+
+  /* --- Semantic status ------------------------------------ */
+  --dxd-success:    #2F9E44;   /* cleared / secure */
+  --dxd-warning:    #D97706;   /* alert / attention */
+  --dxd-danger:     #C8102E;   /* threat — same as brand red by design */
+  --dxd-info:       #2563EB;   /* live stream / telemetry */
+
+  /* --- Foreground / background roles (dark default) ------- */
+  --bg-0:  var(--dxd-black);
+  --bg-1:  var(--dxd-ink);
+  --bg-2:  var(--dxd-ink-2);
+  --bg-3:  var(--dxd-ink-3);
+
+  --fg-1:  var(--dxd-white);      /* primary text */
+  --fg-2:  var(--dxd-bone);       /* body */
+  --fg-3:  var(--dxd-silver);     /* secondary */
+  --fg-4:  var(--dxd-steel);      /* tertiary / labels */
+
+  --border-1: var(--dxd-ink-4);
+  --border-2: var(--dxd-graphite);
+
+  --accent:         var(--dxd-red);
+  --accent-hover:   var(--dxd-red-bright);
+  --accent-pressed: var(--dxd-red-deep);
+
+  /* =====================================================
+     TYPOGRAPHY
+     Headlines: Oswald (condensed, all-caps treatment)
+     Body:      Figtree (humanist sans)
+     Mono:      JetBrains Mono (telemetry, data readouts)
+     ===================================================== */
+  --font-display: 'Oswald', 'Bebas Neue', 'Impact', system-ui, sans-serif;
+  --font-body:    'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+
+  /* Fluid type scale — calibrated for dense/editorial feel */
+  --fs-display-1: clamp(3.5rem, 7vw, 6.5rem);   /* hero stat */
+  --fs-display-2: clamp(2.5rem, 5vw, 4.25rem);  /* page H1 */
+  --fs-h1:        clamp(2rem,  3.5vw, 3rem);
+  --fs-h2:        clamp(1.5rem, 2.5vw, 2.25rem);
+  --fs-h3:        1.5rem;
+  --fs-h4:        1.25rem;
+  --fs-lg:        1.125rem;
+  --fs-base:      1rem;
+  --fs-sm:        0.875rem;
+  --fs-xs:        0.75rem;
+  --fs-eyebrow:   0.75rem;   /* ALL-CAPS labels */
+
+  --lh-tight:     1.05;
+  --lh-snug:      1.2;
+  --lh-normal:    1.5;
+  --lh-loose:     1.7;
+
+  --ls-tight:     -0.02em;
+  --ls-normal:    0;
+  --ls-wide:      0.08em;
+  --ls-wider:     0.16em;   /* signature spaced-caps */
+  --ls-widest:    0.24em;
+
+  --fw-light:     300;
+  --fw-regular:   400;
+  --fw-medium:    500;
+  --fw-semibold:  600;
+  --fw-bold:      700;
+  --fw-black:     800;
+
+  /* =====================================================
+     SPACING (4px base grid)
+     ===================================================== */
+  --space-0:  0;
+  --space-1:  0.25rem;  /*  4px */
+  --space-2:  0.5rem;   /*  8px */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+
+  /* =====================================================
+     RADII — mostly sharp. Military/industrial feel.
+     Photography uses a distinctive notched-corner crop.
+     ===================================================== */
+  --radius-none: 0;
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;      /* default button / card */
+  --radius-lg:   10px;
+  --radius-xl:   16px;
+  --radius-pill: 999px;
+
+  /* =====================================================
+     ELEVATION — shadows tuned for dark surfaces.
+     Prefer borders + subtle glows over drop shadows.
+     ===================================================== */
+  --shadow-0: none;
+  --shadow-1: 0 1px 0 rgba(255,255,255,0.04) inset, 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-2: 0 4px 12px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.03) inset;
+  --shadow-3: 0 12px 32px rgba(0,0,0,0.7),  0 1px 0 rgba(255,255,255,0.04) inset;
+  --shadow-glow-red: 0 0 0 1px rgba(200,16,46,0.35), 0 0 24px rgba(200,16,46,0.25);
+  --shadow-focus:    0 0 0 2px var(--dxd-black), 0 0 0 4px var(--dxd-red);
+
+  /* =====================================================
+     BORDERS — hairlines are an identity element.
+     ===================================================== */
+  --hairline:      1px solid var(--border-1);
+  --hairline-mid:  1px solid var(--border-2);
+  --hairline-red:  1px solid var(--dxd-red);
+
+  /* =====================================================
+     MOTION — short, linear, decisive. No bouncy easing.
+     ===================================================== */
+  --ease-out:      cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.45, 0, 0.25, 1);
+  --ease-linear:   linear;
+
+  --dur-instant:   80ms;
+  --dur-fast:      140ms;
+  --dur-base:      220ms;
+  --dur-slow:      360ms;
+
+  /* =====================================================
+     LAYOUT
+     ===================================================== */
+  --container:      1240px;
+  --container-wide: 1440px;
+  --gutter:         clamp(1rem, 4vw, 3rem);
+  --header-h:       72px;
+}
+
+/* =========================================================
+   ELEMENT DEFAULTS
+   ========================================================= */
+
+html { font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+
+body {
+  margin: 0;
+  background: var(--bg-0);
+  color: var(--fg-2);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-regular);
+}
+
+/* ---------- Display type (DXD headlines) ---------- */
+.dxd-display-1,
+.dxd-display-2,
+.dxd-h1,
+.dxd-h2,
+.dxd-h3 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  color: var(--fg-1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-normal);
+  margin: 0;
+}
+
+.dxd-display-1 { font-size: var(--fs-display-1); font-weight: var(--fw-bold); letter-spacing: -0.01em; }
+.dxd-display-2 { font-size: var(--fs-display-2); font-weight: var(--fw-semibold); }
+.dxd-h1        { font-size: var(--fs-h1);        font-weight: var(--fw-semibold); }
+.dxd-h2        { font-size: var(--fs-h2);        font-weight: var(--fw-medium); }
+.dxd-h3        { font-size: var(--fs-h3);        font-weight: var(--fw-medium); letter-spacing: var(--ls-wide); }
+
+/* Eyebrow / tag label — spaced caps, the DXD signature */
+.dxd-eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  color: var(--fg-3);
+  line-height: 1;
+}
+.dxd-eyebrow--red { color: var(--accent); }
+
+/* ---------- Body ---------- */
+.dxd-lead {
+  font-size: var(--fs-lg);
+  line-height: var(--lh-normal);
+  color: var(--fg-2);
+  font-weight: var(--fw-regular);
+}
+.dxd-body { font-size: var(--fs-base); line-height: var(--lh-normal); color: var(--fg-2); }
+.dxd-small { font-size: var(--fs-sm); color: var(--fg-3); }
+.dxd-caption { font-size: var(--fs-xs); color: var(--fg-4); letter-spacing: var(--ls-wide); text-transform: uppercase; }
+
+/* ---------- Mono ---------- */
+.dxd-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--fg-2);
+  letter-spacing: 0;
+}
+
+/* ---------- Stat readout (the "1,300" treatment) ---------- */
+.dxd-stat {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-1);
+  font-weight: var(--fw-bold);
+  line-height: 0.9;
+  color: var(--fg-1);
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Rules & dividers ---------- */
+.dxd-rule        { border: 0; border-top: var(--hairline); margin: var(--space-8) 0; }
+.dxd-rule--mid   { border-top-color: var(--border-2); }
+.dxd-rule--red   { border-top: 2px solid var(--accent); }
+
+/* ---------- Links ---------- */
+a {
+  color: var(--fg-1);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ---------- Focus ring ---------- */
+:focus-visible { outline: none; box-shadow: var(--shadow-focus); border-radius: var(--radius-sm); }
+
+/* =========================================================
+   DXD SIGNATURE — notched image crop
+   The hero photography on deusxdefense.com uses a rounded
+   rectangle with two opposite inset notches. Reusable:
+   apply `.dxd-notch-crop` to any <img> or <div>.
+   ========================================================= */
+.dxd-notch-crop {
+  --notch: 22%;
+  --r: 18px;
+  clip-path: path('M var(--r) 0 ...');   /* overridden per-size */
+  -webkit-mask: radial-gradient(circle, black 100%, transparent 100%);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* A simpler approximation using CSS only: two inset squares
+   punched via an SVG mask. See DXD_NotchImage.jsx component. */

@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Deus X Defense — Story</title>
+<script>
+  (function() {
+    const CANONICAL_ORIGIN = "https://investor.deusxdefense.com";
+    if (/\.railway\.app$/i.test(window.location.hostname)) {
+      window.location.replace(
+        CANONICAL_ORIGIN +
+        window.location.pathname +
+        window.location.search +
+        window.location.hash
+      );
+    }
+  })();
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

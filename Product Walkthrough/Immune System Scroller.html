@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DXD — The Immune System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══ DXD TOKENS ═══ */
+:root{
+  --black:#0a0a0b;--black-soft:#111113;--surface:#151517;--surface-alt:#1a1a1d;
+  --border:#2a2a2e;--border-light:#333338;
+  --white:#f0f0f0;--white-muted:#b0b0b4;--white-faint:#707078;--white-dim:#3a3a42;
+  --red:#D2232A;--red-dark:#a01c22;--red-glow:rgba(210,35,42,.15);--red-border:rgba(210,35,42,.28);
+  --amber:#c4953a;--teal:#3a8a8a;--blue:#6b8ab5;--green:#7a7f5a;
+  --font-heading:'Outfit',sans-serif;--font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;--font-serif:'Source Serif 4',Georgia,serif;
+  --nerve:#c4953a; --cortex:#6b8ab5; --atlas:#D2232A; --sentinel:#7a7f5a; --command:#3a8a8a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* noise */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.6;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+}
+
+/* ═══ TOP NAV ═══ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:52px;z-index:100;
+  background:rgba(10,10,11,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+}
+.topbar .logo{font-family:var(--font-heading);font-weight:900;letter-spacing:.1em;font-size:14px;color:var(--white)}
+.topbar .logo .x{color:var(--red)}
+.topbar .meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;color:var(--red);text-transform:uppercase}
+.topbar .nav-dots{display:flex;gap:2px;align-items:center}
+.topbar .nav-dot{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--white-faint);background:transparent;border:none;cursor:pointer;
+  padding:8px 12px;transition:color .2s ease;
+}
+.topbar .nav-dot .num{color:var(--white-dim);font-weight:600}
+.topbar .nav-dot .bar{width:0;height:1px;background:var(--red);transition:width .25s ease;display:inline-block}
+.topbar .nav-dot:hover{color:var(--white)}
+.topbar .nav-dot.active{color:var(--white)}
+.topbar .nav-dot.active .num{color:var(--red)}
+.topbar .nav-dot.active .bar{width:16px;box-shadow:0 0 8px var(--red-glow)}
+
+/* ═══ PROGRESS RAIL ═══ */
+.progress-rail{position:fixed;top:52px;left:0;right:0;height:2px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:var(--red);width:0;transition:width .2s linear}
+
+/* ═══ SIDE LABEL (deprecated — moved to topbar) ═══ */
+.side-rail{display:none}
+
+/* ═══ SCROLL HINT ═══ */
+.scroll-hint{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:90;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--white-faint);
+  opacity:.8;transition:opacity .6s;
+  pointer-events:none;
+}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint .line{width:1px;height:28px;background:linear-gradient(to bottom,transparent,var(--red));animation:scrollPulse 1.8s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ═══ SECTIONS / SCROLL ═══ */
+main{position:relative;z-index:2}
+section.beat{
+  min-height:100vh;
+  position:relative;
+  padding:120px 80px 80px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+section.beat .inner{max-width:1400px;width:100%;margin:0 auto;flex:1;display:flex;flex-direction:column;position:relative;z-index:2}
+section.beat .grid-bg{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);
+  background-size:80px 80px;
+}
+section.beat .red-rule{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:.6}
+
+/* eyebrow */
+.eyebrow{
+  font-family:var(--font-mono);font-size:11px;font-weight:600;
+  letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.85);
+  margin-bottom:14px;display:inline-flex;align-items:center;gap:12px;
+}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--red);flex-shrink:0}
+
+h1.headline{
+  font-family:var(--font-heading);font-weight:800;
+  font-size:clamp(36px,5vw,64px);line-height:1.05;letter-spacing:-0.025em;
+  color:var(--white);margin-bottom:20px;max-width:1100px;
+}
+h1.headline .accent{color:var(--red)}
+.sub{font-family:var(--font-heading);font-weight:500;font-size:clamp(16px,1.7vw,20px);color:var(--white-muted);max-width:720px;line-height:1.45;margin-bottom:28px}
+
+/* ═══ INTRO BEAT ═══ */
+#beat-intro{justify-content:center;align-items:center;text-align:center}
+#beat-intro .inner{align-items:center}
+.intro-stage{position:relative;width:100%;max-width:1200px;height:60vh;min-height:520px;margin:32px auto 0}
+.intro-stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+
+.engine-node{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  opacity:0;
+  transition:opacity .6s ease,transform .6s ease;
+  cursor:pointer;
+}
+.engine-node.show{opacity:1}
+.engine-node.dimmed{opacity:.18;pointer-events:none}
+.engine-node.expanded{z-index:10}
+.engine-node .disk{
+  width:92px;height:92px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,var(--surface-alt),var(--black-soft));
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 10px;position:relative;
+  transition:border-color .3s, box-shadow .3s, transform .3s;
+}
+.engine-node:hover .disk{transform:scale(1.06)}
+.engine-node.expanded .disk{
+  border-color:var(--accent-color,var(--red));
+  box-shadow:0 0 40px -4px var(--accent-color,var(--red)), inset 0 0 20px rgba(0,0,0,.6);
+}
+.engine-node .click-hint{
+  font-family:var(--font-mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent-color,var(--white-faint));margin-top:4px;
+  opacity:.7;transition:opacity .25s;
+}
+.engine-node:hover .click-hint{opacity:1}
+.engine-node.expanded .click-hint{color:var(--accent-color);opacity:1}
+.engine-node .disk::after{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1px solid var(--border);opacity:0;transition:opacity .3s;
+}
+.engine-node .disk .glyph{
+  font-family:var(--font-heading);font-weight:900;font-size:15px;
+  letter-spacing:.08em;color:var(--white);
+}
+.engine-node .disk.pulse::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  box-shadow:0 0 0 0 currentColor;
+  animation:enginePulse 2.4s ease-out infinite;
+  color:var(--accent-color,var(--red));
+  opacity:.55;
+}
+@keyframes enginePulse{
+  0%{box-shadow:0 0 0 0 currentColor;opacity:.55}
+  100%{box-shadow:0 0 0 28px currentColor;opacity:0}
+}
+.engine-node .role{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--accent-color,var(--white-faint));margin-bottom:4px;
+}
+.engine-node .name{
+  font-family:var(--font-heading);font-weight:800;font-size:16px;letter-spacing:.04em;color:var(--white);
+}
+.engine-node.nerve{--accent-color:var(--nerve)}
+.engine-node.cortex{--accent-color:var(--cortex)}
+.engine-node.atlas{--accent-color:var(--atlas)}
+.engine-node.sentinel{--accent-color:var(--sentinel)}
+.engine-node.command{--accent-color:var(--command)}
+.engine-node .disk{box-shadow:0 0 24px -8px var(--accent-color,transparent)}
+.engine-node:hover .disk{border-color:var(--accent-color);box-shadow:0 0 24px -4px var(--accent-color)}
+
+/* ═══ INTRO EXPANSION OVERLAY ═══ */
+.intro-expansion{
+  position:absolute;inset:0;pointer-events:none;z-index:5;
+}
+.intro-expansion.active{pointer-events:auto}
+.intro-expansion .ie-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.intro-sub{
+  position:absolute;transform:translate(-50%,-50%) scale(.7);
+  width:200px;padding:12px 14px;
+  background:rgba(15,15,17,.95);backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-left:2px solid var(--ie-accent,var(--red));
+  z-index:6;opacity:0;
+  transition:opacity .5s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1);
+  pointer-events:auto;
+}
+.intro-sub.in{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.intro-sub .ie-tag{
+  font-family:var(--font-mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ie-accent,var(--red));margin-bottom:4px;
+}
+.intro-sub .ie-name{
+  font-family:var(--font-heading);font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px;line-height:1.2;
+}
+.intro-sub .ie-desc{font-size:11px;line-height:1.45;color:var(--white-muted)}
+.intro-sub .ie-flow{
+  font-family:var(--font-mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--white-faint);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);
+}
+
+.ie-line{
+  fill:none;stroke:var(--ie-accent-stroke,#D2232A);stroke-width:1.4;
+  stroke-dasharray:4 5;opacity:0;
+  transition:opacity .5s ease .15s;
+}
+.ie-line.in{opacity:.55}
+
+.ie-close{
+  position:absolute;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  background:rgba(10,10,11,.95);border:1px solid var(--border);color:var(--white-muted);
+  padding:6px 12px;cursor:pointer;z-index:8;
+  opacity:0;transform:translate(-50%, -50%);transition:opacity .4s ease .3s;
+  pointer-events:auto;
+}
+.ie-close.in{opacity:1}
+.ie-close:hover{border-color:var(--red);color:var(--white);background:rgba(210,35,42,.15)}
+
+.ie-jump{
+  position:absolute;left:50%;bottom:-32px;transform:translateX(-50%);
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--ie-accent,var(--red));color:var(--ie-accent,var(--red));
+  padding:8px 16px;cursor:pointer;
+  opacity:0;transition:opacity .4s ease .4s, background .2s, color .2s;
+  pointer-events:auto;
+}
+.ie-jump.in{opacity:1}
+.ie-jump:hover{background:var(--ie-accent,var(--red));color:#000}
+
+/* flow line between engines */
+.flow-line{
+  stroke:var(--border-light);stroke-width:1.4;fill:none;
+  stroke-dasharray:4 4;
+  opacity:0;
+  transition:opacity .8s;
+}
+.flow-line.show{opacity:.7}
+.flow-line.active{stroke:var(--red);opacity:.9}
+
+/* packet */
+.packet{
+  r:4;fill:var(--red);
+  filter:drop-shadow(0 0 6px var(--red));
+  opacity:0;
+}
+.packet.run{animation:packetTravel 2.4s linear infinite}
+@keyframes packetTravel{
+  0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}
+}
+
+/* intro centered badge */
+.center-badge{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  text-align:center;pointer-events:none;z-index:2;
+}
+.center-badge .label{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--white-faint);margin-bottom:10px;
+}
+.center-badge .title{
+  font-family:var(--font-heading);font-weight:900;font-size:28px;letter-spacing:-0.01em;color:var(--white);
+}
+.center-badge .title .accent{color:var(--red)}
+.center-badge .sub{
+  font-family:var(--font-serif);font-style:italic;font-size:14px;color:var(--white-muted);margin-top:8px;max-width:320px;
+}
+
+/* ═══ ENGINE DIAGRAM BEAT ═══ */
+.engine-beat{justify-content:flex-start; padding:80px 80px 60px}
+/* Two-column layout: LEFT = title/copy + sidebar metrics stacked; RIGHT = radial stage */
+section.beat.engine-beat .inner{
+  display:grid !important;
+  grid-template-columns: 320px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "copy    stage"
+    "metrics stage";
+  column-gap: 48px;
+  row-gap: 20px;
+  align-items: stretch;
+}
+.engine-copy{
+  grid-area: copy;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  padding:16px 0 0;
+}
+.engine-copy .metrics{display:none} /* metrics moved out of copy, into its own slot */
+.engine-metrics{
+  grid-area: metrics;
+  display:flex;flex-direction:column;gap:8px;
+  padding-right:4px;align-self:start;
+}
+.engine-metrics .metric{
+  display:grid;grid-template-columns:1fr;gap:2px;
+  padding:10px 0;border-top:1px solid var(--border);
+}
+.engine-metrics .metric:last-child{border-bottom:1px solid var(--border)}
+.engine-metrics .metric-k{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.engine-metrics .metric-v{font-size:12px;color:var(--white);line-height:1.4}
+.engine-beat .radial-stage{grid-area: stage; height:auto; min-height:620px}
+.engine-copy .role-mono{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:10px;
+}
+.engine-copy h2{
+  font-family:var(--font-heading);font-weight:900;font-size:clamp(44px,5vw,72px);
+  line-height:.95;letter-spacing:-0.03em;color:var(--white);margin-bottom:14px;
+}
+.engine-copy h2 .x{color:var(--accent)}
+.engine-copy .verb-line{
+  font-family:var(--font-heading);font-weight:500;font-size:14px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:18px;
+}
+.engine-copy .cap{
+  font-family:var(--font-heading);font-weight:500;font-size:18px;line-height:1.4;
+  color:var(--white);margin-bottom:14px;max-width:340px;
+}
+.engine-copy .body{font-size:13px;color:var(--white-muted);line-height:1.7;max-width:340px;margin-bottom:16px}
+.engine-copy .status-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--white-muted);background:rgba(255,255,255,.04);
+  border:1px solid var(--border);padding:6px 10px;align-self:flex-start;margin-bottom:10px;
+}
+.engine-copy .status-chip .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px var(--accent);
+  animation:statusDot 1.8s ease-in-out infinite;
+}
+@keyframes statusDot{0%,100%{opacity:.5}50%{opacity:1}}
+.engine-copy .metrics{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.engine-copy .metric{
+  display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:baseline;
+  padding:8px 0;border-bottom:1px solid var(--border);
+}
+.engine-copy .metric-k{font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--white-faint)}
+.engine-copy .metric-v{font-size:12px;color:var(--white)}
+
+/* ═══ RADIAL DIAGRAM ═══ */
+.radial-stage{
+  position:relative;width:100%;height:72vh;min-height:640px;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(255,255,255,.015) 0%,transparent 60%),
+    var(--black-soft);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.radial-stage::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(ellipse at center,black 20%,transparent 80%);
+  -webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 80%);
+}
+.radial-stage .stage-label{
+  position:absolute;top:16px;left:18px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--white-faint);
+  display:flex;align-items:center;gap:8px;
+}
+.radial-stage .stage-label .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.radial-stage .stage-corner{
+  position:absolute;top:16px;right:18px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);
+}
+
+.radial-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+
+/* Hub */
+.hub{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,var(--surface-alt),var(--black));
+  border:1.5px solid var(--accent);
+  box-shadow:0 0 60px -10px var(--accent);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;z-index:3;
+}
+.hub::before,.hub::after{
+  content:'';position:absolute;border-radius:50%;
+  border:1px solid var(--accent);
+  opacity:.3;pointer-events:none;
+}
+.hub::before{inset:-16px;animation:hubRing 3s ease-out infinite}
+.hub::after{inset:-32px;animation:hubRing 3s ease-out infinite .9s}
+@keyframes hubRing{
+  0%{opacity:.5;transform:scale(.95)}
+  100%{opacity:0;transform:scale(1.15)}
+}
+.hub .hub-name{font-family:var(--font-heading);font-weight:900;font-size:22px;letter-spacing:.06em;color:var(--white)}
+.hub .hub-role{font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-top:4px}
+/* hub entrance: scales + fades in when section scrolls into view */
+.hub{opacity:0;transform:translate(-50%,-50%) scale(.7);transition:opacity .7s ease, transform .9s cubic-bezier(.2,.8,.2,1)}
+.hub.expanded{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+/* Sub nodes */
+.sub-node{
+  position:absolute;transform:translate(-50%,-50%);
+  width:158px;padding:12px 14px;
+  background:rgba(21,21,23,.85);backdrop-filter:blur(6px);
+  border:1px solid var(--border);border-left:2px solid var(--accent);
+  z-index:2;opacity:0;
+  transition:opacity .6s ease, transform .6s ease;
+}
+.sub-node.show{opacity:1}
+.sub-node .sub-name{
+  font-family:var(--font-heading);font-weight:700;font-size:12px;color:var(--white);margin-bottom:3px;line-height:1.2;
+}
+.sub-node .sub-desc{
+  font-family:var(--font-body);font-size:10.5px;line-height:1.4;color:var(--white-muted);
+}
+.sub-node .sub-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sub-node .sub-ic{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}
+.sub-icon{width:22px;height:22px;display:block}
+.sub-node .sub-tag{display:none}
+
+/* lines between hub and sub */
+.r-line{
+  fill:none;stroke:var(--accent);stroke-width:1.2;
+  stroke-dasharray:3 4;opacity:0;
+  transition:opacity .8s ease .2s;
+}
+.r-line.show{opacity:.35}
+
+/* data flow label on line */
+.flow-tag{
+  position:absolute;transform:translate(-50%,-50%);
+  font-family:var(--font-mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--white-faint);background:var(--black);padding:2px 6px;
+  border:1px solid var(--border);
+  opacity:0;transition:opacity .6s ease .6s;
+  pointer-events:none;z-index:4;
+}
+.flow-tag.show{opacity:1}
+
+/* SVG packets along lines */
+.r-packet{
+  r:3.2;fill:var(--accent);
+  filter:drop-shadow(0 0 6px var(--accent));
+}
+.r-packet.run{
+  animation-name:rPktRun;
+  animation-duration:2.6s;
+  animation-iteration-count:infinite;
+  animation-timing-function:cubic-bezier(.4,0,.6,1);
+}
+@keyframes rPktRun{
+  0%{offset-distance:0%;opacity:0}
+  8%{opacity:1}
+  92%{opacity:1}
+  100%{offset-distance:100%;opacity:0}
+}
+
+/* ═══ BEAT ACCENT BY ENGINE ═══ */
+#beat-nerve{--accent:var(--nerve)}
+#beat-cortex{--accent:var(--cortex)}
+#beat-atlas{--accent:var(--atlas)}
+#beat-sentinel{--accent:var(--sentinel)}
+#beat-command{--accent:var(--command)}
+#beat-workflow{--accent:var(--red)}
+
+/* ═══ WORKFLOW BEAT ═══ */
+#beat-workflow .inner{display:grid;grid-template-columns:320px 1fr;gap:40px}
+.wf-stage{
+  position:relative;width:100%;height:76vh;min-height:680px;
+  background:var(--black-soft);border:1px solid var(--border);
+  overflow:hidden;
+}
+.wf-stage::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(ellipse at center,black 0%,transparent 90%);
+  pointer-events:none;
+}
+.wf-svg{position:absolute;inset:0;width:100%;height:100%}
+.wf-engine{
+  position:absolute;transform:translate(-50%,-50%);
+  width:190px;padding:14px 16px;
+  background:rgba(21,21,23,.9);backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-top:2px solid var(--e-color,var(--white-dim));
+  text-align:left;z-index:3;
+  transition:border-color .3s,box-shadow .3s,transform .3s;
+}
+.wf-engine.hot{
+  border-top-color:var(--e-color,var(--red));
+  border-color:var(--e-color);
+  box-shadow:0 0 30px -8px var(--e-color);
+}
+.wf-engine .wf-role{font-family:var(--font-mono);font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--e-color,var(--white-faint));margin-bottom:2px}
+.wf-engine .wf-name{font-family:var(--font-heading);font-weight:900;font-size:16px;color:var(--white);margin-bottom:6px;letter-spacing:.04em}
+.wf-engine .wf-desc{font-size:10.5px;color:var(--white-muted);line-height:1.4}
+.wf-engine .wf-status{
+  position:absolute;top:8px;right:10px;width:6px;height:6px;border-radius:50%;
+  background:var(--white-dim);
+}
+.wf-engine.hot .wf-status{background:var(--e-color);box-shadow:0 0 10px var(--e-color);animation:statusDot 1.4s ease-in-out infinite}
+
+/* live status ticker text (set each step of the simulation) */
+.wf-engine .wf-ticker{
+  margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;
+  color:var(--e-color,var(--white-muted));
+  min-height:14px;line-height:1.3;
+  opacity:0;transform:translateY(2px);
+  transition:opacity .35s ease, transform .35s ease;
+}
+.wf-engine .wf-ticker.show{opacity:1;transform:translateY(0)}
+
+/* floating icon pop above an engine when an event fires */
+.wf-icon-pop{
+  position:absolute;top:-46px;left:50%;transform:translate(-50%, 8px) scale(.6);
+  width:46px;height:46px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--e-color,var(--red));
+  background:rgba(10,10,11,.92);
+  border:1.5px solid var(--e-color,var(--red));
+  box-shadow:0 0 28px -4px var(--e-color,var(--red));
+  pointer-events:none;z-index:5;opacity:0;
+  transition:opacity .35s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+}
+.wf-icon-pop svg{width:26px;height:26px}
+.wf-icon-pop.in{opacity:1;transform:translate(-50%, 0) scale(1)}
+.wf-icon-pop.out{opacity:0;transform:translate(-50%, -10px) scale(.9);transition:opacity .4s ease, transform .4s ease}
+
+/* timeline below stage */
+.wf-timeline{
+  display:flex;flex-direction:column;gap:8px;margin-top:20px;
+  border:1px solid var(--border);background:rgba(10,10,11,.6);
+  max-height:220px;overflow-y:auto;padding:12px 16px;
+  font-family:var(--font-mono);font-size:11px;
+}
+.wf-row{
+  display:grid;grid-template-columns:60px 74px 1fr;gap:12px;align-items:baseline;
+  padding:6px 0;border-bottom:1px dashed var(--border);
+  opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s;
+}
+.wf-row.in{opacity:1;transform:none}
+.wf-row .t{color:var(--white-faint)}
+.wf-row .src{font-weight:600;letter-spacing:.08em}
+.wf-row .e{color:var(--white-muted);line-height:1.5;font-family:var(--font-body);font-size:12px}
+.wf-row.c-nerve .src{color:var(--nerve)}
+.wf-row.c-cortex .src{color:var(--cortex)}
+.wf-row.c-atlas .src{color:var(--atlas)}
+.wf-row.c-sentinel .src{color:var(--sentinel)}
+.wf-row.c-command .src{color:var(--command)}
+.wf-row.c-op .src{color:var(--white)}
+
+/* wf controls */
+.wf-controls{
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;align-items:center;z-index:5;
+}
+.wf-btn{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  background:rgba(10,10,11,.9);border:1px solid var(--border);color:var(--white-muted);
+  padding:8px 14px;cursor:pointer;transition:all .2s;
+}
+.wf-btn:hover{border-color:var(--red);color:var(--white);background:rgba(210,35,42,.12)}
+.wf-btn.primary{border-color:var(--red);color:var(--red)}
+.wf-btn.primary:hover{background:var(--red);color:#fff}
+
+/* wf line arcs */
+.wf-arc{fill:none;stroke:var(--border-light);stroke-width:1.2;stroke-dasharray:4 5;opacity:.35}
+.wf-arc.active{stroke:var(--red);opacity:.9;stroke-dasharray:none;
+  animation:arcPulse 1.6s ease-in-out infinite;
+}
+@keyframes arcPulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+.wf-packet{
+  r:5;fill:var(--red);
+  filter:drop-shadow(0 0 10px var(--red));
+  opacity:0;
+}
+
+/* outro */
+#beat-outro{justify-content:center;align-items:center;text-align:center}
+#beat-outro .inner{align-items:center;max-width:900px}
+.oath{
+  font-family:var(--font-serif);font-style:italic;font-size:clamp(18px,2vw,24px);line-height:1.5;
+  color:var(--white);margin:24px 0;
+}
+.outro-tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--white-faint)}
+
+/* responsive */
+@media(max-width:1100px){
+  section.beat{padding:100px 40px 60px}
+  .engine-beat .inner{grid-template-columns:1fr;gap:24px}
+  #beat-workflow .inner{grid-template-columns:1fr}
+  .side-rail{display:none}
+}
+
+/* reveal helper */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}
+.reveal.d2{transition-delay:.18s}
+.reveal.d3{transition-delay:.28s}
+.reveal.d4{transition-delay:.38s}
+.reveal.d5{transition-delay:.48s}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<div class="topbar">
+  <div class="logo">DEUS <span class="x">X</span> DEFENSE</div>
+  <div class="nav-dots" id="navDots"></div>
+  <div class="meta">THE IMMUNE SYSTEM · WALKTHROUGH</div>
+</div>
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- side rail -->
+<div class="side-rail" id="sideRail"></div>
+
+<!-- scroll hint -->
+<div class="scroll-hint" id="scrollHint">
+  <span>Scroll</span>
+  <div class="line"></div>
+</div>
+
+<main>
+
+<!-- ═══════════════════ BEAT 0 — INTRO ═══════════════════ -->
+<section class="beat" id="beat-intro" data-label="Overview" data-short="Overview">
+  <div class="grid-bg"></div>
+  <div class="inner">
+
+    <div class="eyebrow reveal">The Immune System</div>
+    <h1 class="headline reveal d1">Five engines. <span class="accent">One accountable operation.</span></h1>
+    <p class="sub reveal d2">DXD doesn't sell pieces — it ships a complete security operation. Sense, Think, Control, Learn, Prove. Every signal and every incident makes the system better.</p>
+
+    <div class="intro-stage" id="introStage">
+      <!-- SVG layer for connections -->
+      <svg id="introSVG" viewBox="0 0 1000 560" preserveAspectRatio="none">
+        <defs>
+          <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D2232A" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#D2232A" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- central glow -->
+        <circle cx="500" cy="280" r="140" fill="url(#hubGlow)"/>
+        <!-- flow lines (drawn in JS to match positions) -->
+        <g id="introLines"></g>
+        <!-- packets -->
+        <g id="introPackets"></g>
+      </svg>
+
+      <!-- Center badge -->
+      <div class="center-badge">
+        <div class="label">DXD</div>
+        <div class="title">The Immune System</div>
+        <div class="sub">Sense → Think → Control → Learn → Prove</div>
+      </div>
+
+      <!-- 5 engine nodes positioned around center -->
+      <!-- layout: pentagon; top=Nerve, upper-right=Cortex, lower-right=Atlas, lower-left=Sentinel, upper-left=Command -->
+      <div class="engine-node nerve" data-engine="nerve" style="left:50%;top:10%">
+        <div class="disk pulse"><div class="glyph">NERVE</div></div>
+        <div class="role">Sense</div>
+        <div class="name">Sensors · Edge</div>
+        <div class="click-hint">Open section ↓</div>
+      </div>
+      <div class="engine-node cortex" data-engine="cortex" style="left:88%;top:38%">
+        <div class="disk pulse"><div class="glyph">CORTEX</div></div>
+        <div class="role">Think</div>
+        <div class="name">On-Site AI</div>
+        <div class="click-hint">Open section ↓</div>
+      </div>
+      <div class="engine-node atlas" data-engine="atlas" style="left:74%;top:84%">
+        <div class="disk pulse"><div class="glyph">ATLAS</div></div>
+        <div class="role">Control</div>
+        <div class="name">Unified Command</div>
+        <div class="click-hint">Open section ↓</div>
+      </div>
+      <div class="engine-node sentinel" data-engine="sentinel" style="left:26%;top:84%">
+        <div class="disk pulse"><div class="glyph">SENTINEL</div></div>
+        <div class="role">Learn</div>
+        <div class="name">Cross-Site AI</div>
+        <div class="click-hint">Open section ↓</div>
+      </div>
+      <div class="engine-node command" data-engine="command" style="left:12%;top:38%">
+        <div class="disk pulse"><div class="glyph">COMMAND</div></div>
+        <div class="role">Prove</div>
+        <div class="name">Legal Record</div>
+        <div class="click-hint">Open section ↓</div>
+      </div>
+
+      <!-- Expansion overlay (built dynamically on click) -->
+      <div class="intro-expansion" id="introExpansion"></div>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+</section>
+
+<!-- ═══════════════════ BEAT 1 — NERVE ═══════════════════ -->
+<section class="beat engine-beat" id="beat-nerve" data-label="Nerve" data-short="Nerve · Sense">
+  <div class="grid-bg"></div>
+  <div class="inner">
+
+    <div class="engine-copy">
+      <div class="role-mono reveal">Engine 01 · Sense</div>
+      <h2 class="reveal d1">NER<span class="x">VE</span></h2>
+      <div class="verb-line reveal d2">Detect · Stream · Feed</div>
+      <div class="cap reveal d3">The peripheral nervous system — every camera, sensor, radar, and edge panel across the site.</div>
+      <p class="body reveal d4">Any vendor, any age. ONVIF IP cameras, analog through built-in conversion, gunshot sensors, LPR, access control, and Atlas IED edge panels with licensed models for gunshot, weapon, and behavior detection at the endpoint. Nerve gives Cortex something to think about.</p>
+
+      <div class="status-chip reveal d4"><span class="dot"></span>In build · Atlas IED verbal · Q4'26</div>
+
+      <div class="metrics reveal d5">
+        <div class="metric"><div class="metric-k">Penetration</div><div class="metric-v">95%+ schools · 80%+ airports (Atlas IED)</div></div>
+        <div class="metric"><div class="metric-k">Coverage</div><div class="metric-v">Cameras · Radar · Acoustic · Access · IoT</div></div>
+        <div class="metric"><div class="metric-k">Output</div><div class="metric-v">Raw video · detection events · telemetry</div></div>
+      </div>
+    </div>
+
+    <div class="radial-stage" id="stage-nerve" data-engine="nerve">
+      <div class="stage-label"><span class="dot"></span>Nerve · Ecosystem</div>
+      <div class="stage-corner">LIVE · SENSING</div>
+      <svg class="radial-svg" id="svg-nerve"></svg>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+</section>
+
+<!-- ═══════════════════ BEAT 2 — CORTEX ═══════════════════ -->
+<section class="beat engine-beat" id="beat-cortex" data-label="Cortex" data-short="Cortex · Think">
+  <div class="grid-bg"></div>
+  <div class="inner">
+
+    <div class="engine-copy">
+      <div class="role-mono reveal">Engine 02 · Think</div>
+      <h2 class="reveal d1">COR<span class="x">TEX</span></h2>
+      <div class="verb-line reveal d2">Aggregate · Correlate · Decide</div>
+      <div class="cap reveal d3">The on-site AI appliance. Local GPU inference. Works when the internet doesn't.</div>
+      <p class="body reveal d4">Isolated network segment, cellular and Starlink failover, 24-hour to 30-day incident buffer. Four tiers of models: real-time detection, cross-source correlation, site-specific behavioral baselines, and retroactive investigation.</p>
+
+      <div class="status-chip reveal d4"><span class="dot"></span>ODM selection · TBD internal MVP</div>
+
+      <div class="metrics reveal d5">
+        <div class="metric"><div class="metric-k">Compute</div><div class="metric-v">GPU/TPU · per-frame inference</div></div>
+        <div class="metric"><div class="metric-k">Network</div><div class="metric-v">Wired → Cellular → Starlink</div></div>
+        <div class="metric"><div class="metric-k">Buffer</div><div class="metric-v">24h · 7d · 30d tiers</div></div>
+      </div>
+    </div>
+
+    <div class="radial-stage" id="stage-cortex" data-engine="cortex">
+      <div class="stage-label"><span class="dot"></span>Cortex · Ecosystem</div>
+      <div class="stage-corner">ON-PREM · INFERENCE</div>
+      <svg class="radial-svg" id="svg-cortex"></svg>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+</section>
+
+<!-- ═══════════════════ BEAT 3 — ATLAS ═══════════════════ -->
+<section class="beat engine-beat" id="beat-atlas" data-label="Atlas" data-short="Atlas · Control">
+  <div class="grid-bg"></div>
+  <div class="inner">
+
+    <div class="engine-copy">
+      <div class="role-mono reveal">Engine 03 · Control</div>
+      <h2 class="reveal d1">AT<span class="x">LAS</span></h2>
+      <div class="verb-line reveal d2">Dispatch · Coordinate · Defeat</div>
+      <div class="cap reveal d3">The unified control layer. One console — Puppet Master — runs drones, robots, guards, building systems, and airspace as one response.</div>
+      <p class="body reveal d4">Four modules. Airspace Safety (live May '26). Airspace Defense — HALO kill chain with Orcrist kinetic intercept. Site Control for IoT & access. Ground Robotics for UGVs. Under DXD's nationwide BVLOS waiver, one operator commands many aircraft across many sites.</p>
+
+      <div class="status-chip reveal d4"><span class="dot"></span>Airspace Safety live May '26 · GA H1'27</div>
+
+      <div class="metrics reveal d5">
+        <div class="metric"><div class="metric-k">Waiver</div><div class="metric-v">FAA CoW 107W-2025-03831 · thru 2030</div></div>
+        <div class="metric"><div class="metric-k">Fleet</div><div class="metric-v">Skydio · Sunflower · Quantum · Spot · Sky-Hero</div></div>
+        <div class="metric"><div class="metric-k">Defeat</div><div class="metric-v">Oracle → Machina → Orcrist</div></div>
+      </div>
+    </div>
+
+    <div class="radial-stage" id="stage-atlas" data-engine="atlas">
+      <div class="stage-label"><span class="dot"></span>Atlas · Ecosystem</div>
+      <div class="stage-corner">LIVE · DISPATCHING</div>
+      <svg class="radial-svg" id="svg-atlas"></svg>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+</section>
+
+<!-- ═══════════════════ BEAT 4 — SENTINEL ═══════════════════ -->
+<section class="beat engine-beat" id="beat-sentinel" data-label="Sentinel" data-short="Sentinel · Learn">
+  <div class="grid-bg"></div>
+  <div class="inner">
+
+    <div class="engine-copy">
+      <div class="role-mono reveal">Engine 04 · Learn</div>
+      <h2 class="reveal d1">SEN<span class="x">TINEL</span></h2>
+      <div class="verb-line reveal d2">Train · Improve · Compound</div>
+      <div class="cap reveal d3">The cross-site AI model. 450+ operators generate RLHF data every shift.</div>
+      <p class="body reveal d4">Not synthetic. Not simulated. Every incident, every correction, every site feeds the pipeline. Corrections from one site improve the models across every site in the network. The operator isn't a cost center — they train the AI.</p>
+
+      <div class="status-chip reveal d4"><span class="dot"></span>In build · v1 Q1'27</div>
+
+      <div class="metrics reveal d5">
+        <div class="metric"><div class="metric-k">Operators</div><div class="metric-v">450+ generating RLHF per shift</div></div>
+        <div class="metric"><div class="metric-k">Signal</div><div class="metric-v">Dismissals · flags · labels · outcomes</div></div>
+        <div class="metric"><div class="metric-k">Deploy</div><div class="metric-v">Cloud-agnostic · runs on Cortex</div></div>
+      </div>
+    </div>
+
+    <div class="radial-stage" id="stage-sentinel" data-engine="sentinel">
+      <div class="stage-label"><span class="dot"></span>Sentinel · Ecosystem</div>
+      <div class="stage-corner">TRAINING PIPELINE</div>
+      <svg class="radial-svg" id="svg-sentinel"></svg>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+</section>
+
+<!-- ═══════════════════ BEAT 5 — COMMAND ═══════════════════ -->
+<section class="beat engine-beat" id="beat-command" data-label="Command" data-short="Command · Prove">
+  <div class="grid-bg"></div>
+  <div class="inner">
+
+    <div class="engine-copy">
+      <div class="role-mono reveal">Engine 05 · Prove</div>
+      <h2 class="reveal d1">COM<span class="x">MAND</span></h2>
+      <div class="verb-line reveal d2">Record · Govern · File</div>
+      <div class="cap reveal d3">The official legal record. The regulator's view. The deepest moat.</div>
+      <p class="body reveal d4">Synchronized incident replay — narrative, timeline, map, evidence as one object. CIRCIA, NERC CIP-008, SEC 8-K, CMMC, TSA SDs. The system's own telemetry produces the filing. Once we hold the record, customers don't migrate.</p>
+
+      <div class="status-chip reveal d4"><span class="dot"></span>CIRCIA module live Q3'26</div>
+
+      <div class="metrics reveal d5">
+        <div class="metric"><div class="metric-k">Frameworks</div><div class="metric-v">NIST CSF · NERC CIP · CMMC · ISO 27001</div></div>
+        <div class="metric"><div class="metric-k">Filings</div><div class="metric-v">CIRCIA · SEC 8-K · NERC · TSA</div></div>
+        <div class="metric"><div class="metric-k">Output</div><div class="metric-v">Signed · timestamped · retained record</div></div>
+      </div>
+    </div>
+
+    <div class="radial-stage" id="stage-command" data-engine="command">
+      <div class="stage-label"><span class="dot"></span>Command · Ecosystem</div>
+      <div class="stage-corner">SYSTEM OF RECORD</div>
+      <svg class="radial-svg" id="svg-command"></svg>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+</section>
+
+<!-- ═══════════════════ BEAT 6 — FULL WORKFLOW ═══════════════════ -->
+<section class="beat" id="beat-workflow" data-label="Incident" data-short="Incident · Live">
+  <div class="grid-bg"></div>
+  <div class="inner">
+
+    <div>
+      <div class="eyebrow reveal">It All Works Together</div>
+      <h1 class="headline reveal d1">A perimeter breach. <span class="accent">From signal to filed record.</span></h1>
+      <p class="sub reveal d2">Watch an incident flow across all five engines. 02:14 AM, east fence cut, unauthorized intruder. Resolution in eight minutes. Every action recorded, digitally signed, retained.</p>
+    </div>
+
+    <div class="wf-stage" id="wfStage">
+      <svg class="wf-svg" id="wfSVG"></svg>
+
+      <!-- 5 engines + 1 field ops + 1 record -->
+      <div class="wf-engine" id="wfNerve" style="left:12%;top:28%;--e-color:var(--nerve)">
+        <div class="wf-status"></div>
+        <div class="wf-role">Sense</div>
+        <div class="wf-name">NERVE</div>
+        <div class="wf-desc">Camera 14/16 motion. No badge activity.</div>
+      </div>
+      <div class="wf-engine" id="wfCortex" style="left:50%;top:18%;--e-color:var(--cortex)">
+        <div class="wf-status"></div>
+        <div class="wf-role">Think</div>
+        <div class="wf-name">CORTEX</div>
+        <div class="wf-desc">Cross-reference. Unfamiliar vehicle, Cam 12.</div>
+      </div>
+      <div class="wf-engine" id="wfAtlas" style="left:88%;top:28%;--e-color:var(--atlas)">
+        <div class="wf-status"></div>
+        <div class="wf-role">Control</div>
+        <div class="wf-name">ATLAS</div>
+        <div class="wf-desc">SKY-01 dispatched. BVLOS overflight.</div>
+      </div>
+      <div class="wf-engine" id="wfField" style="left:88%;top:70%;--e-color:#fff">
+        <div class="wf-status"></div>
+        <div class="wf-role">Ground</div>
+        <div class="wf-name">FIELD OPS</div>
+        <div class="wf-desc">Alerted via app. Subject located. Detained.</div>
+      </div>
+      <div class="wf-engine" id="wfSentinel" style="left:50%;top:82%;--e-color:var(--sentinel)">
+        <div class="wf-status"></div>
+        <div class="wf-role">Learn</div>
+        <div class="wf-name">SENTINEL</div>
+        <div class="wf-desc">Correction labels ingested. Model updated.</div>
+      </div>
+      <div class="wf-engine" id="wfCommand" style="left:12%;top:70%;--e-color:var(--command)">
+        <div class="wf-status"></div>
+        <div class="wf-role">Prove</div>
+        <div class="wf-name">COMMAND</div>
+        <div class="wf-desc">Report assembled. Digitally signed. Filed.</div>
+      </div>
+
+      <div class="wf-controls">
+        <button class="wf-btn primary" id="wfPlay">▶ Play Incident</button>
+        <button class="wf-btn" id="wfReset">Reset</button>
+      </div>
+    </div>
+
+    <div class="wf-timeline reveal d3" id="wfTimeline"></div>
+
+  </div>
+  <div class="red-rule"></div>
+</section>
+
+<!-- ═══════════════════ BEAT 7 — OUTRO ═══════════════════ -->
+<section class="beat" id="beat-outro" data-label="Close" data-short="Close">
+  <div class="grid-bg"></div>
+  <div class="inner">
+    <div class="eyebrow reveal">The Immune System</div>
+    <h1 class="headline reveal d1" style="text-align:center">Nerve. Cortex. Atlas.<br>Sentinel. <span class="accent">Command.</span></h1>
+    <p class="oath reveal d2">"We're here. We know. We're ready."</p>
+    <div class="outro-tag reveal d3">DEUS X DEFENSE · Confidential · April 2026</div>
+  </div>
+  <div class="red-rule"></div>
+</section>
+
+</main>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DXD IMMUNE SYSTEM SCROLLER
+// ═══════════════════════════════════════════════════════════
+
+// ─── ECOSYSTEM DATA ───
+// ─── ICONS (inline SVG, currentColor, stroke-based) ───
+const ICONS = {
+  camera:  '<rect x="3" y="7" width="18" height="12" rx="1.5"/><circle cx="12" cy="13" r="3.5"/><path d="M8 7l1.5-2.5h5L16 7"/>',
+  film:    '<rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9h3M3 13h3M3 17h3M18 9h3M18 13h3M18 17h3M9 5v14M15 5v14"/>',
+  badge:   '<rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="10" r="2.5"/><path d="M8 16c1-1.5 2.5-2 4-2s3 .5 4 2"/>',
+  plate:   '<rect x="2.5" y="7" width="19" height="10" rx="1.5"/><path d="M6 11h2M10 11h2M14 11h4M6 14h12"/>',
+  sound:   '<path d="M4 10v4h3l5 4V6l-5 4H4z"/><path d="M16 8c1.5 1.2 1.5 6.8 0 8M19 5c3 2.5 3 11.5 0 14"/>',
+  chip:    '<rect x="6" y="6" width="12" height="12" rx="1"/><rect x="9" y="9" width="6" height="6"/><path d="M10 3v3M14 3v3M10 18v3M14 18v3M3 10h3M3 14h3M18 10h3M18 14h3"/>',
+  radar:   '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/><path d="M12 12L20 7" stroke-linecap="round"/>',
+  sensor:  '<circle cx="12" cy="12" r="2"/><path d="M8 12a4 4 0 0 1 8 0M5 12a7 7 0 0 1 14 0M2 12a10 10 0 0 1 20 0"/>',
+  merge:   '<path d="M5 4v7c0 2 1 4 3.5 5.5L12 19l3.5-2.5C18 15 19 13 19 11V4M5 4h4M15 4h4M9 19h6"/>',
+  eye:     '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  link:    '<path d="M9 14a5 5 0 0 1 0-7l2-2a5 5 0 0 1 7 7l-1 1"/><path d="M15 10a5 5 0 0 1 0 7l-2 2a5 5 0 0 1-7-7l1-1"/>',
+  waves:   '<path d="M3 9c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2"/><path d="M3 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2"/><path d="M3 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2"/>',
+  rewind:  '<path d="M11 6l-7 6 7 6V6z"/><path d="M20 6l-7 6 7 6V6z"/>',
+  server:  '<rect x="3" y="4" width="18" height="7" rx="1"/><rect x="3" y="13" width="18" height="7" rx="1"/><circle cx="7" cy="7.5" r="0.8" fill="currentColor"/><circle cx="7" cy="16.5" r="0.8" fill="currentColor"/><path d="M11 7.5h6M11 16.5h6"/>',
+  signal:  '<path d="M4 18v-1M8 18v-4M12 18v-7M16 18v-10M20 18V5"/>',
+  log:     '<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  console: '<rect x="2" y="4" width="20" height="14" rx="1.5"/><path d="M7 9l3 3-3 3M12 15h5M2 18l2 3h16l2-3"/>',
+  plane:   '<path d="M12 2l2 9 8 3-8 2-2 6-2-6-8-2 8-3 2-9z"/>',
+  shield:  '<path d="M12 2l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6l9-4z"/>',
+  building:'<rect x="4" y="3" width="16" height="18"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2M10 21v-4h4v4"/>',
+  robot:   '<rect x="5" y="8" width="14" height="11" rx="2"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor"/><path d="M12 2v4M9 5h6M3 14v3M21 14v3M9 19v3M15 19v3"/>',
+  drone:   '<circle cx="5" cy="6" r="3"/><circle cx="19" cy="6" r="3"/><circle cx="5" cy="18" r="3"/><circle cx="19" cy="18" r="3"/><rect x="9" y="10" width="6" height="4" rx="1"/><path d="M8 9l-1.5-1.5M16 9l1.5-1.5M8 15l-1.5 1.5M16 15l1.5 1.5"/>',
+  phone:   '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+  gavel:   '<path d="M14 3l7 7-3 3-7-7 3-3zM10 7l-7 7 3 3 7-7M3 21h10"/>',
+  edit:    '<path d="M17 3l4 4-13 13H4v-4L17 3z"/>',
+  check:   '<path d="M4 12l5 5L20 6"/>',
+  network: '<circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5v3M10 12l-4 5M14 12l4 5"/>',
+  alert:   '<path d="M12 3l10 17H2L12 3z"/><path d="M12 10v4M12 17v.5"/>',
+  book:    '<path d="M4 4h7c2 0 3 1 3 3v14c0-1.5-1-3-3-3H4V4zM20 4h-7c-2 0-3 1-3 3v14c0-1.5 1-3 3-3h7V4z"/>',
+  chat:    '<path d="M4 5h16v11H9l-5 4V5z"/>',
+  cloud:   '<path d="M7 18a5 5 0 1 1 1-9.9 6 6 0 0 1 11.9 1.4A4 4 0 0 1 19 18H7z"/>',
+  tag:     '<path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor"/>',
+  doc:     '<path d="M6 3h9l4 4v14H6V3z"/><path d="M15 3v4h4M9 12h6M9 16h6M9 8h3"/>',
+  bolt:    '<path d="M13 2L4 14h6l-2 8 10-12h-6l2-8z"/>',
+  bank:    '<path d="M4 10h16M4 10L12 4l8 6M6 10v7M10 10v7M14 10v7M18 10v7M3 19h18"/>',
+  gauge:   '<path d="M3 18a9 9 0 1 1 18 0"/><path d="M12 18l5-5" stroke-linecap="round"/>',
+  seal:    '<circle cx="12" cy="9" r="6"/><path d="M12 9l2 2 3-4M8 14l-1 8 5-3 5 3-1-8"/>'
+};
+
+function renderIcon(name){
+  const body = ICONS[name] || ICONS.tag;
+  return `<svg class="sub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+}
+
+const ECOSYSTEMS = {
+  nerve: {
+    hub: {name:'NERVE', role:'Sense'},
+    subs: [
+      {name:'IP Cameras', tag:'Video', icon:'camera', desc:'ONVIF · any vendor, any age. Aggregated at Cortex.', flow:'HD video'},
+      {name:'Analog Cameras', tag:'Video', icon:'film', desc:'Built-in conversion. Legacy infrastructure included.', flow:'composite'},
+      {name:'Access Control', tag:'Identity', icon:'badge', desc:'Badge events · door state · correlation anchor.', flow:'badge events'},
+      {name:'LPR', tag:'Plate', icon:'plate', desc:'License plate readers at ingress, patrol routes.', flow:'plate hits'},
+      {name:'Acoustic', tag:'Gunshot', icon:'sound', desc:'Mitek-licensed detection at the endpoint.', flow:'sev events'},
+      {name:'Atlas IED Panel', tag:'Edge AI', icon:'chip', desc:'Weapon & behavior models on-panel. 95%+ schools penetration.', flow:'detections'},
+      {name:'Perimeter Radar', tag:'Motion', icon:'radar', desc:'All-weather, long-range. Fence line confidence layer.', flow:'tracks'},
+      {name:'Sensors & IoT', tag:'Telemetry', icon:'sensor', desc:'Environmental · building · vibration · chem.', flow:'telemetry'}
+    ]
+  },
+  cortex: {
+    hub: {name:'CORTEX', role:'Think'},
+    subs: [
+      {name:'Aggregation Engine', tag:'Ingest', icon:'merge', desc:'Unifies every Nerve source into one stream.', flow:'raw feeds'},
+      {name:'Tier 1 · Detection', tag:'Frame-AI', icon:'eye', desc:'Object, classification, behavior. Every frame.', flow:'detections'},
+      {name:'Tier 2 · Correlation', tag:'Confidence', icon:'link', desc:'Cross-source evaluation. Builds confidence before alert.', flow:'correlated events'},
+      {name:'Tier 3 · Baseline', tag:'Site-model', icon:'waves', desc:'Learns normal per-site over weeks. Deviations raise score.', flow:'anomalies'},
+      {name:'Tier 4 · Investigation', tag:'Retro', icon:'rewind', desc:'Mode 2/3 replay and pattern discovery across incidents.', flow:'findings'},
+      {name:'GPU Appliance', tag:'Hardware', icon:'server', desc:'Local inference · isolated network · UPS backed.', flow:'inference'},
+      {name:'Resilience Path', tag:'Uplink', icon:'signal', desc:'Wired → Cellular → Starlink. Never offline.', flow:'alerts'},
+      {name:'Processing Log', tag:'Transparency', icon:'log', desc:'Every surface/suppress/miss visible to operator.', flow:'audit'}
+    ]
+  },
+  atlas: {
+    hub: {name:'ATLAS', role:'Control'},
+    subs: [
+      {name:'Puppet Master', tag:'Console', icon:'console', desc:'One console. Feeds · fleet · incidents · AI.', flow:'operator intent'},
+      {name:'Airspace Safety', tag:'Module', icon:'plane', desc:'Live May 2026. BVLOS deconfliction across fleet.', flow:'flight plans'},
+      {name:'Airspace Defense', tag:'Module', icon:'shield', desc:'HALO · Oracle → Machina → Orcrist kinetic defeat.', flow:'engagements'},
+      {name:'Site Control', tag:'Module', icon:'building', desc:'Building systems, IoT, access. Paired with Nerve.', flow:'commands'},
+      {name:'Ground Robotics', tag:'Module', icon:'robot', desc:'Spot · Ghost. UGVs, interior & hazardous ops.', flow:'robot tasks'},
+      {name:'Drone Fleet', tag:'Heterogeneous', icon:'drone', desc:'Skydio · Sunflower · Quantum · Sky-Hero. One abstraction.', flow:'dispatch'},
+      {name:'Field App', tag:'Ground', icon:'phone', desc:'Operators receive tasking, feeds, AI context.', flow:'tasking'},
+      {name:'Command Authority', tag:'Governance', icon:'gavel', desc:'Every drone owned at all times. 1:many waiver-compliant.', flow:'authority'}
+    ]
+  },
+  sentinel: {
+    hub: {name:'SENTINEL', role:'Learn'},
+    subs: [
+      {name:'Operator Corrections', tag:'Label', icon:'edit', desc:'Dismissals, flags, re-categorizations from 450+ ops.', flow:'RLHF pairs'},
+      {name:'Incident Outcomes', tag:'Ground Truth', icon:'check', desc:'Resolved cases with disposition. The system\'s report card.', flow:'truth data'},
+      {name:'Cross-Site Learning', tag:'Federation', icon:'network', desc:'A correction at Dallas improves detection in Tulsa.', flow:'model weights'},
+      {name:'Site Baselines', tag:'Context', icon:'waves', desc:'Each site\'s normal rhythm feeds global understanding.', flow:'priors'},
+      {name:'Severity Signals', tag:'Gunshot · Weapon', icon:'alert', desc:'High-signal events fast-track priority in model updates.', flow:'high-sev'},
+      {name:'Playbook Doctrine', tag:'Governed', icon:'book', desc:'Winning response patterns become versioned playbooks.', flow:'policies'},
+      {name:'Conversational AI', tag:'Assistant', icon:'chat', desc:'Operator asks "what happened." Sentinel explains.', flow:'queries'},
+      {name:'Model Deploy', tag:'Cloud-agnostic', icon:'cloud', desc:'Updates flow back to every Cortex appliance.', flow:'updates'}
+    ]
+  },
+  command: {
+    hub: {name:'COMMAND', role:'Prove'},
+    subs: [
+      {name:'Synchronized Replay', tag:'Record', icon:'rewind', desc:'Narrative · timeline · map · evidence as one object.', flow:'incident record'},
+      {name:'Source Tags', tag:'Accountability', icon:'tag', desc:'CORTEX · SENTINEL · OPERATOR on every statement.', flow:'attributions'},
+      {name:'CIRCIA Filing', tag:'72-hour', icon:'doc', desc:'Template engine → CISA filing from incident telemetry.', flow:'filings'},
+      {name:'NERC CIP-008', tag:'Electric', icon:'bolt', desc:'Grid incident reporting. Up to $15,625/violation/day.', flow:'filings'},
+      {name:'SEC 8-K', tag:'4-day', icon:'bank', desc:'Material cyber disclosure. Public company-ready.', flow:'disclosures'},
+      {name:'CMMC L2/3', tag:'DoD', icon:'shield', desc:'Continuous compliance evidence for defense contractors.', flow:'evidence'},
+      {name:'Posture Dashboard', tag:'Continuous', icon:'gauge', desc:'Live scoring vs. NIST CSF · NERC · ISO 27001.', flow:'scores'},
+      {name:'Signed & Retained', tag:'Immutable', icon:'seal', desc:'Digitally signed, timestamped, policy-retained.', flow:'legal record'}
+    ]
+  }
+};
+
+// ─── TOP NAV TABS ───
+const beats = [...document.querySelectorAll('section.beat')];
+const navDots = document.getElementById('navDots');
+beats.forEach((b,i)=>{
+  const fullLabel = b.dataset.short || b.dataset.label || ('Beat ' + (i+1));
+  // strip leading "NN · " if present, and show just the key word
+  const label = fullLabel.split('·')[0].trim();
+  const dot = document.createElement('button');
+  dot.className = 'nav-dot';
+  dot.title = fullLabel;
+  dot.innerHTML = `<span class="num">${String(i+1).padStart(2,'0')}</span><span class="lbl">${label}</span><span class="bar"></span>`;
+  dot.addEventListener('click',()=>b.scrollIntoView({behavior:'smooth'}));
+  navDots.appendChild(dot);
+});
+
+// ─── SCROLL OBSERVER ───
+const activeObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const idx = beats.indexOf(e.target);
+      document.querySelectorAll('.rail-item').forEach((r,i)=>r.classList.toggle('active',i===idx));
+      document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+      // reveal
+      e.target.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+      // build radial stage if engine beat and not yet built
+      const engine = e.target.dataset.label?.toLowerCase();
+      if(ECOSYSTEMS[engine] && !e.target.dataset.built){
+        buildRadial(engine);
+        e.target.dataset.built = '1';
+      }
+      if(e.target.id === 'beat-intro' && !e.target.dataset.built){
+        buildIntro();
+        e.target.dataset.built = '1';
+      }
+      if(e.target.id === 'beat-workflow' && !e.target.dataset.built){
+        buildWorkflow();
+        e.target.dataset.built = '1';
+      }
+    }
+  });
+},{threshold:[0.05, 0.15, 0.35]});
+beats.forEach(b=>activeObs.observe(b));
+
+// scroll progress + hint
+window.addEventListener('scroll',()=>{
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const p = Math.max(0,Math.min(1, window.scrollY/h));
+  document.getElementById('progressFill').style.width = (p*100) + '%';
+  if(window.scrollY > 100) document.getElementById('scrollHint').classList.add('hidden');
+},{passive:true});
+
+// ─── INTRO BUILD ───
+function buildIntro(){
+  const stage = document.getElementById('introStage');
+  const svg = document.getElementById('introSVG');
+  const lines = document.getElementById('introLines');
+  const packets = document.getElementById('introPackets');
+  // engine node positions in svg coords (viewBox 1000x560)
+  const pts = {
+    nerve:    [500, 56],
+    cortex:   [880, 213],
+    atlas:    [740, 470],
+    sentinel: [260, 470],
+    command:  [120, 213]
+  };
+  // pentagon flow order: sense → think → control → learn → prove → back to sense
+  const order = ['nerve','cortex','atlas','sentinel','command'];
+  for(let i=0;i<order.length;i++){
+    const a = pts[order[i]];
+    const b = pts[order[(i+1)%order.length]];
+    // control points for bezier toward center
+    const cx = 500, cy = 263;
+    const c1x = (a[0] + cx)/2, c1y = (a[1] + cy)/2;
+    const c2x = (b[0] + cx)/2, c2y = (b[1] + cy)/2;
+    const d = `M ${a[0]},${a[1]} C ${c1x},${c1y} ${c2x},${c2y} ${b[0]},${b[1]}`;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('class','flow-line');
+    path.setAttribute('id','introPath'+i);
+    lines.appendChild(path);
+    setTimeout(()=>path.classList.add('show'), 300 + i*150);
+
+    // packet that travels this path
+    const pkt = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    pkt.setAttribute('r','4');
+    pkt.setAttribute('cx','0'); pkt.setAttribute('cy','0');
+    pkt.setAttribute('fill','#D2232A');
+    pkt.setAttribute('filter','drop-shadow(0 0 8px #D2232A)');
+    pkt.style.offsetPath = `path("${d}")`;
+    pkt.style.webkitOffsetPath = `path("${d}")`;
+    pkt.style.offsetRotate = '0deg';
+    pkt.style.animation = `introPktRun 2.6s linear ${i*0.52}s infinite`;
+    packets.appendChild(pkt);
+  }
+  // animation keyframes inserted once
+  if(!document.getElementById('introKf')){
+    const st = document.createElement('style');
+    st.id='introKf';
+    st.textContent = `@keyframes introPktRun{
+      0%{offset-distance:0%;opacity:0}
+      6%{opacity:1}
+      94%{opacity:1}
+      100%{offset-distance:100%;opacity:0}
+    }`;
+    document.head.appendChild(st);
+  }
+  // show engines
+  stage.querySelectorAll('.engine-node').forEach((n,i)=>setTimeout(()=>n.classList.add('show'), 150 + i*150));
+
+  // Wire click handlers — intro tiles are ANCHORS to full-screen sections
+  stage.querySelectorAll('.engine-node').forEach(node=>{
+    node.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const engine = node.dataset.engine;
+      if(!engine) return;
+      document.getElementById('beat-' + engine)?.scrollIntoView({behavior:'smooth'});
+    });
+  });
+}
+
+// ─── CLICK-EXPAND from intro ───
+function expandIntroEngine(engine){
+  const stage = document.getElementById('introStage');
+  const exp = document.getElementById('introExpansion');
+  const data = ECOSYSTEMS[engine];
+  if(!stage || !exp || !data) return;
+
+  // reset
+  exp.innerHTML = '';
+  exp.classList.add('active');
+
+  // dim other tiles + mark active
+  stage.querySelectorAll('.engine-node').forEach(n=>{
+    if(n.dataset.engine === engine){
+      n.classList.add('expanded');
+      n.classList.remove('dimmed');
+    } else {
+      n.classList.add('dimmed');
+      n.classList.remove('expanded');
+    }
+  });
+
+  const accent = getAccent(engine);
+  // tile center in stage coordinates
+  const tile = stage.querySelector(`.engine-node[data-engine="${engine}"]`);
+  const stageRect = stage.getBoundingClientRect();
+  const tileRect = tile.getBoundingClientRect();
+  // disk center — use the disk element so we hit its actual visual center
+  const disk = tile.querySelector('.disk');
+  const diskRect = disk.getBoundingClientRect();
+  const cx = diskRect.left + diskRect.width/2 - stageRect.left;
+  const cy = diskRect.top + diskRect.height/2 - stageRect.top;
+
+  // SVG layer for lines
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const ieSvg = document.createElementNS(svgNS, 'svg');
+  ieSvg.setAttribute('class', 'ie-svg');
+  ieSvg.setAttribute('viewBox', `0 0 ${stageRect.width} ${stageRect.height}`);
+  ieSvg.setAttribute('preserveAspectRatio','none');
+  exp.appendChild(ieSvg);
+
+  // determine which side(s) to fan out — opposite of tile position
+  const W = stageRect.width, H = stageRect.height;
+  const subs = data.subs;
+  const N = subs.length;
+
+  // arrange subs on an arc that spans roughly 220° opposite to nearest edge
+  // find angle FROM center of stage TO tile, then orient arc OUTWARD from tile
+  const stageCx = W/2, stageCy = H/2;
+  // direction from stage center to tile (this is the OUTWARD direction)
+  let outAng = Math.atan2(cy - stageCy, cx - stageCx);
+  // if tile is roughly at center (intro pentagon has top center tile), fall back
+  // arc spans 200° centered around outAng
+  const arcSpan = (Math.PI * 200) / 180;
+  const startAng = outAng - arcSpan/2;
+
+  // radius — push subs out far enough to clear other tiles
+  // use minimum radius based on stage shorter dim
+  const baseR = Math.min(W, H) * 0.36;
+  const radius = Math.max(220, baseR);
+
+  // build sub nodes + lines
+  subs.forEach((s,i)=>{
+    const t = N === 1 ? 0.5 : i/(N-1);
+    const ang = startAng + t * arcSpan;
+    let sx = cx + Math.cos(ang) * radius;
+    let sy = cy + Math.sin(ang) * radius;
+    // clamp inside stage bounds with padding for the 200px-wide cards
+    const padX = 110, padY = 50;
+    sx = Math.max(padX, Math.min(W - padX, sx));
+    sy = Math.max(padY, Math.min(H - padY, sy));
+
+    // line
+    const path = document.createElementNS(svgNS,'path');
+    // gentle curve
+    const mx = (cx + sx)/2 + (Math.cos(ang + Math.PI/2)) * 14;
+    const my = (cy + sy)/2 + (Math.sin(ang + Math.PI/2)) * 14;
+    const d = `M ${cx},${cy} Q ${mx},${my} ${sx},${sy}`;
+    path.setAttribute('d', d);
+    path.setAttribute('class','ie-line');
+    path.style.setProperty('--ie-accent-stroke', accent);
+    ieSvg.appendChild(path);
+    setTimeout(()=>path.classList.add('in'), 100 + i*60);
+
+    // packet
+    const pkt = document.createElementNS(svgNS,'circle');
+    pkt.setAttribute('r','3.4');
+    pkt.setAttribute('cx','0'); pkt.setAttribute('cy','0');
+    pkt.setAttribute('fill', accent);
+    pkt.setAttribute('filter', `drop-shadow(0 0 6px ${accent})`);
+    pkt.style.offsetPath = `path("${d}")`;
+    pkt.style.webkitOffsetPath = `path("${d}")`;
+    pkt.style.animation = `rPktRun 2.6s ease-in-out ${0.4 + i*0.2}s infinite`;
+    ieSvg.appendChild(pkt);
+
+    // sub card
+    const card = document.createElement('div');
+    card.className = 'intro-sub';
+    card.style.left = sx + 'px';
+    card.style.top = sy + 'px';
+    card.style.setProperty('--ie-accent', accent);
+    card.innerHTML = `
+      <div class="ie-tag">${s.tag}</div>
+      <div class="ie-name">${s.name}</div>
+      <div class="ie-desc">${s.desc}</div>
+      <div class="ie-flow">→ ${s.flow}</div>
+    `;
+    exp.appendChild(card);
+    setTimeout(()=>card.classList.add('in'), 200 + i*60);
+  });
+
+  // close button — placed near tile
+  const close = document.createElement('button');
+  close.className = 'ie-close';
+  close.textContent = '× Close';
+  // position close button just below the tile
+  close.style.left = cx + 'px';
+  close.style.top = (cy + 90) + 'px';
+  close.addEventListener('click',(e)=>{e.stopPropagation();collapseIntroExpansion();});
+  exp.appendChild(close);
+  setTimeout(()=>close.classList.add('in'), 600);
+
+  // jump button — go to that engine's section
+  const jump = document.createElement('button');
+  jump.className = 'ie-jump';
+  jump.style.setProperty('--ie-accent', accent);
+  jump.textContent = `Open ${data.hub.name} section ↓`;
+  jump.addEventListener('click',(e)=>{
+    e.stopPropagation();
+    document.getElementById('beat-' + engine)?.scrollIntoView({behavior:'smooth'});
+  });
+  exp.appendChild(jump);
+  setTimeout(()=>jump.classList.add('in'), 700);
+}
+
+function collapseIntroExpansion(){
+  const stage = document.getElementById('introStage');
+  const exp = document.getElementById('introExpansion');
+  if(!stage || !exp) return;
+  exp.classList.remove('active');
+  exp.querySelectorAll('.intro-sub, .ie-close, .ie-jump').forEach(el=>el.classList.remove('in'));
+  exp.querySelectorAll('.ie-line').forEach(el=>el.classList.remove('in'));
+  setTimeout(()=>{ exp.innerHTML = ''; }, 500);
+  stage.querySelectorAll('.engine-node').forEach(n=>{
+    n.classList.remove('expanded');
+    n.classList.remove('dimmed');
+  });
+}
+
+// ESC to close
+document.addEventListener('keydown',(e)=>{
+  if(e.key === 'Escape') collapseIntroExpansion();
+});
+
+// ─── RADIAL BUILD ───
+function buildRadial(engine){
+  const stage = document.getElementById('stage-' + engine);
+  if(!stage) return;
+  const svg = document.getElementById('svg-' + engine);
+  const data = ECOSYSTEMS[engine];
+
+  // we need a viewBox coordinate system
+  const rect = stage.getBoundingClientRect();
+  const W = rect.width, H = rect.height;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('preserveAspectRatio','none');
+
+  const cx = W/2, cy = H/2;
+  const accent = getAccent(engine);
+
+  // hub — revealed as section scrolls into view
+  const hub = document.createElement('div');
+  hub.className = 'hub';
+  hub.style.setProperty('--accent', accent);
+  hub.innerHTML = `
+    <div class="hub-name">${data.hub.name}</div>
+    <div class="hub-role" style="color:${accent}">${data.hub.role.toUpperCase()}</div>
+  `;
+  stage.appendChild(hub);
+
+  // subs in a circle (hidden initially)
+  const subs = data.subs;
+  const N = subs.length;
+  const rx = Math.min(W*0.36, 360);
+  const ry = Math.min(H*0.38, 280);
+
+  // store created elements so we can show/hide on toggle
+  const created = {paths:[], packets:[], nodes:[], tags:[]};
+
+  subs.forEach((s,i)=>{
+    const ang = (i / N) * Math.PI * 2 - Math.PI/2; // start at top
+    const x = cx + Math.cos(ang) * rx;
+    const y = cy + Math.sin(ang) * ry;
+
+    // build line path (curve to hub)
+    const midx = (cx + x)/2 + Math.cos(ang + Math.PI/2) * 20;
+    const midy = (cy + y)/2 + Math.sin(ang + Math.PI/2) * 20;
+    const d = `M ${cx},${cy} Q ${midx},${midy} ${x},${y}`;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('class','r-line');
+    path.setAttribute('stroke', accent);
+    svg.appendChild(path);
+    created.paths.push(path);
+
+    // packet running along path
+    const pkt = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    pkt.setAttribute('r','3.4');
+    pkt.setAttribute('cx','0'); pkt.setAttribute('cy','0');
+    pkt.setAttribute('fill', accent);
+    pkt.setAttribute('filter', `drop-shadow(0 0 6px ${accent})`);
+    pkt.style.offsetPath = `path("${d}")`;
+    pkt.style.webkitOffsetPath = `path("${d}")`;
+    pkt.style.animationDelay = `${0.3 + i*0.25}s`;
+    pkt.classList.add('r-packet');
+    svg.appendChild(pkt);
+    created.packets.push(pkt);
+
+    // sub node
+    const node = document.createElement('div');
+    node.className = 'sub-node';
+    node.style.setProperty('--accent', accent);
+    node.style.left = x + 'px';
+    node.style.top = y + 'px';
+    node.innerHTML = `
+      <div class="sub-head">
+        <span class="sub-ic" style="color:${accent}">${renderIcon(s.icon)}</span>
+        <span class="sub-tag" style="color:${accent}">${s.tag}</span>
+      </div>
+      <div class="sub-name">${s.name}</div>
+      <div class="sub-desc">${s.desc}</div>
+    `;
+    stage.appendChild(node);
+    created.nodes.push(node);
+
+    // flow tag mid-line
+    const tag = document.createElement('div');
+    tag.className = 'flow-tag';
+    tag.style.left = midx + 'px';
+    tag.style.top = midy + 'px';
+    tag.textContent = s.flow;
+    stage.appendChild(tag);
+    created.tags.push(tag);
+  });
+
+  // expand/collapse logic — inline opacity as belt+suspenders so transitions always paint
+  let expanded = false;
+  const expand = ()=>{
+    expanded = true;
+    hub.classList.add('expanded');
+    created.paths.forEach((p,i)=>setTimeout(()=>{
+      p.classList.add('show');
+      p.style.opacity = '1';
+    }, 60 + i*50));
+    created.packets.forEach((p,i)=>setTimeout(()=>{
+      p.classList.add('run');
+      p.style.opacity = '1';
+    }, 150 + i*50));
+    created.nodes.forEach((n,i)=>setTimeout(()=>{
+      n.classList.add('show');
+      n.style.opacity = '1';
+      n.style.transform = 'translate(-50%,-50%) scale(1)';
+    }, 180 + i*50));
+    created.tags.forEach((t,i)=>setTimeout(()=>{
+      t.classList.add('show');
+      t.style.opacity = '1';
+    }, 300 + i*50));
+  };
+  const collapse = ()=>{
+    expanded = false;
+    hub.classList.remove('expanded');
+    created.paths.forEach(p=>{ p.classList.remove('show'); p.style.opacity=''; });
+    created.packets.forEach(p=>{ p.classList.remove('run'); p.style.opacity=''; });
+    created.nodes.forEach(n=>{ n.classList.remove('show'); n.style.opacity=''; n.style.transform=''; });
+    created.tags.forEach(t=>{ t.classList.remove('show'); t.style.opacity=''; });
+  };
+  stage._expand = expand;
+  stage._collapse = collapse;
+  stage._isExpanded = ()=>expanded;
+
+
+  // ensure keyframes exist (already defined in CSS)
+  // rebuild on resize (debounced) — skip initial fire and only rebuild on real size change
+  let prevW = W, prevH = H, initialFire = true;
+  const ro = new ResizeObserver((entries)=>{
+    if(initialFire){ initialFire = false; return; }
+    const rect2 = stage.getBoundingClientRect();
+    if(Math.abs(rect2.width - prevW) < 12 && Math.abs(rect2.height - prevH) < 12) return;
+    prevW = rect2.width; prevH = rect2.height;
+    clearTimeout(stage._rz);
+    stage._rz = setTimeout(()=>{
+      // disconnect old observer to prevent accumulation
+      ro.disconnect();
+      // rebuild: clear and re-run
+      stage.querySelectorAll('.hub, .sub-node, .flow-tag').forEach(el=>el.remove());
+      svg.innerHTML = '';
+      delete stage.dataset.built;
+      stage.dataset.built = '1';
+      buildRadial(engine);
+    }, 300);
+  });
+  ro.observe(stage);
+}
+
+function getAccent(engine){
+  const map = {nerve:'#c4953a', cortex:'#6b8ab5', atlas:'#D2232A', sentinel:'#7a7f5a', command:'#3a8a8a'};
+  return map[engine] || '#D2232A';
+}
+
+// ─── WORKFLOW BUILD ───
+function buildWorkflow(){
+  const stage = document.getElementById('wfStage');
+  const svg = document.getElementById('wfSVG');
+  const rect = stage.getBoundingClientRect();
+  const W = rect.width, H = rect.height;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('preserveAspectRatio','none');
+
+  // positions in px (matching css %)
+  const pos = {
+    nerve:    [W*0.12, H*0.28],
+    cortex:   [W*0.50, H*0.18],
+    atlas:    [W*0.88, H*0.28],
+    field:    [W*0.88, H*0.70],
+    sentinel: [W*0.50, H*0.82],
+    command:  [W*0.12, H*0.70]
+  };
+  // edges (directed)
+  const edges = [
+    ['nerve','cortex','detection event'],
+    ['cortex','atlas','dispatch order'],
+    ['atlas','field','tasking'],
+    ['field','cortex','observation'],
+    ['cortex','command','evidence link'],
+    ['atlas','command','action log'],
+    ['command','sentinel','RLHF label'],
+    ['sentinel','cortex','model update']
+  ];
+  const arcsById = {};
+  edges.forEach((e,i)=>{
+    const [a,b,label] = e;
+    const [ax,ay] = pos[a], [bx,by] = pos[b];
+    // curve with perpendicular offset
+    const mx = (ax+bx)/2, my = (ay+by)/2;
+    const dx = bx-ax, dy = by-ay;
+    const len = Math.hypot(dx,dy) || 1;
+    const nx = -dy/len, ny = dx/len;
+    const off = 48;
+    const cx = mx + nx*off, cy = my + ny*off;
+    const d = `M ${ax},${ay} Q ${cx},${cy} ${bx},${by}`;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('class','wf-arc');
+    path.setAttribute('id','wf-arc-'+i);
+    svg.appendChild(path);
+    arcsById[a+'>'+b] = {path, d};
+  });
+
+  stage._wfEdges = edges;
+  stage._wfArcs = arcsById;
+  stage._wfPos = pos;
+}
+
+// ─── WORKFLOW SCRIPT ───
+const WF_SCRIPT = [
+  {t:'02:14:33', src:'NERVE',   cls:'c-nerve',    edge:null,              icon:'camera', status:'Detecting motion…',          msg:'Motion detected · Cameras 14 & 16 · east perimeter. Cross-reference: no badge activity in zone.'},
+  {t:'02:14:41', src:'CORTEX',  cls:'c-cortex',   edge:'nerve>cortex',    icon:'link',   status:'Correlating sources…',       msg:'Correlation complete. Tier-2 flagged unfamiliar vehicle on Cam 12, 200 ft south of breach point.'},
+  {t:'02:14:48', src:'CORTEX',  cls:'c-cortex',   edge:null,              icon:'alert',  status:'Confidence high · escalating',msg:'Confidence high. Severity: perimeter breach. Escalating to Atlas dispatch.'},
+  {t:'02:15:01', src:'ATLAS',   cls:'c-atlas',    edge:'cortex>atlas',    icon:'drone',  status:'Dispatching SKY-01',         msg:'SKY-01 dispatched. BVLOS overflight under CoW 107W-2025-03831. Command authority assigned to GSOC Op-4.'},
+  {t:'02:15:22', src:'ATLAS',   cls:'c-atlas',    edge:null,              icon:'eye',    status:'Drone on station',           msg:'Drone confirms cut fence segment. One individual on foot. Thermal + HD overlay streaming to Puppet Master.'},
+  {t:'02:15:44', src:'FIELD',   cls:'c-op',       edge:'atlas>field',     icon:'phone',  status:'Field team alerted',         msg:'Ground team alerted through Field App. Live feed + subject position pushed to responder tablets.'},
+  {t:'02:16:12', src:'FIELD',   cls:'c-op',       edge:'field>cortex',    icon:'radar',  status:'On-scene observation',       msg:'On-scene observation sent back: subject carrying tools · no weapon visible · heading northeast.'},
+  {t:'02:22:18', src:'FIELD',   cls:'c-op',       edge:null,              icon:'check',  status:'Subject detained',           msg:'Subject detained without incident. LE dispatched for custody transfer. Scene secured.'},
+  {t:'02:22:30', src:'ATLAS',   cls:'c-atlas',    edge:'atlas>command',   icon:'log',    status:'Action log closing',         msg:'Full action log closed: 3 drone tasks, 1 ground dispatch, 2 asset handoffs. Flowed to Command.'},
+  {t:'02:22:35', src:'CORTEX',  cls:'c-cortex',   edge:'cortex>command',  icon:'seal',   status:'Evidence package sealed',    msg:'Evidence package sealed: 14 clips, 2 badge streams, 1 LPR hit, 1 incident map. Hash-signed.'},
+  {t:'02:23:02', src:'COMMAND', cls:'c-command',  edge:null,              icon:'doc',    status:'Drafting report',            msg:'Report assembled (draft 84% auto-generated). Source-tagged: CORTEX · SENTINEL · OPERATOR. Ready for operator review.'},
+  {t:'02:28:47', src:'COMMAND', cls:'c-command',  edge:null,              icon:'seal',   status:'Report filed & signed',      msg:'Report filed · digitally signed · retained per 7-year policy. Access audit opened.'},
+  {t:'02:28:52', src:'SENTINEL',cls:'c-sentinel', edge:'command>sentinel',icon:'edit',   status:'Ingesting corrections',      msg:'Operator corrections ingested. Cam-12 baseline updated across site. Cross-site model queued for next train cycle.'},
+  {t:'02:28:58', src:'SENTINEL',cls:'c-sentinel', edge:'sentinel>cortex', icon:'cloud',  status:'Pushing updated weights',    msg:'Updated Tier-2 weights pushed back to every Cortex in the network. The system is smarter than it was 15 minutes ago.'}
+];
+
+const WF_ENGINE_BY_SRC = {NERVE:'wfNerve', CORTEX:'wfCortex', ATLAS:'wfAtlas', FIELD:'wfField', SENTINEL:'wfSentinel', COMMAND:'wfCommand'};
+
+let wfPlaying = false;
+let wfTimeouts = [];
+
+function wfReset(){
+  wfTimeouts.forEach(clearTimeout);
+  wfTimeouts = [];
+  wfPlaying = false;
+  // clear
+  document.getElementById('wfTimeline').innerHTML = '';
+  document.querySelectorAll('.wf-engine').forEach(e=>{
+    e.classList.remove('hot');
+    const tk = e.querySelector('.wf-ticker'); if(tk) tk.classList.remove('show');
+    clearTimeout(e._bannerT);
+  });
+  document.querySelectorAll('.wf-icon-pop').forEach(p=>p.remove());
+  document.querySelectorAll('.wf-arc').forEach(a=>a.classList.remove('active'));
+  // remove any packets
+  document.querySelectorAll('#wfSVG .wf-pkt').forEach(p=>p.remove());
+  document.getElementById('wfPlay').textContent = '▶ Play Incident';
+}
+
+function wfPlay(){
+  wfReset();
+  wfPlaying = true;
+  document.getElementById('wfPlay').textContent = '■ Running';
+  const tl = document.getElementById('wfTimeline');
+  const stepMs = 2400; // slower so viewers can read + watch data travel
+  WF_SCRIPT.forEach((step,i)=>{
+    const t = setTimeout(()=>{
+      // append row
+      const row = document.createElement('div');
+      row.className = 'wf-row ' + step.cls;
+      row.innerHTML = `<span class="t">${step.t}</span><span class="src">${step.src}</span><span class="e">${step.msg}</span>`;
+      tl.appendChild(row);
+      // scroll to bottom
+      tl.scrollTop = tl.scrollHeight;
+      requestAnimationFrame(()=>row.classList.add('in'));
+      // hotlight source engine + update its status banner
+      document.querySelectorAll('.wf-engine').forEach(e=>{
+        e.classList.remove('hot');
+      });
+      const engEl = document.getElementById(WF_ENGINE_BY_SRC[step.src]);
+      if(engEl){
+        engEl.classList.add('hot');
+        // status banner (create if missing)
+        let banner = engEl.querySelector('.wf-ticker');
+        if(!banner){
+          banner = document.createElement('div');
+          banner.className = 'wf-ticker';
+          engEl.appendChild(banner);
+        }
+        banner.textContent = step.status || '';
+        banner.classList.remove('show'); void banner.offsetWidth;
+        banner.classList.add('show');
+        // clear banner after a while
+        clearTimeout(engEl._bannerT);
+        engEl._bannerT = setTimeout(()=>banner.classList.remove('show'), stepMs*1.1);
+
+        // pop an icon above the engine
+        if(step.icon){
+          const pop = document.createElement('div');
+          pop.className = 'wf-icon-pop';
+          pop.innerHTML = renderIcon(step.icon);
+          engEl.appendChild(pop);
+          requestAnimationFrame(()=>pop.classList.add('in'));
+          setTimeout(()=>{
+            pop.classList.remove('in');
+            pop.classList.add('out');
+            setTimeout(()=>pop.remove(), 600);
+          }, 1600);
+        }
+      }
+      // edge highlight + packet (slower travel)
+      if(step.edge){
+        const stage = document.getElementById('wfStage');
+        const arcMap = stage._wfArcs || {};
+        const arc = arcMap[step.edge];
+        if(arc){
+          arc.path.classList.add('active');
+          // packet
+          const pkt = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          pkt.setAttribute('r','5.5');
+          pkt.setAttribute('fill','#D2232A');
+          pkt.setAttribute('filter','drop-shadow(0 0 12px #D2232A)');
+          pkt.setAttribute('class','wf-pkt');
+          pkt.style.offsetPath = `path("${arc.d}")`;
+          pkt.style.webkitOffsetPath = `path("${arc.d}")`;
+          pkt.style.animation = `wfPktOnce 2.2s ease-in-out forwards`;
+          document.getElementById('wfSVG').appendChild(pkt);
+          setTimeout(()=>{pkt.remove(); arc.path.classList.remove('active');},2400);
+        }
+      }
+      if(i === WF_SCRIPT.length-1){
+        setTimeout(()=>{
+          wfPlaying = false;
+          document.getElementById('wfPlay').textContent = '↻ Replay Incident';
+        }, 2400);
+      }
+    }, i*stepMs);
+    wfTimeouts.push(t);
+  });
+}
+
+// one-shot packet keyframe
+(function(){
+  const st = document.createElement('style');
+  st.textContent = `@keyframes wfPktOnce{0%{offset-distance:0%;opacity:0}10%{opacity:1}90%{opacity:1}100%{offset-distance:100%;opacity:0}}`;
+  document.head.appendChild(st);
+})();
+
+document.addEventListener('click',(e)=>{
+  if(e.target.id === 'wfPlay'){ if(wfPlaying){ wfReset(); } else { wfPlay(); } }
+  if(e.target.id === 'wfReset'){ wfReset(); }
+});
+
+// initial reveal + EAGER BUILD all interactive stages
+setTimeout(()=>{
+  document.querySelector('#beat-intro')?.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+  buildIntro();
+  document.querySelector('#beat-intro').dataset.built = '1';
+  // Move .metrics out of .engine-copy into .engine-metrics sidebar slot per beat, set accent
+  ['nerve','cortex','atlas','sentinel','command'].forEach(eng=>{
+    const beat = document.getElementById('beat-' + eng);
+    if(!beat) return;
+    const inner = beat.querySelector('.inner');
+    const copy = beat.querySelector('.engine-copy');
+    const metrics = copy?.querySelector('.metrics');
+    if(inner && metrics){
+      const wrap = document.createElement('div');
+      wrap.className = 'engine-metrics reveal d6';
+      wrap.style.setProperty('--accent', getAccent(eng));
+      // move each .metric child into wrap
+      [...metrics.querySelectorAll('.metric')].forEach(m=>wrap.appendChild(m));
+      inner.appendChild(wrap);
+      requestAnimationFrame(()=>wrap.classList.add('in'));
+    }
+  });
+  // Eager build: each engine's collapsed radial + the workflow stage.
+  ['nerve','cortex','atlas','sentinel','command'].forEach(eng=>{
+    try{
+      buildRadial(eng);
+      const beat = document.getElementById('beat-' + eng);
+      if(beat) beat.dataset.built = '1';
+    }catch(e){console.warn('buildRadial failed for', eng, e);}
+  });
+  try{
+    buildWorkflow();
+    const wb = document.getElementById('beat-workflow');
+    if(wb) wb.dataset.built = '1';
+  }catch(e){console.warn('buildWorkflow failed', e);}
+
+  // Scroll-triggered expand/collapse — auto-reveal each engine's ecosystem as you scroll in.
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const eng = entry.target.dataset.engine;
+      const stage = document.getElementById('stage-' + eng);
+      if(!stage) return;
+      if(entry.isIntersecting && entry.intersectionRatio > 0.4){
+        if(!stage._isExpanded || !stage._isExpanded()){
+          stage._expand && stage._expand();
+        }
+      } else if(entry.intersectionRatio < 0.15){
+        if(stage._isExpanded && stage._isExpanded()){
+          stage._collapse && stage._collapse();
+        }
+      }
+    });
+  }, {threshold:[0, 0.15, 0.4, 0.7]});
+  ['nerve','cortex','atlas','sentinel','command'].forEach(eng=>{
+    const beat = document.getElementById('beat-' + eng);
+    if(beat){
+      beat.dataset.engine = eng;
+      io.observe(beat);
+    }
+  });
+},100);
+</script>
+
+</body>
+</html>
