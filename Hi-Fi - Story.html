@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deus X Defense — Story</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500;1,9..144,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+
+<style>
+/* ═══ FONTS ═══ */
+@font-face { font-family:'Tomorrow'; font-weight:300; src:url('assets/fonts/Tomorrow-Light.ttf') format('truetype'); }
+@font-face { font-family:'Tomorrow'; font-weight:400; src:url('assets/fonts/Tomorrow-Regular.ttf') format('truetype'); }
+@font-face { font-family:'Tomorrow'; font-weight:500; src:url('assets/fonts/Tomorrow-Medium.ttf') format('truetype'); }
+@font-face { font-family:'Tomorrow'; font-weight:600; src:url('assets/fonts/Tomorrow-SemiBold.ttf') format('truetype'); }
+@font-face { font-family:'Tomorrow'; font-weight:700; src:url('assets/fonts/Tomorrow-Bold.ttf') format('truetype'); }
+@font-face { font-family:'Tomorrow'; font-weight:800; src:url('assets/fonts/Tomorrow-ExtraBold.ttf') format('truetype'); }
+@font-face { font-family:'Tomorrow'; font-weight:900; src:url('assets/fonts/Tomorrow-Black.ttf') format('truetype'); }
+@font-face { font-family:'Sawah'; font-weight:400; src:url('assets/fonts/Sawah.woff2') format('woff2'), url('assets/fonts/Sawah.woff') format('woff'); }
+
+:root{
+  --red:#D2232A;
+  --red-dim:#8a1a1f;
+  --ink:#0b0b0c;
+  --ink-2:#161618;
+  --ink-3:#1c1c20;
+  --paper:#f5f2eb;
+  --rule-dim:rgba(255,255,255,0.12);
+  --rule-dimmer:rgba(255,255,255,0.06);
+  --text-dim:rgba(243,241,234,0.62);
+  --text-dimmer:rgba(243,241,234,0.38);
+  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --display: 'Fraunces', 'Source Serif 4', Georgia, serif;
+  --sans: 'Tomorrow', system-ui, sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ink);color:#f3f1ea}
+body{font-family:var(--sans);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--red);color:#fff}
+
+/* ═══ TOP SHELL (matches Hi-Fi - Login + Letter.html) ═══ */
+.shell{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,11,12,0.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule-dim)}
+.shell-inner{display:flex;align-items:center;gap:32px;padding:10px 28px;max-width:1800px;margin:0 auto}
+.shell .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;position:relative;padding-right:20px}
+.shell .brand::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:1px;height:28px;background:var(--rule-dim)}
+.shell .brand svg.brand-logo{height:48px;width:auto;color:#fff;display:block;transition:transform 0.2s ease}
+.shell .brand:hover svg.brand-logo{transform:scale(1.03)}
+.shell nav{display:flex;gap:6px;margin-left:12px}
+.shell nav a{font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;padding:10px 14px;border:0;background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;transition:color 0.15s;border-bottom:1px solid transparent;text-decoration:none}
+.shell nav a:hover{color:rgba(255,255,255,0.9)}
+.shell nav a.on{color:#fff;border-bottom-color:var(--red)}
+.shell .spacer{flex:1}
+.shell .doc-meta{display:flex;flex-direction:column;gap:3px;text-align:right;font-family:var(--mono);text-transform:uppercase}
+.shell .doc-meta-tag{font-size:10px;letter-spacing:0.22em;color:#fff;font-weight:600;display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.shell .doc-meta-tag .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite}
+.shell .doc-meta-sub{font-size:9px;letter-spacing:0.22em;color:rgba(255,255,255,0.42);font-weight:500}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+@media (max-width:720px){.shell .doc-meta-sub{display:none}}
+
+/* ═══ CHAPTER RAIL — sticky left progress indicator ═══ */
+.chapter-rail{position:fixed;left:28px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:16px;pointer-events:auto}
+.chapter-rail a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-dimmer);font-family:var(--mono);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;transition:color 0.25s}
+.chapter-rail a:hover{color:#fff}
+.chapter-rail .dot{width:6px;height:6px;border-radius:50%;background:var(--text-dimmer);transition:all 0.25s}
+.chapter-rail a.active{color:#fff}
+.chapter-rail a.active .dot{background:var(--red);box-shadow:0 0 0 3px rgba(210,35,42,0.18)}
+.chapter-rail .label{opacity:0;transition:opacity 0.25s;white-space:nowrap}
+.chapter-rail:hover .label, .chapter-rail a.active .label{opacity:1}
+@media (max-width:1180px){.chapter-rail{display:none}}
+
+/* ═══ LAYOUT ═══ */
+main{padding-top:56px}
+.section{padding:140px 80px;max-width:1400px;margin:0 auto;position:relative}
+.section.narrow{max-width:1100px}
+.section.tight{padding:80px 80px}
+
+/* Eyebrow / section tag */
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:var(--red);font-weight:600;display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.eyebrow::before{content:'';width:32px;height:1px;background:var(--red)}
+.eyebrow.centered{justify-content:center}
+.eyebrow.centered::before{display:none}
+
+/* Fade-in reveals */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.9s ease, transform 0.9s ease}
+.fade-in.in{opacity:1;transform:none}
+.fade-in-delay-1{transition-delay:0.1s}
+.fade-in-delay-2{transition-delay:0.2s}
+.fade-in-delay-3{transition-delay:0.3s}
+.fade-in-delay-4{transition-delay:0.4s}
+
+/* ═══════════════════════════════════════════════════
+   HERO — mirrors letter hero
+   ═══════════════════════════════════════════════════ */
+.story-hero{position:relative;min-height:calc(100vh - 56px);padding:140px 80px 100px;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.story-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(210,35,42,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(30,42,60,0.35) 0%, transparent 60%);
+  pointer-events:none;
+}
+.story-hero::after{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 4px);
+  pointer-events:none;
+}
+.story-hero-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;width:100%}
+
+.classified-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:80px;font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+.classified-row .left{display:flex;align-items:center;gap:14px}
+.classified-row .left::before{content:'';width:36px;height:2px;background:var(--red)}
+.classified-row .left strong{color:var(--red);font-weight:600;letter-spacing:0.22em}
+.classified-row .right{text-align:right;line-height:1.8}
+.classified-row .right .tlp{color:var(--red);font-weight:600}
+
+.story-hero-title{font-family:var(--display);font-weight:300;font-size:clamp(56px,8.4vw,124px);line-height:0.95;letter-spacing:-0.022em;color:#fff;margin:0 0 40px;max-width:1100px}
+.story-hero-title em{font-style:italic;font-weight:400;color:var(--red)}
+.story-hero-sub{font-family:var(--serif);font-size:clamp(18px,1.6vw,22px);line-height:1.55;color:var(--text-dim);max-width:680px;font-weight:400;font-style:italic;margin-bottom:72px}
+
+/* Meta row at hero base */
+.hero-meta{display:grid;grid-template-columns:repeat(4, 1fr);gap:0;border-top:1px solid var(--rule-dim);padding-top:28px}
+.hero-meta > div{padding-right:24px}
+.hero-meta .label{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dimmer);margin-bottom:10px;font-weight:500}
+.hero-meta .val{font-family:var(--sans);font-size:15px;color:#fff;font-weight:500}
+
+/* Scroll cue */
+.scroll-cue{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dimmer);text-align:center;z-index:3}
+.scroll-cue::after{content:'';display:block;width:1px;height:28px;background:var(--red);margin:12px auto 0;animation:cue 2s ease-in-out infinite}
+@keyframes cue{0%,100%{opacity:0.3;transform:scaleY(0.5)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ═══════════════════════════════════════════════════
+   ACT DIVIDER — full-width bar between acts
+   ═══════════════════════════════════════════════════ */
+.act-divider{padding:80px 80px 60px;text-align:center;position:relative;border-top:1px solid var(--rule-dimmer);border-bottom:1px solid var(--rule-dimmer);background:#09090a}
+.act-divider-inner{max-width:900px;margin:0 auto}
+.act-divider .tag{font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);margin-bottom:18px;font-weight:600}
+.act-divider .year{font-family:var(--display);font-weight:300;font-size:clamp(80px,10vw,140px);line-height:0.9;color:#fff;margin-bottom:12px;letter-spacing:-0.02em}
+.act-divider .title{font-family:var(--display);font-weight:400;font-size:clamp(24px,2.6vw,34px);font-style:italic;color:var(--text-dim);letter-spacing:-0.01em}
+
+/* ═══════════════════════════════════════════════════
+   ACT — narrative block
+   ═══════════════════════════════════════════════════ */
+.act{padding:120px 80px;max-width:1240px;margin:0 auto;position:relative}
+.act-header{display:flex;align-items:baseline;gap:40px;margin-bottom:60px;flex-wrap:wrap}
+.act-number{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);font-weight:600}
+.act-chapter{font-family:var(--display);font-weight:400;font-style:italic;font-size:clamp(28px,3.4vw,44px);line-height:1.15;color:#fff;letter-spacing:-0.01em;max-width:820px;flex:1;min-width:320px}
+
+/* Two-column narrative layout */
+.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.act-grid.reverse .act-prose{grid-column:2}
+.act-grid.reverse .act-visual{grid-column:1;grid-row:1}
+
+.act-prose{font-family:var(--serif);font-size:19px;line-height:1.75;color:rgba(243,241,234,0.85);font-weight:400}
+.act-prose p{margin-bottom:1.4em}
+.act-prose p:last-child{margin-bottom:0}
+.act-prose strong{color:#fff;font-weight:600}
+.act-prose em{font-style:italic;color:#fff}
+.act-prose .lead{font-size:22px;line-height:1.55;color:#fff;font-weight:500;margin-bottom:1.2em;font-family:var(--serif)}
+
+.act-visual{position:sticky;top:100px}
+
+/* Pull quote inside an act */
+.pull-quote{margin:48px 0;padding:32px 0 32px 32px;border-left:3px solid var(--red);font-family:var(--display);font-weight:400;font-style:italic;font-size:clamp(22px,2.2vw,30px);line-height:1.35;color:#fff;letter-spacing:-0.005em}
+.pull-quote cite{display:block;margin-top:16px;font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);font-weight:500}
+
+/* ═══════════════════════════════════════════════════
+   FULL-BLEED PHOTOGRAPHIC ANCHOR — per act
+   ═══════════════════════════════════════════════════ */
+.fullbleed{position:relative;width:100%;height:min(78vh,780px);min-height:560px;overflow:hidden;background:#040405;margin:0}
+.fullbleed::before{content:'';position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;filter:grayscale(0.5) contrast(1.08) brightness(0.72)}
+.fullbleed::after{content:'';position:absolute;inset:0;background:
+  linear-gradient(180deg, rgba(4,4,5,0.55) 0%, rgba(4,4,5,0.15) 30%, rgba(4,4,5,0.15) 65%, rgba(4,4,5,0.92) 100%),
+  linear-gradient(90deg, rgba(4,4,5,0.72) 0%, rgba(4,4,5,0.25) 45%, rgba(4,4,5,0.1) 100%);
+  pointer-events:none}
+.fullbleed-inner{position:relative;z-index:2;height:100%;max-width:1400px;margin:0 auto;padding:80px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff}
+.fullbleed-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);font-weight:700;display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.fullbleed-tag::before{content:'';width:40px;height:1px;background:var(--red)}
+.fullbleed-tag .coord{color:rgba(255,255,255,0.55);font-weight:500;letter-spacing:0.22em}
+.fullbleed-quote{font-family:var(--display);font-weight:300;font-size:clamp(32px,4.6vw,64px);line-height:1.02;letter-spacing:-0.018em;color:#fff;max-width:1000px;margin-bottom:32px}
+.fullbleed-quote em{font-style:italic;font-weight:400;color:var(--red)}
+.fullbleed-caption{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;padding-top:22px;border-top:1px solid rgba(255,255,255,0.18);max-width:1000px}
+.fullbleed-caption-text{font-family:var(--serif);font-size:15px;line-height:1.55;color:rgba(255,255,255,0.82);font-style:italic;font-weight:400;max-width:560px}
+.fullbleed-caption-meta{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-align:right;line-height:1.8;font-weight:500;white-space:nowrap}
+.fullbleed-caption-meta .red{color:var(--red);font-weight:600}
+.fullbleed-credit{position:absolute;bottom:18px;right:22px;z-index:3;font-family:var(--mono);font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:500}
+
+/* Data plate stamped over photos in the act-visual column */
+.photo-plate{position:relative;background:#0f0f11;border:1px solid var(--rule-dim);overflow:hidden;aspect-ratio:4/5}
+.photo-plate .img{position:absolute;inset:0;background-size:cover;background-position:center;filter:grayscale(0.55) contrast(1.06) brightness(0.78)}
+.photo-plate::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(4,4,5,0.15) 0%, rgba(4,4,5,0.1) 50%, rgba(4,4,5,0.9) 100%)}
+.photo-plate .plate-frame{position:absolute;inset:14px;border:1px solid rgba(255,255,255,0.22);pointer-events:none;z-index:2}
+.photo-plate .plate-corner{position:absolute;width:16px;height:16px;border:1px solid var(--red);z-index:3}
+.photo-plate .plate-corner.tl{top:10px;left:10px;border-right:0;border-bottom:0}
+.photo-plate .plate-corner.tr{top:10px;right:10px;border-left:0;border-bottom:0}
+.photo-plate .plate-corner.bl{bottom:10px;left:10px;border-right:0;border-top:0}
+.photo-plate .plate-corner.br{bottom:10px;right:10px;border-left:0;border-top:0}
+.photo-plate .plate-tag{position:absolute;top:28px;left:28px;z-index:3;font-family:var(--mono);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:700;padding:5px 10px;background:rgba(0,0,0,0.72);border:1px solid rgba(210,35,42,0.6)}
+.photo-plate .plate-body{position:absolute;bottom:28px;left:28px;right:28px;z-index:3}
+.photo-plate .plate-title{font-family:var(--display);font-weight:500;font-size:19px;line-height:1.25;color:#fff;letter-spacing:-0.005em;margin-bottom:14px;font-style:italic}
+.photo-plate .plate-meta{display:flex;justify-content:space-between;gap:20px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.2);font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:500}
+.photo-plate .plate-meta .red{color:var(--red);font-weight:600}
+
+/* ═══════════════════════════════════════════════════
+   VISUAL TREATMENTS
+   ═══════════════════════════════════════════════════ */
+
+/* NYT-style clipping (Act I) */
+.clipping{border:1px solid rgba(255,255,255,0.14);background:#fbf9f3;color:#111;padding:40px 44px;font-family:'Times New Roman', Georgia, serif;position:relative;box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);max-width:560px}
+.clipping::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:4px;background:linear-gradient(90deg, #d4cfc0 0%, #b8b2a0 50%, #d4cfc0 100%)}
+.clipping-masthead{font-family:'Times New Roman', Georgia, serif;font-weight:900;font-size:28px;line-height:1;letter-spacing:-0.015em;color:#111;border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:8px;font-style:italic}
+.clipping-date{font-family:'Times New Roman', Georgia, serif;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#666;margin-bottom:22px;font-weight:400}
+.clipping-hl{font-family:'Times New Roman', Georgia, serif;font-weight:700;font-size:22px;line-height:1.2;color:#111;margin-bottom:16px;letter-spacing:-0.005em}
+.clipping-body{font-family:'Times New Roman', Georgia, serif;font-size:14px;line-height:1.55;color:#222}
+.clipping-body p{margin-bottom:12px}
+.clipping-dateline{font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
+.clipping-cite{font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-top:22px;padding-top:14px;border-top:1px solid rgba(0,0,0,0.12)}
+
+/* 60-second mandate (Act II) */
+.mandate{background:#09090a;border:1px solid rgba(210,35,42,0.32);padding:56px 48px;text-align:center;position:relative;max-width:460px;margin:0 auto}
+.mandate::before, .mandate::after{content:'';position:absolute;width:22px;height:22px;border:1px solid var(--red)}
+.mandate::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+.mandate::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+.mandate-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);margin-bottom:28px;font-weight:700}
+.mandate-ring{position:relative;width:180px;height:180px;margin:0 auto 28px;border:2px solid rgba(210,35,42,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.mandate-ring::before, .mandate-ring::after{content:'';position:absolute;background:rgba(210,35,42,0.3)}
+.mandate-ring::before{top:50%;left:0;right:0;height:1px;transform:translateY(-50%)}
+.mandate-ring::after{left:50%;top:0;bottom:0;width:1px;transform:translateX(-50%)}
+.mandate-ring-dot{width:12px;height:12px;border-radius:50%;border:1px solid var(--red);background:rgba(210,35,42,0.35);z-index:2;animation:pulse 2s ease-in-out infinite}
+.mandate-num{font-family:var(--display);font-weight:300;font-size:72px;color:var(--red);line-height:1;letter-spacing:-0.03em}
+.mandate-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-top:10px}
+
+/* Photo card (generic for Acts without specific treatment) */
+.photo-card{background:#0f0f11;border:1px solid var(--rule-dim);padding:0;overflow:hidden;position:relative;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center}
+.photo-card .placeholder{width:100%;height:100%;background:
+  radial-gradient(ellipse at center, rgba(210,35,42,0.12) 0%, transparent 60%),
+  linear-gradient(135deg, #181820 0%, #0a0a0c 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--text-dimmer)}
+.photo-card .placeholder .icon{font-family:var(--mono);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--red)}
+.photo-card .placeholder .desc{font-family:var(--serif);font-style:italic;font-size:15px;max-width:240px;text-align:center;line-height:1.4;color:var(--text-dim);padding:0 24px}
+.photo-card .meta{position:absolute;bottom:0;left:0;right:0;padding:18px 22px;background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 100%);font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);display:flex;justify-content:space-between;align-items:center}
+.photo-card .meta .red{color:var(--red)}
+
+/* Headline callout (Act IV) */
+.hl-callout{background:linear-gradient(135deg, #1a1a1e 0%, #0f0f11 100%);border-left:3px solid var(--red);padding:28px 32px;margin:32px 0}
+.hl-callout .src{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px;font-weight:600}
+.hl-callout .txt{font-family:var(--display);font-weight:500;font-size:22px;line-height:1.3;color:#fff;font-style:italic;letter-spacing:-0.005em}
+
+/* Lesson list (Act IV) */
+.lesson-lead{font-family:var(--sans);font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);margin-top:32px;margin-bottom:16px;font-weight:600}
+.lesson-list{list-style:none;padding:0;margin:0 0 24px}
+.lesson-list li{font-family:var(--serif);font-size:17px;line-height:1.5;color:rgba(243,241,234,0.9);padding:14px 0 14px 32px;border-bottom:1px solid var(--rule-dimmer);position:relative}
+.lesson-list li::before{content:'';position:absolute;left:0;top:22px;width:16px;height:1px;background:var(--red)}
+.lesson-list li:last-child{border-bottom:0}
+
+/* ═══════════════════════════════════════════════════
+   INTERLUDE — "The Physical World Is Soft"
+   ═══════════════════════════════════════════════════ */
+.interlude{background:#09090a;padding:140px 80px;border-top:1px solid var(--rule-dimmer);border-bottom:1px solid var(--rule-dimmer);position:relative}
+.interlude::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%, rgba(210,35,42,0.05) 0%, transparent 60%);pointer-events:none}
+.interlude-inner{max-width:1240px;margin:0 auto;position:relative;z-index:1}
+.interlude-lead{max-width:820px;margin-bottom:72px}
+.interlude-title{font-family:var(--display);font-weight:300;font-size:clamp(48px,6vw,84px);line-height:1;letter-spacing:-0.02em;color:#fff;margin-bottom:28px}
+.interlude-title em{font-style:italic;font-weight:400;color:var(--red)}
+.interlude-sub{font-family:var(--serif);font-size:19px;line-height:1.7;color:var(--text-dim);max-width:680px}
+
+.threat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule-dim);border:1px solid var(--rule-dim)}
+.threat{background:var(--ink);padding:40px 36px;display:flex;flex-direction:column;gap:20px;min-height:320px;position:relative;transition:background 0.3s}
+.threat:hover{background:var(--ink-2)}
+.threat-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);font-weight:600;display:flex;align-items:center;gap:10px}
+.threat-tag::before{content:'■';color:var(--red)}
+.threat-num{font-family:var(--display);font-weight:300;font-size:56px;line-height:1;color:#fff;letter-spacing:-0.02em}
+.threat-num .u{font-size:22px;color:var(--red);font-weight:400;letter-spacing:0;margin-left:4px}
+.threat-title{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.2;color:#fff;letter-spacing:-0.005em}
+.threat-body{font-family:var(--serif);font-size:15px;line-height:1.6;color:var(--text-dim);flex:1}
+.threat-body strong{color:#fff;font-weight:600}
+
+/* ═══════════════════════════════════════════════════
+   WHY NOW STRIP — horizontal timeline of 7 pillars
+   ═══════════════════════════════════════════════════ */
+.whynow-strip{padding:140px 80px;max-width:1400px;margin:0 auto}
+.whynow-head{max-width:780px;margin-bottom:72px}
+.whynow-timeline{position:relative;padding-left:0}
+.whynow-timeline::before{content:'';position:absolute;left:0;top:24px;bottom:24px;width:1px;background:var(--rule-dim)}
+.pillar{position:relative;padding:32px 0 32px 56px;border-bottom:1px solid var(--rule-dimmer);display:grid;grid-template-columns:1fr 2fr;gap:40px;align-items:start}
+.pillar:last-child{border-bottom:0}
+.pillar::before{content:'';position:absolute;left:-5px;top:40px;width:11px;height:11px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px var(--ink)}
+.pillar-left{}
+.pillar-num{font-family:var(--mono);font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:8px}
+.pillar-date{font-family:var(--display);font-weight:500;font-size:22px;color:#fff;line-height:1.15;letter-spacing:-0.005em;margin-bottom:10px}
+.pillar-chip{font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);padding:5px 10px;border:1px solid var(--rule-dim);display:inline-block}
+.pillar-right{}
+.pillar-title{font-family:var(--display);font-weight:500;font-size:22px;line-height:1.3;color:#fff;margin-bottom:12px;letter-spacing:-0.005em}
+.pillar-body{font-family:var(--serif);font-size:16px;line-height:1.6;color:var(--text-dim)}
+.pillar-body strong{color:#fff;font-weight:600}
+
+/* ═══════════════════════════════════════════════════
+   THE OATH — full-bleed quote slab
+   ═══════════════════════════════════════════════════ */
+.oath{padding:140px 80px;background:#060607;text-align:center;border-top:1px solid var(--rule-dimmer);border-bottom:1px solid var(--rule-dimmer);position:relative;overflow:hidden}
+.oath::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center, rgba(210,35,42,0.08) 0%, transparent 60%);pointer-events:none}
+.oath-inner{position:relative;z-index:1;max-width:900px;margin:0 auto}
+.oath-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:32px;display:flex;align-items:center;justify-content:center;gap:12px}
+.oath-tag::before, .oath-tag::after{content:'';width:40px;height:1px;background:var(--red)}
+.oath-text{font-family:var(--display);font-weight:500;font-size:clamp(22px,2.4vw,32px);line-height:1.5;color:#fff;letter-spacing:0.01em;text-transform:uppercase;font-style:normal}
+.oath-attr{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-top:36px;font-weight:500}
+
+/* ═══════════════════════════════════════════════════
+   CLOSE — final statement
+   ═══════════════════════════════════════════════════ */
+.close{padding:160px 80px;max-width:1100px;margin:0 auto;text-align:center}
+.close-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:40px}
+.close-statement{font-family:var(--display);font-weight:300;font-size:clamp(44px,6vw,84px);line-height:1;letter-spacing:-0.02em;color:#fff;margin-bottom:48px}
+.close-statement em{font-style:italic;font-weight:400;color:var(--red)}
+.close-sign{display:inline-flex;flex-direction:column;align-items:center;gap:12px;margin-top:32px}
+.close-signature{font-family:var(--display);font-style:italic;font-weight:400;font-size:44px;color:#fff;line-height:1;letter-spacing:-0.01em}
+.close-byline{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);font-weight:500;padding-top:14px;border-top:1px solid var(--rule-dim);width:280px;text-align:center}
+
+/* Footer */
+.story-footer{padding:40px 80px;background:#05050a;border-top:1px solid var(--rule-dim);display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dimmer)}
+
+/* Responsive */
+@media (max-width:980px){
+  .act-grid{grid-template-columns:1fr}
+  .act-grid.reverse .act-prose{grid-column:1}
+  .act-grid.reverse .act-visual{grid-column:1;grid-row:auto}
+  .act-visual{position:static}
+  .threat-grid{grid-template-columns:1fr}
+  .pillar{grid-template-columns:1fr;gap:12px}
+  .hero-meta{grid-template-columns:repeat(2,1fr);gap:24px}
+  .section, .act, .interlude, .whynow-strip, .oath, .close, .story-hero{padding-left:24px;padding-right:24px}
+}
+
+/* ═══════════════════════════════════════════════════
+   EDITORIAL COLLAGE TILES — replacing stock photos
+   Built from SVG + type; same NYT-clipping DNA as Act I.
+   ═══════════════════════════════════════════════════ */
+.collage{position:relative;display:block;background:#fbf9f3;color:#111;padding:0;border:1px solid rgba(255,255,255,0.14);box-shadow:0 30px 60px -20px rgba(0,0,0,0.55);overflow:hidden;font-family:'Times New Roman', Georgia, serif}
+.collage-stamp{position:absolute;top:18px;right:18px;z-index:3;font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#a31f24;border:1px solid #a31f24;padding:4px 8px;background:rgba(251,249,243,0.9);font-weight:700;transform:rotate(2deg)}
+.collage-body{padding:36px 36px 32px}
+.collage-masthead{font-family:'Times New Roman', Georgia, serif;font-weight:900;font-size:24px;line-height:1;color:#111;border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:6px;font-style:italic;letter-spacing:-0.01em}
+.collage-sub{font-family:'Times New Roman', Georgia, serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#666;margin-bottom:20px}
+.collage-hl{font-family:'Times New Roman', Georgia, serif;font-weight:700;font-size:22px;line-height:1.18;color:#111;margin-bottom:14px;letter-spacing:-0.005em}
+.collage-deck{font-family:'Times New Roman', Georgia, serif;font-size:14px;line-height:1.5;color:#222;margin-bottom:18px}
+.collage-deck p{margin-bottom:10px}
+.collage-dateline{font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
+.collage-meta{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,0.16);font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#666}
+.collage-meta .red{color:#a31f24;font-weight:700}
+.collage-figure{position:relative;background:#1a1a1c;padding:0;overflow:hidden;aspect-ratio:16/10;border-bottom:1px solid rgba(0,0,0,0.12)}
+.collage-figure svg{display:block;width:100%;height:100%}
+.collage-caption{font-family:'Times New Roman', Georgia, serif;font-style:italic;font-size:12px;line-height:1.4;color:#555;padding:10px 0 16px;border-bottom:1px solid rgba(0,0,0,0.12);margin-bottom:18px}
+
+/* Dark editorial variant for acts that need a different tonal break */
+.collage.dark{background:#0c0c0e;color:#f3f1ea;border-color:var(--rule-dim);box-shadow:0 30px 60px -20px rgba(0,0,0,0.8)}
+.collage.dark .collage-masthead{color:#fff;border-bottom-color:var(--red)}
+.collage.dark .collage-sub{color:var(--text-dim)}
+.collage.dark .collage-hl{color:#fff}
+.collage.dark .collage-deck{color:var(--text-dim)}
+.collage.dark .collage-meta{border-top-color:var(--rule-dim);color:var(--text-dim)}
+.collage.dark .collage-stamp{background:#0c0c0e;color:var(--red);border-color:var(--red)}
+.collage.dark .collage-caption{color:var(--text-dim);border-bottom-color:var(--rule-dim)}
+.collage.dark .collage-figure{border-bottom-color:var(--rule-dim)}
+
+/* Editorial section header replacement for full-bleed anchors */
+.anchor{position:relative;padding:100px 80px 80px;background:#09090a;border-top:1px solid var(--rule-dim);border-bottom:1px solid var(--rule-dim);overflow:hidden}
+.anchor::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%, rgba(210,35,42,0.08) 0%, transparent 55%);pointer-events:none;z-index:0}
+.anchor-inner{position:relative;z-index:1;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.15fr 1fr;gap:72px;align-items:center}
+.anchor-txt .anchor-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.anchor-txt .anchor-tag::before{content:'';width:28px;height:1px;background:var(--red)}
+.anchor-txt .anchor-tag .coord{color:var(--text-dim);font-weight:500;letter-spacing:0.15em}
+.anchor-txt h2{font-family:var(--display);font-weight:300;font-size:clamp(38px,4.6vw,62px);line-height:1.02;letter-spacing:-0.02em;color:#fff;margin-bottom:22px}
+.anchor-txt h2 em{font-style:italic;font-weight:400;color:var(--red)}
+.anchor-txt .anchor-caption{font-family:var(--serif);font-size:16px;line-height:1.55;color:var(--text-dim);max-width:520px;border-left:2px solid var(--red);padding-left:18px}
+.anchor-figure{position:relative;aspect-ratio:4/5;max-width:460px;margin-left:auto;background:#0c0c0e;border:1px solid var(--rule-dim);overflow:hidden}
+.anchor-figure svg{display:block;width:100%;height:100%}
+.anchor-figure-label{position:absolute;bottom:14px;left:14px;right:14px;font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);display:flex;justify-content:space-between;gap:12px;padding-top:10px;border-top:1px solid var(--rule-dim);background:rgba(12,12,14,0.9);padding:10px 0 0}
+.anchor-figure-label .red{color:var(--red);font-weight:700}
+@media (max-width:980px){
+  .anchor-inner{grid-template-columns:1fr;gap:40px}
+  .anchor-figure{max-width:100%;margin-left:0}
+  .anchor{padding:64px 24px}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══ Deus X lockup (shield + wordmark) — reused via <use href="#deusx-lockup"> ═══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="deusx-lockup" viewBox="0 0 900 900">
+    <g fill="currentColor">
+      <polygon points="454.6,437.32 440.05,417.06 427.39,417.06 427.39,453.35 427.39,474.31 435.39,474.31 440.05,474.31 453.17,456.05 446.67,447.52 435.39,462.33 435.39,453.35 435.39,429.04 454.6,454.27 473.81,429.04 473.81,453.35 473.81,462.33 462.49,447.46 456.04,456.05 469.15,474.31 473.81,474.31 481.82,474.31 481.82,453.35 481.82,417.06 469.15,417.06"/>
+      <path d="M501.51,407.68l-46.91-9.48l-46.96,9.48v42.34c2.75,10.97,7.49,23.98,15.5,38.41c6.49,5.7,15.67,11.99,28.72,18.4l2.75,1.35l2.75-1.35c12.54-6.16,21.51-12.21,27.95-17.72c0-0.15,0.03-0.3,0.12-0.45c8.59-15.42,13.44-29.23,16.12-40.67L501.51,407.68z M492.14,464.48c-0.61,2.66-5.19,16.7-36.12,32.56l-1.42,0.73l-1.42-0.73c-30.99-15.89-35.53-29.87-36.12-32.52l-0.08-0.34v-48.86l37.62-7.59l37.56,7.59l0.05,48.81L492.14,464.48z"/>
+      <path d="M572.35,575.21c-1.92,1.03-3.92,1.55-5.96,1.57c-2.25,0.02-4.51,0.02-6.76,0.02h-62.19v-6.34h68.02c3.51,0,6.29-1.97,7.25-5.14c0.65-2.13,0.27-4.4-1.04-6.22c-1.3-1.82-3.33-2.9-5.55-2.96c-0.62-0.02-1.24-0.01-1.87-0.01h-14.72c-12.83,0.01-26.1,0.01-39.16-0.03c-2.95-0.01-5.66-1.1-8.28-3.36c-2.31-1.99-3.81-4.53-4.46-7.56c-1.14-5.31,1.57-11.38,6.31-14.12c2.34-1.36,4.79-2.02,7.47-2.02c0.01,0,0.01,0,0.01,0c17.18,0.01,34.35,0.01,51.54,0.01h16.38v6.43h-11.61c-18.88,0-37.78,0-56.67,0.01c-3.22,0-5.87,1.82-6.9,4.75c-0.76,2.16-0.47,4.46,0.79,6.32c1.32,1.95,3.49,3.13,5.96,3.23c0.24,0.01,0.48,0.01,0.71,0.01l0.25-0.01l13.25,0.01c13.46,0,26.91,0.01,40.37-0.01h0.03c3.42,0,6.24,0.92,8.65,2.8c3.03,2.38,4.77,5.54,5.14,9.39C579.87,567.46,577.13,572.65,572.35,575.21z"/>
+      <path d="M306.59,547.35c-2.71-10.75-12.36-18.27-23.45-18.28c-13.61-0.01-27.21-0.01-40.82-0.01l-17,0.01v47.74h29.85c9.36,0,18.72,0,28.08,0.01c0.01,0,0.01,0,0.01,0c3.74,0,7.38-0.87,10.8-2.59C303.99,569.24,309.25,557.94,306.59,547.35z M293.87,566.92c-3.16,2.34-6.75,3.53-10.65,3.54c-7.8,0.01-15.59,0.01-23.39,0.01c-4.73,0-9.45,0-14.18-0.01h-12.78c-0.12,0-0.24-0.01-0.39-0.02l-0.82-0.04v-34.9h16.61c11.65,0,23.31,0,34.96,0.01c7.56,0.01,13.9,4.41,16.57,11.51C302.46,554.05,299.96,562.42,293.87,566.92z"/>
+      <path d="M489.63,529.1v34.9c-0.01,6.66-4.44,11.78-11.03,12.75c-0.45,0.07-0.92,0.06-1.42,0.06l-0.31-0.01c-5.42,0-10.84,0-16.26-0.01c-13.2-0.01-26.84-0.02-40.27,0.05h-0.06c-5.22,0-11.29-3.8-12.45-10.18c-0.09-0.51-0.2-1.18-0.2-1.83c-0.01-10.66-0.01-21.32-0.01-31.98v-3.74h6.35v34.83c0.01,3.07,1.71,5.47,4.44,6.26c0.6,0.18,1.28,0.27,1.96,0.27c18.84,0.01,37.68-0.01,56.53,0.02h0.01c1.74,0,3.34-0.65,4.51-1.82c1.17-1.17,1.84-2.82,1.83-4.52c-0.04-8.4-0.04-16.94-0.03-25.2c0.01-3.15,0.01-6.3,0.01-9.45v-0.39H489.63z"/>
+      <polygon points="322.73,535.5 322.73,535.48 398.49,535.48 398.49,529.12 316.42,529.12 316.42,535.5"/>
+      <polygon points="316.42,549.8 316.42,576.74 398.48,576.74 398.48,570.43 322.78,570.43 322.78,556.13 398.48,556.13 398.48,549.8 324.3,549.8"/>
+      <polygon points="637.25,558.15 644.54,564.47 659.02,576.84 683.35,576.84 659.93,557.31 647.34,559.16 664.3,545.4 683.36,529.12 660.38,529.12 650.67,537.22 649.35,548.76 636.31,537.61 626.13,529.12 603.14,529.12 626.19,548.8 639.48,546.84 626.45,557.41 603.16,576.84 627.48,576.84 635.8,569.74"/>
+      <path d="M433.68,362.26c-7.08-2.33-17.3-9.97-18.96-34.51c0,0,0.23-16.35-9.72,3.58c-0.01,0.02-0.02,0.04-0.03,0.06c-0.95,1.9-1.98,4.11-3.12,6.71c0,0-4.26,8.37-5.94,24.69c-2.61,18.62-0.88,35.44,0.52,44.36c-9.09-53.04,7.1-78.91,7.1-78.91c14.76-26.94,12.87-8.6,12.87-8.6c-0.51,24.26,9.39,31.83,15.84,34.19l0.8,0.22c-0.06-0.09-0.13-0.19-0.21-0.28c-8.44-10.02-9.79-24.13-9.97-29.99c-0.04-2.01,0.27-4.34,0.27-4.34c1.88-12.1-1.94-16.24-5.41-17.61c0,0-2.17-1.13-5.89-1.13c-2.08,0-4.64,0.35-7.57,1.45h0.02c-21.98,7.71-52.93,52.54-64.19,69.77c-2.52,4.26-5.07,9.13-7.05,14.13c-6.8,19.7-3,22.02-0.62,21.92c0.69-0.03,1.23,0.45,1.09,0.97c-2.82,10.65,0.04,16.96,1.68,19.48c0.44,0.67,1.61,0.84,2.35,0.34l0.88-0.61c0.56-0.38,1.46-0.06,1.43,0.51c-1.08,20.21,4.69,25.88,7.42,27.42c0.53,0.3,1.26-0.02,1.18-0.52c-1.4-8.35,0.85-14.02,2.5-16.86c0.33-0.57,1.45-0.38,1.44,0.24c-0.42,31.11,9.16,35.81,12.53,36.5c0.56,0.11,1.08-0.23,1.01-0.66c-1.22-7.27-0.57-15.79-0.15-19.82c0.04-0.34,0.68-0.35,0.75-0.01c6.3,30.57,15.43,37.17,20.07,38.46c1.33,0.37,2.68-0.53,2.34-1.58c-6.98-21.48-8.7-52.19-9.12-64.34c-0.01-0.47,0.9-0.54,1-0.08c10.8,47.14,27.4,55.61,34.12,57.05c1.3,0.28,2.42-0.72,1.91-1.67c-18.12-32.55-19.61-57.94-19.16-68.93c0.09-2.2,0.26-3.83,0.39-4.82c0.07-0.56,0.85-0.9,1.53-0.66l1.48,0.51c0.66,0.23,1.43-0.09,1.53-0.64l1.65-9.14c0.1-0.58,1.18-0.66,1.42-0.1l2.57,5.83c0.25,0.57,1.36,0.51,1.48-0.09l1.72-7.81c0.13-0.56,1.13-0.64,1.41-0.12l2.57,4.71c0.27,0.49,1.22,0.39,1.31-0.13l1.55-9.17c0.09-0.54,1.09-0.6,1.3-0.08l1.42,3.63c0.15,0.39,0.9,0.33,0.94-0.07l1.15-9.35c0.06-0.47,0.78-0.71,1.28-0.42l1.25,0.74c0.44,0.26,1.1,0.05,1.16-0.37l1.87-13.19c0.06-0.43,0.85-0.49,1.03-0.08l1.17,2.79c0.19,0.46,1.07,0.42,1.19-0.04l0.84-3.1c0.91-3.34,1.4-6.74,1.53-10.15L433.68,362.26z"/>
+      <path d="M566.37,368.55c-12.71-19.09-41.29-59.14-61.96-66.39h0.02c-2.93-1.1-5.49-1.45-7.57-1.45c-3.72,0-5.89,1.13-5.89,1.13c-3.41,1.34-7.16,5.36-5.51,16.97c0,0,0.41,2.76,0.37,5.03c-0.19,5.89-1.56,19.95-9.97,29.94c-0.08,0.09-0.15,0.18-0.21,0.28l0.8-0.22c6.45-2.36,16.35-9.92,15.84-34.19c0,0-1.89-18.34,12.87,8.6c0,0,16.19,25.87,7.1,78.91c1.39-8.92,3.12-25.74,0.52-44.36c-1.68-16.33-5.94-24.69-5.94-24.69c-1.14-2.6-2.17-4.81-3.12-6.71c-0.01-0.02-0.02-0.04-0.03-0.06c-9.94-19.93-9.72-3.58-9.72-3.58c-1.66,24.53-11.88,32.18-18.96,34.51l-0.73,0.28c0.13,3.41,0.62,6.8,1.53,10.15l0.84,3.1c0.13,0.47,1,0.51,1.19,0.04l1.17-2.79c0.18-0.42,0.97-0.35,1.03,0.08l1.87,13.19c0.06,0.42,0.71,0.63,1.16,0.37l1.25-0.74c0.5-0.29,1.22-0.06,1.28,0.42l1.15,9.35c0.04,0.4,0.79,0.45,0.94,0.07l1.42-3.63c0.21-0.52,1.21-0.46,1.3,0.08l1.55,9.17c0.09,0.53,1.04,0.62,1.31,0.13l2.57-4.71c0.28-0.52,1.28-0.43,1.41,0.12l1.72,7.81c0.13,0.6,1.23,0.66,1.48,0.09l2.57-5.83c0.24-0.56,1.32-0.48,1.42,0.1l1.65,9.14c0.1,0.55,0.87,0.87,1.53,0.64l1.48-0.51c0.67-0.24,1.45,0.1,1.53,0.66c0.13,0.99,0.3,2.62,0.39,4.82c0.45,11-1.04,36.38-19.16,68.93c-0.52,0.94,0.61,1.95,1.91,1.67c6.73-1.45,23.33-9.91,34.12-57.05c0.1-0.46,1.02-0.39,1,0.08c-0.42,12.15-2.14,42.86-9.12,64.34c-0.34,1.05,1.01,1.95,2.34,1.58c4.64-1.29,13.78-7.89,20.07-38.46c0.07-0.34,0.71-0.33,0.75,0.01c0.42,4.03,1.07,12.55-0.15,19.82c-0.07,0.43,0.45,0.77,1.01,0.66c3.37-0.69,12.95-5.39,12.53-36.5c-0.01-0.62,1.11-0.81,1.44-0.24c1.65,2.85,3.9,8.51,2.5,16.86c-0.08,0.49,0.65,0.81,1.18,0.52c2.74-1.54,8.5-7.21,7.42-27.42c-0.03-0.57,0.87-0.89,1.43-0.51l0.88,0.61c0.74,0.5,1.91,0.34,2.35-0.34c1.64-2.52,4.49-8.83,1.68-19.48c-0.14-0.52,0.4-0.99,1.09-0.97c2.31,0.1,5.94-2.07,0.02-20.04C573.52,380.63,569.55,373.62,566.37,368.55z"/>
+    </g>
+  </symbol>
+</svg>
+
+<!-- ═══ SHELL ═══ -->
+<header class="shell">
+  <div class="shell-inner">
+    <a class="brand" href="Hi-Fi - Login + Letter.html" aria-label="Deus X Defense">
+      <svg class="brand-logo" viewBox="0 0 900 900" fill="currentColor" aria-hidden="true"><use href="#deusx-lockup"/></svg>
+    </a>
+    <nav>
+      <a href="Hi-Fi - Login + Letter.html">01 · Login</a>
+      <a href="Hi-Fi - Login + Letter.html#letter">02 · Q1 Letter</a>
+      <a href="#top" class="on">03 · The Story</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="doc-meta">
+      <div class="doc-meta-tag"><span class="dot"></span>DXD-NARR-26-001</div>
+      <div class="doc-meta-sub">TLP : AMBER · QUALIFIED INVESTORS</div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ CHAPTER RAIL ═══ -->
+<aside class="chapter-rail" id="chapterRail">
+  <a href="#top" data-target="top" class="active"><span class="dot"></span><span class="label">Prologue</span></a>
+  <a href="#act-i" data-target="act-i"><span class="dot"></span><span class="label">I · 2010 Mission</span></a>
+  <a href="#act-ii" data-target="act-ii"><span class="dot"></span><span class="label">II · 2018 Motivation</span></a>
+  <a href="#act-iii" data-target="act-iii"><span class="dot"></span><span class="label">III · 2020 Opportunity</span></a>
+  <a href="#act-iv" data-target="act-iv"><span class="dot"></span><span class="label">IV · 2022 Lesson</span></a>
+  <a href="#interlude" data-target="interlude"><span class="dot"></span><span class="label">The Physical World</span></a>
+  <a href="#act-v" data-target="act-v"><span class="dot"></span><span class="label">V · 2024 Clarity</span></a>
+  <a href="#whynow" data-target="whynow"><span class="dot"></span><span class="label">Why Now</span></a>
+  <a href="#act-vi" data-target="act-vi"><span class="dot"></span><span class="label">VI · 2025 Done Waiting</span></a>
+  <a href="#oath" data-target="oath"><span class="dot"></span><span class="label">The Oath</span></a>
+  <a href="#close" data-target="close"><span class="dot"></span><span class="label">Close</span></a>
+</aside>
+
+<main id="top">
+
+  <!-- ═══════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════ -->
+  <section class="story-hero" data-chapter="top">
+    <div class="story-hero-inner">
+      <div class="classified-row fade-in">
+        <div class="left"><strong>THE STORY</strong> · A FOUNDER'S ACCOUNT · Q1 2026</div>
+        <div class="right">
+          COMPANY CONFIDENTIAL<br>
+          <span class="tlp">TLP : AMBER</span><br>
+          QUALIFIED INVESTORS ONLY
+        </div>
+      </div>
+
+      <h1 class="story-hero-title fade-in fade-in-delay-1">
+        Why I could not,<br>
+        in good conscience,<br>
+        <em>wait any longer.</em>
+      </h1>
+
+      <p class="story-hero-sub fade-in fade-in-delay-2">
+        Six acts across sixteen years — from a compound in Helmand to a boardroom in Scottsdale, from Mandalay Bay to Uvalde to Tallahassee. The through-line is the same. The answers are not.
+      </p>
+
+      <div class="hero-meta fade-in fade-in-delay-3">
+        <div><div class="label">Narrator</div><div class="val">Patrick Madden · Founder &amp; CEO</div></div>
+        <div><div class="label">Span</div><div class="val">2010 — 2026</div></div>
+        <div><div class="label">Read time</div><div class="val">~ 14 minutes</div></div>
+        <div><div class="label">Document</div><div class="val">DXD-NARR-26-001</div></div>
+      </div>
+    </div>
+    <div class="scroll-cue fade-in fade-in-delay-4">Scroll to begin</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ACT I · 2010 · THE MISSION
+       ═══════════════════════════════════════════ -->
+  <div class="act-divider">
+    <div class="act-divider-inner">
+      <div class="tag fade-in">Act I</div>
+      <div class="year fade-in fade-in-delay-1">2010</div>
+      <div class="title fade-in fade-in-delay-2">The Mission</div>
+    </div>
+  </div>
+
+  <!-- Editorial anchor · Act I -->
+  <section class="fullbleed fb-helmand" aria-hidden="true" style="background-image:url('https://images.unsplash.com/photo-1569060368408-fa9b62cb9d40?w=1800&q=80'); background-size:cover; background-position:center">
+    <div class="fullbleed-inner">
+      <div class="fullbleed-tag">Helmand Province<span class="coord">31°35′N 64°22′E · Feb 2010</span></div>
+      <h2 class="fullbleed-quote fade-in">A split-second call, and a name in a headline you <em>will never outrun.</em></h2>
+      <div class="fullbleed-caption">
+        <div class="fullbleed-caption-text">The valley outside Marjah, in the hours after a coalition-wide offensive. A young lieutenant learns what the fog of war actually does to a decision.</div>
+        <div class="fullbleed-caption-meta">1st Recon · USMC · Op. Moshtarak<br><span class="red">02 · 2010</span></div>
+      </div>
+    </div>
+    <div class="fullbleed-credit">Photo · Editorial Archive · HELMAND</div>
+  </section>
+
+  <section class="act" id="act-i" data-chapter="act-i">
+    <div class="act-header fade-in">
+      <div class="act-number">Act I · Helmand Province, Afghanistan</div>
+      <h2 class="act-chapter">The weight of a decision made in a fog of war.</h2>
+    </div>
+
+    <div class="act-grid reverse">
+      <div class="act-prose fade-in">
+        <p class="lead">My platoon was pinned down in a high-stress ambush. I called in air support on a compound to save my men.</p>
+        <p>The next morning, <em>The New York Times</em> reported that we had killed fifty-two women and children. Whether that report was accurate or not — and the command investigation that followed disputed it — the burden was mine. The weight of that decision is mine still.</p>
+        <p>That is what the fog of war does. It makes a split-second call irreversible. It makes a young officer, trying to protect his men, a name in a headline he will never outrun. And it teaches a lesson that does not leave: <strong>the tools we give the people at the point of contact decide how the next tragedy gets written.</strong></p>
+        <p>That is why I joined Axon. Not because I wanted to sell tasers. Because Rick Smith had a thesis I believed in: a world where violence and killing weren't necessary. Where the technology did the de-escalating, and the operator did the judgment.</p>
+      </div>
+
+      <div class="act-visual fade-in fade-in-delay-2">
+        <article class="photo-plate" style="margin-bottom:32px">
+  <div class="img" style="background-image:url('https://images.unsplash.com/photo-1569060368408-fa9b62cb9d40?w=1800&q=80')"></div>
+  <div class="plate-frame"></div>
+  <div class="plate-corner tl"></div><div class="plate-corner tr"></div>
+  <div class="plate-corner bl"></div><div class="plate-corner br"></div>
+  <div class="plate-tag">Helmand · 02/2010</div>
+  <div class="plate-body">
+    <div class="plate-title">"The burden was mine. The weight is mine still."</div>
+    <div class="plate-meta"><span>1st Recon Battalion</span><span class="red">USMC · OEF</span></div>
+  </div>
+</article>
+        </div>
+        <article class="clipping">
+          <div class="clipping-masthead">The New York Times</div>
+          <div class="clipping-date">February 22, 2010 · A1</div>
+          <h3 class="clipping-hl">Afghan Officials Say Coalition Rocket Killed 52 in House</h3>
+          <div class="clipping-body">
+            <p><span class="clipping-dateline">KABUL, Afghanistan —</span> Afghan officials said Monday that 52 people were killed in southern Afghanistan on Friday when a rocket fired by coalition forces slammed into a house where women and children had taken shelter from fighting between NATO troops and militants. But American officials disputed the account.</p>
+            <p>The report added to pressure on coalition commanders already facing scrutiny over civilian casualties in the largest offensive since the war began.</p>
+          </div>
+          <div class="clipping-cite">Source · The New York Times · Public Record</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ACT II · 2018 · THE MOTIVATION
+       ═══════════════════════════════════════════ -->
+  <div class="act-divider">
+    <div class="act-divider-inner">
+      <div class="tag fade-in">Act II</div>
+      <div class="year fade-in fade-in-delay-1">2018</div>
+      <div class="title fade-in fade-in-delay-2">The Motivation</div>
+    </div>
+  </div>
+
+  <!-- Editorial anchor · Act II -->
+  <section class="fullbleed fb-vegas" aria-hidden="true" style="background-image:url('https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=1800&q=80'); background-size:cover; background-position:center">
+    <div class="fullbleed-inner">
+      <div class="fullbleed-tag">Las Vegas<span class="coord">36°05′N 115°10′W · Oct 2017</span></div>
+      <h2 class="fullbleed-quote fade-in">"Over fifty lives would have been saved." <em>Sixty seconds.</em></h2>
+      <div class="fullbleed-caption">
+        <div class="fullbleed-caption-text">Mandalay Bay. 58 dead. 867 wounded. A Metro police chief says the quiet part out loud in the consultation that followed.</div>
+        <div class="fullbleed-caption-meta">LVMPD · Consult<br><span class="red">1 OCT · 2017</span></div>
+      </div>
+    </div>
+    <div class="fullbleed-credit">Photo · Editorial Archive · VEGAS</div>
+  </section>
+
+  <section class="act" id="act-ii" data-chapter="act-ii">
+    <div class="act-header fade-in">
+      <div class="act-number">Act II · Las Vegas, after Mandalay Bay</div>
+      <h2 class="act-chapter">A naive question, and an answer that stopped me cold.</h2>
+    </div>
+
+    <div class="act-grid">
+      <div class="act-prose fade-in">
+        <p class="lead">Shortly after joining Axon I met with the Las Vegas Metro Police Chief. We were in the aftermath of the Mandalay Bay shooting. 58 dead, 867 wounded.</p>
+        <p>We were walking through the response. The timeline. The heartbreak. I asked what I thought was a naive question: <em>what if we had put a TASER on a drone and gotten it in the window in under a minute?</em></p>
+        <p>He didn't flinch. He had clearly thought about it. He said, plainly: <strong>"Over 50 lives would have been saved."</strong></p>
+        <p>I didn't sleep that night. The answer was sitting right there — sixty seconds, a drone, a payload, an operator. The technology existed. The will did not. From that moment I became obsessed with how autonomy, robotics, and a faster OODA loop could be used to stop mass violence before it spread.</p>
+        <p>That obsession is not rational. It is not a market analysis. It is an oath I took when I was 23 years old, renewed every time another headline writes itself before the first responder reaches the door.</p>
+      </div>
+
+      <div class="act-visual fade-in fade-in-delay-2">
+        <article class="photo-plate" style="margin-bottom:32px">
+  <div class="img" style="background-image:url('https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=1800&q=80')"></div>
+  <div class="plate-frame"></div>
+  <div class="plate-corner tl"></div><div class="plate-corner tr"></div>
+  <div class="plate-corner bl"></div><div class="plate-corner br"></div>
+  <div class="plate-tag">Las Vegas · 10/2017</div>
+  <div class="plate-body">
+    <div class="plate-title">32nd floor. 10:05pm. Ten minutes, eleven seconds too long.</div>
+    <div class="plate-meta"><span>LVMPD Consult</span><span class="red">58 KIA · 867 WIA</span></div>
+  </div>
+</article>
+        </div>
+        <div class="mandate">
+          <div class="mandate-tag">■ The 60-Second Mandate</div>
+          <div class="mandate-ring"><div class="mandate-ring-dot"></div></div>
+          <div class="mandate-num">0 : 60</div>
+          <div class="mandate-lbl">Response window · Seconds</div>
+          <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.5;color:var(--text-dim)">Every additional minute of response is a multiplier on casualties. The answer was — and is — sixty seconds.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ACT III · 2020 · THE OPPORTUNITY
+       ═══════════════════════════════════════════ -->
+  <div class="act-divider">
+    <div class="act-divider-inner">
+      <div class="tag fade-in">Act III</div>
+      <div class="year fade-in fade-in-delay-1">2020</div>
+      <div class="title fade-in fade-in-delay-2">The Opportunity</div>
+    </div>
+  </div>
+
+  <!-- Editorial anchor · Act III -->
+  <section class="fullbleed fb-robotics" aria-hidden="true" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1800&q=80'); background-size:cover; background-position:center">
+    <div class="fullbleed-inner">
+      <div class="fullbleed-tag">Scottsdale<span class="coord">33°29′N 111°55′W · Q2 2020</span></div>
+      <h2 class="fullbleed-quote fade-in">Take the human away from the point of threat. <em>Thirty seconds.</em></h2>
+      <div class="fullbleed-caption">
+        <div class="fullbleed-caption-text">Prototype phase. Waste Management Open, Arizona State pilots. The engineering came faster than anyone expected — but the country wasn't ready.</div>
+        <div class="fullbleed-caption-meta">Axon · TASER · SVP/GM<br><span class="red">Q2 · 2020</span></div>
+      </div>
+    </div>
+    <div class="fullbleed-credit">Photo · Editorial Archive · ROBOTICS</div>
+  </section>
+
+  <section class="act" id="act-iii" data-chapter="act-iii">
+    <div class="act-header fade-in">
+      <div class="act-number">Act III · Scottsdale · I take over TASER</div>
+      <h2 class="act-chapter">One thesis, stated out loud: remove the human from the point of threat.</h2>
+    </div>
+
+    <div class="act-grid reverse">
+      <div class="act-prose fade-in">
+        <p class="lead">In 2020 I took over TASER as SVP and GM. I ran the P&amp;L, Robotics, New Ventures, and Hardware Engineering.</p>
+        <p>I came in with one core thesis: <strong>we could save lives by using robotics, drones, and autonomous AI to take humans away from the point of threat.</strong> Identify, confirm, and stop a threat in under thirty seconds. Make the operator the commander, not the target. Make violence unsexy.</p>
+        <p>The team went to work. Prototypes. Tests. Pilots at the Waste Management Open. Pilots at Arizona State. The engineering was faster than anyone expected. The real question was whether the industry — and the country — were ready.</p>
+      </div>
+
+      <div class="act-visual fade-in fade-in-delay-2">
+        <article class="photo-plate" style="margin-bottom:32px">
+  <div class="img" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1800&q=80')"></div>
+  <div class="plate-frame"></div>
+  <div class="plate-corner tl"></div><div class="plate-corner tr"></div>
+  <div class="plate-corner bl"></div><div class="plate-corner br"></div>
+  <div class="plate-tag">Scottsdale · Q2 2020</div>
+  <div class="plate-body">
+    <div class="plate-title">The operator becomes the commander, not the target.</div>
+    <div class="plate-meta"><span>Axon · TASER</span><span class="red">1 : N Ratio</span></div>
+  </div>
+</article>
+        </div>
+        <div class="pull-quote" style="margin-top:40px">
+          It's not enough to wait for a good guy with a gun to chase a bad guy with a gun. We need to stop the threat before the violence can spread.
+          <cite>— Pat Madden · internal memo · Q2 2020</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ACT IV · 2022 · THE LESSON
+       ═══════════════════════════════════════════ -->
+  <div class="act-divider">
+    <div class="act-divider-inner">
+      <div class="tag fade-in">Act IV</div>
+      <div class="year fade-in fade-in-delay-1">2022</div>
+      <div class="title fade-in fade-in-delay-2">The Announcement &amp; the Lesson</div>
+    </div>
+  </div>
+
+  <!-- Editorial anchor · Act IV -->
+  <section class="fullbleed fb-uvalde" aria-hidden="true" style="background-image:url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1800&q=80'); background-size:cover; background-position:center">
+    <div class="fullbleed-inner">
+      <div class="fullbleed-tag">Uvalde, Texas<span class="coord">29°12′N 99°47′W · 24 May 2022</span></div>
+      <h2 class="fullbleed-quote fade-in">Seventy-seven minutes. <em>In a hallway.</em></h2>
+      <div class="fullbleed-caption">
+        <div class="fullbleed-caption-text">Robb Elementary. Nineteen children. Two teachers. A decade of will-we/won't-we compressed into a single live-broadcast failure of the detect–decide–act loop.</div>
+        <div class="fullbleed-caption-meta">Public Record<br><span class="red">77 MIN</span></div>
+      </div>
+    </div>
+    <div class="fullbleed-credit">Photo · Editorial Archive · UVALDE</div>
+  </section>
+
+  <section class="act" id="act-iv" data-chapter="act-iv">
+    <div class="act-header fade-in">
+      <div class="act-number">Act IV · Uvalde · the backlash · what I actually learned</div>
+      <h2 class="act-chapter">We announced. The response was swift. Nine of twelve ethics board members resigned. I went to work understanding why.</h2>
+    </div>
+
+    <div class="act-grid">
+      <div class="act-prose fade-in">
+        <p class="lead">By 2022 we had working prototypes. Then Uvalde happened. We watched it unfold live. Nineteen children. Two teachers. Seventy-seven minutes of police standing in a hallway.</p>
+        <p>We made the decision: we couldn't sit on the sidelines anymore. We announced the TASER drone publicly.</p>
+        <p>The response was swift. Reuters. NPR. The <em>New York Times</em>. Ethics boards. Editorials. <strong>Nine of Axon's twelve ethics board members resigned in protest.</strong> I did not hide. I went out and listened.</p>
+
+        <div class="hl-callout">
+          <div class="src">Reuters / NPR / NYT · June 2, 2022</div>
+          <div class="txt">Taser maker halts drone project; most of its ethics panel resigns</div>
+        </div>
+
+        <p class="lesson-lead">What I actually learned — four truths I owe the record:</p>
+        <ol class="lesson-list">
+          <li><strong>Private security</strong> needed to step up. The public sector couldn't — and shouldn't — carry the full load alone.</li>
+          <li><strong>Communities were rightly skeptical</strong> of a Big-Brother pitch from a taser company. Skepticism is not an enemy. It is a brief.</li>
+          <li><strong>Critical infrastructure operators</strong> wanted to control their own response. They couldn't wait on a call-for-service. They had targets on their back and obligations to shareholders and neighbors.</li>
+          <li><strong>Law enforcement is critically understaffed.</strong> Even where the will was there, the people were not. 8-12 minute average response. Seventy-seven minutes at Uvalde.</li>
+        </ol>
+
+        <p>The answer wasn't <em>just</em> technology. The answer was <strong>responsible operators, coordinating with law enforcement, inside a unified system that could detect, respond, confirm, and stop a threat faster than a call for service.</strong> An integrated capability, not a product.</p>
+        <p>That is the lesson I carry into Deus X. Not the lesson of what the press said. The lesson of what the operators, the sheriffs, the plant managers, and the families told me when I shut up and listened.</p>
+      </div>
+
+      <div class="act-visual fade-in fade-in-delay-2">
+        <article class="photo-plate" style="margin-bottom:32px">
+  <div class="img" style="background-image:url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1800&q=80')"></div>
+  <div class="plate-frame"></div>
+  <div class="plate-corner tl"></div><div class="plate-corner tr"></div>
+  <div class="plate-corner bl"></div><div class="plate-corner br"></div>
+  <div class="plate-tag">Uvalde · 05/2022</div>
+  <div class="plate-body">
+    <div class="plate-title">The system failed at every layer. Detect. Decide. Act.</div>
+    <div class="plate-meta"><span>Robb Elementary</span><span class="red">19 + 2 KIA</span></div>
+  </div>
+</article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       INTERLUDE · THE PHYSICAL WORLD IS SOFT
+       ═══════════════════════════════════════════ -->
+  <!-- Editorial anchor · Interlude -->
+  <section class="fullbleed fb-infra" aria-hidden="true" style="background-image:url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1800&q=80'); background-size:cover; background-position:center">
+    <div class="fullbleed-inner">
+      <div class="fullbleed-tag">Interlude · Critical Infrastructure<span class="coord">Continental U.S. · 2026</span></div>
+      <h2 class="fullbleed-quote fade-in">Twenty years of cyber hardening. <em>Zero years of physical.</em></h2>
+      <div class="fullbleed-caption">
+        <div class="fullbleed-caption-text">Substations, data centers, water systems, fabs. The targets got bigger while the perimeter stayed unarmed guards, analog cameras, and hope.</div>
+        <div class="fullbleed-caption-meta">CISA · DHS<br><span class="red">$1T / yr</span></div>
+      </div>
+    </div>
+    <div class="fullbleed-credit">Photo · Editorial Archive · INFRA</div>
+  </section>
+
+  <section class="interlude" id="interlude" data-chapter="interlude">
+    <div class="interlude-inner">
+      <div class="interlude-lead fade-in">
+        <div class="eyebrow">Interlude · The Diagnosis</div>
+        <h2 class="interlude-title">The physical world<br>is <em>soft.</em></h2>
+        <p class="interlude-sub">While the digital realm has been hardened by trillions in cyber spend, our physical infrastructure — power grids, water systems, data centers, stadiums — remains protected by a model unchanged in fifty years: unarmed guards, analog cameras, and hope. That model is collapsing under four forces, each accelerating.</p>
+      </div>
+
+      <div class="threat-grid fade-in fade-in-delay-1">
+        <div class="threat">
+          <div class="threat-tag">The Investment Gap</div>
+          <div class="threat-num">$213<span class="u">B</span></div>
+          <div class="threat-title">Cyber got two decades. Physical got none.</div>
+          <div class="threat-body">$213B spent on cybersecurity in 2025 — growing 12% a year. Meanwhile physical-security incidents cost organizations <strong>$1T annually</strong>, and CI still runs on analog cameras and understaffed guards. Twenty years of digital hardening, zero years of physical hardening.</div>
+        </div>
+
+        <div class="threat">
+          <div class="threat-tag">Volt Typhoon · CISA AA24-038A</div>
+          <div class="threat-num">5<span class="u">yr</span></div>
+          <div class="threat-title">The adversary already found the seam.</div>
+          <div class="threat-body">PRC actors were inside U.S. power, water, and comms for five years. They didn't just hack networks — they exploited <strong>physical gaps</strong>: unprotected routers, unsecured access, facilities with no sensor layer. Cyber hardening alone was never enough.</div>
+        </div>
+
+        <div class="threat">
+          <div class="threat-tag">Border · DHS Data · H2 2024</div>
+          <div class="threat-num">60<span class="u">K</span></div>
+          <div class="threat-title">The threat is already on the ground.</div>
+          <div class="threat-body">60,000 cartel drone flights along the southern border in the second half of 2024 alone. <strong>1,000+ monthly incursions.</strong> Explosive-laden drones. Cartel operatives trained in Ukraine bringing combat tactics home. DHS testimony: <em>"it's only a matter of time."</em></div>
+        </div>
+
+        <div class="threat">
+          <div class="threat-tag">CIRCIA · Effective May 2026</div>
+          <div class="threat-num">300<span class="u">K+</span></div>
+          <div class="threat-title">Regulation just forced the hand.</div>
+          <div class="threat-body">Mandatory 72-hour cyber-incident reporting for all 16 CI sectors. 300,000+ covered entities. 50% of 2025 ransomware targeted CI — up 34% YoY. <strong>No existing vendor automates the detect → respond → report loop.</strong> The compliance clock is running.</div>
+        </div>
+      </div>
+
+      <div class="pull-quote fade-in fade-in-delay-2" style="margin-top:72px;max-width:820px">
+        When we talk about homeland defense, we're not just talking about military bases, power grids, and ports — we're talking about places where Americans gather. Whether it's a forward operating base, an outdoor concert venue, or a stadium hosting the World Cup, the principles of risk assessment and physical protection remain the same.
+        <cite>— Army Brig. Gen. Matt Ross, Director, JIATF-401 · Pentagon Counter-Drone Command</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ACT V · 2024 · THE CLARITY
+       ═══════════════════════════════════════════ -->
+  <div class="act-divider">
+    <div class="act-divider-inner">
+      <div class="tag fade-in">Act V</div>
+      <div class="year fade-in fade-in-delay-1">2024</div>
+      <div class="title fade-in fade-in-delay-2">The Clarity</div>
+    </div>
+  </div>
+
+  <!-- Editorial anchor · Act V -->
+  <section class="fullbleed fb-paris" aria-hidden="true" style="background-image:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1800&q=80'); background-size:cover; background-position:center">
+    <div class="fullbleed-inner">
+      <div class="fullbleed-tag">Paris<span class="coord">48°51′N 2°21′E · 2023–24</span></div>
+      <h2 class="fullbleed-quote fade-in">Not a better widget. <em>A sovereign operating system.</em></h2>
+      <div class="fullbleed-caption">
+        <div class="fullbleed-caption-text">Ministry of Interior consultations. Every operator, every country, same three words: too hard, too slow, too fragmented. The Innovator's Dilemma, live.</div>
+        <div class="fullbleed-caption-meta">Ministère de l'Intérieur<br><span class="red">MOI · Paris 2024</span></div>
+      </div>
+    </div>
+    <div class="fullbleed-credit">Photo · Editorial Archive · PARIS</div>
+  </section>
+
+  <section class="act" id="act-v" data-chapter="act-v">
+    <div class="act-header fade-in">
+      <div class="act-number">Act V · Paris · the Olympics · the Innovator's Dilemma</div>
+      <h2 class="act-chapter">It wasn't a product the market needed. It was an operating system.</h2>
+    </div>
+
+    <div class="act-grid reverse">
+      <div class="act-prose fade-in">
+        <p class="lead">For most of 2023 and 2024, I worked with the French Ministry of Interior on adopting robotic security for the Paris Olympics.</p>
+        <p>We heard the same thing, every meeting, every operator, every country: <em>too hard. Regulation is complex. Training is a problem. Integration is a nightmare. Coordination with law enforcement is the biggest gap.</em></p>
+        <p>This was the Innovator's Dilemma, live. The market didn't need another <strong>point product</strong>. It did not need a better drone, or a better camera, or a better radar. Those exist.</p>
+        <p>The market needed a <strong>whole-product solution</strong>. An integrated platform. A single OS for physical security that absorbs every sensor, runs every workflow, coordinates with every responder, and reports to every regulator — in 90 seconds or less, from detection to confirmed-stop.</p>
+        <p>That is the realization Deus X is built on. Not a better widget. A sovereign operating system for the soft physical world.</p>
+      </div>
+
+      <div class="act-visual fade-in fade-in-delay-2">
+        <article class="photo-plate" style="margin-bottom:32px">
+  <div class="img" style="background-image:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1800&q=80')"></div>
+  <div class="plate-frame"></div>
+  <div class="plate-corner tl"></div><div class="plate-corner tr"></div>
+  <div class="plate-corner bl"></div><div class="plate-corner br"></div>
+  <div class="plate-tag">Paris · 2023–24</div>
+  <div class="plate-body">
+    <div class="plate-title">Too hard. Too slow. Too fragmented.</div>
+    <div class="plate-meta"><span>Ministère de l'Intérieur</span><span class="red">OS · not product</span></div>
+  </div>
+</article>
+        </div>
+        <div class="pull-quote" style="margin-top:40px">
+          We're on the precipice of an entirely new technology foundation. The way companies will win is by bringing that to their customers holistically.
+          <cite>— Head of Global Internet Investment Banking · Morgan Stanley</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       WHY NOW · 7 PILLARS CONDENSED
+       ═══════════════════════════════════════════ -->
+  <section class="whynow-strip" id="whynow" data-chapter="whynow">
+    <div class="whynow-head fade-in">
+      <div class="eyebrow">Interlude · The Window</div>
+      <h2 class="interlude-title">Why 2026,<br>not <em>2020.</em></h2>
+      <p class="interlude-sub">Seven forces. In 2020 none of them were true. Between 2023 and 2026, all seven inverted. The window is twenty-four months wide. It has a close date.</p>
+    </div>
+
+    <div class="whynow-timeline fade-in fade-in-delay-1">
+
+      <div class="pillar">
+        <div class="pillar-left">
+          <div class="pillar-num">01</div>
+          <div class="pillar-date">2023 — 2026</div>
+          <span class="pillar-chip">Physical AI</span>
+        </div>
+        <div class="pillar-right">
+          <div class="pillar-title">Autonomy crossed the deployment line.</div>
+          <div class="pillar-body">NVIDIA Cosmos, Isaac Lab, Omniverse, GR00T N1.6, Newton physics — an entire open stack for autonomous physical systems, delivered in 24 months. Boston Dynamics, Figure, Agility, Skild, Franka are all on it. The 1:N operator-to-system ratio that was science fiction in 2020 is <strong>standard operating doctrine in 2026.</strong> Deus X inherits the stack.</div>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-left">
+          <div class="pillar-num">02</div>
+          <div class="pillar-date">2024 — 2026</div>
+          <span class="pillar-chip">CI Capex</span>
+        </div>
+        <div class="pillar-right">
+          <div class="pillar-title">The targets got bigger, and the hyperscalers are paying.</div>
+          <div class="pillar-body">Hyperscaler 2026 capex: roughly <strong>$700B</strong>. Five-year data center infrastructure spend: <strong>~$7T</strong>. CHIPS Act: <strong>$500B+</strong> in private commitments. Every dollar is a new physical target surface — substation, transformer, cooling array, fab clean room — that needs protection from day one. <em>And the builders are now paying for it.</em></div>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-left">
+          <div class="pillar-num">03</div>
+          <div class="pillar-date">Aug 2025</div>
+          <span class="pillar-chip">JIATF-401</span>
+        </div>
+        <div class="pillar-right">
+          <div class="pillar-title">The Pentagon stood up a counter-drone command.</div>
+          <div class="pillar-body">SecDef directed the establishment of Joint Interagency Task Force 401. Director reports directly to the Deputy Secretary of Defense. Authority to allocate <strong>$50M per initiative</strong>. The federal command structure for physical airspace defense — which did not exist in any form in 2020 — is being rebuilt around a single unified authority. <em>Deus X already operates inside its orbit.</em></div>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-left">
+          <div class="pillar-num">04</div>
+          <div class="pillar-date">Dec 18, 2025</div>
+          <span class="pillar-chip">SAFER SKIES</span>
+        </div>
+        <div class="pillar-right">
+          <div class="pillar-title">State and local hands are finally unbound.</div>
+          <div class="pillar-body">For the first time in U.S. history, state, local, tribal, and territorial law enforcement have a statutory path to <strong>detect · track · seize · disable · destroy</strong> drones threatening people, CI, or major events. $1B+ authorized through 2027. The authority that was federal-only in 2020 just became local.</div>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-left">
+          <div class="pillar-num">05</div>
+          <div class="pillar-date">Mar 16, 2026</div>
+          <span class="pillar-chip">FAA Part 108</span>
+        </div>
+        <div class="pillar-right">
+          <div class="pillar-title">BVLOS becomes the rule, not the exception.</div>
+          <div class="pillar-body">The FAA's Part 108 final rule normalizes Beyond Visual Line of Sight operations. Routine flights, no per-flight permission, aircraft up to 1,320 lbs. <strong>Deus X holds the only nationwide 400ft BVLOS waiver on the books.</strong> When the waiver becomes an approval, we don't catch up. We were already there.</div>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-left">
+          <div class="pillar-num">06</div>
+          <div class="pillar-date">May 2026</div>
+          <span class="pillar-chip">CIRCIA Final</span>
+        </div>
+        <div class="pillar-right">
+          <div class="pillar-title">300,000 entities just got a 72-hour clock.</div>
+          <div class="pillar-body">CIRCIA requires 300K+ CI operators across 16 sectors to report significant incidents in 72 hours, ransomware payments in 24. The rule is written for cyber, but the attack surface is physical too. <strong>Reporting requirements force detection requirements. Detection requirements force spend.</strong></div>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-left">
+          <div class="pillar-num">07</div>
+          <div class="pillar-date">2026 — 2030</div>
+          <span class="pillar-chip">NSSE Calendar</span>
+        </div>
+        <div class="pillar-right">
+          <div class="pillar-title">Three deadlines nobody can move.</div>
+          <div class="pillar-body"><strong>FIFA World Cup 2026</strong> · 11 U.S. host cities · summer 2026. <strong>America 250</strong> · July 2026. <strong>LA Olympics 2028.</strong> Each is an NSSE or SEAR-1 event. $625M+ in FEMA C-UAS grants allocated. Deus X's verbal dev-and-launch partnership with LAPD was built for exactly this calendar.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pull-quote fade-in fade-in-delay-2" style="margin-top:80px;text-align:center;border-left:none;border-top:1px solid var(--red);padding:40px 0 0;max-width:820px;margin-left:auto;margin-right:auto">
+      In 2020, none of these were true. In 2026, all seven are. The window is open. It has a close date.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ACT VI · 2025 · DONE WAITING
+       ═══════════════════════════════════════════ -->
+  <div class="act-divider">
+    <div class="act-divider-inner">
+      <div class="tag fade-in">Act VI</div>
+      <div class="year fade-in fade-in-delay-1">2025</div>
+      <div class="title fade-in fade-in-delay-2">Done Waiting</div>
+    </div>
+  </div>
+
+  <!-- Editorial anchor · Act VI -->
+  <section class="fullbleed fb-fsu" aria-hidden="true" style="background-image:url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1800&q=80'); background-size:cover; background-position:center">
+    <div class="fullbleed-inner">
+      <div class="fullbleed-tag">Tallahassee<span class="coord">30°26′N 84°16′W · 17 April 2025</span></div>
+      <h2 class="fullbleed-quote fade-in">Parkland survivors, <em>for the second time in their lives.</em></h2>
+      <div class="fullbleed-caption">
+        <div class="fullbleed-caption-text">FSU campus, mid-morning. A refuge became a second scene. I stopped waiting. Assembled the people who had carried the weight. Built it ourselves.</div>
+        <div class="fullbleed-caption-meta">FSU · Tallahassee<br><span class="red">04/17/2025</span></div>
+      </div>
+    </div>
+    <div class="fullbleed-credit">Photo · Editorial Archive · FSU</div>
+  </section>
+
+  <section class="act" id="act-vi" data-chapter="act-vi">
+    <div class="act-header fade-in">
+      <div class="act-number">Act VI · Tallahassee · the second shooting · the decision</div>
+      <h2 class="act-chapter">I watched Parkland survivors face a shooter for the second time in their lives. That was it.</h2>
+    </div>
+
+    <div class="act-grid">
+      <div class="act-prose fade-in">
+        <p class="lead">April 2025. I watched the Florida State University shooting unfold — a campus where Parkland survivors had sought refuge, only to face a second active shooter in their lifetimes.</p>
+        <p>That was it. The integrators had it in their contracts. The OEMs had it in their roadmaps. The legacy security companies had it in their quarterly reports. <strong>None of them had it in their blood.</strong> It was going to take too long.</p>
+        <p>I stopped waiting. I left Axon. I assembled the best people I could find — operators, technologists, regulators, warriors. People who had been in the room when the decision had to be made. People who had carried the weight.</p>
+        <p>We built it ourselves.</p>
+        <p>We built it because the kids at FSU should never have had to do this twice. Because the 58 at Mandalay Bay deserved a sixty-second response and did not get one. Because the nineteen at Uvalde deserved an answer better than seventy-seven minutes in a hallway. Because the physical world is soft, and the people who are supposed to harden it have been waiting for permission, or for budget, or for the next committee, or for a better moment.</p>
+        <p><strong>There is not going to be a better moment.</strong></p>
+      </div>
+
+      <div class="act-visual fade-in fade-in-delay-2">
+        <article class="photo-plate" style="margin-bottom:32px">
+  <div class="img" style="background-image:url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1800&q=80')"></div>
+  <div class="plate-frame"></div>
+  <div class="plate-corner tl"></div><div class="plate-corner tr"></div>
+  <div class="plate-corner bl"></div><div class="plate-corner br"></div>
+  <div class="plate-tag">Tallahassee · 04/2025</div>
+  <div class="plate-body">
+    <div class="plate-title">The kids at FSU should never have had to do this twice.</div>
+    <div class="plate-meta"><span>FSU · Tallahassee</span><span class="red">Decision Point</span></div>
+  </div>
+</article>
+        </div>
+        <div class="pull-quote" style="margin-top:40px">
+          Allied will be ready in five years. We don't have five years.
+          <cite>— Said to me, 2025, by someone who knows</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       THE OATH
+       ═══════════════════════════════════════════ -->
+  <!-- Editorial anchor · Oath -->
+  <section class="fullbleed fb-pendleton" aria-hidden="true" style="background-image:url('https://images.unsplash.com/photo-1584556326561-c8746083993b?w=1800&q=80'); background-size:cover; background-position:center; min-height:480px">
+    <div class="fullbleed-inner" style="max-width:820px; text-align:center; align-items:center">
+      <div class="fullbleed-tag" style="justify-content:center"><span class="coord">Camp Pendleton · CA · 2003</span></div>
+      <h2 class="fullbleed-quote fade-in" style="text-align:center; margin:0 auto 32px">Against all enemies, <em>foreign and domestic.</em></h2>
+    </div>
+    <div class="fullbleed-credit">USMC · Public Record · 2003</div>
+  </section>
+
+  <section class="oath" id="oath" data-chapter="oath">
+    <div class="oath-inner">
+      <div class="oath-tag fade-in">■ The Oath</div>
+      <blockquote class="oath-text fade-in fade-in-delay-1">
+        "I do solemnly swear to support and defend the Constitution of the United States against all enemies foreign and domestic."
+      </blockquote>
+      <div class="oath-attr fade-in fade-in-delay-2">Sworn 2003 · 1st Reconnaissance Battalion · Camp Pendleton, CA · Renewed every day since</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CLOSE
+       ═══════════════════════════════════════════ -->
+  <section class="close" id="close" data-chapter="close">
+    <div class="close-eyebrow fade-in">Epilogue</div>
+    <h2 class="close-statement fade-in fade-in-delay-1">The engine is<br>already <em>running.</em></h2>
+    <p class="fade-in fade-in-delay-2" style="font-family:var(--serif);font-size:19px;line-height:1.7;color:var(--text-dim);max-width:640px;margin:0 auto 24px;font-style:italic">
+      This is the letter. The deck is the proof. The financials are the plan. What you've just read is the reason.
+    </p>
+    <p class="fade-in fade-in-delay-3" style="font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--text-dim);max-width:640px;margin:0 auto 48px">
+      If the through-line resonates — if you believe, as we do, that the window is open and the clock is running — the next step is a conversation. Not a pitch meeting. A conversation.
+    </p>
+
+    <div class="close-sign fade-in fade-in-delay-4">
+      <div class="close-signature">Pat Madden</div>
+      <div class="close-byline">Patrick Madden · Founder &amp; CEO · Deus X Defense</div>
+    </div>
+  </section>
+
+  <footer class="story-footer">
+    <div>DXD-NARR-26-001 · TLP : AMBER · COMPANY CONFIDENTIAL</div>
+    <div>Written April 2026 · For Qualified Investors</div>
+  </footer>
+
+</main>
+
+<script>
+// Fade-in on intersection. Any .fade-in already in the viewport on load gets
+// revealed immediately (no blank sections on deep-links or fast scrolls).
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold:0.15, rootMargin:'0px 0px -80px 0px'});
+// Also run a one-shot pass: anything whose top is above the viewport bottom
+// at load time reveals without waiting. Covers screenshots + deep-link jumps.
+requestAnimationFrame(() => {
+  document.querySelectorAll('.fade-in').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight * 1.1) el.classList.add('in');
+  });
+});
+document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+// Chapter rail active state
+const railLinks = document.querySelectorAll('#chapterRail a');
+const chapterSections = document.querySelectorAll('[data-chapter]');
+const chapterMap = new Map();
+chapterSections.forEach(s => chapterMap.set(s.getAttribute('data-chapter'), s));
+
+const railIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.getAttribute('data-chapter');
+      railLinks.forEach(a => a.classList.toggle('active', a.getAttribute('data-target') === id));
+    }
+  });
+}, {threshold:0, rootMargin:'-45% 0px -50% 0px'});
+chapterSections.forEach(s => railIO.observe(s));
+
+// Smooth scroll for rail
+railLinks.forEach(a => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('data-target');
+    const target = chapterMap.get(id);
+    if (target) {
+      e.preventDefault();
+      const y = target.getBoundingClientRect().top + window.pageYOffset - 56;
+      window.scrollTo({top:y, behavior:'smooth'});
+    }
+  });
+});
+</script>
+</body>
+</html>
