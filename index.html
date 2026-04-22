@@ -6,48 +6,354 @@
   <title>Deus X Defense &middot; Investor Portal</title>
   <style>
     :root {
-      --bg: #0b0d10;
-      --panel: #14181d;
-      --border: #232a32;
-      --text: #e8ecf1;
-      --muted: #8a93a0;
-      --accent: #e0b04a;
-      --accent-bg: #1a1f26;
+      --bg: #020304;
+      --panel: rgba(10, 12, 16, 0.82);
+      --panel-strong: rgba(8, 10, 14, 0.95);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f4f5f7;
+      --muted: #9ea4af;
+      --bone: #cfc7bb;
+      --accent: #c8102e;
+      --accent-soft: rgba(200, 16, 46, 0.2);
+      --accent-glow: rgba(255, 80, 110, 0.45);
+      --tab-bg: #12161b;
     }
+
     * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      background: var(--bg);
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top, rgba(200, 16, 46, 0.15), transparent 35%),
+        linear-gradient(180deg, #050608 0%, #020304 100%);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
+
     body {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
       overflow: hidden;
     }
+
+    button, input {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .login-shell {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .login-shell[hidden],
+    .portal-shell[hidden] {
+      display: none;
+    }
+
+    .grid-bg,
+    .radar-rings,
+    .radar-sweep {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(200, 16, 46, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 16, 46, 0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(circle at center, black 26%, transparent 78%);
+      z-index: -3;
+    }
+
+    .radar-rings {
+      display: grid;
+      place-items: center;
+      z-index: -2;
+      opacity: 0.7;
+    }
+
+    .radar-rings::before,
+    .radar-rings::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 16, 46, 0.24);
+    }
+
+    .radar-rings::before {
+      width: min(62vw, 660px);
+      height: min(62vw, 660px);
+      box-shadow:
+        0 0 0 min(7vw, 72px) rgba(200, 16, 46, 0.08),
+        0 0 0 min(14vw, 144px) rgba(200, 16, 46, 0.05);
+    }
+
+    .radar-rings::after {
+      width: 12px;
+      height: 12px;
+      background: #ff506e;
+      border: 0;
+      transform: translate(128px, -72px);
+      box-shadow: 0 0 22px rgba(255, 80, 110, 0.9);
+    }
+
+    .radar-sweep {
+      display: grid;
+      place-items: center;
+      z-index: -1;
+      opacity: 0.75;
+      mix-blend-mode: screen;
+    }
+
+    .radar-sweep::before {
+      content: "";
+      width: min(72vw, 780px);
+      height: min(72vw, 780px);
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(255, 80, 110, 0.5), rgba(200, 16, 46, 0.16), transparent 58%);
+      mask-image: radial-gradient(circle at center, transparent 0 18%, black 19% 100%);
+      animation: sweep 7s linear infinite;
+      transform-origin: center;
+    }
+
+    @keyframes sweep {
+      to { transform: rotate(360deg); }
+    }
+
+    .login-layout {
+      width: min(1180px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 420px);
+      gap: 48px;
+      align-items: end;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-copy {
+      padding-right: 24px;
+    }
+
+    .eyebrow,
+    .meta-row,
+    .field-label,
+    .lock-note,
+    .brand,
+    .tab {
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      font-size: clamp(3.8rem, 9vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero-title .accent {
+      color: var(--accent);
+    }
+
+    .pitch {
+      max-width: 640px;
+      margin-top: 34px;
+      color: var(--bone);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+    }
+
+    .pitch p {
+      margin: 0 0 16px;
+    }
+
+    .pitch strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 42px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .meta-row .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .meta-row .spacer {
+      margin-left: auto;
+    }
+
+    .login-panel {
+      padding: 28px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+        var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      border-radius: 24px;
+    }
+
+    .login-panel h2 {
+      margin: 0 0 10px;
+      font-size: 1.8rem;
+    }
+
+    .login-panel p {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .field input::placeholder {
+      color: #727987;
+    }
+
+    .field input:focus {
+      border-color: rgba(255, 80, 110, 0.6);
+      box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.14);
+      background: rgba(0, 0, 0, 0.48);
+    }
+
+    .login-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .lock-note {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .primary-button,
+    .secondary-button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+
+    .primary-button {
+      padding: 14px 22px;
+      background: linear-gradient(135deg, #ff365d, #a40620);
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 14px 40px rgba(200, 16, 46, 0.34);
+    }
+
+    .primary-button:hover,
+    .secondary-button:hover,
+    .tab:hover {
+      transform: translateY(-1px);
+    }
+
+    .secondary-button {
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .portal-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: var(--bg);
+    }
+
     header {
       flex: 0 0 auto;
       border-bottom: 1px solid var(--border);
-      background: var(--panel);
+      background: var(--panel-strong);
+      backdrop-filter: blur(10px);
     }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 16px 0;
+    }
+
     .brand {
-      padding: 12px 20px 4px;
-      font-size: 13px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 12px;
       color: var(--muted);
+      font-weight: 600;
     }
-    .brand strong { color: var(--text); }
+
+    .brand strong {
+      color: var(--text);
+    }
+
     nav.tabs {
       display: flex;
       flex-wrap: wrap;
       gap: 2px;
-      padding: 8px 12px 0;
+      padding: 10px 12px 0;
     }
+
     .tab {
       appearance: none;
       background: transparent;
@@ -55,26 +361,28 @@
       border: 1px solid transparent;
       border-bottom: none;
       padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
-      border-top-left-radius: 6px;
-      border-top-right-radius: 6px;
-      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
     }
-    .tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+
     .tab.active {
-      color: var(--accent);
-      background: var(--accent-bg);
+      color: var(--text);
+      background: var(--tab-bg);
       border-color: var(--border);
       position: relative;
       top: 1px;
+      box-shadow: inset 0 2px 0 0 var(--accent);
     }
+
     main {
       flex: 1 1 auto;
       position: relative;
-      background: var(--bg);
+      background: #050608;
     }
+
     iframe {
       position: absolute;
       inset: 0;
@@ -84,7 +392,9 @@
       background: #fff;
       display: none;
     }
+
     iframe.active { display: block; }
+
     .loading {
       position: absolute;
       inset: 0;
@@ -95,42 +405,132 @@
       font-size: 14px;
       pointer-events: none;
     }
+
+    @media (max-width: 960px) {
+      body {
+        overflow: auto;
+      }
+
+      .login-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy {
+        padding-right: 0;
+      }
+
+      .meta-row {
+        flex-wrap: wrap;
+      }
+
+      .meta-row .spacer {
+        margin-left: 0;
+      }
+
+      .portal-shell {
+        min-height: 100dvh;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="brand"><strong>Deus X Defense</strong> &middot; Investor Portal</div>
-    <nav class="tabs" id="tabs" role="tablist"></nav>
-  </header>
-  <main id="main">
-    <div class="loading">Loading…</div>
-  </main>
+  <div class="app">
+    <section class="login-shell" id="login-shell">
+      <div class="grid-bg"></div>
+      <div class="radar-rings"></div>
+      <div class="radar-sweep"></div>
+
+      <div class="login-layout">
+        <div class="hero-copy">
+          <div class="eyebrow">Investor Brief &middot; Secure Access</div>
+          <h1 class="hero-title">
+            THREATS DON'T<br />
+            WAIT FOR<br />
+            <span class="accent">APPROVAL.</span>
+          </h1>
+
+          <div class="pitch">
+            <p>
+              Access the Deus X Defense investor portal through a landing experience inspired by the
+              <strong>Threats Don&rsquo;t Wait</strong> concept.
+            </p>
+            <p>
+              Review the latest story, investor information, pitch, and product material from one secure workspace.
+            </p>
+          </div>
+
+          <div class="meta-row">
+            <span class="dot"></span>
+            <span>Investor Portal &middot; Confidential</span>
+            <span class="spacer">Authorized viewers only</span>
+          </div>
+        </div>
+
+        <form class="login-panel" id="login-form">
+          <h2>Portal Login</h2>
+          <p>Enter your investor credentials to continue into the protected portal.</p>
+
+          <div class="field">
+            <label class="field-label" for="email">Investor email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="name@company.com" required />
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required />
+          </div>
+
+          <div class="login-actions">
+            <span class="lock-note">Session unlock</span>
+            <button class="primary-button" type="submit">Enter Investor Portal</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <div class="portal-shell" id="portal-shell" hidden>
+      <header>
+        <div class="header-row">
+          <div class="brand"><strong>Deus X Defense</strong> &middot; Investor Portal</div>
+          <button class="secondary-button" id="logout-button" type="button">Lock Portal</button>
+        </div>
+        <nav class="tabs" id="tabs" role="tablist"></nav>
+      </header>
+      <main id="main">
+        <div class="loading">Loading&hellip;</div>
+      </main>
+    </div>
+  </div>
 
   <script>
-    // Each tab maps a label to a file in the repo root.
-    // Files are loaded lazily on first activation, then cached in the DOM
-    // so switching tabs is instant and no single response is "too big".
+    const AUTH_KEY = "investorPortalAuthenticated";
     const TABS = [
-      { id: "story",        label: "Story",               src: "Hi-Fi - Story.html" },
-      { id: "design2",      label: "Investor Information", src: "index 2.html" },
-      { id: "pitch",        label: "Pitch",               src: "Pitch vAPR20.html" },
-      { id: "architecture", label: "Product",              src: "DXD-Product-Architecture-4-2.html" }
+      { id: "story", label: "Story", src: "Hi-Fi - Story.html" },
+      { id: "design2", label: "Investor Information", src: "index 2.html" },
+      { id: "pitch", label: "Pitch", src: "Pitch vAPR20.html" },
+      { id: "architecture", label: "Product", src: "DXD-Product-Architecture-4-2.html" }
     ];
 
+    const loginShell = document.getElementById("login-shell");
+    const portalShell = document.getElementById("portal-shell");
+    const loginForm = document.getElementById("login-form");
+    const logoutButton = document.getElementById("logout-button");
     const tabsEl = document.getElementById("tabs");
     const mainEl = document.getElementById("main");
     const frames = new Map();
 
+    let initialized = false;
+
     function activate(id) {
-      // Update tab buttons
-      for (const btn of tabsEl.querySelectorAll(".tab")) {
-        btn.classList.toggle("active", btn.dataset.id === id);
-        btn.setAttribute("aria-selected", btn.dataset.id === id ? "true" : "false");
+      for (const button of tabsEl.querySelectorAll(".tab")) {
+        const isActive = button.dataset.id === id;
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-selected", isActive ? "true" : "false");
       }
-      // Lazy-create iframe on first activation
+
       let frame = frames.get(id);
       if (!frame) {
-        const tab = TABS.find(t => t.id === id);
+        const tab = TABS.find((item) => item.id === id);
         frame = document.createElement("iframe");
         frame.title = tab.label;
         frame.src = tab.src;
@@ -138,40 +538,77 @@
         mainEl.appendChild(frame);
         frames.set(id, frame);
       }
-      // Show only the active iframe
-      for (const [tid, f] of frames) {
-        f.classList.toggle("active", tid === id);
+
+      for (const [tabId, existingFrame] of frames) {
+        existingFrame.classList.toggle("active", tabId === id);
       }
-      // Reflect in URL hash for shareable links
+
       if (location.hash.slice(1) !== id) {
         history.replaceState(null, "", "#" + id);
       }
     }
 
-    // Build tab buttons
-    for (const tab of TABS) {
-      const btn = document.createElement("button");
-      btn.className = "tab";
-      btn.type = "button";
-      btn.role = "tab";
-      btn.dataset.id = tab.id;
-      btn.textContent = tab.label;
-      btn.addEventListener("click", () => activate(tab.id));
-      tabsEl.appendChild(btn);
+    function initializePortal() {
+      if (initialized) {
+        return;
+      }
+
+      for (const tab of TABS) {
+        const button = document.createElement("button");
+        button.className = "tab";
+        button.type = "button";
+        button.role = "tab";
+        button.dataset.id = tab.id;
+        button.textContent = tab.label;
+        button.addEventListener("click", () => activate(tab.id));
+        tabsEl.appendChild(button);
+      }
+
+      const loadingEl = mainEl.querySelector(".loading");
+      if (loadingEl) {
+        loadingEl.remove();
+      }
+
+      const initialId = TABS.some((tab) => tab.id === location.hash.slice(1)) ? location.hash.slice(1) : TABS[0].id;
+      activate(initialId);
+      initialized = true;
     }
 
-    // Remove initial loading placeholder once a tab is shown
-    const loadingEl = mainEl.querySelector(".loading");
-    if (loadingEl) loadingEl.remove();
+    function setAuthenticated(isAuthenticated) {
+      loginShell.hidden = isAuthenticated;
+      portalShell.hidden = !isAuthenticated;
+      document.body.style.overflow = isAuthenticated ? "hidden" : "";
 
-    // Initial selection from URL hash, else first tab
-    const initial = TABS.find(t => t.id === location.hash.slice(1)) ? location.hash.slice(1) : TABS[0].id;
-    activate(initial);
+      if (isAuthenticated) {
+        sessionStorage.setItem(AUTH_KEY, "true");
+        initializePortal();
+      } else {
+        sessionStorage.removeItem(AUTH_KEY);
+        loginForm.reset();
+        document.getElementById("email").focus();
+      }
+    }
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      setAuthenticated(true);
+    });
+
+    logoutButton.addEventListener("click", () => {
+      setAuthenticated(false);
+    });
 
     window.addEventListener("hashchange", () => {
+      if (portalShell.hidden) {
+        return;
+      }
       const id = location.hash.slice(1);
-      if (TABS.find(t => t.id === id)) activate(id);
+      if (TABS.some((tab) => tab.id === id)) {
+        activate(id);
+      }
     });
+
+    setAuthenticated(sessionStorage.getItem(AUTH_KEY) === "true");
   </script>
 </body>
 </html>
