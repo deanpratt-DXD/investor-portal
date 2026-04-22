@@ -110,6 +110,35 @@
       font-size: 14px;
       pointer-events: none;
     }
+    /* ── Mobile portal shell (≤720px) ──
+       Tabs become a horizontally-scrollable strip so all 8 stay on a
+       single row instead of stacking 3-deep and crowding the iframe.
+       The brand line shrinks and the iframe gets the reclaimed space. */
+    @media (max-width: 720px) {
+      .brand {
+        padding: 8px 14px 2px;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+      }
+      nav.tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 6px 8px 0;
+        scrollbar-width: none;
+      }
+      nav.tabs::-webkit-scrollbar { display: none; }
+      .tab {
+        padding: 8px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+        flex: 0 0 auto;
+      }
+    }
+    @media (max-width: 480px) {
+      .brand { padding: 6px 12px 0; font-size: 10px; }
+      .tab { padding: 7px 10px; font-size: 11px; }
+    }
     /* Sign-in gate — "Threats Don't Wait" format */
     #gate {
       position: fixed;

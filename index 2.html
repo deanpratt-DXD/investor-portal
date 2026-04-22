@@ -678,6 +678,17 @@
             .appendix-section { padding: 24px; }
             .appendix-section-head { flex-direction: column; }
         }
+        @media (max-width: 600px) {
+            #tab-appendix .fin-container,
+            #tab-dataroom .fin-container { padding: 32px 18px 56px !important; }
+            .appendix-grid { grid-template-columns: 1fr; gap: 14px; }
+            .appendix-card { min-height: 0; padding: 20px 18px 16px; }
+            .appendix-section { padding: 20px 18px; border-radius: 8px; }
+            .appendix-section-head h2 { font-size: 22px; }
+            .appendix-cta-row { flex-direction: column; align-items: flex-start; padding: 14px 16px; }
+            .cards-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+            .demand-grid { grid-template-columns: 1fr !important; }
+        }
 
         .scenario-buttons {
             display: flex;
