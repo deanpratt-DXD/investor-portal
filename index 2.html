@@ -7465,8 +7465,11 @@ body{
     <div class="nav-tabs">
       <div class="nav-tab active" data-tab="story">Story</div>
       <div class="nav-tab" data-tab="letter">Investor Information</div>
-      <div class="nav-tab" data-tab="pitch">Pitch</div>
       <div class="nav-tab" data-tab="product">Product</div>
+      <div class="nav-tab" data-tab="pitch">Pitch</div>
+      <div class="nav-tab" data-tab="financials">Financials</div>
+      <div class="nav-tab" data-tab="dataroom">Data Room</div>
+      <div class="nav-tab" data-tab="appendix">Appendix</div>
     </div>
     <div class="nav-badge">CONFIDENTIAL</div>
   </nav>
@@ -13535,7 +13538,7 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
 const portal = document.getElementById('portal');
 
 /* ── Tab System ── */
-const TAB_IDS = ['story','letter','pitch','product'];
+const TAB_IDS = ['story','letter','product','pitch','financials','dataroom','appendix'];
 
 function showTab(name) {
   if (!TAB_IDS.includes(name)) name = 'story';
