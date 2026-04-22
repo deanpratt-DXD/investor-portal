@@ -111,17 +111,26 @@
     // Files are loaded lazily on first activation, then cached in the DOM
     // so switching tabs is instant and no single response is "too big".
     const TABS = [
-      { id: "story",        label: "Story",               src: "Hi-Fi - Story.html" },
-      { id: "design2",      label: "Investor Information", src: "index 2.html" },
-      { id: "pitch",        label: "Pitch",               src: "Pitch vAPR20.html" },
-      { id: "architecture", label: "Product",              src: "DXD-Product-Architecture-4-2.html" }
+      { id: "story",                label: "Story",                src: "Hi-Fi - Story.html" },
+      { id: "investor-information", label: "Investor Information", src: "index 2.html" },
+      { id: "pitch",                label: "Pitch",                src: "Pitch vAPR20.html" },
+      { id: "product",              label: "Product",              src: "DXD-Product-Architecture-4-2.html" }
     ];
+    const LEGACY_TAB_IDS = {
+      design2: "investor-information",
+      architecture: "product"
+    };
 
     const tabsEl = document.getElementById("tabs");
     const mainEl = document.getElementById("main");
     const frames = new Map();
 
+    function normalizeTabId(id) {
+      return LEGACY_TAB_IDS[id] || id;
+    }
+
     function activate(id) {
+      id = normalizeTabId(id);
       // Update tab buttons
       for (const btn of tabsEl.querySelectorAll(".tab")) {
         btn.classList.toggle("active", btn.dataset.id === id);
@@ -165,13 +174,14 @@
     if (loadingEl) loadingEl.remove();
 
     // Initial selection from URL hash, else first tab
-    const initial = TABS.find(t => t.id === location.hash.slice(1)) ? location.hash.slice(1) : TABS[0].id;
-    activate(initial);
+     const initialHash = normalizeTabId(location.hash.slice(1));
+     const initial = TABS.find(t => t.id === initialHash) ? initialHash : TABS[0].id;
+     activate(initial);
 
-    window.addEventListener("hashchange", () => {
-      const id = location.hash.slice(1);
-      if (TABS.find(t => t.id === id)) activate(id);
-    });
+     window.addEventListener("hashchange", () => {
+       const id = normalizeTabId(location.hash.slice(1));
+       if (TABS.find(t => t.id === id)) activate(id);
+     });
   </script>
 </body>
 </html>
