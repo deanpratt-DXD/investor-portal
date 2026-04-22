@@ -505,11 +505,15 @@
   <script>
     const AUTH_KEY = "investorPortalAuthenticated";
     const TABS = [
-      { id: "story", label: "Story", src: "Hi-Fi - Story.html" },
-      { id: "design2", label: "Investor Information", src: "index 2.html" },
-      { id: "pitch", label: "Pitch", src: "Pitch vAPR20.html" },
-      { id: "architecture", label: "Product", src: "DXD-Product-Architecture-4-2.html" }
+      { id: "story",                label: "Story",                src: "Hi-Fi - Story.html" },
+      { id: "investor-information", label: "Investor Information", src: "index 2.html" },
+      { id: "pitch",                label: "Pitch",                src: "Pitch vAPR20.html" },
+      { id: "product",              label: "Product",              src: "DXD-Product-Architecture-4-2.html" }
     ];
+    const LEGACY_TAB_IDS = {
+      design2: "investor-information",
+      architecture: "product"
+    };
 
     const loginShell = document.getElementById("login-shell");
     const portalShell = document.getElementById("portal-shell");
@@ -518,14 +522,17 @@
     const tabsEl = document.getElementById("tabs");
     const mainEl = document.getElementById("main");
     const frames = new Map();
-
     let initialized = false;
 
+    function normalizeTabId(id) {
+      return LEGACY_TAB_IDS[id] || id;
+    }
+
     function activate(id) {
-      for (const button of tabsEl.querySelectorAll(".tab")) {
-        const isActive = button.dataset.id === id;
-        button.classList.toggle("active", isActive);
-        button.setAttribute("aria-selected", isActive ? "true" : "false");
+      id = normalizeTabId(id);
+      for (const btn of tabsEl.querySelectorAll(".tab")) {
+        btn.classList.toggle("active", btn.dataset.id === id);
+        btn.setAttribute("aria-selected", btn.dataset.id === id ? "true" : "false");
       }
 
       let frame = frames.get(id);
@@ -569,7 +576,8 @@
         loadingEl.remove();
       }
 
-      const initialId = TABS.some((tab) => tab.id === location.hash.slice(1)) ? location.hash.slice(1) : TABS[0].id;
+      const initialHash = normalizeTabId(location.hash.slice(1));
+      const initialId = TABS.some((tab) => tab.id === initialHash) ? initialHash : TABS[0].id;
       activate(initialId);
       initialized = true;
     }
@@ -605,7 +613,7 @@
       if (portalShell.hidden) {
         return;
       }
-      const id = location.hash.slice(1);
+      const id = normalizeTabId(location.hash.slice(1));
       if (TABS.some((tab) => tab.id === id)) {
         activate(id);
       }
