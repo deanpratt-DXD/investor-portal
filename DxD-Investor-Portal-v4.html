@@ -28,26 +28,10 @@
     ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border-light); } ::-webkit-scrollbar-thumb:hover { background: #555; }
 
     /* GATE */
-    .gate { position: fixed; inset: 0; background: var(--black); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1); }
-    .gate.hidden { opacity: 0; pointer-events: none; }
-    .gate-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(210,35,42,0.07) 0%, transparent 70%); pointer-events: none; }
-    .gate-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px); background-size: 64px 64px; pointer-events: none; }
-    .gate-content { position: relative; z-index: 1; text-align: center; max-width: 420px; padding: 0 24px; }
-    .gate-logo-wrap { margin-bottom: 44px; display: inline-block; }
-    .gate-logo-img { width: 280px; height: auto; display: block; }
-    .gate-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--white-faint); margin-bottom: 6px; }
-    .gate-title { font-family: var(--heading); font-size: 13px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--white-muted); margin-bottom: 32px; }
-    .gate-warning { font-family: var(--mono); font-size: 10px; color: var(--red); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 36px; padding: 8px 16px; border: 1px solid rgba(210,35,42,0.3); display: inline-block; background: var(--red-glow); }
-    .gate-input { width: 100%; padding: 14px 18px; background: var(--surface); border: 1px solid var(--border); color: var(--white); font-family: var(--mono); font-size: 14px; letter-spacing: 0.1em; outline: none; transition: border-color 0.2s; margin-bottom: 12px; }
-    .gate-input:focus { border-color: var(--red); } .gate-input::placeholder { color: var(--white-faint); }
-    .gate-btn { width: 100%; padding: 14px 24px; background: var(--red); color: #fff; border: none; font-family: var(--heading); font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.15s; }
-    .gate-btn:hover { background: #e8262e; transform: translateY(-1px); }
-    .gate-error { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--red); letter-spacing: 0.1em; opacity: 0; transition: opacity 0.3s; }
-    .gate-error.visible { opacity: 1; }
+    /* Legacy access gate removed — auth is handled at the platform layer (Railway). */
 
     /* PORTAL */
-    .portal { display: none; width: 100%; height: 100vh; flex-direction: column; overflow: hidden; }
-    .portal.visible { display: flex; }
+    .portal { display: flex; width: 100%; height: 100vh; flex-direction: column; overflow: hidden; }
 
     /* NAV */
     .nav { position: sticky; top: 0; height: 58px; background: rgba(10,10,11,0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; z-index: 100; }
@@ -207,7 +191,7 @@
 
 /* ── Portal Layout Fixes ─────────────────────────────────────── */
 .portal {
-  display: none;
+  display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
@@ -225,8 +209,6 @@
 .tab-pane.active {
   display: block;
 }
-/* Gate error hidden by default */
-.gate-error { display: none; }
 
 /* ── CEO Letter Tab ─────────────────────────────────────────── */
 #letter {
@@ -6692,7 +6674,7 @@ html {
 
 /* Portal layout fix */
 html, body { overflow: hidden; height: 100%; }
-.portal.visible { overflow: hidden; }
+.portal { overflow: hidden; }
 
 
     /* ── Portal tabs horizontal layout ── */
@@ -7861,24 +7843,6 @@ html, body { overflow: hidden; height: 100%; }
 </head>
 <body>
 
-<!-- ═══════════════════════════════ GATE ═══════════════════════════════ -->
-<div class="gate" id="gate">
-  <div class="gate-bg"></div>
-  <div class="gate-content">
-    <div style="text-align:center;margin-bottom:32px;">
-      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI2LjMuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA5MDAgOTAwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA5MDAgOTAwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9Cjwvc3R5bGU+CjxnPgoJPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSI0NTQuNiw0MTIuMzIgNDQwLjA1LDM5Mi4wNiA0MjcuMzksMzkyLjA2IDQyNy4zOSw0MjguMzUgNDI3LjM5LDQ0OS4zMSA0MzUuMzksNDQ5LjMxIDQ0MC4wNSw0NDkuMzEgCgkJNDUzLjE3LDQzMS4wNSA0NDYuNjcsNDIyLjUyIDQzNS4zOSw0MzcuMzMgNDM1LjM5LDQyOC4zNSA0MzUuMzksNDA0LjA0IDQ1NC42LDQyOS4yNyA0NzMuODEsNDA0LjA0IDQ3My44MSw0MjguMzUgNDczLjgxLDQzNy4zMyAKCQk0NjIuNDksNDIyLjQ2IDQ1Ni4wNCw0MzEuMDUgNDY5LjE1LDQ0OS4zMSA0NzMuODEsNDQ5LjMxIDQ4MS44Miw0NDkuMzEgNDgxLjgyLDQyOC4zNSA0ODEuODIsMzkyLjA2IDQ2OS4xNSwzOTIuMDYgCSIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTUwMS41MSwzODIuNjhsLTQ2LjkxLTkuNDhsLTQ2Ljk2LDkuNDh2NDIuMzRjMi43NSwxMC45Nyw3LjQ5LDIzLjk4LDE1LjUsMzguNDEKCQljNi40OSw1LjcsMTUuNjcsMTEuOTksMjguNzIsMTguNGwyLjc1LDEuMzVsMi43NS0xLjM1YzEyLjU0LTYuMTYsMjEuNTEtMTIuMjEsMjcuOTUtMTcuNzJjMC0wLjE1LDAuMDMtMC4zLDAuMTItMC40NQoJCWM4LjU5LTE1LjQyLDEzLjQ0LTI5LjIzLDE2LjEyLTQwLjY3TDUwMS41MSwzODIuNjh6IE00OTIuMTQsNDM5LjQ4Yy0wLjYxLDIuNjYtNS4xOSwxNi43LTM2LjEyLDMyLjU2bC0xLjQyLDAuNzNsLTEuNDItMC43MwoJCWMtMzAuOTktMTUuODktMzUuNTMtMjkuODctMzYuMTItMzIuNTJsLTAuMDgtMC4zNHYtNDguODZsMzcuNjItNy41OWwzNy41Niw3LjU5bDAuMDUsNDguODFMNDkyLjE0LDQzOS40OHoiLz4KCTxnPgoJCTxnPgoJCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNTcyLjM1LDU1MC4yMWMtMS45MiwxLjAzLTMuOTIsMS41NS01Ljk2LDEuNTdjLTIuMjUsMC4wMi00LjUxLDAuMDItNi43NiwwLjAyaC02Mi4xOXYtNi4zNGg2OC4wMgoJCQkJYzMuNTEsMCw2LjI5LTEuOTcsNy4yNS01LjE0YzAuNjUtMi4xMywwLjI3LTQuNC0xLjA0LTYuMjJjLTEuMy0xLjgyLTMuMzMtMi45LTUuNTUtMi45NmMtMC42Mi0wLjAyLTEuMjQtMC4wMS0xLjg3LTAuMDFoLTE0LjcyCgkJCQljLTEyLjgzLDAuMDEtMjYuMSwwLjAxLTM5LjE2LTAuMDNjLTIuOTUtMC4wMS01LjY2LTEuMS04LjI4LTMuMzZjLTIuMzEtMS45OS0zLjgxLTQuNTMtNC40Ni03LjU2CgkJCQljLTEuMTQtNS4zMSwxLjU3LTExLjM4LDYuMzEtMTQuMTJjMi4zNC0xLjM2LDQuNzktMi4wMiw3LjQ3LTIuMDJjMC4wMSwwLDAuMDEsMCwwLjAxLDBjMTcuMTgsMC4wMSwzNC4zNSwwLjAxLDUxLjU0LDAuMDFoMTYuMzgKCQkJCXY2LjQzaC0xMS42MWMtMTguODgsMC0zNy43OCwwLTU2LjY3LDAuMDFjLTMuMjIsMC01Ljg3LDEuODItNi45LDQuNzVjLTAuNzYsMi4xNi0wLjQ3LDQuNDYsMC43OSw2LjMyCgkJCQljMS4zMiwxLjk1LDMuNDksMy4xMyw1Ljk2LDMuMjNjMC4yNCwwLjAxLDAuNDgsMC4wMSwwLjcxLDAuMDFsMC4yNS0wLjAxbDEzLjI1LDAuMDFjMTMuNDYsMCwyNi45MSwwLjAxLDQwLjM3LTAuMDFoMC4wMwoJCQkJYzMuNDIsMCw2LjI0LDAuOTIsOC42NSwyLjhjMy4wMywyLjM4LDQuNzcsNS41NCw1LjE0LDkuMzlDNTc5Ljg3LDU0Mi40Niw1NzcuMTMsNTQ3LjY1LDU3Mi4zNSw1NTAuMjF6Ii8+CgkJPC9nPgoJCTxnPgoJCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzA2LjU5LDUyMi4zNWMtMi43MS0xMC43NS0xMi4zNi0xOC4yNy0yMy40NS0xOC4yOGMtMTMuNjEtMC4wMS0yNy4yMS0wLjAxLTQwLjgyLTAuMDFsLTE3LDAuMDF2NDcuNzQKCQkJCWgyOS44NWM5LjM2LDAsMTguNzIsMCwyOC4wOCwwLjAxYzAuMDEsMCwwLjAxLDAsMC4wMSwwYzMuNzQsMCw3LjM4LTAuODcsMTAuOC0yLjU5QzMwMy45OSw1NDQuMjQsMzA5LjI1LDUzMi45NCwzMDYuNTksNTIyLjM1egoJCQkJIE0yOTMuODcsNTQxLjkyYy0zLjE2LDIuMzQtNi43NSwzLjUzLTEwLjY1LDMuNTRjLTcuOCwwLjAxLTE1LjU5LDAuMDEtMjMuMzksMC4wMWMtNC43MywwLTkuNDUsMC0xNC4xOC0wLjAxaC0xMi43OAoJCQkJYy0wLjEyLDAtMC4yNC0wLjAxLTAuMzktMC4wMmwtMC44Mi0wLjA0di0zNC45aDE2LjYxYzExLjY1LDAsMjMuMzEsMCwzNC45NiwwLjAxYzcuNTYsMC4wMSwxMy45LDQuNDEsMTYuNTcsMTEuNTEKCQkJCUMzMDIuNDYsNTI5LjA1LDI5OS45Niw1MzcuNDIsMjkzLjg3LDU0MS45MnoiLz4KCQk8L2c+CgkJPGc+CgkJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik00ODkuNjMsNTA0LjF2MzQuOWMtMC4wMSw2LjY2LTQuNDQsMTEuNzgtMTEuMDMsMTIuNzVjLTAuNDUsMC4wNy0wLjkyLDAuMDYtMS40MiwwLjA2bC0wLjMxLTAuMDEKCQkJCWMtNS40MiwwLTEwLjg0LDAtMTYuMjYtMC4wMWMtMTMuMi0wLjAxLTI2Ljg0LTAuMDItNDAuMjcsMC4wNWgtMC4wNmMtNS4yMiwwLTExLjI5LTMuOC0xMi40NS0xMC4xOAoJCQkJYy0wLjA5LTAuNTEtMC4yLTEuMTgtMC4yLTEuODNjLTAuMDEtMTAuNjYtMC4wMS0yMS4zMi0wLjAxLTMxLjk4di0zLjc0aDYuMzV2MzQuODNjMC4wMSwzLjA3LDEuNzEsNS40Nyw0LjQ0LDYuMjYKCQkJCWMwLjYsMC4xOCwxLjI4LDAuMjcsMS45NiwwLjI3YzE4Ljg0LDAuMDEsMzcuNjgtMC4wMSw1Ni41MywwLjAyaDAuMDFjMS43NCwwLDMuMzQtMC42NSw0LjUxLTEuODJjMS4xNy0xLjE3LDEuODQtMi44MiwxLjgzLTQuNTIKCQkJCWMtMC4wNC04LjQtMC4wNC0xNi45NC0wLjAzLTI1LjJjMC4wMS0zLjE1LDAuMDEtNi4zLDAuMDEtOS40NXYtMC4zOUg0ODkuNjN6Ii8+CgkJPC9nPgoJCTxnPgoJCQk8cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjMyMi43Myw1MTAuNSAzMjIuNzMsNTEwLjQ4IDM5OC40OSw1MTAuNDggMzk4LjQ5LDUwNC4xMiAzMTYuNDIsNTA0LjEyIDMxNi40Miw1MTAuNSAJCQkiLz4KCQkJPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIzMTYuNDIsNTI0LjggMzE2LjQyLDU1MS43NCAzOTguNDgsNTUxLjc0IDM5OC40OCw1NDUuNDMgMzIyLjc4LDU0NS40MyAzMjIuNzgsNTMxLjEzIAoJCQkJMzk4LjQ4LDUzMS4xMyAzOTguNDgsNTI0LjggMzI0LjMsNTI0LjggCQkJIi8+CgkJPC9nPgoJCTxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iNjM3LjI1LDUzMy4xNSA2NDQuNTQsNTM5LjQ3IDY1OS4wMiw1NTEuODQgNjgzLjM1LDU1MS44NCA2NTkuOTMsNTMyLjMxIDY0Ny4zNCw1MzQuMTYgNjY0LjMsNTIwLjQgCgkJCTY4My4zNiw1MDQuMTIgNjYwLjM4LDUwNC4xMiA2NTAuNjcsNTEyLjIyIDY0OS4zNSw1MjMuNzYgNjM2LjMxLDUxMi42MSA2MjYuMTMsNTA0LjEyIDYwMy4xNCw1MDQuMTIgNjI2LjE5LDUyMy44IDYzOS40OCw1MjEuODQgCgkJCTYyNi40NSw1MzIuNDEgNjAzLjE2LDU1MS44NCA2MjcuNDgsNTUxLjg0IDYzNS44LDU0NC43NCAJCSIvPgoJPC9nPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTQzMy42OCwzMzcuMjZjLTcuMDgtMi4zMy0xNy4zLTkuOTctMTguOTYtMzQuNTFjMCwwLDAuMjMtMTYuMzUtOS43MiwzLjU4bDAsMAoJCWMtMC4wMSwwLjAyLTAuMDIsMC4wNC0wLjAzLDAuMDZjLTAuOTUsMS45LTEuOTgsNC4xMS0zLjEyLDYuNzFjMCwwLTQuMjYsOC4zNy01Ljk0LDI0LjY5Yy0yLjYxLDE4LjYyLTAuODgsMzUuNDQsMC41Miw0NC4zNgoJCWMtOS4wOS01My4wNCw3LjEtNzguOTEsNy4xLTc4LjkxYzE0Ljc2LTI2Ljk0LDEyLjg3LTguNiwxMi44Ny04LjZjLTAuNTEsMjQuMjYsOS4zOSwzMS44MywxNS44NCwzNC4xOWwwLjgsMC4yMgoJCWMtMC4wNi0wLjA5LTAuMTMtMC4xOS0wLjIxLTAuMjhjLTguNDQtMTAuMDItOS43OS0yNC4xMy05Ljk3LTI5Ljk5Yy0wLjA0LTIuMDEsMC4yNy00LjM0LDAuMjctNC4zNGwwLDAKCQljMS44OC0xMi4xLTEuOTQtMTYuMjQtNS40MS0xNy42MWMwLDAtMi4xNy0xLjEzLTUuODktMS4xM2MtMi4wOCwwLTQuNjQsMC4zNS03LjU3LDEuNDVoMC4wMmMtMjEuOTgsNy43MS01Mi45Myw1Mi41NC02NC4xOSw2OS43NwoJCWMtMi41Miw0LjI2LTUuMDcsOS4xMy03LjA1LDE0LjEzYy02LjgsMTkuNy0zLDIyLjAyLTAuNjIsMjEuOTJjMC42OS0wLjAzLDEuMjMsMC40NSwxLjA5LDAuOTdjLTIuODIsMTAuNjUsMC4wNCwxNi45NiwxLjY4LDE5LjQ4CgkJYzAuNDQsMC42NywxLjYxLDAuODQsMi4zNSwwLjM0bDAuODgtMC42MWMwLjU2LTAuMzgsMS40Ni0wLjA2LDEuNDMsMC41MWMtMS4wOCwyMC4yMSw0LjY5LDI1Ljg4LDcuNDIsMjcuNDIKCQljMC41MywwLjMsMS4yNi0wLjAyLDEuMTgtMC41MmMtMS40LTguMzUsMC44NS0xNC4wMiwyLjUtMTYuODZjMC4zMy0wLjU3LDEuNDUtMC4zOCwxLjQ0LDAuMjRjLTAuNDIsMzEuMTEsOS4xNiwzNS44MSwxMi41MywzNi41CgkJYzAuNTYsMC4xMSwxLjA4LTAuMjMsMS4wMS0wLjY2Yy0xLjIyLTcuMjctMC41Ny0xNS43OS0wLjE1LTE5LjgyYzAuMDQtMC4zNCwwLjY4LTAuMzUsMC43NS0wLjAxCgkJYzYuMywzMC41NywxNS40MywzNy4xNywyMC4wNywzOC40NmMxLjMzLDAuMzcsMi42OC0wLjUzLDIuMzQtMS41OGMtNi45OC0yMS40OC04LjctNTIuMTktOS4xMi02NC4zNGMtMC4wMS0wLjQ3LDAuOS0wLjU0LDEtMC4wOAoJCWMxMC44LDQ3LjE0LDI3LjQsNTUuNjEsMzQuMTIsNTcuMDVjMS4zLDAuMjgsMi40Mi0wLjcyLDEuOTEtMS42N2MtMTguMTItMzIuNTUtMTkuNjEtNTcuOTQtMTkuMTYtNjguOTMKCQljMC4wOS0yLjIsMC4yNi0zLjgzLDAuMzktNC44MmMwLjA3LTAuNTYsMC44NS0wLjksMS41My0wLjY2bDEuNDgsMC41MWMwLjY2LDAuMjMsMS40My0wLjA5LDEuNTMtMC42NGwxLjY1LTkuMTQKCQljMC4xLTAuNTgsMS4xOC0wLjY2LDEuNDItMC4xbDIuNTcsNS44M2MwLjI1LDAuNTcsMS4zNiwwLjUxLDEuNDgtMC4wOWwxLjcyLTcuODFjMC4xMy0wLjU2LDEuMTMtMC42NCwxLjQxLTAuMTJsMi41Nyw0LjcxCgkJYzAuMjcsMC40OSwxLjIyLDAuMzksMS4zMS0wLjEzbDEuNTUtOS4xN2MwLjA5LTAuNTQsMS4wOS0wLjYsMS4zLTAuMDhsMS40MiwzLjYzYzAuMTUsMC4zOSwwLjksMC4zMywwLjk0LTAuMDdsMS4xNS05LjM1CgkJYzAuMDYtMC40NywwLjc4LTAuNzEsMS4yOC0wLjQybDEuMjUsMC43NGMwLjQ0LDAuMjYsMS4xLDAuMDUsMS4xNi0wLjM3bDEuODctMTMuMTljMC4wNi0wLjQzLDAuODUtMC40OSwxLjAzLTAuMDhsMS4xNywyLjc5CgkJYzAuMTksMC40NiwxLjA3LDAuNDIsMS4xOS0wLjA0bDAuODQtMy4xYzAuOTEtMy4zNCwxLjQtNi43NCwxLjUzLTEwLjE1TDQzMy42OCwzMzcuMjZ6Ii8+Cgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNTY2LjM3LDM0My41NWMtMTIuNzEtMTkuMDktNDEuMjktNTkuMTQtNjEuOTYtNjYuMzloMC4wMmMtMi45My0xLjEtNS40OS0xLjQ1LTcuNTctMS40NQoJCWMtMy43MiwwLTUuODksMS4xMy01Ljg5LDEuMTNjLTMuNDEsMS4zNC03LjE2LDUuMzYtNS41MSwxNi45N2wwLDBjMCwwLDAuNDEsMi43NiwwLjM3LDUuMDNjLTAuMTksNS44OS0xLjU2LDE5Ljk1LTkuOTcsMjkuOTQKCQljLTAuMDgsMC4wOS0wLjE1LDAuMTgtMC4yMSwwLjI4bDAuOC0wLjIyYzYuNDUtMi4zNiwxNi4zNS05LjkyLDE1Ljg0LTM0LjE5YzAsMC0xLjg5LTE4LjM0LDEyLjg3LDguNmMwLDAsMTYuMTksMjUuODcsNy4xLDc4LjkxCgkJYzEuMzktOC45MiwzLjEyLTI1Ljc0LDAuNTItNDQuMzZjLTEuNjgtMTYuMzMtNS45NC0yNC42OS01Ljk0LTI0LjY5Yy0xLjE0LTIuNi0yLjE3LTQuODEtMy4xMi02LjcxCgkJYy0wLjAxLTAuMDItMC4wMi0wLjA0LTAuMDMtMC4wNmwwLDBjLTkuOTQtMTkuOTMtOS43Mi0zLjU4LTkuNzItMy41OGMtMS42NiwyNC41My0xMS44OCwzMi4xOC0xOC45NiwzNC41MWwtMC43MywwLjI4CgkJYzAuMTMsMy40MSwwLjYyLDYuOCwxLjUzLDEwLjE1bDAuODQsMy4xYzAuMTMsMC40NywxLDAuNTEsMS4xOSwwLjA0bDEuMTctMi43OWMwLjE4LTAuNDIsMC45Ny0wLjM1LDEuMDMsMC4wOGwxLjg3LDEzLjE5CgkJYzAuMDYsMC40MiwwLjcxLDAuNjMsMS4xNiwwLjM3bDEuMjUtMC43NGMwLjUtMC4yOSwxLjIyLTAuMDYsMS4yOCwwLjQybDEuMTUsOS4zNWMwLjA0LDAuNCwwLjc5LDAuNDUsMC45NCwwLjA3bDEuNDItMy42MwoJCWMwLjIxLTAuNTIsMS4yMS0wLjQ2LDEuMywwLjA4bDEuNTUsOS4xN2MwLjA5LDAuNTMsMS4wNCwwLjYyLDEuMzEsMC4xM2wyLjU3LTQuNzFjMC4yOC0wLjUyLDEuMjgtMC40MywxLjQxLDAuMTJsMS43Miw3LjgxCgkJYzAuMTMsMC42LDEuMjMsMC42NiwxLjQ4LDAuMDlsMi41Ny01LjgzYzAuMjQtMC41NiwxLjMyLTAuNDgsMS40MiwwLjFsMS42NSw5LjE0YzAuMSwwLjU1LDAuODcsMC44NywxLjUzLDAuNjRsMS40OC0wLjUxCgkJYzAuNjctMC4yNCwxLjQ1LDAuMSwxLjUzLDAuNjZjMC4xMywwLjk5LDAuMywyLjYyLDAuMzksNC44MmMwLjQ1LDExLTEuMDQsMzYuMzgtMTkuMTYsNjguOTNjLTAuNTIsMC45NCwwLjYxLDEuOTUsMS45MSwxLjY3CgkJYzYuNzMtMS40NSwyMy4zMy05LjkxLDM0LjEyLTU3LjA1YzAuMS0wLjQ2LDEuMDItMC4zOSwxLDAuMDhjLTAuNDIsMTIuMTUtMi4xNCw0Mi44Ni05LjEyLDY0LjM0Yy0wLjM0LDEuMDUsMS4wMSwxLjk1LDIuMzQsMS41OAoJCWM0LjY0LTEuMjksMTMuNzgtNy44OSwyMC4wNy0zOC40NmMwLjA3LTAuMzQsMC43MS0wLjMzLDAuNzUsMC4wMWMwLjQyLDQuMDMsMS4wNywxMi41NS0wLjE1LDE5LjgyYy0wLjA3LDAuNDMsMC40NSwwLjc3LDEuMDEsMC42NgoJCWMzLjM3LTAuNjksMTIuOTUtNS4zOSwxMi41My0zNi41Yy0wLjAxLTAuNjIsMS4xMS0wLjgxLDEuNDQtMC4yNGMxLjY1LDIuODUsMy45LDguNTEsMi41LDE2Ljg2Yy0wLjA4LDAuNDksMC42NSwwLjgxLDEuMTgsMC41MgoJCWMyLjc0LTEuNTQsOC41LTcuMjEsNy40Mi0yNy40MmMtMC4wMy0wLjU3LDAuODctMC44OSwxLjQzLTAuNTFsMC44OCwwLjYxYzAuNzQsMC41LDEuOTEsMC4zNCwyLjM1LTAuMzQKCQljMS42NC0yLjUyLDQuNDktOC44MywxLjY4LTE5LjQ4Yy0wLjE0LTAuNTIsMC40LTAuOTksMS4wOS0wLjk3YzIuMzEsMC4xLDUuOTQtMi4wNywwLjAyLTIwLjA0CgkJQzU3My41MiwzNTUuNjMsNTY5LjU1LDM0OC42Miw1NjYuMzcsMzQzLjU1eiIvPgo8L2c+Cjwvc3ZnPgo=" alt="Deus X Defense" style="width:200px;height:auto;display:inline-block;">
-    </div>
-    <div class="gate-eyebrow">INVESTOR PORTAL</div>
-    <div class="gate-subtitle">CONFIDENTIAL ACCESS</div>
-    <div class="gate-input-group">
-      <input type="password" id="gateInput" onkeydown="if(event.key==='Enter')unlock()" class="gate-input" placeholder="Enter access code" autocomplete="off">
-      <button class="gate-btn" id="gateBtn" onclick="unlockPortal()">ACCESS PORTAL</button>
-    </div>
-    <div class="gate-error" id="gateError">Incorrect access code. Please try again.</div>
-    <div class="gate-legal">This portal contains confidential and proprietary information. Unauthorized access is prohibited.</div>
-  </div>
-</div>
-
 <!-- ═══════════════════════════════ PORTAL ═══════════════════════════════ -->
 <div class="portal" id="portal">
 
@@ -7890,12 +7854,12 @@ html, body { overflow: hidden; height: 100%; }
     </div>
     <div class="portal-tabs">
       <button class="nav-tab active" data-tab="letter" onclick="showTab('letter')">CEO Letter</button>
-      <button class="nav-tab" data-tab="pitch" onclick="showTab('pitch')">Pitch</button>
       <button class="nav-tab" data-tab="story" onclick="showTab('story')">Story</button>
       <button class="nav-tab" data-tab="product" onclick="showTab('product')">Product</button>
+      <button class="nav-tab" data-tab="pitch" onclick="showTab('pitch')">Pitch</button>
       <button class="nav-tab" data-tab="financials" onclick="showTab('financials')">Financials</button>
-      <button class="nav-tab" data-tab="appendix" onclick="showTab('appendix')">Appendix</button>
       <button class="nav-tab" data-tab="dataroom" onclick="showTab('dataroom')">Data Room</button>
+      <button class="nav-tab" data-tab="appendix" onclick="showTab('appendix')">Appendix</button>
     </div>
     <div class="portal-badge">CONFIDENTIAL</div>
   </nav>
@@ -14179,44 +14143,15 @@ document.querySelectorAll('.nav-links a, .nav-logo').forEach(link => {
    DxD Investor Portal — Core JS
    ══════════════════════════════════════════════════════════════ */
 
-// ── Gate ──────────────────────────────────────────────────────
-function unlockPortal() {
-  const input = document.getElementById('gateInput');
-  const error = document.getElementById('gateError');
-  const gate  = document.getElementById('gate');
-  const portal = document.getElementById('portal');
-  
-  if (input && input.value === 'dxd2026') {
-    gate.style.opacity = '0';
-    gate.style.transition = 'opacity 0.6s ease';
-    setTimeout(() => { gate.classList.add('hidden'); }, 600);
-    portal.classList.add('visible');
-    portal.style.opacity = '0';
-    portal.style.transition = 'opacity 0.4s ease';
-    setTimeout(() => { portal.style.opacity = '1'; }, 50);
-    initPortal();
-  } else {
-    if (error) { error.style.display = 'block'; }
-    if (input) { input.style.borderColor = '#C41E3A'; }
-    setTimeout(() => {
-      if (error) error.style.display = 'none';
-      if (input) input.style.borderColor = '';
-    }, 3000);
-  }
-}
-
-// Allow Enter key on password input
+// ── Portal Boot ───────────────────────────────────────────────
+// Auth is handled at the platform layer (Railway). The portal renders
+// directly and initializes itself on DOMContentLoaded.
 document.addEventListener('DOMContentLoaded', function() {
-  const input = document.getElementById('gateInput');
-  if (input) {
-    input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') unlockPortal();
-    });
-  }
+  initPortal();
 });
 
 // ── Tab Switching ─────────────────────────────────────────────
-const VALID_TABS = ['letter', 'pitch', 'story', 'product', 'financials', 'appendix', 'dataroom'];
+const VALID_TABS = ['letter', 'story', 'product', 'pitch', 'financials', 'dataroom', 'appendix'];
 
 function showTab(name) {
   if (!VALID_TABS.includes(name)) name = 'letter';

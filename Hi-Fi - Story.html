@@ -42,7 +42,7 @@ html,body{background:var(--ink);color:#f3f1ea}
 body{font-family:var(--sans);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--red);color:#fff}
 
-/* ═══ TOP SHELL (matches Hi-Fi - Login + Letter.html) ═══ */
+/* ═══ TOP SHELL ═══ */
 .shell{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,11,12,0.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule-dim)}
 .shell-inner{display:flex;align-items:center;gap:32px;padding:10px 28px;max-width:1800px;margin:0 auto}
 .shell .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;position:relative;padding-right:20px}
@@ -408,13 +408,11 @@ main{padding-top:56px}
 <!-- ═══ SHELL ═══ -->
 <header class="shell">
   <div class="shell-inner">
-    <a class="brand" href="Hi-Fi - Login + Letter.html" aria-label="Deus X Defense">
+    <a class="brand" href="#top" aria-label="Deus X Defense">
       <svg class="brand-logo" viewBox="0 0 900 900" fill="currentColor" aria-hidden="true"><use href="#deusx-lockup"/></svg>
     </a>
     <nav>
-      <a href="Hi-Fi - Login + Letter.html">01 · Login</a>
-      <a href="Hi-Fi - Login + Letter.html#letter">02 · Q1 Letter</a>
-      <a href="#top" class="on">03 · The Story</a>
+      <a href="#top" class="on">The Story</a>
     </nav>
     <div class="spacer"></div>
     <div class="doc-meta">
