@@ -1231,6 +1231,72 @@
   </style>
 </head>
 <body>
+<!-- ════ DXD-ACCESS-GATE-v1 (single login, sessionStorage, expires when tab closes) ════ -->
+<style id="dxd-gate-style">
+  html.dxd-locked, html.dxd-locked body { overflow: hidden !important; }
+  #dxdGate { position: fixed; inset: 0; z-index: 2147483647; background: #0a0a0a;
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    transition: opacity .5s ease; }
+  #dxdGate.dxd-hidden { opacity: 0; pointer-events: none; }
+  #dxdGate * { box-sizing: border-box; }
+  #dxdGate .dxd-card { width: 100%; max-width: 380px; padding: 0 24px; text-align: center; color: #fff; }
+  #dxdGate .dxd-eyebrow { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 8px; }
+  #dxdGate .dxd-title { font-size: 13px; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: rgba(255,255,255,.85); margin-bottom: 32px; }
+  #dxdGate .dxd-warn { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #d2232a; padding: 8px 16px; border: 1px solid rgba(210,35,42,.3); display: inline-block; background: rgba(210,35,42,.08); margin-bottom: 28px; }
+  #dxdGate input { width: 100%; padding: 14px 18px; background: #161616; border: 1px solid #2a2a2a; color: #fff; font-size: 14px; letter-spacing: .1em; outline: none; margin-bottom: 12px; transition: border-color .2s; font-family: inherit; }
+  #dxdGate input:focus { border-color: #d2232a; }
+  #dxdGate button { width: 100%; padding: 14px 24px; background: #d2232a; color: #fff; border: 0; font-size: 13px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; cursor: pointer; transition: background .2s; font-family: inherit; }
+  #dxdGate button:hover { background: #e8262e; }
+  #dxdGate .dxd-err { margin-top: 12px; font-size: 11px; color: #d2232a; letter-spacing: .1em; min-height: 14px; opacity: 0; transition: opacity .3s; }
+  #dxdGate .dxd-err.dxd-show { opacity: 1; }
+  #dxdGate .dxd-legal { margin-top: 24px; font-size: 10px; color: rgba(255,255,255,.35); line-height: 1.5; }
+</style>
+<div id="dxdGate" role="dialog" aria-modal="true" aria-label="Access required">
+  <div class="dxd-card">
+    <div class="dxd-eyebrow">Deus X Defense</div>
+    <div class="dxd-title">Confidential Access</div>
+    <div class="dxd-warn">Authorized Personnel Only</div>
+    <input type="password" id="dxdGateInput" placeholder="Enter access code" autocomplete="off" spellcheck="false" autofocus>
+    <button id="dxdGateBtn" type="button">Access</button>
+    <div class="dxd-err" id="dxdGateErr">Incorrect access code.</div>
+    <div class="dxd-legal">This material contains confidential and proprietary information. Unauthorized access is prohibited.</div>
+  </div>
+</div>
+<script>
+(function(){
+  // Single shared session-scoped unlock: persists across pages within the
+  // same browser tab and is automatically cleared when the tab is closed.
+  var KEY = 'dxd_unlocked', CODE = 'dxd2026';
+  var html = document.documentElement;
+  var gate = document.getElementById('dxdGate');
+  function hide(){
+    gate.classList.add('dxd-hidden');
+    html.classList.remove('dxd-locked');
+    setTimeout(function(){ if (gate && gate.parentNode) gate.parentNode.removeChild(gate); }, 600);
+  }
+  try { if (sessionStorage.getItem(KEY) === '1') { hide(); return; } } catch(e) {}
+  html.classList.add('dxd-locked');
+  var input = document.getElementById('dxdGateInput');
+  var btn   = document.getElementById('dxdGateBtn');
+  var err   = document.getElementById('dxdGateErr');
+  function tryUnlock(){
+    if ((input.value || '').trim().toLowerCase() === CODE) {
+      try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
+      hide();
+    } else {
+      err.classList.add('dxd-show');
+      input.value = ''; input.focus();
+      setTimeout(function(){ err.classList.remove('dxd-show'); }, 2500);
+    }
+  }
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryUnlock(); });
+  setTimeout(function(){ try { input.focus(); } catch(e) {} }, 50);
+})();
+</script>
+<!-- ════ /DXD-ACCESS-GATE-v1 ════ -->
+
 
 <!-- ═══ NAVIGATION ═══ -->
 <nav class="slide-nav">
