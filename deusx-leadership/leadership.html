@@ -6,7 +6,7 @@
 <title>Leadership Team | Deus X Defense</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter+Tight:wght@300;400;500;600;700;800&family=Tomorrow:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 <style>
   /* Palette + type tokens lifted from deusxdefense.com (Squarespace site.css):
      --darkAccent-hsl:0,0%,0%  --white-hsl:0,0%,100%
@@ -419,8 +419,9 @@
   .card-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 6px;
     margin: 10px 0 6px;
+    align-items: center;
   }
   .card-chip {
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
@@ -435,6 +436,38 @@
     white-space: nowrap;
     line-height: 1.4;
   }
+  /* logo-styled chip: brand wordmark in an SVG */
+  .card-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+    padding: 0 9px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 4px;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .card-logo:hover {
+    background: rgba(255,255,255,0.10);
+    border-color: rgba(255,255,255,0.28);
+  }
+  .card-logo svg {
+    height: 14px;
+    width: auto;
+    display: block;
+  }
+  /* advisor org strip */
+  .advisor-orgs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .advisor-orgs .card-logo { height: 20px; padding: 0 8px; }
+  .advisor-orgs .card-logo svg { height: 12px; }
   .card-chip-bucket {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
     font-size: 9.5px;
@@ -860,6 +893,98 @@
 </section>
 
 <script>
+  // Brand wordmarks rendered inline so cards show *who* trained the team,
+  // not just text. Keys are matched as a prefix against chip strings —
+  // longest match wins. Use plain SVG text so we don't ship binary logos
+  // and there is no third-party trademark image asset.
+  const LOGOS = (function(){
+    const wm = (label, opts) => {
+      opts = opts || {};
+      const fs = opts.fs || 14;
+      const fw = opts.fw || 700;
+      const fam = opts.fam || "'Inter', 'Helvetica Neue', Arial, sans-serif";
+      const ls = opts.ls != null ? opts.ls : 0;
+      const fill = opts.fill || '#E5E5E3';
+      const tx = opts.italic ? 'italic ' : '';
+      // Width auto-sized via viewBox so CSS height controls visual size.
+      const w = Math.max(40, label.length * (fs * 0.62));
+      return `<svg viewBox="0 0 ${w} 22" aria-label="${label}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><text x="${w/2}" y="16" text-anchor="middle" font-family="${fam}" font-style="${opts.italic ? 'italic':'normal'}" font-weight="${fw}" font-size="${fs}" letter-spacing="${ls}" fill="${fill}">${label}</text></svg>`;
+    };
+    return {
+      // Defense / federal
+      'NSA':       wm('NSA',       { fw:900, ls:2, fill:'#E5E5E3' }),
+      'USSOCOM':   wm('USSOCOM',   { fw:800, ls:1.6 }),
+      'FBI':       wm('FBI',       { fw:900, ls:3, fill:'#E5E5E3' }),
+      'NASA':      wm('NASA',      { fw:900, ls:2, fill:'#FC3D21' }),
+      'NATO':      wm('NATO',      { fw:800, ls:2 }),
+      'USMC':      wm('USMC',      { fw:900, ls:2 }),
+      'US Army':   wm('U.S. ARMY', { fw:900, ls:1.8 }),
+      'US Navy':   wm('U.S. NAVY', { fw:900, ls:1.8 }),
+      'Green Beret': wm('GREEN BERET', { fw:900, ls:1.6 }),
+
+      // Police / public safety
+      'LAPD':       wm('LAPD',       { fw:900, ls:3 }),
+      'Dallas PD':  wm('DALLAS PD',  { fw:800, ls:1.6 }),
+      'Gresham PD': wm('GRESHAM PD', { fw:800, ls:1.6 }),
+      'NFL':        wm('NFL',        { fw:900, ls:3 }),
+      'MLB':        wm('MLB',        { fw:900, ls:3 }),
+      'NCAA':       wm('NCAA',       { fw:900, ls:2 }),
+      'NTOA':       wm('NTOA',       { fw:800, ls:2 }),
+      'LEDA':       wm('LEDA',       { fw:800, ls:2 }),
+
+      // Tech / drones / robotics
+      'Skydio':    wm('Skydio',    { fw:700, fs:15 }),
+      'Axon':      wm('axon',      { fw:800, fs:18, ls:-0.5 }),
+      'GoPro':     wm('GoPro',     { fw:800, fs:15 }),
+      'Apple':     wm('Apple',     { fw:600, fs:15 }),
+      'Nike':      wm('NIKE',      { fw:900, fs:16, italic:true, ls:-0.5 }),
+      'Microsoft': wm('Microsoft', { fw:600, fs:15 }),
+      'Google':    wm('Google',    { fw:600, fs:15 }),
+      'IBM':       wm('IBM',       { fw:900, fs:18, ls:1 }),
+      'Cisco':     wm('CISCO',     { fw:700, fs:14, ls:0.5 }),
+      'Dell':      wm('DELL',      { fw:700, fs:15, ls:0.5 }),
+      'Kyndryl':   wm('Kyndryl',   { fw:600, fs:15 }),
+      'Accenture': wm('accenture', { fw:500, fs:15, ls:-0.3 }),
+      'Cobalt Robotics': wm('Cobalt Robotics', { fw:700, fs:13 }),
+      'Dedrone':   wm('Dedrone',   { fw:700, fs:14 }),
+      'Total Safety': wm('Total Safety', { fw:700, fs:13 }),
+      'Allied Universal': wm('Allied Universal', { fw:700, fs:13 }),
+      'Securitas': wm('Securitas', { fw:700, fs:14 }),
+
+      // Strategy / finance / academia
+      'McKinsey':  wm('McKinsey & Company', { fw:600, fs:12 }),
+      'BCG':       wm('BCG',       { fw:800, ls:1.6 }),
+      'JPMorgan':  wm('J.P. Morgan', { fw:700, fs:13 }),
+      'Carvana':   wm('CARVANA',   { fw:800, ls:1, fs:14 }),
+      'Southwest': wm('Southwest', { fw:700, fs:14 }),
+      'Wharton':   wm('Wharton',   { fw:600, fs:14, italic:true }),
+      'HBS':       wm('Harvard Business School', { fw:600, fs:11 }),
+      'Dominion':  wm('Dominion Energy', { fw:700, fs:13 }),
+      'Carlyle':   wm('Carlyle Group',   { fw:700, fs:13 })
+    };
+  })();
+
+  // Sort keys by length DESC so 'Allied Universal' beats 'Allied'.
+  const LOGO_KEYS = Object.keys(LOGOS).sort((a,b) => b.length - a.length);
+
+  // Render one chip: if its text starts with a known brand, render the
+  // SVG wordmark + the trailing context (e.g. "(MD, US Strategic Pursuits)").
+  // Falls back to the plain text chip when no brand matches.
+  function renderChip(text){
+    for (const key of LOGO_KEYS) {
+      // Match key as a prefix (case-insensitive), bounded by a non-letter
+      const re = new RegExp('^' + key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '(?![A-Za-z])', 'i');
+      if (re.test(text)) {
+        const rest = text.replace(re, '').trim().replace(/^[·\-—,]\s*/, '');
+        const restHtml = rest
+          ? `<span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-muted);margin-left:8px;">${rest}</span>`
+          : '';
+        return `<span class="card-logo" title="${text}">${LOGOS[key]}${restHtml ? '' : ''}</span>${restHtml}`;
+      }
+    }
+    return `<span class="card-chip">${text}</span>`;
+  }
+
   // Leadership data — Sec 5.6 four-part architecture
   // Buckets: A = built the technology · B = operationalized & standardized
   //          C = built the business · D = validate the bet (advisors)
@@ -1054,6 +1179,9 @@
       ? l.bio.split("|").map(p => `<p>${p.trim()}</p>`).join("")
       : l.bio;
     if (l.featured) {
+      const chipsHtml = (l.chips && l.chips.length)
+        ? `<div class="card-chips" style="margin-top:18px;">${l.chips.map(renderChip).join('')}</div>`
+        : '';
       card.innerHTML = `
         <div class="card-photo">
           <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
@@ -1062,9 +1190,13 @@
           <div class="card-name">${l.name}</div>
           <div class="card-role">${l.role}</div>
           <div class="card-bio">${bioHtml}</div>
+          ${chipsHtml}
         </div>
       `;
     } else {
+      const chipsHtml = (l.chips && l.chips.length)
+        ? `<div class="card-chips">${l.chips.map(renderChip).join('')}</div>`
+        : '';
       card.innerHTML = `
         <div class="card-number">${num} / ${String(total).padStart(2, "0")}</div>
         <div class="card-photo">
@@ -1073,6 +1205,7 @@
         <div class="card-name">${l.name}</div>
         <div class="card-role">${l.role}</div>
         <div class="card-bio">${bioHtml}</div>
+        ${chipsHtml}
         <div class="card-rule"></div>
       `;
     }
@@ -1084,22 +1217,26 @@
     {
       tag: "Defense & geopolitics",
       name: "Adm. James Stavridis",
-      bio: "16th Supreme Allied Commander, NATO. Vice-Chair, Carlyle Group. Author, <em>2034</em>."
+      bio: "16th Supreme Allied Commander, NATO. Vice-Chair, Carlyle Group. Author, <em>2034</em>.",
+      orgs: ["NATO", "Carlyle", "US Navy"]
     },
     {
       tag: "Category validator",
       name: "Aaditya Devarakonda",
-      bio: "CEO, Dedrone — acquired by Axon, October 2024. CNBC Disruptor 50. Counter-drone market pioneer. Knows the Axon–Dedrone integration plan and its limits."
+      bio: "CEO, Dedrone — acquired by Axon, October 2024. CNBC Disruptor 50. Counter-drone market pioneer. Knows the Axon–Dedrone integration plan and its limits.",
+      orgs: ["Dedrone", "Axon"]
     },
     {
       tag: "Federal & DOJ",
       name: "William P. Barr",
-      bio: "77th & 85th U.S. Attorney General. 6 years CIA. Longest-serving AG in U.S. history."
+      bio: "77th & 85th U.S. Attorney General. 6 years CIA. Longest-serving AG in U.S. history.",
+      orgs: ["FBI"]
     },
     {
       tag: "Critical-infrastructure",
       name: "Adam Lee",
-      bio: "CSO, Dominion Energy. 22-year FBI career. Knows critical-infrastructure security from the customer side."
+      bio: "CSO, Dominion Energy. 22-year FBI career. Knows critical-infrastructure security from the customer side.",
+      orgs: ["Dominion", "FBI"]
     },
     {
       tag: "Strategic capital",
@@ -1121,10 +1258,14 @@
   advisors.forEach(a => {
     const card = document.createElement("article");
     card.className = "advisor-card reveal";
+    const orgsHtml = (a.orgs && a.orgs.length)
+      ? `<div class="advisor-orgs">${a.orgs.map(o => LOGOS[o] ? `<span class="card-logo" title="${o}">${LOGOS[o]}</span>` : `<span class="card-chip">${o}</span>`).join('')}</div>`
+      : '';
     card.innerHTML = `
       <div class="advisor-tag">${a.tag}</div>
       <div class="advisor-name">${a.name}</div>
       <div class="advisor-bio">${a.bio}</div>
+      ${orgsHtml}
     `;
     advisorGrid.appendChild(card);
   });
