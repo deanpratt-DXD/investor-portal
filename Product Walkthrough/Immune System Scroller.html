@@ -235,6 +235,56 @@ h1.headline .accent{color:var(--red)}
 .ie-jump.in{opacity:1}
 .ie-jump:hover{background:var(--ie-accent,var(--red));color:#000}
 
+/* center info panel — replaces center badge while expanded */
+.ie-info{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);
+  width:min(360px, 38%); max-height:84%; overflow:auto;
+  padding:18px 20px;background:rgba(8,8,10,.92);backdrop-filter:blur(10px);
+  border:1px solid var(--border);border-top:2px solid var(--ie-accent,var(--red));
+  z-index:7; opacity:0;
+  transition:opacity .45s ease, transform .55s cubic-bezier(.2,.7,.3,1);
+  pointer-events:auto;
+}
+.ie-info.in{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.ie-info-eyebrow{
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ie-accent,var(--red));margin-bottom:8px;
+}
+.ie-info-title{
+  font-family:var(--font-heading);font-weight:900;font-size:30px;letter-spacing:-.02em;line-height:1;
+  color:var(--white);margin-bottom:6px;
+}
+.ie-info-verb{
+  font-family:var(--font-heading);font-weight:500;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ie-accent,var(--red));margin-bottom:12px;
+}
+.ie-info-cap{
+  font-size:12px;line-height:1.45;color:var(--white);margin-bottom:8px;font-weight:500;
+}
+.ie-info-body{
+  font-size:11px;line-height:1.55;color:var(--white-muted);margin-bottom:12px;
+}
+.ie-info-status{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--white-muted);
+  border:1px solid var(--border);padding:4px 8px;margin-bottom:12px;
+}
+.ie-info-status .dot{width:5px;height:5px;border-radius:50%;background:var(--ie-accent,var(--red));box-shadow:0 0 6px var(--ie-accent,var(--red))}
+.ie-info-metrics{display:flex;flex-direction:column;gap:0}
+.ie-info-metric{
+  padding:8px 0;border-top:1px solid var(--border);
+}
+.ie-info-metric:last-child{border-bottom:1px solid var(--border)}
+.ie-info-mk{
+  font-family:var(--font-mono);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ie-accent,var(--red));margin-bottom:2px;
+}
+.ie-info-mv{font-size:11px;color:var(--white);line-height:1.4}
+
+/* center-badge fades out smoothly when an engine is expanded */
+.center-badge{transition:opacity .35s ease}
+
 /* flow line between engines */
 .flow-line{
   stroke:var(--border-light);stroke-width:1.4;fill:none;
@@ -1218,6 +1268,70 @@ function renderIcon(name){
   const body = ICONS[name] || ICONS.tag;
   return `<svg class="sub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
 }
+
+// Per-engine narrative shown in the center info panel when expanded.
+const ENGINE_INFO = {
+  nerve: {
+    engineNo: 'Engine 01', role: 'Sense', title: 'NERVE',
+    verb: 'Detect · Stream · Feed',
+    cap: 'The peripheral nervous system — every camera, sensor, radar, and edge panel across the site.',
+    body: "Any vendor, any age. ONVIF IP cameras, analog through built-in conversion, gunshot sensors, LPR, access control, and Atlas IED edge panels with licensed models for gunshot, weapon, and behavior detection at the endpoint. Nerve gives Cortex something to think about.",
+    status: "In build · Atlas IED verbal · Q4'26",
+    metrics: [
+      {k:'Penetration', v:'95%+ schools · 80%+ airports (Atlas IED)'},
+      {k:'Coverage',    v:'Cameras · Radar · Acoustic · Access · IoT'},
+      {k:'Output',      v:'Raw video · detection events · telemetry'}
+    ]
+  },
+  cortex: {
+    engineNo: 'Engine 02', role: 'Think', title: 'CORTEX',
+    verb: 'Aggregate · Correlate · Decide',
+    cap: "The on-site AI appliance. Local GPU inference. Works when the internet doesn't.",
+    body: 'Isolated network segment, cellular and Starlink failover, 24-hour to 30-day incident buffer. Four tiers of models: real-time detection, cross-source correlation, site-specific behavioral baselines, and retroactive investigation.',
+    status: 'ODM selection · TBD internal MVP',
+    metrics: [
+      {k:'Compute', v:'GPU/TPU · per-frame inference'},
+      {k:'Network', v:'Wired → Cellular → Starlink'},
+      {k:'Buffer',  v:'24h · 7d · 30d tiers'}
+    ]
+  },
+  atlas: {
+    engineNo: 'Engine 03', role: 'Control', title: 'ATLAS',
+    verb: 'Dispatch · Coordinate · Defeat',
+    cap: 'The unified control layer. One console — Command — runs drones, robots, guards, building systems, and airspace as one response.',
+    body: "Four modules. Airspace Safety and Management (live May '26). Airspace Defense — Atlas kill chain with Orcrist kinetic intercept. Site Control for IoT &amp; access. Ground Robotics for UGVs. Under DXD's nationwide BVLOS waiver, one operator commands many aircraft across many sites.",
+    status: "Airspace Safety and Management live May '26 · GA H1'27",
+    metrics: [
+      {k:'Waiver', v:'FAA CoW 107W-2025-03831 · thru 2030'},
+      {k:'Fleet',  v:'Skydio · Sunflower · Quantum · Spot · Sky-Hero'},
+      {k:'Defeat', v:'Cortex → effector → Orcrist'}
+    ]
+  },
+  sentinel: {
+    engineNo: 'Engine 04', role: 'Learn', title: 'SENTINEL',
+    verb: 'Train · Improve · Compound',
+    cap: 'The cross-site AI model. 450+ operators generate RLHF data every shift.',
+    body: "Not synthetic. Not simulated. Every incident, every correction, every site feeds the pipeline. Corrections from one site improve the models across every site in the network. The operator isn't a cost center — they train the AI.",
+    status: "In build · v1 Q1'27",
+    metrics: [
+      {k:'Operators', v:'450+ generating RLHF per shift'},
+      {k:'Signal',    v:'Dismissals · flags · labels · outcomes'},
+      {k:'Deploy',    v:'Cloud-agnostic · runs on Cortex'}
+    ]
+  },
+  command: {
+    engineNo: 'Engine 05', role: 'Prove', title: 'COMMAND',
+    verb: 'Record · Govern · File',
+    cap: "The official legal record. The regulator's view. The deepest moat.",
+    body: "Synchronized incident replay — narrative, timeline, map, evidence as one object. CIRCIA, NERC CIP-008, SEC 8-K, CMMC, TSA SDs. The system's own telemetry produces the filing. Once we hold the record, customers don't migrate.",
+    status: "CIRCIA module live Q3'26",
+    metrics: [
+      {k:'Frameworks', v:'NIST CSF · NERC CIP · CMMC · ISO 27001'},
+      {k:'Filings',    v:'CIRCIA · SEC 8-K · NERC · TSA'},
+      {k:'Output',     v:'Signed · timestamped · retained record'}
+    ]
+  }
+};
 
 const ECOSYSTEMS = {
   nerve: {
