@@ -313,6 +313,24 @@
       text-align: center;
     }
   </style>
+<!-- DXD-FONT-STANDARDIZATION -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Tomorrow:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<style id="dxd-font-standardization">
+  :root {
+    --dxd-font-display: "Tomorrow", "Inter Tight", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-body:    "Inter Tight", "Tomorrow", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  html, body, p, li, td, th, input, textarea, select, button, label, blockquote, figcaption, dd, dt {
+    font-family: var(--dxd-font-body) !important;
+  }
+  h1, h2, h3, h4, h5, h6,
+  .display, .headline, .hero-title, .section-title, .eyebrow, .nav-cta,
+  .tab, .brand, .logo, .card-role {
+    font-family: var(--dxd-font-display) !important;
+  }
+</style>
 </head>
 <body>
   <div id="gate" hidden role="dialog" aria-modal="true" aria-label="Investor Portal sign in — Threats Don't Wait">

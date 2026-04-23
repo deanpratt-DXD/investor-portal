@@ -125,7 +125,7 @@
 
   /* ---------- HERO ---------- */
   .hero {
-    padding: 180px 40px 100px;
+    padding: 110px 40px 60px;
     position: relative;
     overflow: hidden;
     border-bottom: 1px solid var(--line);
@@ -171,10 +171,10 @@
   .hero h1 {
     font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 400;
-    font-size: clamp(48px, 8vw, 128px);
-    line-height: 0.95;
+    font-size: clamp(36px, 5.2vw, 76px);
+    line-height: 0.98;
     letter-spacing: -0.02em;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
   }
   .hero h1 em {
     font-style: italic;
@@ -182,22 +182,22 @@
   }
 
   .hero-lede {
-    max-width: 760px;
-    font-size: clamp(16px, 1.3vw, 19px);
-    line-height: 1.6;
+    max-width: 720px;
+    font-size: clamp(15px, 1.1vw, 17px);
+    line-height: 1.55;
     color: var(--ink-dim);
-    margin-bottom: 48px;
+    margin-bottom: 32px;
   }
 
   .hero-tagline {
     font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 700;
     font-style: italic;
-    font-size: clamp(22px, 2.4vw, 36px);
-    line-height: 1.2;
-    max-width: 900px;
+    font-size: clamp(18px, 1.7vw, 24px);
+    line-height: 1.25;
+    max-width: 860px;
     color: var(--ink);
-    padding-top: 40px;
+    padding-top: 28px;
     border-top: 1px solid var(--line);
   }
   .hero-tagline span {
@@ -206,26 +206,26 @@
   }
 
   @media (max-width: 900px) {
-    .hero { padding: 140px 20px 80px; }
+    .hero { padding: 90px 20px 50px; }
   }
 
   /* ---------- MARQUEE ---------- */
   .heritage {
-    padding: 80px 0;
+    padding: 48px 0;
     border-bottom: 1px solid var(--line);
     background: var(--bg-2);
     overflow: hidden;
   }
   .heritage-label {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
     padding: 0 40px;
   }
-  .heritage-label .eyebrow { margin-bottom: 16px; }
+  .heritage-label .eyebrow { margin-bottom: 12px; }
   .heritage-label h2 {
     font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 400;
-    font-size: clamp(24px, 2.6vw, 36px);
+    font-size: clamp(18px, 1.8vw, 24px);
     color: var(--ink);
   }
 
@@ -250,7 +250,7 @@
   }
   .marquee-item {
     font-family: "Tomorrow", "Libre Caslon Text", serif;
-    font-size: clamp(32px, 4vw, 56px);
+    font-size: clamp(20px, 2.4vw, 32px);
     font-weight: 400;
     color: var(--ink);
     white-space: nowrap;
@@ -268,22 +268,22 @@
 
   /* ---------- INTRO BEFORE GRID ---------- */
   .intro {
-    padding: 120px 40px 60px;
-    max-width: 1400px;
+    padding: 64px 40px 28px;
+    max-width: 1600px;
     margin: 0 auto;
   }
   .intro-head {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 80px;
+    gap: 56px;
     align-items: end;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
   }
   .intro h2 {
     font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 400;
-    font-size: clamp(36px, 4.5vw, 64px);
-    line-height: 1.0;
+    font-size: clamp(24px, 2.8vw, 38px);
+    line-height: 1.05;
     letter-spacing: -0.01em;
   }
   .intro h2 em { color: var(--accent); font-style: italic; }
@@ -313,13 +313,13 @@
   }
 
   @media (max-width: 800px) {
-    .intro { padding: 80px 20px 40px; }
-    .intro-head { grid-template-columns: 1fr; gap: 32px; }
+    .intro { padding: 48px 20px 24px; }
+    .intro-head { grid-template-columns: 1fr; gap: 24px; }
   }
 
   /* ---------- LEADERSHIP GRID ---------- */
   .leaders {
-    padding: 40px 40px 120px;
+    padding: 24px 40px 80px;
     max-width: 1600px;
     margin: 0 auto;
   }
@@ -338,17 +338,17 @@
   }
   @media (max-width: 640px) {
     .grid { grid-template-columns: 1fr; }
-    .leaders { padding: 40px 20px 80px; }
+    .leaders { padding: 24px 20px 56px; }
   }
 
   .card {
     background: var(--bg);
-    padding: 32px;
+    padding: 22px;
     position: relative;
     transition: background 0.3s ease;
     display: flex;
     flex-direction: column;
-    min-height: 580px;
+    min-height: 0;
   }
   .card:hover { background: var(--surface); }
   .card:hover .card-photo img { transform: scale(1.04); }
@@ -356,10 +356,10 @@
 
   .card-number {
     font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.2em;
     color: var(--ink-muted);
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     transition: color 0.3s ease;
   }
 
@@ -367,7 +367,7 @@
     width: 100%;
     aspect-ratio: 1 / 1;
     background: var(--surface-2);
-    margin-bottom: 24px;
+    margin-bottom: 18px;
     overflow: hidden;
     position: relative;
     border: 1px solid var(--line);
@@ -391,32 +391,32 @@
 
   .card-name {
     font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--ink-muted);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .card-role {
     font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 700;
-    font-size: 26px;
-    line-height: 1.1;
+    font-size: 18px;
+    line-height: 1.15;
     letter-spacing: -0.01em;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     color: var(--ink);
   }
 
   .card-bio {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 13px;
+    line-height: 1.55;
     color: var(--ink-dim);
     flex-grow: 1;
   }
 
   .card-rule {
-    margin-top: 20px;
+    margin-top: 14px;
     height: 1px;
     background: linear-gradient(90deg, var(--accent), transparent);
     width: 40px;
@@ -749,7 +749,7 @@
     {
       name: "Dean Pratt",
       role: "Solutions Engineering",
-      bio: "Enterprise AI and cloud architect designing secure, scalable systems built to withstand scrutiny and emerging threats.",
+      bio: "Former Senior Global Architect for Accenture's Physical AI and Computer Vision practice, and previously a technical solutions engineer at Kyndryl, Google, Dell and Cisco. Dean has deep experience in enterprise and agentic AI, emerging technology and cross-platform solution architectures, designing secure, scalable systems built to withstand scrutiny and emerging threats.",
       img: "photos/dean-pratt.jpg"
     },
     {
