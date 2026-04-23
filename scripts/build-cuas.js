@@ -140,7 +140,6 @@ const TEMPLATE_REPLACEMENTS = [
   ['TEAM PAGE · SHERIFF + DXD GROUND', 'TEAM PAGE · CCSO + DXD GROUND'],
   ['SITREP to Sheriff Patrol-1, Patrol-2, DXD ground team 3 · operator @ public boat launch · ±22 m · grey sedan suspect vehicle.', 'SITREP to CCSO Patrol-1, Patrol-2, DXD ground team 3 · operator @ Dutch Gap boat launch · ±22 m · grey sedan suspect vehicle.'],
   ['Response teams paged · Sheriff Patrol-1/2 · DXD Ground-3 · ETA sheriff 90s', 'Response teams paged · CCSO Patrol-1/2 · DXD Ground-3 · ETA sheriff 90s'],
-  ['operator is cooperative, detained pending charging decision by the local prosecuting authority.', "operator is cooperative, detained pending charging decision by the Commonwealth's Attorney."],
   ['for prosecution and sector incident-reporting.', 'for prosecution and NERC CIP-008 reporting.'],
   ["from: 'SHERIFF-1'", "from: 'CCSO-1'"],
   ['COUNTY SHERIFF', 'CHESTERFIELD SHERIFF'],
