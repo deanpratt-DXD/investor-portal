@@ -881,6 +881,401 @@ blockquote.pull .cite {
   .slide h1, .slide h2, .slide h3, .slide p, .card, .tbl { color: #000 !important; background: #fff !important; }
   .tag, .eyebrow, .accent-bar, .card.accent-top { color: #000 !important; }
 }
+
+/* =========================================================
+   DXD custom visualizations (v1–v6)
+   Shared chrome + entrance animations (IntersectionObserver)
+   ========================================================= */
+.dxd-viz {
+  position: relative;
+  background:
+    radial-gradient(1200px 400px at 20% -10%, rgba(210,35,42,0.06), transparent 60%),
+    linear-gradient(180deg, #0f0f0f 0%, #131313 100%);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 28px 28px 24px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.dxd-viz::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at 50% 50%, #000 35%, transparent 100%);
+  z-index: 0;
+}
+.dxd-viz > * { position: relative; z-index: 1; }
+.dxd-viz-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; margin-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding-bottom: 12px;
+}
+.dxd-viz-eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent);
+}
+.dxd-viz-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px; font-weight: 700; letter-spacing: -0.2px;
+  color: var(--text);
+}
+.dxd-viz-foot {
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-faint);
+  display: flex; gap: 18px; flex-wrap: wrap;
+}
+
+/* Reveal-on-scroll baseline */
+.dxd-viz [data-reveal] { opacity: 0; transform: translateY(8px); transition: opacity 600ms ease, transform 600ms ease; }
+.dxd-viz.in-view [data-reveal] { opacity: 1; transform: none; }
+.dxd-viz [data-reveal][data-delay="1"]  { transition-delay: 80ms; }
+.dxd-viz [data-reveal][data-delay="2"]  { transition-delay: 160ms; }
+.dxd-viz [data-reveal][data-delay="3"]  { transition-delay: 240ms; }
+.dxd-viz [data-reveal][data-delay="4"]  { transition-delay: 320ms; }
+.dxd-viz [data-reveal][data-delay="5"]  { transition-delay: 400ms; }
+.dxd-viz [data-reveal][data-delay="6"]  { transition-delay: 480ms; }
+.dxd-viz [data-reveal][data-delay="7"]  { transition-delay: 560ms; }
+.dxd-viz [data-reveal][data-delay="8"]  { transition-delay: 640ms; }
+.dxd-viz [data-reveal][data-delay="9"]  { transition-delay: 720ms; }
+.dxd-viz [data-reveal][data-delay="10"] { transition-delay: 800ms; }
+.dxd-viz [data-reveal][data-delay="11"] { transition-delay: 880ms; }
+.dxd-viz [data-reveal][data-delay="12"] { transition-delay: 960ms; }
+.dxd-viz [data-reveal][data-delay="13"] { transition-delay: 1040ms; }
+.dxd-viz [data-reveal][data-delay="14"] { transition-delay: 1120ms; }
+.dxd-viz [data-reveal][data-delay="15"] { transition-delay: 1200ms; }
+
+/* SVG stroke draw-on */
+.dxd-viz .draw { stroke-dasharray: 1000; stroke-dashoffset: 1000; transition: stroke-dashoffset 1400ms cubic-bezier(.6,.05,.2,1); }
+.dxd-viz.in-view .draw { stroke-dashoffset: 0; }
+.dxd-viz .draw-d2 { transition-delay: 200ms; }
+.dxd-viz .draw-d4 { transition-delay: 400ms; }
+.dxd-viz .draw-d6 { transition-delay: 600ms; }
+.dxd-viz .draw-d8 { transition-delay: 800ms; }
+
+/* SVG node pop-in */
+.dxd-viz .pop { transform-box: fill-box; transform-origin: center; transform: scale(.4); opacity: 0; transition: transform 460ms cubic-bezier(.34,1.56,.64,1), opacity 320ms ease; }
+.dxd-viz.in-view .pop { transform: scale(1); opacity: 1; }
+.dxd-viz .pop-d1  { transition-delay: 380ms; }
+.dxd-viz .pop-d2  { transition-delay: 460ms; }
+.dxd-viz .pop-d3  { transition-delay: 540ms; }
+.dxd-viz .pop-d4  { transition-delay: 620ms; }
+.dxd-viz .pop-d5  { transition-delay: 700ms; }
+.dxd-viz .pop-d6  { transition-delay: 780ms; }
+.dxd-viz .pop-d7  { transition-delay: 860ms; }
+.dxd-viz .pop-d8  { transition-delay: 940ms; }
+.dxd-viz .pop-d9  { transition-delay: 1020ms; }
+.dxd-viz .pop-d10 { transition-delay: 1100ms; }
+.dxd-viz .pop-d11 { transition-delay: 1180ms; }
+.dxd-viz .pop-d12 { transition-delay: 1260ms; }
+
+/* Animated flowing particles along arrows */
+@keyframes dxd-flow { from { stroke-dashoffset: 30; } to { stroke-dashoffset: 0; } }
+.dxd-viz.in-view .flow {
+  stroke-dasharray: 4 6;
+  animation: dxd-flow 1.4s linear infinite;
+  animation-delay: 1.2s;
+}
+
+/* Soft pulse for accent moments */
+@keyframes dxd-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(210,35,42,0.55), 0 0 0 0 rgba(210,35,42,0); }
+  50%      { box-shadow: 0 0 0 6px rgba(210,35,42,0), 0 0 24px 0 rgba(210,35,42,0.35); }
+}
+.dxd-viz.in-view .pulse { animation: dxd-pulse 2.6s ease-in-out 1.2s infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dxd-viz [data-reveal], .dxd-viz .draw, .dxd-viz .pop, .dxd-viz.in-view .flow, .dxd-viz.in-view .pulse {
+    opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; animation: none !important;
+  }
+}
+
+/* ---------- v1: timeline ---------- */
+.dxd-v1-svg { width: 100%; height: auto; display: block; }
+.dxd-v1 .axis-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; fill: var(--text-faint); text-transform: uppercase; }
+.dxd-v1 .reg-label { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; fill: var(--text); }
+.dxd-v1 .reg-sub { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 1.5px; fill: var(--text-dim); text-transform: uppercase; }
+.dxd-v1 .threat-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; fill: var(--text-dim); }
+.dxd-v1 .window-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2.5px; fill: var(--accent); text-transform: uppercase; font-weight: 600; }
+.dxd-v1 .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 1.5px; color: var(--text-faint); text-transform: uppercase; }
+.dxd-v1 .legend span { display: inline-flex; align-items: center; gap: 6px; }
+.dxd-v1 .legend i { width: 10px; height: 10px; border-radius: 1px; display: inline-block; }
+
+/* ---------- v2: architecture ---------- */
+.dxd-v2 { padding-bottom: 30px; }
+.dxd-v2-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; align-items: stretch; position: relative; }
+.dxd-v2-mod {
+  background: linear-gradient(180deg, #181818 0%, #131313 100%);
+  border: 1px solid var(--border);
+  padding: 20px 18px 18px;
+  position: relative;
+  display: flex; flex-direction: column; gap: 10px;
+  min-height: 200px;
+}
+.dxd-v2-mod + .dxd-v2-mod { border-left: 0; }
+.dxd-v2-mod .v2-verb {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent);
+}
+.dxd-v2-mod .v2-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px; font-weight: 800; letter-spacing: -0.8px; color: var(--text); line-height: 1;
+}
+.dxd-v2-mod .v2-desc {
+  font-size: 12.5px; line-height: 1.45; color: var(--text-dim);
+}
+.dxd-v2-mod .v2-icon { width: 36px; height: 36px; opacity: 0.85; }
+.dxd-v2-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 38px; height: 18px;
+}
+.dxd-v2-arrow.a1 { left: calc(33.333% - 19px); }
+.dxd-v2-arrow.a2 { left: calc(66.666% - 19px); }
+.dxd-v2-platform {
+  margin-top: 18px;
+  background: linear-gradient(90deg, rgba(210,35,42,0.10), rgba(210,35,42,0.04) 60%, transparent);
+  border: 1px solid rgba(210,35,42,0.30);
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.dxd-v2-platform .p-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; color: var(--text); }
+.dxd-v2-platform .p-name em { color: var(--accent); font-style: normal; }
+.dxd-v2-platform .p-desc { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); }
+.dxd-v2-orcrist {
+  position: absolute; top: -8px; right: 16px; z-index: 4;
+  background: var(--accent); color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
+  padding: 5px 9px;
+}
+.dxd-v2-orcrist::after {
+  content: ""; position: absolute; left: 24px; top: 100%;
+  border: 5px solid transparent; border-top-color: var(--accent);
+}
+
+/* ---------- v3: logo wall ---------- */
+.dxd-v3-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.dxd-v3-tile {
+  background: #0f0f0f;
+  aspect-ratio: 16/9;
+  display: flex; align-items: center; justify-content: center;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: background 220ms ease;
+}
+.dxd-v3-tile:hover { background: #161616; }
+.dxd-v3-tile::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.04) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 800ms ease;
+  pointer-events: none;
+}
+.dxd-v3-tile:hover::after { transform: translateX(100%); }
+.dxd-v3-tile svg { width: auto; max-width: 80%; max-height: 60%; height: auto; opacity: .82; transition: opacity 220ms ease; }
+.dxd-v3-tile:hover svg { opacity: 1; }
+.dxd-v3-tile .v3-tag {
+  position: absolute; top: 8px; left: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-faint);
+}
+.dxd-v3-tile .v3-tag.live   { color: var(--success); }
+.dxd-v3-tile .v3-tag.signed { color: var(--accent); }
+.dxd-v3-tile .v3-tag.verbal { color: var(--warn); }
+.dxd-v3-tile .v3-tag.inbuild{ color: var(--info); }
+
+/* ---------- v4: margin quadrant ---------- */
+.dxd-v4-svg { width: 100%; height: auto; display: block; }
+.dxd-v4 .v4-axis-line { stroke: rgba(255,255,255,0.18); stroke-width: 1; }
+.dxd-v4 .v4-grid { stroke: rgba(255,255,255,0.06); stroke-width: 1; stroke-dasharray: 2 4; }
+.dxd-v4 .v4-axis-label { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 2px; fill: var(--text-faint); text-transform: uppercase; }
+.dxd-v4 .v4-tick { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; fill: var(--text-faint); }
+.dxd-v4 .v4-quad-label { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600; fill: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; }
+.dxd-v4 .v4-co-label { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; fill: var(--text); }
+.dxd-v4 .v4-co-sub { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; fill: var(--text-dim); letter-spacing: 1px; }
+.dxd-v4 .v4-dxd-callout { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; fill: var(--accent); font-weight: 700; }
+.dxd-v4 .v4-traj { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 5 4; }
+
+/* ---------- v5: pipeline waterfall ---------- */
+.dxd-v5-flow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  align-items: end;
+  margin-top: 10px;
+  min-height: 280px;
+}
+.dxd-v5-stage {
+  display: flex; flex-direction: column; align-items: stretch;
+  position: relative;
+  height: 100%;
+  justify-content: flex-end;
+}
+.dxd-v5-bar {
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 1px solid var(--border);
+  border-bottom: 2px solid rgba(255,255,255,0.18);
+  position: relative;
+  transform-origin: bottom;
+  transform: scaleY(0);
+  transition: transform 900ms cubic-bezier(.2,.7,.2,1);
+}
+.dxd-viz.in-view .dxd-v5-bar { transform: scaleY(1); }
+.dxd-v5-stage:nth-child(1) .dxd-v5-bar { transition-delay: 200ms; }
+.dxd-v5-stage:nth-child(2) .dxd-v5-bar { transition-delay: 360ms; }
+.dxd-v5-stage:nth-child(3) .dxd-v5-bar { transition-delay: 520ms; }
+.dxd-v5-stage:nth-child(4) .dxd-v5-bar { transition-delay: 680ms; }
+.dxd-v5-stage:nth-child(5) .dxd-v5-bar { transition-delay: 840ms; }
+.dxd-v5-stage:nth-child(6) .dxd-v5-bar {
+  transition-delay: 1000ms;
+  background: linear-gradient(180deg, var(--accent) 0%, #8a1a1f 100%);
+  border-color: var(--accent);
+  border-bottom: 2px solid #fff;
+}
+.dxd-v5-amt {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.4px;
+  margin-bottom: 8px;
+}
+.dxd-v5-stage:nth-child(6) .dxd-v5-amt { color: #fff; }
+.dxd-v5-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim);
+  margin-top: 8px;
+}
+.dxd-v5-stage:nth-child(6) .dxd-v5-name { color: var(--accent); }
+.dxd-v5-conv {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-faint);
+  margin-top: 4px;
+  min-height: 14px;
+}
+.dxd-v5-conv strong { color: var(--accent); font-weight: 600; }
+.dxd-v5-arrow {
+  position: absolute; right: -6px; top: 40%;
+  width: 8px; height: 8px;
+  border-top: 1.5px solid var(--text-faint);
+  border-right: 1.5px solid var(--text-faint);
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.dxd-viz.in-view .dxd-v5-arrow { opacity: 1; }
+.dxd-v5-stage:nth-child(1) .dxd-v5-arrow { transition-delay: 1100ms; }
+.dxd-v5-stage:nth-child(2) .dxd-v5-arrow { transition-delay: 1200ms; }
+.dxd-v5-stage:nth-child(3) .dxd-v5-arrow { transition-delay: 1300ms; }
+.dxd-v5-stage:nth-child(4) .dxd-v5-arrow { transition-delay: 1400ms; }
+.dxd-v5-stage:nth-child(5) .dxd-v5-arrow { transition-delay: 1500ms; }
+.dxd-v5-stage:nth-child(6) .dxd-v5-arrow { display: none; }
+
+/* ---------- v6: sources & uses ---------- */
+.dxd-v6-grid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1.4fr;
+  gap: 22px;
+  align-items: stretch;
+  margin-top: 8px;
+}
+.dxd-v6-col {
+  display: flex; flex-direction: column;
+}
+.dxd-v6-col-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 12px;
+}
+.dxd-v6-stack {
+  display: flex; flex-direction: column-reverse;
+  border: 1px solid var(--border);
+  background: #0d0d0d;
+  min-height: 320px;
+  position: relative;
+  overflow: hidden;
+}
+.dxd-v6-seg {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  color: var(--text);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-family: 'Inter', sans-serif;
+  transform-origin: bottom;
+  transform: scaleY(0);
+  transition: transform 700ms cubic-bezier(.2,.7,.2,1);
+}
+.dxd-viz.in-view .dxd-v6-seg { transform: scaleY(1); }
+.dxd-v6-seg:nth-child(1) { transition-delay: 200ms; }
+.dxd-v6-seg:nth-child(2) { transition-delay: 380ms; }
+.dxd-v6-seg:nth-child(3) { transition-delay: 560ms; }
+.dxd-v6-seg .seg-name { font-size: 12px; font-weight: 600; letter-spacing: 0.2px; }
+.dxd-v6-seg .seg-amt { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--text); }
+.dxd-v6-seg.s1 { background: linear-gradient(90deg, rgba(79,168,94,0.18), rgba(79,168,94,0.06)); border-left: 3px solid var(--success); flex: 50; }
+.dxd-v6-seg.s2 { background: linear-gradient(90deg, rgba(107,138,181,0.18), rgba(107,138,181,0.06)); border-left: 3px solid var(--info); flex: 20; }
+.dxd-v6-seg.s3 { background: linear-gradient(90deg, rgba(224,164,74,0.18), rgba(224,164,74,0.06)); border-left: 3px solid var(--warn); flex: 30; }
+.dxd-v6-total {
+  margin-top: 12px;
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 10px 16px;
+  border: 1px solid var(--accent-line);
+  background: rgba(210,35,42,0.05);
+}
+.dxd-v6-total .t-name { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+.dxd-v6-total .t-amt { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+.dxd-v6-arrow { display: flex; align-items: center; justify-content: center; }
+.dxd-v6-arrow svg { width: 100%; height: 28px; }
+.dxd-v6-uses {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.dxd-v6-use {
+  display: grid; grid-template-columns: 18px 1fr auto; gap: 12px; align-items: start;
+  padding: 12px 14px;
+  background: #131313;
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+}
+.dxd-v6-use .swatch { width: 8px; height: 8px; border-radius: 1px; margin-top: 6px; }
+.dxd-v6-use .u-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+.dxd-v6-use .u-desc { font-size: 12px; line-height: 1.5; color: var(--text-dim); }
+.dxd-v6-use .u-amt  { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.dxd-v6-use.u1 { border-left-color: var(--success); } .dxd-v6-use.u1 .swatch { background: var(--success); }
+.dxd-v6-use.u2 { border-left-color: var(--info); }    .dxd-v6-use.u2 .swatch { background: var(--info); }
+.dxd-v6-use.u3 { border-left-color: var(--warn); }    .dxd-v6-use.u3 .swatch { background: var(--warn); }
+.dxd-v6-spv {
+  margin-top: 18px;
+  border: 1px dashed var(--accent-line);
+  background: rgba(210,35,42,0.04);
+  padding: 14px 18px;
+  display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
+}
+.dxd-v6-spv .spv-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px; color: var(--text); }
+.dxd-v6-spv .spv-desc { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; line-height: 1.45; }
+.dxd-v6-spv .spv-amt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+
+/* responsive collapse */
+@media (max-width: 920px) {
+  .dxd-v2-grid { grid-template-columns: 1fr; }
+  .dxd-v2-arrow { display: none; }
+  .dxd-v3-grid { grid-template-columns: repeat(2, 1fr); }
+  .dxd-v5-flow { grid-template-columns: repeat(3, 1fr); min-height: auto; }
+  .dxd-v5-stage { min-height: 140px; }
+  .dxd-v6-grid { grid-template-columns: 1fr; }
+  .dxd-v6-arrow { transform: rotate(90deg); }
+}
 </style>
 </head>
 <body>
@@ -1055,10 +1450,137 @@ blockquote.pull .cite {
       </div>
     </div>
 
-    <div class="visual-placeholder ar-16-9" style="margin-top:32px">
-      <span class="vp-eyebrow">Custom visual required</span>
-      <span class="vp-title">Regulatory + threat-event timeline, April 2025 → April 2028</span>
-      <span class="vp-desc">Horizontal timeline mapping CIRCIA (May 2026), NERC CIP-003-9 (April 2026), FAA Part 108 BVLOS, and observed threat events (Langley AFB incursions, cartel drone activity, UAE/Bahrain hyperscaler kinetic attack, 3,500+ grid breaches 2025) against the 24–36 month giant-competitor window.</span>
+    <div class="dxd-viz dxd-v1" style="margin-top:32px">
+      <div class="dxd-viz-head">
+        <span class="dxd-viz-eyebrow">Regulatory & Threat Timeline</span>
+        <span class="dxd-viz-title">Apr 2025 → Apr 2028 · the 24–36 month window</span>
+      </div>
+
+      <svg class="dxd-v1-svg" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Regulatory and threat-event timeline against the 24-36 month giant-competitor window">
+        <!-- Window overlay (Apr 2026 → Apr 2028) -->
+        <defs>
+          <pattern id="dxd-v1-stripes" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(210,35,42,0.18)" stroke-width="2"/>
+          </pattern>
+          <linearGradient id="dxd-v1-axis-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="rgba(255,255,255,0.45)"/>
+            <stop offset="1" stop-color="rgba(255,255,255,0.10)"/>
+          </linearGradient>
+        </defs>
+
+        <rect class="pop pop-d8" x="400" y="40" width="800" height="380" fill="url(#dxd-v1-stripes)" stroke="rgba(210,35,42,0.40)" stroke-width="1" stroke-dasharray="6 4"/>
+        <text class="window-label" x="410" y="62">Giant competitor window · 24–36 months</text>
+
+        <!-- Year ticks & quarter grid -->
+        <g class="axis">
+          <line class="draw" x1="0" y1="230" x2="1200" y2="230" stroke="url(#dxd-v1-axis-grad)" stroke-width="1.5" pathLength="1000"/>
+          <!-- year markers -->
+          <g>
+            <line x1="0"    y1="222" x2="0"    y2="238" stroke="rgba(255,255,255,0.30)"/>
+            <line x1="400"  y1="222" x2="400"  y2="238" stroke="rgba(255,255,255,0.30)"/>
+            <line x1="800"  y1="222" x2="800"  y2="238" stroke="rgba(255,255,255,0.30)"/>
+            <line x1="1200" y1="222" x2="1200" y2="238" stroke="rgba(255,255,255,0.30)"/>
+            <text class="axis-label" x="6"     y="252">Apr 2025</text>
+            <text class="axis-label" x="406"   y="252">Apr 2026</text>
+            <text class="axis-label" x="806"   y="252">Apr 2027</text>
+            <text class="axis-label" x="1130"  y="252" text-anchor="end">Apr 2028</text>
+          </g>
+          <!-- quarter ticks -->
+          <g stroke="rgba(255,255,255,0.10)">
+            <line x1="100"  y1="226" x2="100"  y2="234"/>
+            <line x1="200"  y1="226" x2="200"  y2="234"/>
+            <line x1="300"  y1="226" x2="300"  y2="234"/>
+            <line x1="500"  y1="226" x2="500"  y2="234"/>
+            <line x1="600"  y1="226" x2="600"  y2="234"/>
+            <line x1="700"  y1="226" x2="700"  y2="234"/>
+            <line x1="900"  y1="226" x2="900"  y2="234"/>
+            <line x1="1000" y1="226" x2="1000" y2="234"/>
+            <line x1="1100" y1="226" x2="1100" y2="234"/>
+          </g>
+        </g>
+
+        <!-- REGULATORY (above center line) -->
+        <!-- NERC CIP-003-9 effective: April 1, 2026 → x=400 -->
+        <g class="pop pop-d2">
+          <line x1="400" y1="230" x2="400" y2="170" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+          <circle cx="400" cy="230" r="5" fill="var(--accent)"/>
+          <rect x="305" y="118" width="190" height="48" fill="#161616" stroke="rgba(210,35,42,0.45)" stroke-width="1"/>
+          <text class="reg-sub"   x="315" y="135">REG · APR 2026</text>
+          <text class="reg-label" x="315" y="153">NERC CIP-003-9 effective</text>
+        </g>
+
+        <!-- CIRCIA reporting deadlines: ~Q4 2026 → x=600 -->
+        <g class="pop pop-d3">
+          <line x1="600" y1="230" x2="600" y2="100" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+          <circle cx="600" cy="230" r="5" fill="var(--accent)"/>
+          <rect x="510" y="50" width="200" height="48" fill="#161616" stroke="rgba(210,35,42,0.45)" stroke-width="1"/>
+          <text class="reg-sub"   x="520" y="67">REG · Q4 2026 (proj.)</text>
+          <text class="reg-label" x="520" y="85">CIRCIA reporting begins</text>
+        </g>
+
+        <!-- FAA Part 108 NPRM: late Q3 2025 → x=170 -->
+        <g class="pop pop-d1">
+          <line x1="170" y1="230" x2="170" y2="170" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+          <circle cx="170" cy="230" r="5" fill="var(--accent)"/>
+          <rect x="55" y="118" width="220" height="48" fill="#161616" stroke="rgba(210,35,42,0.45)" stroke-width="1"/>
+          <text class="reg-sub"   x="65" y="135">REG · 2025</text>
+          <text class="reg-label" x="65" y="153">FAA Part 108 (BVLOS) NPRM</text>
+        </g>
+
+        <!-- FAA Part 108 Final Rule projected: Q1 2027 → x=830 -->
+        <g class="pop pop-d4">
+          <line x1="830" y1="230" x2="830" y2="170" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+          <circle cx="830" cy="230" r="5" fill="var(--accent)"/>
+          <rect x="745" y="118" width="220" height="48" fill="#161616" stroke="rgba(210,35,42,0.45)" stroke-width="1"/>
+          <text class="reg-sub"   x="755" y="135">REG · 2027 (proj.)</text>
+          <text class="reg-label" x="755" y="153">FAA Part 108 Final Rule</text>
+        </g>
+
+        <!-- THREATS (below center line) -->
+        <!-- Continuous threat band: cartel drone activity, runs the full timeline -->
+        <g class="pop pop-d5">
+          <rect x="0" y="320" width="1200" height="22" fill="rgba(224,164,74,0.10)" stroke="rgba(224,164,74,0.35)" stroke-width="1" stroke-dasharray="3 3"/>
+          <text class="threat-label" x="14" y="335" fill="var(--warn)">Cartel UAS incursions · continuous · DHS/ICE verified</text>
+        </g>
+
+        <!-- 3,500+ U.S. grid physical attacks/threats reported during 2025 -->
+        <g class="pop pop-d6">
+          <rect x="0" y="350" width="380" height="22" fill="rgba(210,35,42,0.10)" stroke="rgba(210,35,42,0.35)" stroke-width="1"/>
+          <text class="threat-label" x="14" y="365" fill="var(--accent)">3,500+ U.S. grid physical incidents · 2025</text>
+        </g>
+
+        <!-- UAE/Bahrain hyperscaler kinetic attack: Q4 2025 → x=300 -->
+        <g class="pop pop-d7">
+          <line x1="300" y1="230" x2="300" y2="395" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+          <circle cx="300" cy="230" r="5" fill="var(--warn)"/>
+          <rect x="195" y="395" width="240" height="40" fill="#161616" stroke="rgba(224,164,74,0.45)" stroke-width="1"/>
+          <text class="threat-label" x="205" y="412" fill="var(--warn)" font-weight="600">Hyperscaler kinetic attack · Gulf</text>
+          <text class="reg-sub"      x="205" y="427">THREAT · Q4 2025</text>
+        </g>
+
+        <!-- Langley AFB UAS incursions (Dec 2023): annotated as "preceding event" anchor at left edge -->
+        <g class="pop pop-d8">
+          <rect x="0" y="395" width="180" height="40" fill="#0e0e0e" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="3 3"/>
+          <text class="threat-label" x="10" y="412" fill="var(--text-dim)" font-weight="600">Langley AFB incursions</text>
+          <text class="reg-sub"      x="10" y="427">PRECEDENT · DEC 2023</text>
+        </g>
+
+        <!-- Center axis labels left/right -->
+        <text class="axis-label" x="6"    y="290" fill="var(--text-faint)">Regulatory ↑</text>
+        <text class="axis-label" x="6"    y="312" fill="var(--text-faint)">Threat ↓</text>
+      </svg>
+
+      <div class="legend" data-reveal data-delay="9">
+        <span><i style="background:var(--accent)"></i>Regulatory milestone</span>
+        <span><i style="background:var(--warn)"></i>Continuous threat</span>
+        <span><i style="background:var(--text-faint)"></i>Precedent event</span>
+        <span><i style="background:url(#dxd-v1-stripes); background-color: rgba(210,35,42,0.30)"></i>24–36 mo window</span>
+      </div>
+
+      <div class="dxd-viz-foot">
+        <span>Sources · NERC, CISA, FAA reg agenda (Spring 2024), DHS/ICE, E-ISAC.</span>
+        <span>Projected dates noted; subject to rulemaking.</span>
+      </div>
     </div>
 
     <p class="close-line">The giants have a 24&ndash;36 month window. After that, the category is owned.</p>
@@ -1147,10 +1669,76 @@ blockquote.pull .cite {
       </div>
     </div>
 
-    <div class="visual-placeholder ar-16-9" style="margin-top:28px">
-      <span class="vp-eyebrow">Custom visual required</span>
-      <span class="vp-title">Three-module architecture diagram — Cortex · Sentinel · Command</span>
-      <span class="vp-desc">Clean isometric or schematic showing data flow: sensor aggregation (Cortex) → unified response console (Sentinel) → official record and compliance output (Command). Atlas labeled as the integrated platform layer. Orcrist shown as the exclusive kinetic interceptor powering Sentinel's aerial defeat capability.</span>
+    <div class="dxd-viz dxd-v2" style="margin-top:28px">
+      <div class="dxd-viz-head">
+        <span class="dxd-viz-eyebrow">Three-Module Architecture</span>
+        <span class="dxd-viz-title">Cortex · Sentinel · Command — Atlas as the integrated platform layer</span>
+      </div>
+
+      <div class="dxd-v2-grid">
+        <!-- Cortex -->
+        <div class="dxd-v2-mod" data-reveal data-delay="1">
+          <svg class="v2-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="var(--accent)">
+            <circle cx="18" cy="18" r="2.5"/>
+            <circle cx="18" cy="18" r="7" opacity=".6"/>
+            <circle cx="18" cy="18" r="12" opacity=".3"/>
+            <line x1="18" y1="2"  x2="18" y2="6"/>
+            <line x1="18" y1="30" x2="18" y2="34"/>
+            <line x1="2"  y1="18" x2="6"  y2="18"/>
+            <line x1="30" y1="18" x2="34" y2="18"/>
+          </svg>
+          <span class="v2-verb">SENSE</span>
+          <span class="v2-name">Cortex</span>
+          <p class="v2-desc">Sensor aggregation across radar, RF, EO/IR, acoustic, and 3rd-party feeds. Normalizes the airspace and ground picture into one fused track stream.</p>
+        </div>
+
+        <!-- Sentinel -->
+        <div class="dxd-v2-mod" data-reveal data-delay="3" style="position:relative">
+          <span class="dxd-v2-orcrist pulse">Orcrist · Exclusive Effector</span>
+          <svg class="v2-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="var(--accent)">
+            <path d="M18 3 L31 9 V19 C31 26 25 31 18 33 C11 31 5 26 5 19 V9 Z"/>
+            <line x1="11" y1="18" x2="25" y2="18"/>
+            <line x1="18" y1="11" x2="18" y2="25"/>
+          </svg>
+          <span class="v2-verb">DEFEAT</span>
+          <span class="v2-name">Sentinel</span>
+          <p class="v2-desc">Unified response console — operator decisions, autonomous workflows, and Orcrist as the exclusive kinetic interceptor for aerial defeat.</p>
+        </div>
+
+        <!-- Command -->
+        <div class="dxd-v2-mod" data-reveal data-delay="5">
+          <svg class="v2-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="var(--accent)">
+            <path d="M8 4 H24 L30 10 V32 H8 Z"/>
+            <line x1="13" y1="14" x2="25" y2="14"/>
+            <line x1="13" y1="20" x2="25" y2="20"/>
+            <line x1="13" y1="26" x2="20" y2="26"/>
+            <path d="M24 4 V10 H30"/>
+          </svg>
+          <span class="v2-verb">PROVE</span>
+          <span class="v2-name">Command</span>
+          <p class="v2-desc">The official record. Every action, every decision, every artifact in one reviewable narrative — CIRCIA / NERC CIP-008 reports generated, not reconstructed.</p>
+        </div>
+
+        <!-- Flow arrows -->
+        <svg class="dxd-v2-arrow a1" viewBox="0 0 38 18" preserveAspectRatio="none" aria-hidden="true">
+          <line class="flow" x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="1.2"/>
+          <polygon class="pop pop-d3" points="38,9 30,4 30,14" fill="var(--accent)"/>
+        </svg>
+        <svg class="dxd-v2-arrow a2" viewBox="0 0 38 18" preserveAspectRatio="none" aria-hidden="true">
+          <line class="flow" x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="1.2"/>
+          <polygon class="pop pop-d5" points="38,9 30,4 30,14" fill="var(--accent)"/>
+        </svg>
+      </div>
+
+      <div class="dxd-v2-platform" data-reveal data-delay="7">
+        <span class="p-name"><em>Atlas</em> · Integrated platform layer</span>
+        <span class="p-desc">One contract · one team · one throat to choke</span>
+      </div>
+
+      <div class="dxd-viz-foot">
+        <span>Sense → Defeat → Prove · single data spine.</span>
+        <span>Orcrist · exclusive kinetic effector tied to Sentinel.</span>
+      </div>
     </div>
 
     <p class="close-line">One contract. One team. One throat to choke.</p>
@@ -1216,10 +1804,89 @@ blockquote.pull .cite {
       Every customer carries its honesty tag. Live means revenue today. Signed means paper executed. Verbal means handshake with a date. In-build means engineering underway. We publish what is real; we do not inflate.
     </p>
 
-    <div class="visual-placeholder ar-16-9" style="margin-top:20px;min-height:140px">
-      <span class="vp-eyebrow">Custom visual required</span>
-      <span class="vp-title">Customer logo wall</span>
-      <span class="vp-desc">Monochrome logos: LAPD · ONEOK · Dallas ISD · Dominion Energy · Accenture · Deloitte · Stargate · GNSP. To be rendered in a calibrated grayscale lockup consistent with the dark theme.</span>
+    <div class="dxd-viz dxd-v3" style="margin-top:20px">
+      <div class="dxd-viz-head">
+        <span class="dxd-viz-eyebrow">Customers & Partners · April 2026</span>
+        <span class="dxd-viz-title">Live, signed, verbal, in-build — every name tagged</span>
+      </div>
+
+      <div class="dxd-v3-grid">
+        <!-- LAPD -->
+        <div class="dxd-v3-tile" data-reveal data-delay="1">
+          <span class="v3-tag live">Live</span>
+          <svg viewBox="0 0 200 60" aria-label="LAPD">
+            <text x="100" y="42" text-anchor="middle" font-family="'Inter', sans-serif" font-size="38" font-weight="900" letter-spacing="6" fill="#E5E5E3">LAPD</text>
+          </svg>
+        </div>
+
+        <!-- ONEOK -->
+        <div class="dxd-v3-tile" data-reveal data-delay="2">
+          <span class="v3-tag signed">Signed</span>
+          <svg viewBox="0 0 220 60" aria-label="ONEOK">
+            <text x="110" y="42" text-anchor="middle" font-family="'Inter', sans-serif" font-size="34" font-weight="700" letter-spacing="4" fill="#E5E5E3">ONEOK</text>
+          </svg>
+        </div>
+
+        <!-- Dallas ISD -->
+        <div class="dxd-v3-tile" data-reveal data-delay="3">
+          <span class="v3-tag signed">Signed</span>
+          <svg viewBox="0 0 240 60" aria-label="Dallas ISD">
+            <text x="120" y="32" text-anchor="middle" font-family="'Inter', sans-serif" font-size="20" font-weight="800" letter-spacing="3" fill="#E5E5E3">DALLAS</text>
+            <text x="120" y="52" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="600" letter-spacing="6" fill="#A8A8A6">ISD</text>
+          </svg>
+        </div>
+
+        <!-- Dominion Energy -->
+        <div class="dxd-v3-tile" data-reveal data-delay="4">
+          <span class="v3-tag verbal">Verbal</span>
+          <svg viewBox="0 0 260 60" aria-label="Dominion Energy">
+            <text x="130" y="30" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="700" letter-spacing="2" fill="#E5E5E3">DOMINION</text>
+            <text x="130" y="50" text-anchor="middle" font-family="'Inter', sans-serif" font-size="11" font-weight="500" letter-spacing="6" fill="#A8A8A6">ENERGY</text>
+          </svg>
+        </div>
+
+        <!-- Accenture -->
+        <div class="dxd-v3-tile" data-reveal data-delay="5">
+          <span class="v3-tag signed">Signed</span>
+          <svg viewBox="0 0 240 60" aria-label="Accenture">
+            <text x="115" y="42" text-anchor="middle" font-family="'Inter', sans-serif" font-size="28" font-weight="500" letter-spacing="-0.3" fill="#E5E5E3">accenture</text>
+            <text x="218" y="20" text-anchor="middle" font-family="'Inter', sans-serif" font-size="24" font-weight="900" fill="#D2232A">&gt;</text>
+          </svg>
+        </div>
+
+        <!-- Deloitte -->
+        <div class="dxd-v3-tile" data-reveal data-delay="6">
+          <span class="v3-tag verbal">Verbal</span>
+          <svg viewBox="0 0 220 60" aria-label="Deloitte">
+            <text x="105" y="42" text-anchor="middle" font-family="'Inter', sans-serif" font-size="30" font-weight="400" letter-spacing="0.5" fill="#E5E5E3">Deloitte</text>
+            <circle cx="186" cy="40" r="5" fill="#D2232A"/>
+          </svg>
+        </div>
+
+        <!-- Stargate -->
+        <div class="dxd-v3-tile" data-reveal data-delay="7">
+          <span class="v3-tag inbuild">Coalition</span>
+          <svg viewBox="0 0 240 60" aria-label="Stargate">
+            <text x="120" y="42" text-anchor="middle" font-family="'Inter', sans-serif" font-size="26" font-weight="800" letter-spacing="6" fill="#E5E5E3">STARGATE</text>
+          </svg>
+        </div>
+
+        <!-- GNSP -->
+        <div class="dxd-v3-tile" data-reveal data-delay="8">
+          <span class="v3-tag inbuild">Coalition</span>
+          <svg viewBox="0 0 200 60" aria-label="GNSP — Global Network of Sovereign Partners">
+            <text x="100" y="36" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="26" font-weight="700" letter-spacing="8" fill="#E5E5E3">GNSP</text>
+            <text x="100" y="52" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8"  letter-spacing="2" fill="#6F6F6D">GLOBAL · SOVEREIGN · PARTNERS</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="dxd-viz-foot">
+        <span><strong style="color:var(--success)">Live</strong> = revenue today.</span>
+        <span><strong style="color:var(--accent)">Signed</strong> = paper executed.</span>
+        <span><strong style="color:var(--warn)">Verbal</strong> = handshake with date.</span>
+        <span><strong style="color:var(--info)">Coalition</strong> = strategic alliance / partner.</span>
+      </div>
     </div>
 
     <table class="tbl" style="margin-top:24px">
@@ -1533,10 +2200,116 @@ blockquote.pull .cite {
         </tbody>
       </table>
 
-      <div class="visual-placeholder ar-16-9" style="margin-top:20px">
-        <span class="vp-eyebrow">Custom visual required</span>
-        <span class="vp-title">Margin-profile quadrant — Anduril · Palantir · Axon · DxD</span>
-        <span class="vp-desc">Chart plotting gross-margin (Y axis) against revenue-scale (X axis), with DxD's target (62%+ at full deployment) positioned against the three giants. Illustrates why none of them can afford to move into commercial-CI services without breaking their investor narrative.</span>
+      <div class="dxd-viz dxd-v4" style="margin-top:20px">
+        <div class="dxd-viz-head">
+          <span class="dxd-viz-eyebrow">Margin Profile · FY24 Reported · Public 10-Ks + Estimate</span>
+          <span class="dxd-viz-title">Why none of them can move into commercial-CI services without breaking their narrative</span>
+        </div>
+
+        <svg class="dxd-v4-svg" viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Gross margin vs annual revenue scatter showing Anduril, Palantir, Axon and DxD positioning">
+          <!-- Plot area: x=80..1140, y=40..480 -->
+          <!-- Y axis: 0% (480) → 100% (40)  → scale 4.4 px per % -->
+          <!-- X axis (log): $50M (80) → $5B (1140) -->
+          <!-- log10 mapping: x = 80 + (log10(rev_M/50) / log10(100)) * 1060 -->
+          <!-- ticks at 50M, 100M, 250M, 500M, 1B, 2.5B, 5B -->
+
+          <!-- gridlines -->
+          <g>
+            <line class="v4-grid" x1="80"  y1="40"  x2="80"   y2="480"/>
+            <line class="v4-grid" x1="240" y1="40"  x2="240"  y2="480"/>
+            <line class="v4-grid" x1="445" y1="40"  x2="445"  y2="480"/>
+            <line class="v4-grid" x1="610" y1="40"  x2="610"  y2="480"/>
+            <line class="v4-grid" x1="775" y1="40"  x2="775"  y2="480"/>
+            <line class="v4-grid" x1="980" y1="40"  x2="980"  y2="480"/>
+            <line class="v4-grid" x1="1140" y1="40" x2="1140" y2="480"/>
+
+            <line class="v4-grid" x1="80" y1="40"  x2="1140" y2="40"/>
+            <line class="v4-grid" x1="80" y1="150" x2="1140" y2="150"/>
+            <line class="v4-grid" x1="80" y1="260" x2="1140" y2="260"/>
+            <line class="v4-grid" x1="80" y1="370" x2="1140" y2="370"/>
+            <line class="v4-grid" x1="80" y1="480" x2="1140" y2="480"/>
+          </g>
+
+          <!-- Quadrant divider at 50% GM (y=260) -->
+          <line class="v4-axis-line" x1="80" y1="260" x2="1140" y2="260" stroke="rgba(255,255,255,0.30)" stroke-dasharray="4 4" stroke-width="1"/>
+
+          <!-- Axes -->
+          <line class="draw v4-axis-line" x1="80" y1="480" x2="1140" y2="480" pathLength="1000"/>
+          <line class="draw draw-d2 v4-axis-line" x1="80" y1="40" x2="80" y2="480" pathLength="1000"/>
+
+          <!-- Y ticks (gross margin %) -->
+          <text class="v4-tick" x="68" y="44"  text-anchor="end">100%</text>
+          <text class="v4-tick" x="68" y="154" text-anchor="end">75%</text>
+          <text class="v4-tick" x="68" y="264" text-anchor="end">50%</text>
+          <text class="v4-tick" x="68" y="374" text-anchor="end">25%</text>
+          <text class="v4-tick" x="68" y="484" text-anchor="end">0%</text>
+          <text class="v4-axis-label" x="20" y="260" transform="rotate(-90 20 260)" text-anchor="middle">Gross Margin (%)</text>
+
+          <!-- X ticks (revenue, log scale) -->
+          <text class="v4-tick" x="80"   y="500" text-anchor="middle">$50M</text>
+          <text class="v4-tick" x="240"  y="500" text-anchor="middle">$100M</text>
+          <text class="v4-tick" x="445"  y="500" text-anchor="middle">$250M</text>
+          <text class="v4-tick" x="610"  y="500" text-anchor="middle">$500M</text>
+          <text class="v4-tick" x="775"  y="500" text-anchor="middle">$1B</text>
+          <text class="v4-tick" x="980"  y="500" text-anchor="middle">$2.5B</text>
+          <text class="v4-tick" x="1140" y="500" text-anchor="middle">$5B</text>
+          <text class="v4-axis-label" x="610" y="535" text-anchor="middle">Annual Revenue (FY24, log scale)</text>
+
+          <!-- Quadrant labels -->
+          <text class="v4-quad-label" x="100"  y="62">High-margin · Sub-scale</text>
+          <text class="v4-quad-label" x="1130" y="62"  text-anchor="end">Software-margin · At scale</text>
+          <text class="v4-quad-label" x="100"  y="475">Hardware-margin · Sub-scale</text>
+          <text class="v4-quad-label" x="1130" y="475" text-anchor="end">Hardware-margin · At scale</text>
+
+          <!-- Anduril: ~$1B rev (private est.), ~30% GM (defense hardware estimate) → x=775, y=480 - 30*4.4 = 348 -->
+          <g class="pop pop-d3">
+            <circle cx="775" cy="348" r="11" fill="rgba(107,138,181,0.20)" stroke="var(--info)" stroke-width="1.5"/>
+            <circle cx="775" cy="348" r="4" fill="var(--info)"/>
+            <text class="v4-co-label" x="790" y="345">Anduril</text>
+            <text class="v4-co-sub"   x="790" y="362">~$1.0B · ~30% GM (est.)</text>
+          </g>
+
+          <!-- Palantir: $2.87B FY24, 80% GAAP GM → x=1015, y=40+(100-80)*4.4 = 40+88 = 128 -->
+          <g class="pop pop-d4">
+            <circle cx="1015" cy="128" r="11" fill="rgba(107,138,181,0.20)" stroke="var(--info)" stroke-width="1.5"/>
+            <circle cx="1015" cy="128" r="4" fill="var(--info)"/>
+            <text class="v4-co-label" x="1030" y="125">Palantir</text>
+            <text class="v4-co-sub"   x="1030" y="142">$2.87B · ~80% GM (FY24)</text>
+          </g>
+
+          <!-- Axon: $2.08B FY24, 60.6% GM → x≈970, y=40+(100-60.6)*4.4 ≈ 213 -->
+          <g class="pop pop-d5">
+            <circle cx="965" cy="213" r="11" fill="rgba(107,138,181,0.20)" stroke="var(--info)" stroke-width="1.5"/>
+            <circle cx="965" cy="213" r="4" fill="var(--info)"/>
+            <text class="v4-co-label" x="855" y="210" text-anchor="end">Axon</text>
+            <text class="v4-co-sub"   x="855" y="227" text-anchor="end">$2.08B · ~60% GM (FY24)</text>
+          </g>
+
+          <!-- DxD today: ~$80M run-rate (FY27 weighted midpoint), 62% target → x=210, y=40+(100-62)*4.4 = 207 -->
+          <!-- DxD trajectory: dashed line from current to target right-of-current -->
+          <g class="pop pop-d6">
+            <path class="v4-traj" d="M 210 207 Q 380 170, 525 165"/>
+            <polygon points="525,165 515,159 515,171" fill="var(--accent)"/>
+          </g>
+
+          <g class="pop pop-d7" style="filter: drop-shadow(0 0 12px rgba(210,35,42,0.65))">
+            <circle cx="210" cy="207" r="14" fill="rgba(210,35,42,0.22)" stroke="var(--accent)" stroke-width="2"/>
+            <circle cx="210" cy="207" r="6" fill="var(--accent)"/>
+            <text class="v4-dxd-callout" x="228" y="202">DXD · Today</text>
+            <text class="v4-co-sub"      x="228" y="220">~$80M · 62%+ GM target</text>
+          </g>
+
+          <g class="pop pop-d8">
+            <rect x="475" y="115" width="220" height="50" fill="#161616" stroke="var(--accent-line)" stroke-width="1"/>
+            <text class="v4-dxd-callout" x="485" y="135">DxD · Full deployment</text>
+            <text class="v4-co-sub"      x="485" y="152">SaaS overlay scales · 62%+ GM</text>
+          </g>
+        </svg>
+
+        <div class="dxd-viz-foot">
+          <span>Sources · Palantir 10-K FY24 · Axon 10-K FY24 · Anduril revenue per public reporting; GM estimated.</span>
+          <span>DxD: 8% EBITDA Day-1 · 62%+ GM at full platform deployment.</span>
+        </div>
       </div>
     </div>
 
@@ -1640,10 +2413,68 @@ blockquote.pull .cite {
       </div>
     </div>
 
-    <div class="visual-placeholder ar-16-9" style="margin-top:24px">
-      <span class="vp-eyebrow">Custom visual required</span>
-      <span class="vp-title">Pipeline walk — horizontal flow, not a funnel pyramid</span>
-      <span class="vp-desc">Horizontal flow: Gross $700M → Channel $600M (5–10% weighted) → Qualified $83–105M (25–35%) → Signed/Verbal $22M (90%+) → Live $27M (100%) → Weighted $55–100M. Reinforces that the $700M is the addressable book, not the forecast.</span>
+    <div class="dxd-viz dxd-v5" style="margin-top:24px">
+      <div class="dxd-viz-head">
+        <span class="dxd-viz-eyebrow">Pipeline Walk · April 2026</span>
+        <span class="dxd-viz-title">$700M addressable book → $55–100M weighted forecast — horizontal flow, not a funnel</span>
+      </div>
+
+      <div class="dxd-v5-flow">
+        <!-- Bar heights via inline style. Square-root scale so $700M and $22M both readable.
+             scale: height = sqrt(amount_M)/sqrt(700) * 220 + minimum -->
+        <div class="dxd-v5-stage">
+          <span class="dxd-v5-amt">$700M</span>
+          <div class="dxd-v5-bar" style="height:230px"></div>
+          <span class="dxd-v5-name">Gross</span>
+          <span class="dxd-v5-conv">Addressable book</span>
+          <span class="dxd-v5-arrow"></span>
+        </div>
+
+        <div class="dxd-v5-stage">
+          <span class="dxd-v5-amt">$600M</span>
+          <div class="dxd-v5-bar" style="height:213px"></div>
+          <span class="dxd-v5-name">Channel</span>
+          <span class="dxd-v5-conv"><strong>5–10%</strong> wt</span>
+          <span class="dxd-v5-arrow"></span>
+        </div>
+
+        <div class="dxd-v5-stage">
+          <span class="dxd-v5-amt">$83–105M</span>
+          <div class="dxd-v5-bar" style="height:88px"></div>
+          <span class="dxd-v5-name">Qualified</span>
+          <span class="dxd-v5-conv"><strong>25–35%</strong> wt</span>
+          <span class="dxd-v5-arrow"></span>
+        </div>
+
+        <div class="dxd-v5-stage">
+          <span class="dxd-v5-amt">$22M</span>
+          <div class="dxd-v5-bar" style="height:48px"></div>
+          <span class="dxd-v5-name">Signed / Verbal</span>
+          <span class="dxd-v5-conv"><strong>90%+</strong> wt</span>
+          <span class="dxd-v5-arrow"></span>
+        </div>
+
+        <div class="dxd-v5-stage">
+          <span class="dxd-v5-amt">$27M</span>
+          <div class="dxd-v5-bar" style="height:53px"></div>
+          <span class="dxd-v5-name">Live</span>
+          <span class="dxd-v5-conv"><strong>100%</strong> wt</span>
+          <span class="dxd-v5-arrow"></span>
+        </div>
+
+        <div class="dxd-v5-stage">
+          <span class="dxd-v5-amt">$55–100M</span>
+          <div class="dxd-v5-bar pulse" style="height:84px"></div>
+          <span class="dxd-v5-name">Weighted</span>
+          <span class="dxd-v5-conv"><strong>FY27 forecast</strong></span>
+        </div>
+      </div>
+
+      <div class="dxd-viz-foot">
+        <span>$700M is the <em>addressable book</em>, not the forecast.</span>
+        <span>Weighted = sum of stage × probability — auditable bottom-up.</span>
+        <span>Bar height: √(amount) scale to keep $22M readable beside $700M.</span>
+      </div>
     </div>
 
     <div class="callouts">
@@ -1732,10 +2563,88 @@ blockquote.pull .cite {
       </tbody>
     </table>
 
-    <div class="visual-placeholder ar-16-9" style="margin-top:24px;min-height:140px">
-      <span class="vp-eyebrow">Visual to be finalized with MS banker</span>
-      <span class="vp-title">Sources-and-uses — formal schedule</span>
-      <span class="vp-desc">Final sources-and-uses schedule to be finalized with Morgan Stanley because pre-money valuation is TBD. Above table is the working structure. SPV ring-fenced; $0 from DxD raise; separate LPs, separate exit path.</span>
+    <div class="dxd-viz" style="margin-top:24px">
+      <div class="dxd-viz-head">
+        <span class="dxd-viz-eyebrow">Sources & Uses · Working Schedule</span>
+        <span class="dxd-viz-title">$100M structured to match the risk profile of the work — final allocation with Morgan Stanley</span>
+      </div>
+
+      <div class="dxd-v6-grid">
+        <!-- SOURCES (stacked bar) -->
+        <div class="dxd-v6-col">
+          <span class="dxd-v6-col-head">Sources · $100M</span>
+          <div class="dxd-v6-stack">
+            <div class="dxd-v6-seg s1">
+              <span class="seg-name">Working-capital facility</span>
+              <span class="seg-amt">~$50M</span>
+            </div>
+            <div class="dxd-v6-seg s2">
+              <span class="seg-name">Platform &amp; strategic equity</span>
+              <span class="seg-amt">~$20M</span>
+            </div>
+            <div class="dxd-v6-seg s3">
+              <span class="seg-name">Operations equity</span>
+              <span class="seg-amt">~$30M</span>
+            </div>
+          </div>
+          <div class="dxd-v6-total" data-reveal data-delay="8">
+            <span class="t-name">Total raise</span>
+            <span class="t-amt">$100M</span>
+          </div>
+        </div>
+
+        <!-- ARROW -->
+        <div class="dxd-v6-arrow" data-reveal data-delay="6">
+          <svg viewBox="0 0 60 28" preserveAspectRatio="none" aria-hidden="true">
+            <line class="flow" x1="0" y1="14" x2="50" y2="14" stroke="var(--accent)" stroke-width="1.5"/>
+            <polygon points="60,14 48,7 48,21" fill="var(--accent)"/>
+          </svg>
+        </div>
+
+        <!-- USES -->
+        <div class="dxd-v6-col">
+          <span class="dxd-v6-col-head">Uses · By risk profile</span>
+          <div class="dxd-v6-uses">
+            <div class="dxd-v6-use u1" data-reveal data-delay="2">
+              <span class="swatch"></span>
+              <div>
+                <div class="u-name">Asset-backed inventory · Low risk</div>
+                <div class="u-desc">Drone &amp; cUAS inventory, Orcrist pre-financing, channel cycle bridge on signed contracts. Priced against the live book.</div>
+              </div>
+              <span class="u-amt">~$50M</span>
+            </div>
+            <div class="dxd-v6-use u2" data-reveal data-delay="4">
+              <span class="swatch"></span>
+              <div>
+                <div class="u-name">IP lockdown + Orcrist equity · Medium risk</div>
+                <div class="u-desc">~$15M across 2–3 tech-stack positions + ~$5M aligned equity in Orcrist. Tagged and ring-fenced.</div>
+              </div>
+              <span class="u-amt">~$20M</span>
+            </div>
+            <div class="dxd-v6-use u3" data-reveal data-delay="6">
+              <span class="swatch"></span>
+              <div>
+                <div class="u-name">M&amp;A · GSOC · org scale · Low–Med risk</div>
+                <div class="u-desc">Inorganic acquisitions inside the module roadmap; GSOC buildout; organic growth to catch Accenture/Deloitte demand.</div>
+              </div>
+              <span class="u-amt">~$30M</span>
+            </div>
+          </div>
+
+          <div class="dxd-v6-spv" data-reveal data-delay="9">
+            <div>
+              <div class="spv-name">Sovereign SPV · separate vehicle</div>
+              <div class="spv-desc">$50M initial / $100M target · Patrick-led · separate LPs · separate exit path · ring-fenced from the DxD raise.</div>
+            </div>
+            <span class="spv-amt">$0 from raise</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dxd-viz-foot">
+        <span>Pre-money TBD with Morgan Stanley · final S&amp;U schedule to be issued.</span>
+        <span>SPV is a parallel vehicle — not a use of the $100M.</span>
+      </div>
     </div>
 
     <p class="close-line">The $100M doesn't just fund the platform. It locks the effector, the substrate, and the sovereign supply chain of the category — before the market consolidates.</p>
@@ -1980,6 +2889,25 @@ blockquote.pull .cite {
   }
   window.addEventListener('hashchange', initFromHash);
   initFromHash();
+
+  // Custom-visualization reveal: add .in-view when each .dxd-viz scrolls into the deck.
+  // Replays each time so the animations fire on every visit to the slide.
+  var vizEls = document.querySelectorAll('.dxd-viz');
+  if (vizEls.length && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && e.intersectionRatio > 0.25) {
+          e.target.classList.add('in-view');
+        } else if (e.intersectionRatio < 0.05) {
+          e.target.classList.remove('in-view');
+        }
+      });
+    }, { root: deck, threshold: [0, 0.05, 0.25, 0.6] });
+    vizEls.forEach(function (el) { io.observe(el); });
+  } else {
+    // Fallback: just show everything.
+    vizEls.forEach(function (el) { el.classList.add('in-view'); });
+  }
 })();
 </script>
 
