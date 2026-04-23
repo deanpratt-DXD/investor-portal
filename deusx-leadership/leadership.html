@@ -320,15 +320,18 @@
   /* ---------- LEADERSHIP GRID ---------- */
   .leaders {
     padding: 40px 40px 120px;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
     background: var(--line);
     border: 1px solid var(--line);
+  }
+  @media (max-width: 1280px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 1000px) {
     .grid { grid-template-columns: repeat(2, 1fr); }
@@ -631,34 +634,6 @@
 <section class="leaders">
   <div class="grid" id="grid"></div>
 </section>
-
-<!-- CONTACT BAND -->
-<section class="contact">
-  <div class="contact-inner">
-    <div>
-      <div class="eyebrow">Contact Us</div>
-      <h2>Threats are evolving. The systems meant to stop them <em>are not</em>.</h2>
-      <p>We deliver a new kind of safety through robotics, real-time response, and elite defense minds working as one.</p>
-      <a href="#" class="contact-cta">Start a conversation</a>
-    </div>
-    <div class="contact-decoration">
-      <div class="big-x">X</div>
-      <div class="big-x-label">The future of security is here.</div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div>© 2025 Deus X Defense. All Rights Reserved.</div>
-  <div class="footer-links">
-    <a href="#">Public Safety &amp; Defense</a>
-    <a href="#">Enterprise Security</a>
-    <a href="#">Manned Guarding</a>
-    <a href="#">Drone Training</a>
-    <a href="#">Careers</a>
-    <a href="#">Contact</a>
-  </div>
-</footer>
 
 <script>
   // Leadership data - pulled directly from the DXD leadership page
