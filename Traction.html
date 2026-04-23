@@ -26,23 +26,29 @@
     border-bottom: 1px solid var(--dxd-line);
     padding-bottom: 44px;
     margin-bottom: 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
+  .hero .dxd-eyebrow { margin: 0; }
   .hero h1 {
     font-family: 'Tomorrow', system-ui, sans-serif;
-    font-size: clamp(40px, 5.4vw, 76px);
+    font-size: clamp(40px, 5.4vw, 72px);
     font-weight: 400;
-    line-height: 0.98;
+    line-height: 1.05;
     letter-spacing: -0.02em;
-    margin: 8px 0 16px;
+    margin: 0;
+    max-width: 22ch;
   }
   .hero p.lede {
-    max-width: 70ch;
+    max-width: 62ch;
     font-size: clamp(16px, 1.1vw, 19px);
+    line-height: 1.55;
     color: var(--dxd-ink-muted);
     margin: 0;
   }
   .hero .footer-line {
-    margin-top: 22px;
+    margin-top: 8px;
     padding-top: 18px;
     border-top: 1px dashed var(--dxd-line);
     font-family: 'JetBrains Mono', monospace;
@@ -255,8 +261,8 @@
 <!-- ─────────────────────────── HERO ─────────────────────────── -->
 <header class="hero">
   <span class="dxd-eyebrow">Traction · April 2026</span>
-  <h1>Named, tagged, honest.</h1>
-  <p class="lede">Every customer, every partner, every regulator that has put weight on Deus X Defense — with the honesty tag attached. Three lead proofs, one coalition, the rules of the road, the moats underneath.</p>
+  <h1>Where the dollars actually are.</h1>
+  <p class="lede">Three lead customers. One coalition. A regulatory moat. Every name on this page is tagged for what it really is — signed, live, verbal, in&#8209;build, or roadmap.</p>
   <div class="footer-line">$0 fixed sales cost · 3 commission-only reps · every major deal inbound or partner-led</div>
 </header>
 

@@ -808,7 +808,7 @@
   </div>
   <div class="intro-count">
     <span>Section 02 / Leadership</span>
-    <span><strong>22</strong> team members · grouped by role architecture</span>
+    <span><strong>22</strong> team members</span>
   </div>
 </section>
 
@@ -849,7 +849,7 @@
       bucket: "Built the technology",
       chips: ["NSA · Tier 1 SOCOM (12y)", "6 patents", "USSOCOM"],
       bio: "Twelve years embedded with the National Security Agency at Tier 1 Special Operations Command. Six patents. Builds the systems that have to work the first time, in the dark, against a thinking adversary.",
-      img: "photos/brendan-flannery.jpg"
+      img: "photos/brendan-flannery.svg"
     },
     {
       name: "Nick Gilmour",
@@ -1013,64 +1013,40 @@
     }
   ];
 
-  // Render a per-section bucket header before the cards in each bucket
+  // Render flat: featured (Pat) spans full width, rest fill 4-col grid
   const grid = document.getElementById("grid");
-  const buckets = [
-    "Built the technology",
-    "Operationalized & standardized",
-    "Built the business"
-  ];
-  const renderChip = txt => `<span class="card-chip">${txt}</span>`;
-  let cardIndex = 0;
   const total = leaders.length;
-  buckets.forEach(b => {
-    const inBucket = leaders.filter(l => l.bucket === b);
-    if (!inBucket.length) return;
-    const head = document.createElement("div");
-    head.className = "bucket-head reveal";
-    head.style.cssText = "grid-column: 1 / -1; margin: 22px 0 6px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.10);";
-    head.innerHTML = `
-      <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;">${b}</div>
-    `;
-    grid.appendChild(head);
-    inBucket.forEach(l => {
-      cardIndex += 1;
-      const num = String(cardIndex).padStart(2, "0");
-      const card = document.createElement("article");
-      card.className = "card reveal" + (l.featured ? " card-featured" : "");
-      const bioHtml = l.bio.includes("|")
-        ? l.bio.split("|").map(p => `<p>${p.trim()}</p>`).join("")
-        : l.bio;
-      const chipsHtml = l.chips && l.chips.length
-        ? `<div class="card-chips">${l.chips.map(renderChip).join("")}</div>`
-        : "";
-      if (l.featured) {
-        card.innerHTML = `
-          <div class="card-photo">
-            <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
-          </div>
-          <div class="card-body">
-            <div class="card-name">${l.name}</div>
-            <div class="card-role">${l.role}</div>
-            ${chipsHtml}
-            <div class="card-bio">${bioHtml}</div>
-          </div>
-        `;
-      } else {
-        card.innerHTML = `
-          <div class="card-number">${num} / ${String(total).padStart(2, "0")}</div>
-          <div class="card-photo">
-            <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
-          </div>
+  leaders.forEach((l, i) => {
+    const num = String(i + 1).padStart(2, "0");
+    const card = document.createElement("article");
+    card.className = "card reveal" + (l.featured ? " card-featured" : "");
+    const bioHtml = l.bio.includes("|")
+      ? l.bio.split("|").map(p => `<p>${p.trim()}</p>`).join("")
+      : l.bio;
+    if (l.featured) {
+      card.innerHTML = `
+        <div class="card-photo">
+          <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
+        </div>
+        <div class="card-body">
           <div class="card-name">${l.name}</div>
           <div class="card-role">${l.role}</div>
-          ${chipsHtml}
           <div class="card-bio">${bioHtml}</div>
-          <div class="card-rule"></div>
-        `;
-      }
-      grid.appendChild(card);
-    });
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="card-number">${num} / ${String(total).padStart(2, "0")}</div>
+        <div class="card-photo">
+          <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
+        </div>
+        <div class="card-name">${l.name}</div>
+        <div class="card-role">${l.role}</div>
+        <div class="card-bio">${bioHtml}</div>
+        <div class="card-rule"></div>
+      `;
+    }
+    grid.appendChild(card);
   });
 
   // Advisors — Sec 5.6 "validate the bet"
