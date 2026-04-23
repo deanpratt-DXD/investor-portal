@@ -1699,7 +1699,81 @@ beats.forEach((b,i)=>{
   navDots.appendChild(dot);
 });
 
-// ─── SCROLL OBSERVER ───
+// ─── ARCHITECTURE: clickable engine boxes → engine modal ───
+// Wires SVG <text> labels for NERVE / CORTEX / ATLAS / SENTINEL / COMMAND
+// inside the architecture diagrams so they open the same full-screen
+// engine modal used by the intro pentagon. Done post-hoc to avoid
+// rewriting the dense SVG markup. Adds a transparent click overlay
+// sized to the nearest preceding <rect> so the entire box is hit-able.
+(function wireArchClickables(){
+  const ENGINE_KEYS = new Set(['nerve','cortex','atlas','sentinel','command']);
+  const archBeat = document.getElementById('beat-architecture');
+  if(!archBeat) return;
+
+  function bind(){
+    archBeat.querySelectorAll('svg text').forEach(t => {
+      const raw = (t.textContent || '').trim().toLowerCase();
+      // First word only — handles "Atlas · Airspace Defense" etc.
+      const key = raw.split(/[^a-z]+/)[0];
+      if(!ENGINE_KEYS.has(key)) return;
+      if(t.dataset.archBound) return;
+      t.dataset.archBound = '1';
+
+      // Find nearest preceding <rect> sibling — that's the engine box.
+      let rect = t.previousElementSibling;
+      while(rect && rect.tagName.toLowerCase() !== 'rect') rect = rect.previousElementSibling;
+      if(!rect) return;
+
+      const x = parseFloat(rect.getAttribute('x'));
+      const y = parseFloat(rect.getAttribute('y'));
+      const w = parseFloat(rect.getAttribute('width'));
+      const h = parseFloat(rect.getAttribute('height'));
+      if([x,y,w,h].some(v => Number.isNaN(v))) return;
+
+      // Transparent overlay rect captures clicks across the whole box.
+      const NS = 'http://www.w3.org/2000/svg';
+      const hit = document.createElementNS(NS,'rect');
+      hit.setAttribute('x', x); hit.setAttribute('y', y);
+      hit.setAttribute('width', w); hit.setAttribute('height', h);
+      hit.setAttribute('fill', 'transparent');
+      hit.setAttribute('class', 'arch-click');
+      hit.style.cursor = 'pointer';
+      hit.setAttribute('role','button');
+      hit.setAttribute('tabindex','0');
+      hit.setAttribute('aria-label', 'Open ' + key.toUpperCase() + ' details');
+      hit.addEventListener('click', (e)=>{ e.stopPropagation(); openEngineModal(key); });
+      hit.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openEngineModal(key);} });
+      hit.addEventListener('mouseenter', ()=>{ rect.setAttribute('data-arch-hover','1'); rect.style.filter='brightness(1.4)'; });
+      hit.addEventListener('mouseleave', ()=>{ rect.removeAttribute('data-arch-hover'); rect.style.filter=''; });
+
+      // Also style the text label as clickable.
+      t.style.cursor = 'pointer';
+      t.addEventListener('click', (e)=>{ e.stopPropagation(); openEngineModal(key); });
+
+      rect.parentNode.appendChild(hit);
+    });
+
+    // Add a small affordance hint above each architecture SVG (once).
+    archBeat.querySelectorAll('.arch-block').forEach(block => {
+      if(block.dataset.hintAdded) return;
+      block.dataset.hintAdded = '1';
+      const hint = document.createElement('div');
+      hint.style.cssText = "font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#c4953a;margin:0 0 10px;display:flex;align-items:center;gap:8px;";
+      hint.innerHTML = '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#c4953a;box-shadow:0 0 8px #c4953a;"></span> Click any engine box for the full deep-dive';
+      block.insertBefore(hint, block.firstChild);
+    });
+  }
+
+  // Bind on architecture beat coming into view (SVG already in DOM).
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(en => { if(en.isIntersecting){ bind(); } });
+  },{threshold:0.05});
+  obs.observe(archBeat);
+  // Also bind immediately in case beat is already on-screen / page jump.
+  bind();
+})();
+
+
 const activeObs = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
