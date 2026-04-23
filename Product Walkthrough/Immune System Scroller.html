@@ -924,6 +924,247 @@ section.beat.engine-beat .inner{
   <div class="red-rule"></div>
 </section>
 
+<!-- ═══════════════════ BEAT 6.5 — ARCHITECTURE DIAGRAMS ═══════════════════ -->
+<section class="beat" id="beat-architecture" data-label="Architecture" data-short="Architecture">
+  <div class="grid-bg"></div>
+  <div class="inner">
+
+    <div class="eyebrow reveal">System Architecture</div>
+    <h1 class="headline reveal d1">One operator console. <span class="accent">Every asset under it.</span></h1>
+    <p class="sub reveal d2">Two views of the same platform. The Sovereign OS — the three-tier core that connects every asset to one command surface. PUPPETMASTER — the fleet abstraction layer that turns heterogeneous hardware into a single dispatch interface.</p>
+
+    <!-- ── Diagram 1: Sovereign OS ── -->
+    <div class="arch-block reveal d3" style="margin-top:24px;background:#0d0d0f;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px;">
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--white-faint);margin-bottom:6px">Sovereign OS — Three-Tier Platform</div>
+      <div style="font-family:var(--font-heading);font-size:18px;color:var(--white);margin-bottom:14px">Operator Console at the core. Capability layers in the middle. Physical assets at the edge.</div>
+      <svg viewBox="0 0 1100 680" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', monospace" style="width:100%;height:auto;display:block">
+        <rect width="1100" height="680" fill="#111113"/>
+        <defs>
+          <pattern id="arch-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+          </pattern>
+          <marker id="arch-arrow-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#D2232A"/>
+          </marker>
+          <marker id="arch-arrow-white" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.3)"/>
+          </marker>
+          <marker id="arch-arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+          </marker>
+          <marker id="arch-arrow-teal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#34d399"/>
+          </marker>
+        </defs>
+        <rect width="1100" height="680" fill="url(#arch-grid)"/>
+
+        <!-- TIER 1: PHYSICAL ASSETS -->
+        <text x="550" y="628" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="9" letter-spacing="3">TIER 1 — PHYSICAL ASSETS</text>
+        <rect x="40" y="570" width="120" height="48" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <text x="100" y="589" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" letter-spacing="1.5">GUARD FORCE</text>
+        <text x="100" y="605" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">450+ Ops</text>
+        <rect x="180" y="570" width="120" height="48" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <text x="240" y="589" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" letter-spacing="1.5">DRONE FLEET</text>
+        <text x="240" y="605" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">7 Platforms</text>
+        <rect x="320" y="570" width="120" height="48" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <text x="380" y="589" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" letter-spacing="1.5">EDGE SENSORS</text>
+        <text x="380" y="605" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">AI + RF + EO/IR</text>
+        <rect x="460" y="570" width="120" height="48" fill="#1a1a1d" stroke="rgba(210,35,42,0.3)" stroke-width="1"/>
+        <text x="520" y="589" text-anchor="middle" fill="rgba(210,35,42,0.8)" font-size="8" letter-spacing="1.5">ORCRIST SEAM</text>
+        <text x="520" y="605" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">$30K / Unit</text>
+        <rect x="600" y="570" width="120" height="48" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <text x="660" y="589" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" letter-spacing="1.5">GROUND ROBOTS</text>
+        <text x="660" y="605" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">2027+</text>
+        <rect x="740" y="570" width="140" height="48" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <text x="810" y="589" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" letter-spacing="1.5">COMPLIANCE DATA</text>
+        <text x="810" y="605" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">Auto-Generated</text>
+        <rect x="900" y="570" width="160" height="48" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <text x="980" y="589" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" letter-spacing="1.5">ENTERPRISE CLIENTS</text>
+        <text x="980" y="605" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">via Accenture</text>
+
+        <!-- TIER 2: CAPABILITY LAYERS -->
+        <text x="550" y="430" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="9" letter-spacing="3">TIER 2 — CAPABILITY LAYERS</text>
+        <rect x="40" y="450" width="180" height="100" fill="#0f1a2e" stroke="#3b82f6" stroke-width="1.5"/>
+        <rect x="40" y="450" width="180" height="4" fill="#3b82f6"/>
+        <text x="130" y="474" text-anchor="middle" fill="#60a5fa" font-size="8" letter-spacing="2">AI SENSE</text>
+        <text x="130" y="494" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="800" font-family="'Outfit',sans-serif">CORTEX</text>
+        <text x="130" y="512" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Edge AI · Fusion · Alerts</text>
+        <text x="130" y="530" text-anchor="middle" fill="#4ade80" font-size="8" letter-spacing="1">● LIVE</text>
+        <rect x="240" y="450" width="200" height="100" fill="#1a0f0f" stroke="#D2232A" stroke-width="2"/>
+        <rect x="240" y="450" width="200" height="4" fill="#D2232A"/>
+        <text x="340" y="474" text-anchor="middle" fill="#D2232A" font-size="8" letter-spacing="2">C2 PLATFORM</text>
+        <text x="340" y="494" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="800" font-family="'Outfit',sans-serif">PUPPETMASTER</text>
+        <text x="340" y="512" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Dispatch · Fleet · Airspace</text>
+        <text x="340" y="530" text-anchor="middle" fill="#4ade80" font-size="8" letter-spacing="1">● LIVE</text>
+        <rect x="460" y="450" width="180" height="100" fill="#0f1a14" stroke="#34d399" stroke-width="1.5"/>
+        <rect x="460" y="450" width="180" height="4" fill="#34d399"/>
+        <text x="550" y="474" text-anchor="middle" fill="#34d399" font-size="8" letter-spacing="2">COMPLIANCE</text>
+        <text x="550" y="494" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="800" font-family="'Outfit',sans-serif">COMMAND</text>
+        <text x="550" y="512" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Report · Posture · Verify</text>
+        <text x="550" y="530" text-anchor="middle" fill="#f59e0b" font-size="8" letter-spacing="1">◆ NEXT</text>
+        <rect x="660" y="450" width="180" height="100" fill="#1a0f0f" stroke="#D2232A" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <rect x="660" y="450" width="180" height="4" fill="#D2232A"/>
+        <text x="750" y="474" text-anchor="middle" fill="#D2232A" font-size="8" letter-spacing="2">AIR DEFENSE</text>
+        <text x="750" y="494" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="800" font-family="'Outfit',sans-serif">HALO</text>
+        <text x="750" y="512" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Sense · Slew · Strike</text>
+        <text x="750" y="530" text-anchor="middle" fill="#f59e0b" font-size="8" letter-spacing="1">◆ NEXT</text>
+        <rect x="860" y="450" width="200" height="100" fill="#1a1020" stroke="#7c3aed" stroke-width="1.5"/>
+        <rect x="860" y="450" width="200" height="4" fill="#7c3aed"/>
+        <text x="960" y="474" text-anchor="middle" fill="#a78bfa" font-size="8" letter-spacing="2">AI BRAIN</text>
+        <text x="960" y="494" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="800" font-family="'Outfit',sans-serif">SENTINEL</text>
+        <text x="960" y="512" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Detect · Classify · Learn</text>
+        <text x="960" y="530" text-anchor="middle" fill="#f59e0b" font-size="8" letter-spacing="1">◆ BUILDING</text>
+
+        <!-- Connector lines: Tier 1 → Tier 2 -->
+        <line x1="100" y1="570" x2="100" y2="550" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="240" y1="570" x2="240" y2="550" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="380" y1="570" x2="380" y2="550" stroke="#3b82f6" stroke-width="1" stroke-opacity="0.4" marker-end="url(#arch-arrow-blue)"/>
+        <line x1="520" y1="570" x2="750" y2="550" stroke="#D2232A" stroke-width="1" stroke-opacity="0.4" marker-end="url(#arch-arrow-red)"/>
+        <line x1="660" y1="570" x2="340" y2="550" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="810" y1="570" x2="550" y2="550" stroke="#34d399" stroke-width="1" stroke-opacity="0.4" marker-end="url(#arch-arrow-teal)"/>
+        <line x1="980" y1="570" x2="960" y2="550" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+
+        <!-- TIER 3: SOVEREIGN OS CORE -->
+        <text x="550" y="56" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="9" letter-spacing="3">TIER 3 — SOVEREIGN OS CORE</text>
+        <rect x="160" y="70" width="780" height="320" fill="rgba(210,35,42,0.04)" stroke="#D2232A" stroke-width="1.5"/>
+        <rect x="160" y="70" width="780" height="5" fill="#D2232A"/>
+        <text x="550" y="100" text-anchor="middle" fill="rgba(210,35,42,0.7)" font-size="9" letter-spacing="4">SOVEREIGN OS — UNIFIED PLATFORM CORE</text>
+        <rect x="380" y="120" width="340" height="80" fill="rgba(210,35,42,0.08)" stroke="#D2232A" stroke-width="1"/>
+        <text x="550" y="148" text-anchor="middle" fill="#D2232A" font-size="9" letter-spacing="3">SINGLE PANE OF GLASS</text>
+        <text x="550" y="172" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="900" font-family="'Outfit',sans-serif">OPERATOR CONSOLE</text>
+        <text x="550" y="190" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="9">Map · Fleet · Feeds · SENTINEL · Comms · Incidents</text>
+        <rect x="180" y="230" width="160" height="60" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <text x="260" y="254" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" letter-spacing="1.5">DISPATCH ENGINE</text>
+        <text x="260" y="272" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">Auto-Route</text>
+        <rect x="180" y="310" width="160" height="60" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <text x="260" y="334" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" letter-spacing="1.5">AIRSPACE MGMT</text>
+        <text x="260" y="352" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">BVLOS 400ft</text>
+        <rect x="760" y="230" width="160" height="60" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <text x="840" y="254" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" letter-spacing="1.5">DATA PIPELINE</text>
+        <text x="840" y="272" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">AES-256</text>
+        <rect x="760" y="310" width="160" height="60" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <text x="840" y="334" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" letter-spacing="1.5">INCIDENT LOG</text>
+        <text x="840" y="352" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">Auto-Capture</text>
+        <rect x="380" y="230" width="160" height="60" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <text x="460" y="254" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" letter-spacing="1.5">FLEET ABSTRACTION</text>
+        <text x="460" y="272" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">7 Platforms</text>
+        <rect x="560" y="230" width="160" height="60" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <text x="640" y="254" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" letter-spacing="1.5">AUTHORITY CHAIN</text>
+        <text x="640" y="272" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">CJIS Certified</text>
+        <rect x="380" y="310" width="340" height="60" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <text x="550" y="334" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" letter-spacing="1.5">SENTINEL AI — LEARNING ENGINE</text>
+        <text x="550" y="352" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11" font-weight="700" font-family="'Outfit',sans-serif">Detect · Classify · Recommend · Learn</text>
+
+        <!-- Connector lines: Tier 2 → Tier 3 -->
+        <line x1="130" y1="450" x2="350" y2="390" stroke="#3b82f6" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arch-arrow-blue)"/>
+        <line x1="340" y1="450" x2="450" y2="390" stroke="#D2232A" stroke-width="1.5" stroke-opacity="0.6" marker-end="url(#arch-arrow-red)"/>
+        <line x1="550" y1="450" x2="550" y2="390" stroke="#34d399" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arch-arrow-teal)"/>
+        <line x1="750" y1="450" x2="680" y2="390" stroke="#D2232A" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arch-arrow-red)"/>
+        <line x1="960" y1="450" x2="800" y2="390" stroke="#a78bfa" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arch-arrow-white)"/>
+
+        <!-- Legend -->
+        <rect x="40" y="450" width="6" height="6" fill="#4ade80" rx="3"/>
+        <text x="52" y="458" fill="#4ade80" font-size="8" letter-spacing="1">LIVE</text>
+        <rect x="100" y="450" width="6" height="6" fill="#f59e0b" rx="3"/>
+        <text x="112" y="458" fill="#f59e0b" font-size="8" letter-spacing="1">NEXT</text>
+        <rect x="160" y="450" width="6" height="6" fill="#60a5fa" rx="3"/>
+        <text x="172" y="458" fill="#60a5fa" font-size="8" letter-spacing="1">BUILDING</text>
+      </svg>
+    </div>
+
+    <!-- ── Diagram 2: PUPPETMASTER Fleet Abstraction ── -->
+    <div class="arch-block reveal d4" style="margin-top:32px;background:#0d0d0f;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px;">
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--white-faint);margin-bottom:6px">PUPPETMASTER — Fleet Abstraction Layer</div>
+      <div style="font-family:var(--font-heading);font-size:18px;color:var(--white);margin-bottom:14px">One dispatch interface. Seven hardware platforms. The abstraction layer is the moat.</div>
+      <svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', monospace" style="width:100%;height:auto;display:block">
+        <rect width="1100" height="500" fill="#111113"/>
+        <rect width="1100" height="500" fill="url(#arch-grid)"/>
+
+        <!-- OPERATOR CONSOLE -->
+        <rect x="350" y="30" width="400" height="80" fill="rgba(210,35,42,0.08)" stroke="#D2232A" stroke-width="2"/>
+        <rect x="350" y="30" width="400" height="4" fill="#D2232A"/>
+        <text x="550" y="58" text-anchor="middle" fill="#D2232A" font-size="9" letter-spacing="3">OPERATOR CONSOLE</text>
+        <text x="550" y="80" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="900" font-family="'Outfit',sans-serif">PUPPETMASTER C2</text>
+        <text x="550" y="98" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Map · Fleet · Feeds · SENTINEL · Comms · Incidents</text>
+
+        <!-- DISPATCH ENGINE -->
+        <rect x="400" y="160" width="300" height="70" fill="rgba(210,35,42,0.06)" stroke="rgba(210,35,42,0.3)" stroke-width="1"/>
+        <text x="550" y="185" text-anchor="middle" fill="rgba(210,35,42,0.8)" font-size="8" letter-spacing="2">DISPATCH ENGINE</text>
+        <text x="550" y="205" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="12" font-weight="700" font-family="'Outfit',sans-serif">Mission Profile Selector</text>
+        <text x="550" y="221" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Distance · Weather · Airspace · Availability</text>
+
+        <line x1="550" y1="110" x2="550" y2="158" stroke="#D2232A" stroke-width="1.5" marker-end="url(#arch-arrow-red)"/>
+
+        <!-- HARDWARE PLATFORMS -->
+        <rect x="40" y="310" width="130" height="80" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <rect x="40" y="310" width="130" height="3" fill="#22c55e"/>
+        <text x="105" y="332" text-anchor="middle" fill="#4ade80" font-size="8" letter-spacing="1">SUNFLOWER</text>
+        <text x="105" y="350" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10" font-weight="700" font-family="'Outfit',sans-serif">Dock Patrol</text>
+        <text x="105" y="366" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Autonomous</text>
+        <text x="105" y="380" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Persistent Coverage</text>
+
+        <rect x="185" y="310" width="130" height="80" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <rect x="185" y="310" width="130" height="3" fill="#22c55e"/>
+        <text x="250" y="332" text-anchor="middle" fill="#4ade80" font-size="8" letter-spacing="1">SKYDIO X10D</text>
+        <text x="250" y="350" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10" font-weight="700" font-family="'Outfit',sans-serif">Incident Response</text>
+        <text x="250" y="366" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">AI Tracking</text>
+        <text x="250" y="380" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Obstacle Avoidance</text>
+
+        <rect x="330" y="310" width="130" height="80" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <rect x="330" y="310" width="130" height="3" fill="#22c55e"/>
+        <text x="395" y="332" text-anchor="middle" fill="#4ade80" font-size="8" letter-spacing="1">PDW C100</text>
+        <text x="395" y="350" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10" font-weight="700" font-family="'Outfit',sans-serif">BVLOS / CI</text>
+        <text x="395" y="366" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Long Range</text>
+        <text x="395" y="380" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Pipeline / Grid</text>
+
+        <rect x="475" y="310" width="130" height="80" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <rect x="475" y="310" width="130" height="3" fill="#22c55e"/>
+        <text x="540" y="332" text-anchor="middle" fill="#4ade80" font-size="8" letter-spacing="1">QUANTUM VTOL</text>
+        <text x="540" y="350" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10" font-weight="700" font-family="'Outfit',sans-serif">Wide Area</text>
+        <text x="540" y="366" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Fixed-Wing</text>
+        <text x="540" y="380" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Hours of Coverage</text>
+
+        <rect x="620" y="310" width="130" height="80" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <rect x="620" y="310" width="130" height="3" fill="#f59e0b"/>
+        <text x="685" y="332" text-anchor="middle" fill="#f59e0b" font-size="8" letter-spacing="1">AXON TASER</text>
+        <text x="685" y="350" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10" font-weight="700" font-family="'Outfit',sans-serif">Non-Lethal</text>
+        <text x="685" y="366" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Tactical Response</text>
+        <text x="685" y="380" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Next Platform</text>
+
+        <rect x="765" y="310" width="130" height="80" fill="#1a1a1d" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <rect x="765" y="310" width="130" height="3" fill="#60a5fa"/>
+        <text x="830" y="332" text-anchor="middle" fill="#60a5fa" font-size="8" letter-spacing="1">GROUND ROBOTS</text>
+        <text x="830" y="350" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10" font-weight="700" font-family="'Outfit',sans-serif">UGV Patrol</text>
+        <text x="830" y="366" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Spot / Ghost</text>
+        <text x="830" y="380" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">2027 Roadmap</text>
+
+        <rect x="910" y="310" width="150" height="80" fill="#1a0f0f" stroke="rgba(210,35,42,0.4)" stroke-width="1"/>
+        <rect x="910" y="310" width="150" height="3" fill="#D2232A"/>
+        <text x="985" y="332" text-anchor="middle" fill="#D2232A" font-size="8" letter-spacing="1">ORCRIST SEAM-1</text>
+        <text x="985" y="350" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10" font-weight="700" font-family="'Outfit',sans-serif">cUAS Intercept</text>
+        <text x="985" y="366" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">$30K / Reusable</text>
+        <text x="985" y="380" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Exclusive Rights</text>
+
+        <!-- Connectors: Dispatch → Platforms -->
+        <line x1="450" y1="230" x2="105" y2="308" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="480" y1="230" x2="250" y2="308" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="510" y1="230" x2="395" y2="308" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="550" y1="230" x2="540" y2="308" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="580" y1="230" x2="685" y2="308" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="610" y1="230" x2="830" y2="308" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arch-arrow-white)"/>
+        <line x1="640" y1="230" x2="985" y2="308" stroke="#D2232A" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arch-arrow-red)"/>
+
+        <!-- Moat label -->
+        <rect x="40" y="420" width="1020" height="56" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <text x="550" y="443" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="8" letter-spacing="3">THE ABSTRACTION LAYER — THE MOAT</text>
+        <text x="550" y="463" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">A competitor can buy the same drones. They cannot replicate years of SDK integrations, operational data, and SENTINEL training.</text>
+      </svg>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+</section>
+
 <!-- ═══════════════════ BEAT 7 — OUTRO ═══════════════════ -->
 <section class="beat" id="beat-outro" data-label="Close" data-short="Close">
   <div class="grid-bg"></div>
