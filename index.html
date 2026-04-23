@@ -127,8 +127,14 @@
       .brand {
         padding: 8px 14px 2px;
         font-size: 11px;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.08em;
+        gap: 8px;
+        flex-wrap: nowrap;
+        overflow: hidden;
+        white-space: nowrap;
       }
+      .brand img.brand-logo { height: 18px; }
+      .brand .brand-tag { display: none; }
       nav.tabs {
         flex-wrap: nowrap;
         overflow-x: auto;
@@ -145,7 +151,8 @@
       }
     }
     @media (max-width: 480px) {
-      .brand { padding: 6px 12px 0; font-size: 10px; }
+      .brand { padding: 6px 12px 0; font-size: 10px; gap: 6px; }
+      .brand img.brand-logo { height: 16px; }
       .tab { padding: 7px 10px; font-size: 11px; }
     }
     /* Sign-in gate — "Threats Don't Wait" format */
@@ -324,7 +331,7 @@
   <header>
     <div class="brand">
       <img src="dxd-logo-white.png" alt="" class="brand-logo" aria-hidden="true"/>
-      <span><strong>Deus <span class="brand-x">X</span> Defense</strong> &middot; Investor Portal</span>
+      <span><strong>Deus <span class="brand-x">X</span> Defense</strong><span class="brand-tag"> &middot; Investor Portal</span></span>
     </div>
     <nav class="tabs" id="tabs" role="tablist"></nav>
   </header>
@@ -410,12 +417,13 @@
     // (`index 2.html`) listens for hashchange and switches its own
     // sub-tabs accordingly.
     const TABS = [
+      { id: "investor",     label: "CEO Letter: Q1 '26",   src: "index 2.html", hash: "letter" },
       { id: "origin",       label: "Origin",               src: "Hi-Fi - Story.html" },
-      { id: "story",        label: "About Us",             src: "index 2.html", hash: "story" },
+      { id: "team",         label: "Team",                 src: "deusx-leadership/leadership.html" },
+      { id: "story",        label: "Story",                src: "index 2.html", hash: "story" },
       { id: "product",      label: "Product",              src: "Product Walkthrough/Immune System Scroller.html" },
       { id: "cuas",         label: "C-UAS",                src: "CUAS/index.html" },
       { id: "pitch",        label: "Deck",                 src: "Pitch vAPR20.html" },
-      { id: "investor",     label: "Shareholder Letter · Q1 2026", src: "index 2.html", hash: "letter" },
       { id: "financials",   label: "Financials",           src: "index 2.html", hash: "financials" },
       { id: "dataroom",     label: "Data Room",            src: "index 2.html", hash: "dataroom" },
       { id: "appendix",     label: "Appendix",             src: "index 2.html", hash: "appendix" }
