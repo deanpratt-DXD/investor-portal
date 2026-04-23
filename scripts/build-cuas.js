@@ -2,7 +2,7 @@
 // Build CUAS/index.html by patching the bundled briefing in place.
 // Reads "DXD Counter-UAS Briefing.html", rewrites generic copy in both the
 // embedded HTML template and the compressed text manifest entries, injects
-// the Inter Tight + Tomorrow font system, and writes the merged single-file
+// the Oswald + Figtree + JetBrains Mono font system, and writes the merged single-file
 // artifact. Run again whenever the briefing is regenerated.
 
 const fs = require('fs');
@@ -18,11 +18,12 @@ const OUTER_TITLE = 'DXD · Counter-UAS · Critical Infrastructure';
 const HEAD_INJECTION = `
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Tomorrow:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Figtree:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style id="dxd-font-standardization">
   :root {
-    --dxd-font-display: "Tomorrow", "Inter Tight", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --dxd-font-body: "Inter Tight", "Tomorrow", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-display: "Oswald", "Bebas Neue", "Impact", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-body: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-mono: "JetBrains Mono", "Menlo", "Consolas", monospace;
     --dxd-h1-size: clamp(36px, 5.2vw, 76px);
     --dxd-h2-size: clamp(28px, 3.4vw, 48px);
     --dxd-h3-size: clamp(20px, 2vw, 28px);
@@ -90,6 +91,10 @@ const HEAD_INJECTION = `
     letter-spacing: var(--dxd-tracking-eyebrow) !important;
     text-transform: uppercase;
     font-weight: 500 !important;
+  }
+
+  code, pre, kbd, samp, tt, .mono, [class*="mono"] {
+    font-family: var(--dxd-font-mono) !important;
   }
 
   .chrome-header .left .classifier + .classifier {
