@@ -13,7 +13,7 @@ const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'DXD Counter-UAS Briefing.html');
 const DEST = path.join(ROOT, 'CUAS', 'index.html');
 
-const OUTER_TITLE = 'DXD · Counter-UAS · Dominion Energy Richmond';
+const OUTER_TITLE = 'DXD · Counter-UAS · Critical Infrastructure';
 
 const HEAD_INJECTION = `
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -109,15 +109,9 @@ const HEAD_INJECTION = `
 
 const TEMPLATE_REPLACEMENTS = [
   ['DXD · Counter-UAS · Critical Infrastructure', OUTER_TITLE],
-  ['DXD-SITREP / CUAS-2026-04', 'DXD-SITREP / DOMINION-CUAS-2026-04'],
-  ['Prepared for: Asset-Owner CI Protection', 'Prepared for: Dominion Energy CI Protection'],
-  ['Direct tie-in to site SCADA / compliance reporting', 'Direct tie-in to Dominion SCADA / NERC CIP'],
-  ['Automated federal, state & local agency notification', 'Automated law-enforcement notification'],
-  ['Covered asset owners qualify for FAA Section 2209 restricted-airspace designations over Tier-1 sites. DXD supports the petition, data, and ongoing enforcement coordination with FSDO.', 'Dominion qualifies for FAA Section 2209 restricted-airspace designations over Tier-1 sites. DXD supports the petition, data, and ongoing enforcement coordination with FSDO.'],
-  ['One site. Full sensor stack. DXD-staffed SOC. Outcomes measured against a baseline incident response gap asset owners already know exists. If it works, we scale to Site Bravo and Site Charlie in Q3.', 'One site. Full sensor stack. DXD-staffed SOC. Outcomes measured against a baseline incident response gap Dominion already knows exists. If it works, we scale to Midlothian and Bremo in Q3.'],
-  ['DXD-CUAS-CI-2026-04 · r1', 'DXD-CUAS-RCH-2026-04 · r1'],
-  ['DXD-CUAS-CI-2026', 'DXD-CUAS-RCH-2026'],
-  ['© 2026 Deus X Defense · Unclassified // FOUO · Prepared for Asset-Owner CI Protection', '© 2026 Deus X Defense · Unclassified // FOUO · Prepared for Dominion Energy'],
+  ['Tier-1 Regional Sites', 'Tier-1 Richmond Sites'],
+  ['Three Regional sites.', 'Three Richmond sites.'],
+  ['generation complex at Site Alpha to the 2-acre urban distribution hub downtown.', 'generation complex at Chesterfield to the 2-acre urban distribution hub downtown.'],
   ['WMD Directorate · Local Field Office', 'WMD Directorate · Richmond Field Office'],
   ["agency: 'State Fusion Ctr.'", "agency: 'VA Fusion Center'"],
   ['RISSNET · Fusion SAR', 'RISSNET · VFC-SAR'],
@@ -128,22 +122,16 @@ const TEMPLATE_REPLACEMENTS = [
   ["unit: 'Patrol + CID'", "unit: 'Sheriff · Patrol + CID'"],
   ["agency: 'County E911'", "agency: 'Chesterfield Co.'"],
   ["unit: 'Emergency Communications · PSAP'", "unit: 'Emergency Communications · 911 PSAP'"],
-  ["agency: 'Asset Owner SOC'", "agency: 'Dominion Energy'"],
-  ["channel: 'SOC · SCADA tie-in'", "channel: 'Dominion SOC · SCADA tie-in'"],
   ["agency: 'Sector ISAC'", "agency: 'NERC E-ISAC'"],
   ["unit: 'Sector Information Sharing · Analysis'", "unit: 'Electricity Information Sharing · Analysis'"],
   ["channel: 'ISAC portal'", "channel: 'CRISP / E-ISAC portal'"],
   ["agency: 'Reliability Coord.'", "agency: 'PJM'"],
   ["channel: 'RC secure feed'", "channel: 'PJM OMS secure feed'"],
-  ['All perimeter sensors online. No tracks. Weather CAVOK. Airspace clear per FAA DEN. Asset-owner SOC shift change at 06:00 — DXD watch standing.', 'All perimeter sensors online. No tracks. Weather CAVOK. Airspace clear per FAA DEN. Dominion SOC shift change at 06:00 — DXD watch standing.'],
   ['Watch on. Site Alpha sector nominal. 21 sensors online. Coverage 100%.', 'Watch on. Chesterfield sector nominal. 21 sensors online. Coverage 100%.'],
   ['METAR 060654Z VRB03KT 10SM FEW250 06/M02 A3012 — flight conditions CAVOK.', 'METAR KRIC 060654Z VRB03KT 10SM FEW250 06/M02 A3012 — flight conditions CAVOK.'],
   ['DF-01 and DF-02 compute operator bearing. TDOA fusion fixes the pilot across the river on a public boat launch. Pilot marker drops on overview map with ±22 m CEP.', 'DF-01 and DF-02 compute operator bearing. TDOA fusion fixes the pilot on the James River east bank — public boat launch, Dutch Gap. Pilot marker drops on overview map with ±22 m CEP.'],
   ['Pilot fix · 37.3876°N 77.3724°W · ±22 m CEP · Public boat launch · public access', 'Pilot fix · 37.3876°N 77.3724°W · ±22 m CEP · Dutch Gap boat launch · public access'],
   ['Dispatch · County Sheriff to operator fix', 'Dispatch · Chesterfield County PD to operator fix'],
-  ['OWNER-SOC', 'DOMINION'],
-  ['Asset-Owner SOC notified · sector incident report staged', 'Dominion SOC notified · NERC CIP-008 report staged'],
-  ['County Sheriff units staged from the far-bank side. DXD on-site security moves to hardened posture. FAA files emergency TFR request to clear the block. Asset-owner SOC assumes joint watch.', 'Chesterfield County Sheriff units staged from the Dutch Gap side. DXD on-site security moves to hardened posture. FAA files emergency TFR request to clear the block. Dominion SOC assumes joint watch.'],
   ["sys: 'SHERIFF'", "sys: 'CCSO'"],
   ['Two patrol units dispatched · far-bank side · ETA 4 min · CAD Inc #2026-CI-0173', 'Two patrol units dispatched · Dutch Gap side · ETA 4 min · CAD Inc #2026-CHE-0173'],
   ['letter of agreement CI-LOA-04 active', 'letter of agreement CHE-LOA-04 active'],
