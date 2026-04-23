@@ -6,20 +6,25 @@
 <title>Leadership Team | Deus X Defense</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter+Tight:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter+Tight:wght@300;400;500;600;700;800&family=Tomorrow:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet" />
 <style>
+  /* Palette + type tokens lifted from deusxdefense.com (Squarespace site.css):
+     --darkAccent-hsl:0,0%,0%  --white-hsl:0,0%,100%
+     --lightAccent-hsl:180,3.7%,94.71%  --accent-hsl:270,1.54%,25.49%
+     --black-hsl:.75,77.78%,40.59%   (the brand red slot, ~#b8261a)
+     Body font: Tomorrow (Google Fonts). Brand red flicker accent: #d30000. */
   :root {
-    --bg: #0a0a0b;
-    --bg-2: #121214;
-    --surface: #17181b;
-    --surface-2: #1f2024;
-    --line: rgba(255,255,255,0.08);
-    --line-strong: rgba(255,255,255,0.18);
-    --ink: #f4f4f2;
-    --ink-dim: #a6a6a4;
-    --ink-muted: #6b6b69;
-    --accent: #e5332a;        /* DXD red */
-    --accent-soft: #ff5a52;
+    --bg: #000000;            /* darkAccent */
+    --bg-2: #0a0a0a;
+    --surface: #141414;
+    --surface-2: #1c1c1c;
+    --line: rgba(255,255,255,0.10);
+    --line-strong: rgba(255,255,255,0.22);
+    --ink: #ffffff;           /* white */
+    --ink-dim: #f1f3f3;       /* lightAccent */
+    --ink-muted: #8a8a8a;
+    --accent: #d30000;        /* DXD brand red (flicker-text) */
+    --accent-soft: #b8261a;   /* black-hsl literal (deeper red) */
     --grid: rgba(255,255,255,0.04);
   }
 
@@ -28,12 +33,24 @@
   html, body {
     background: var(--bg);
     color: var(--ink);
-    font-family: "Inter Tight", sans-serif;
+    font-family: "Tomorrow", "Inter Tight", system-ui, -apple-system, sans-serif;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
+
+  /* DXD signature flicker (from custom.css on deusxdefense.com) */
+  @keyframes dxdFlicker {
+    0%,91%,100% { opacity: 1; }
+    92% { opacity: .6; }
+    93% { opacity: 1; }
+    95% { opacity: .4; }
+    96% { opacity: .85; }
+    98% { opacity: .3; }
+    99% { opacity: 1; }
+  }
+  .flicker-text { color: var(--accent); animation: dxdFlicker 4s infinite; }
 
   a { color: inherit; text-decoration: none; }
 
@@ -76,7 +93,7 @@
     background: var(--accent);
     color: #fff;
     display: grid; place-items: center;
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 700;
     font-size: 18px;
     line-height: 1;
@@ -128,7 +145,7 @@
     position: absolute;
     width: 700px; height: 700px;
     top: -200px; right: -150px;
-    background: radial-gradient(circle, rgba(229,51,42,0.25) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(211,0,0,0.28) 0%, transparent 60%);
     pointer-events: none;
     filter: blur(40px);
   }
@@ -152,7 +169,7 @@
   }
 
   .hero h1 {
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 400;
     font-size: clamp(48px, 8vw, 128px);
     line-height: 0.95;
@@ -173,7 +190,7 @@
   }
 
   .hero-tagline {
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 700;
     font-style: italic;
     font-size: clamp(22px, 2.4vw, 36px);
@@ -206,7 +223,7 @@
   }
   .heritage-label .eyebrow { margin-bottom: 16px; }
   .heritage-label h2 {
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 400;
     font-size: clamp(24px, 2.6vw, 36px);
     color: var(--ink);
@@ -232,7 +249,7 @@
     to { transform: translateX(calc(-100% - 48px)); }
   }
   .marquee-item {
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-size: clamp(32px, 4vw, 56px);
     font-weight: 400;
     color: var(--ink);
@@ -263,7 +280,7 @@
     margin-bottom: 40px;
   }
   .intro h2 {
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 400;
     font-size: clamp(36px, 4.5vw, 64px);
     line-height: 1.0;
@@ -379,7 +396,7 @@
   }
 
   .card-role {
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 700;
     font-size: 26px;
     line-height: 1.1;
@@ -407,7 +424,7 @@
     padding: 140px 40px;
     border-top: 1px solid var(--line);
     background:
-      radial-gradient(ellipse at 30% 20%, rgba(229,51,42,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 30% 20%, rgba(211,0,0,0.14) 0%, transparent 50%),
       var(--bg);
     position: relative;
     overflow: hidden;
@@ -426,7 +443,7 @@
   }
 
   .contact h2 {
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-weight: 400;
     font-size: clamp(40px, 5vw, 72px);
     line-height: 1.0;
@@ -474,7 +491,7 @@
     place-items: center;
   }
   .big-x {
-    font-family: "Libre Caslon Text", serif;
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
     font-style: italic;
     font-weight: 400;
     font-size: clamp(200px, 30vw, 400px);
