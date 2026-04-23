@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Traction · Deus X Defense</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/dxd-components.css" />
+<style>
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #000; color: #fff; }
+  body {
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  /* hero */
+  .hero {
+    border-bottom: 1px solid var(--dxd-line);
+    padding-bottom: 44px;
+    margin-bottom: 44px;
+  }
+  .hero h1 {
+    font-family: 'Tomorrow', system-ui, sans-serif;
+    font-size: clamp(40px, 5.4vw, 76px);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin: 8px 0 16px;
+  }
+  .hero p.lede {
+    max-width: 70ch;
+    font-size: clamp(16px, 1.1vw, 19px);
+    color: var(--dxd-ink-muted);
+    margin: 0;
+  }
+  .hero .footer-line {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--dxd-line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--dxd-ink-faint);
+  }
+
+  /* section block */
+  section { margin: 56px 0; scroll-margin-top: 24px; }
+  section h2 {
+    font-family: 'Tomorrow', system-ui, sans-serif;
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+  section .sub {
+    color: var(--dxd-ink-muted);
+    margin: 0 0 26px;
+    max-width: 70ch;
+  }
+
+  /* proof points (3 lead cards) */
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) { .proof-grid { grid-template-columns: 1fr; } }
+  .proof-card {
+    border: 1px solid var(--dxd-line);
+    border-radius: 8px;
+    padding: 26px 24px;
+    background: var(--dxd-bg-elev);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+  }
+  .proof-card .dxd-tag { align-self: flex-start; }
+  .proof-card h3 {
+    font-family: 'Tomorrow', system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .proof-card .stat {
+    font-family: 'Tomorrow', system-ui, sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--dxd-brand-red);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .proof-card p {
+    color: var(--dxd-ink-muted);
+    font-size: 13.5px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .proof-card .pull {
+    color: var(--dxd-ink);
+    font-style: italic;
+    font-size: 13px;
+    border-left: 2px solid var(--dxd-brand-red);
+    padding-left: 12px;
+    margin-top: 4px;
+  }
+
+  /* coalition logo grid */
+  .coalition-cluster {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 1080px) { .coalition-cluster { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px)  { .coalition-cluster { grid-template-columns: 1fr; } }
+  .coalition-col {
+    border: 1px solid var(--dxd-line);
+    border-radius: 8px;
+    padding: 18px 18px 20px;
+    background: #050505;
+  }
+  .coalition-col h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dxd-brand-red);
+    margin: 0 0 12px;
+  }
+  .coalition-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .coalition-col li {
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--dxd-ink);
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--dxd-line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .coalition-col li:last-child { border-bottom: none; }
+  .coalition-col li .micro-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--dxd-ink-faint);
+    flex: none;
+  }
+
+  /* regulatory drilldown */
+  .reg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 800px) { .reg-grid { grid-template-columns: 1fr; } }
+  .reg-card {
+    border: 1px solid var(--dxd-line);
+    border-radius: 8px;
+    padding: 18px 20px;
+    background: var(--dxd-bg-elev);
+  }
+  .reg-card h4 {
+    font-family: 'Tomorrow', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .reg-card .when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--dxd-brand-red);
+    margin-bottom: 8px;
+  }
+  .reg-card p {
+    margin: 0;
+    color: var(--dxd-ink-muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* deflection strip */
+  .deflection {
+    margin: 56px 0;
+    padding: 28px 32px;
+    border: 1px solid var(--dxd-line);
+    border-left: 3px solid var(--dxd-brand-red);
+    background: var(--dxd-bg-elev);
+    border-radius: 4px;
+  }
+  .deflection p {
+    margin: 0;
+    font-family: 'Tomorrow', system-ui, sans-serif;
+    font-size: clamp(20px, 2.4vw, 30px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  /* moat callout */
+  .moat-callout {
+    border: 1px solid var(--dxd-line);
+    border-radius: 8px;
+    padding: 26px 28px;
+    background: var(--dxd-bg-elev);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  @media (max-width: 760px) { .moat-callout { grid-template-columns: 1fr; gap: 18px; } }
+  .moat-callout .big {
+    font-family: 'Tomorrow', system-ui, sans-serif;
+    font-size: clamp(28px, 3.2vw, 44px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .moat-callout .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    color: var(--dxd-ink-muted);
+    line-height: 1.6;
+  }
+  .moat-callout .meta strong { color: var(--dxd-ink); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ─────────────────────────── HERO ─────────────────────────── -->
+<header class="hero">
+  <span class="dxd-eyebrow">Traction · April 2026</span>
+  <h1>Named, tagged, honest.</h1>
+  <p class="lede">Every customer, every partner, every regulator that has put weight on Deus X Defense — with the honesty tag attached. Three lead proofs, one coalition, the rules of the road, the moats underneath.</p>
+  <div class="footer-line">$0 fixed sales cost · 3 commission-only reps · every major deal inbound or partner-led</div>
+</header>
+
+<!-- ─────────────────────────── PROOF POINTS ─────────────────────────── -->
+<section id="proof">
+  <h2>Three proof points.</h2>
+  <p class="sub">The three deals that prove the thesis — one customer pull, one written into capital plans, one where the customer pulled the product through procurement themselves.</p>
+
+  <div class="proof-grid">
+    <article class="proof-card">
+      <span class="dxd-tag dxd-tag--live">Live · Land &amp; Expand</span>
+      <h3>ONEOK</h3>
+      <div class="stat">$1M&nbsp;→&nbsp;$12.5M</div>
+      <p>Started as a sub-$1M proof of value on midstream assets. Performance triggered an expansion to $12.5M across the broader pipeline footprint. Land-and-expand inside one of the largest US pipeline operators.</p>
+    </article>
+
+    <article class="proof-card">
+      <span class="dxd-tag dxd-tag--signed">Signed · April 14, 2026</span>
+      <h3>Dallas ISD</h3>
+      <div class="stat">$7.5M</div>
+      <p>Sole-source contract covering 26 schools. Written into the district’s pending $6.2B capital bond. The “example” of how site-specific training plus operator density compound — not the moat, the demonstration of one.</p>
+    </article>
+
+    <article class="proof-card">
+      <span class="dxd-tag dxd-tag--verbal">Verbal · Customer Pulled</span>
+      <h3>Stargate · Odin</h3>
+      <div class="stat">NATO #1</div>
+      <p>NATO ranked Deus X #1 of all qualifying providers for a $20M counter-UAS procurement. The customer pulled the product through their own evaluation. Becomes the blueprint for every subsequent CI-grade data-center deployment.</p>
+      <div class="pull">“The customer pulled the product.”</div>
+    </article>
+  </div>
+</section>
+
+<!-- ─────────────────────────── DEFLECTION ─────────────────────────── -->
+<div class="deflection">
+  <p>Dallas ISD is the example, not the moat.</p>
+</div>
+
+<!-- ─────────────────────────── PARTNER PHASE TABLE ─────────────────────────── -->
+<section id="partners">
+  <h2>Partners — Phase 1 ships revenue. Phase 2 builds the future.</h2>
+  <p class="sub">Each partnership has a delivery posture today and a different posture once point products and the platform are live. Phase 2 is what the capital is for.</p>
+
+  <div class="dxd-phase-table">
+    <div class="dxd-phase-row dxd-phase-row--head">
+      <div>Partner</div>
+      <div>Status</div>
+      <div>Phase 1 — revenue now</div>
+      <div>Phase 2 — build the future</div>
+    </div>
+
+    <div class="dxd-phase-row">
+      <div class="dxd-phase-partner">LAPD</div>
+      <div><span class="dxd-tag dxd-tag--verbal">Verbal</span></div>
+      <div class="dxd-phase-cell dxd-phase-cell--p1"><strong>~$2M</strong> Deus X scope inside Accenture-primed <strong>$5M</strong> program. Signing week of April&nbsp;21.</div>
+      <div class="dxd-phase-cell dxd-phase-cell--p2">World&nbsp;Cup&nbsp;2026 + Olympic window. The Deputy Chief framed it: <em>“we’ll parade you around the world.”</em></div>
+    </div>
+
+    <div class="dxd-phase-row">
+      <div class="dxd-phase-partner">Stargate · Odin</div>
+      <div><span class="dxd-tag dxd-tag--verbal">Verbal</span></div>
+      <div class="dxd-phase-cell dxd-phase-cell--p1">Customer-pulled cUAS. NATO ranked #1 against all qualifying providers for $20M procurement.</div>
+      <div class="dxd-phase-cell dxd-phase-cell--p2">Sovereign data-center reference architecture; blueprint for every subsequent CI-grade DC deployment.</div>
+    </div>
+
+    <div class="dxd-phase-row">
+      <div class="dxd-phase-partner">Dominion Energy</div>
+      <div><span class="dxd-tag dxd-tag--verbal">Verbal · Dev partner</span></div>
+      <div class="dxd-phase-cell dxd-phase-cell--p1">Energy/nuclear proving ground; CSO Adam Lee on advisory.</div>
+      <div class="dxd-phase-cell dxd-phase-cell--p2">Reference architecture for NERC&nbsp;CIP-003-9 compliance posture across the regulated utility footprint.</div>
+    </div>
+
+    <div class="dxd-phase-row">
+      <div class="dxd-phase-partner">Major CI provider</div>
+      <div><span class="dxd-tag dxd-tag--verbal">Verbal</span></div>
+      <div class="dxd-phase-cell dxd-phase-cell--p1">Top-3 hyperscaler contributed a modular data center to the operation. Reinsurer-mandate track underway.</div>
+      <div class="dxd-phase-cell dxd-phase-cell--p2">Largest-writer reinsurance mandate becomes a portfolio-wide standard for hyperscale and high-density CI sites.</div>
+    </div>
+
+    <div class="dxd-phase-row">
+      <div class="dxd-phase-partner">Accenture</div>
+      <div><span class="dxd-tag dxd-tag--verbal">Verbal · Channel</span></div>
+      <div class="dxd-phase-cell dxd-phase-cell--p1">~$350M channel book contracted in via LAPD Phase 1 (≈10% of Accenture’s $3.5B Physical AI pipeline).</div>
+      <div class="dxd-phase-cell dxd-phase-cell--p2">Move enterprise clients from <strong>OpEx Security Budget&nbsp;→&nbsp;CapEx Capital Plan</strong>. 8,000+ enterprise clients in scope.</div>
+    </div>
+
+    <div class="dxd-phase-row">
+      <div class="dxd-phase-partner">Deloitte</div>
+      <div><span class="dxd-tag dxd-tag--verbal">Verbal · Channel</span></div>
+      <div class="dxd-phase-cell dxd-phase-cell--p1">~$250M in negotiation. Programs aligned with our control plane and BVLOS posture.</div>
+      <div class="dxd-phase-cell dxd-phase-cell--p2">Absorbs Deloitte’s existing UAS / cUAS programs — not just parallel channel; consolidation.</div>
+    </div>
+
+    <div class="dxd-phase-row">
+      <div class="dxd-phase-partner">Orcrist</div>
+      <div><span class="dxd-tag dxd-tag--signed">Signed · Exclusive</span></div>
+      <div class="dxd-phase-cell dxd-phase-cell--p1">Exclusive global commercial powers Atlas · Airspace Defense kinetic layer. ~$30K interceptor — parity with the threat.</div>
+      <div class="dxd-phase-cell dxd-phase-cell--p2">Deploys with LAPD, Department of War, corrections. ~$5M aligned equity inside the raise; working-capital facility against inventory.</div>
+    </div>
+
+    <div class="dxd-phase-row">
+      <div class="dxd-phase-partner">Atlas IED</div>
+      <div><span class="dxd-tag dxd-tag--verbal">Verbal · Signing in flight</span></div>
+      <div class="dxd-phase-cell dxd-phase-cell--p1">Sensor / edge / AI co-development; CI exclusivity. 95%+ of US schools, 80%+ of US airports.</div>
+      <div class="dxd-phase-cell dxd-phase-cell--p2">Powers the <strong>Nerve</strong> engine — sensing layer for the full Immune System.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── COALITION ─────────────────────────── -->
+<section id="coalition">
+  <h2>The coalition.</h2>
+  <p class="sub">The trust footprint behind the thesis — by sector. Each name is a relationship, an LOI, an active deployment, or a board-level advisor; never a logo borrowed from the public internet.</p>
+
+  <div class="coalition-cluster">
+    <div class="coalition-col">
+      <h4>Data Centers · Hyperscale</h4>
+      <ul>
+        <li>Stargate · Odin <span class="micro-tag">Verbal</span></li>
+        <li>Related Digital <span class="micro-tag">Verbal</span></li>
+        <li>BlackRock · GIP <span class="micro-tag">Verbal</span></li>
+        <li>CleanSpark <span class="micro-tag">Verbal</span></li>
+        <li>Elementl <span class="micro-tag">Live</span></li>
+        <li>Top-3 hyperscaler <span class="micro-tag">Verbal</span></li>
+      </ul>
+    </div>
+
+    <div class="coalition-col">
+      <h4>Energy · Pipeline · Nuclear</h4>
+      <ul>
+        <li>ONEOK <span class="micro-tag">Live</span></li>
+        <li>Dominion Energy <span class="micro-tag">Verbal</span></li>
+        <li>Global Nuclear Security Partners <span class="micro-tag">Verbal</span></li>
+        <li>Caris Life Sciences <span class="micro-tag">Verbal</span></li>
+      </ul>
+    </div>
+
+    <div class="coalition-col">
+      <h4>Public Safety · Defense</h4>
+      <ul>
+        <li>LAPD <span class="micro-tag">Verbal</span></li>
+        <li>Dallas ISD <span class="micro-tag">Signed</span></li>
+        <li>Department of War <span class="micro-tag">Verbal</span></li>
+      </ul>
+    </div>
+
+    <div class="coalition-col">
+      <h4>Channel · Standards · Capital</h4>
+      <ul>
+        <li>Accenture <span class="micro-tag">Verbal</span></li>
+        <li>Deloitte <span class="micro-tag">Verbal</span></li>
+        <li>Orcrist <span class="micro-tag">Signed</span></li>
+        <li>Atlas IED <span class="micro-tag">Verbal</span></li>
+        <li>NAIAC <span class="micro-tag">Live</span></li>
+        <li>Morgan Stanley <span class="micro-tag">Lead</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── REGULATORY ─────────────────────────── -->
+<section id="regulatory">
+  <h2>The rules wrote our slide.</h2>
+  <p class="sub">A regulatory wave that didn’t exist three years ago is making The&nbsp;Immune&nbsp;System a compliance requirement, not a procurement preference.</p>
+
+  <div class="reg-grid">
+    <div class="reg-card">
+      <div class="when">May 2026</div>
+      <h4>CIRCIA</h4>
+      <p>Mandatory cyber-incident reporting for ~300,000 covered critical-infrastructure entities. Command&nbsp;v1 ships the reporting wedge in Q3&nbsp;2026.</p>
+    </div>
+    <div class="reg-card">
+      <div class="when">April 2026</div>
+      <h4>NERC CIP-003-9</h4>
+      <p>Low-impact BES cyber security plans become enforceable across the regulated utility footprint.</p>
+    </div>
+    <div class="reg-card">
+      <div class="when">2026</div>
+      <h4>FAA Part 108 · BVLOS</h4>
+      <p>Beyond visual line of sight unlocks 1:many drone operations. Our BVLOS waiver (Cert # 107W-2025-03831) is valid through Jan&nbsp;31,&nbsp;2030 — fewer than 5 ever issued; 18 months to earn.</p>
+    </div>
+    <div class="reg-card">
+      <div class="when">EO 14028</div>
+      <h4>Federal Zero Trust</h4>
+      <p>The federal posture our control plane and audit record are built to.</p>
+    </div>
+    <div class="reg-card">
+      <div class="when">DoD</div>
+      <h4>CMMC</h4>
+      <p>Cybersecurity Maturity Model Certification — the prime-contracting baseline our roadmap aligns to.</p>
+    </div>
+    <div class="reg-card">
+      <div class="when">TSA · SEC 8-K</div>
+      <h4>Pipeline + Disclosure</h4>
+      <p>TSA pipeline-security directives and SEC cyber-incident disclosure — converging into one operational record. That record is Command.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── BVLOS MOAT ─────────────────────────── -->
+<section id="moat">
+  <h2>The moat under the moat.</h2>
+  <p class="sub">A handful of things took eighteen months and a federal docket to earn. They don’t move when capital does.</p>
+
+  <div class="moat-callout">
+    <div class="big">BVLOS waiver Cert # 107W-2025-03831 — fewer than 5 ever issued.</div>
+    <div class="meta">
+      <strong>Valid through</strong> Jan&nbsp;31, 2030<br>
+      <strong>Earned over</strong> 18 months of FAA engagement<br>
+      <strong>Operational scope</strong> nationwide, 1:many drone ops<br>
+      <strong>Officer base</strong> 450 CJIS-certified across Cascadia + Invictus
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── HONESTY-TAG LEGEND ─────────────────────────── -->
+<section id="legend">
+  <h2>How we tag everything on this page.</h2>
+  <p class="sub">Every customer status, every partner posture, every number on this site carries one of five tags. No claim moves without one.</p>
+  <div class="dxd-tag-legend">
+    <div><span class="dxd-tag dxd-tag--live">Live</span> revenue or deployment active today</div>
+    <div><span class="dxd-tag dxd-tag--signed">Signed</span> contract executed, not yet delivered</div>
+    <div><span class="dxd-tag dxd-tag--verbal">Verbal</span> handshake + paperwork in flight, timeline stated</div>
+    <div><span class="dxd-tag dxd-tag--build">In-build</span> engineering underway, internal-MVP date stated</div>
+    <div><span class="dxd-tag dxd-tag--roadmap">Roadmap</span> later-phase, honest timing</div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

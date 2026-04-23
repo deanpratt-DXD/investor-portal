@@ -415,6 +415,42 @@
     flex-grow: 1;
   }
 
+  /* per-leader logo / org chips */
+  .card-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 10px 0 6px;
+  }
+  .card-chip {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+    padding: 2px 7px;
+    border-radius: 999px;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+  .card-chip-bucket {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--accent);
+    padding: 2px 7px;
+    border-radius: 999px;
+    white-space: nowrap;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
   .card-rule {
     margin-top: 14px;
     height: 1px;
@@ -772,7 +808,7 @@
   </div>
   <div class="intro-count">
     <span>Section 02 / Leadership</span>
-    <span><strong>20</strong> team members</span>
+    <span><strong>22</strong> team members · grouped by role architecture</span>
   </div>
 </section>
 
@@ -794,172 +830,250 @@
 </section>
 
 <script>
-  // Leadership data - pulled directly from the DXD leadership page
+  // Leadership data — Sec 5.6 four-part architecture
+  // Buckets: A = built the technology · B = operationalized & standardized
+  //          C = built the business · D = validate the bet (advisors)
   const leaders = [
     {
       name: "Pat Madden",
       role: "Founder & CEO",
-      bio: "Marine Corps officer who led combat operations in Iraq and Afghanistan. Strategic advisor at McKinsey & Company. Former SVP & GM at Axon, where he scaled mission-critical public safety technologies globally and led expansion into advanced drone and robotics platforms.|Founded Deus X Defense to close the execution gap between the technology that exists and the security postures that actually hold.",
+      bucket: "Built the business",
+      chips: ["Axon SVP/GM", "USMC Recon", "Wharton MBA", "McKinsey"],
+      bio: "Marine Force Recon officer. Wharton MBA. McKinsey strategy. Two years Chief of Staff to Rick Smith at Axon, then SVP & GM scaling TASER and Robotics from $350M to $1B.|Founded Deus X Defense to close the gap between the technology that exists and the security postures that actually hold.",
       img: "photos/pat-madden.jpg",
       featured: true
     },
     {
-      name: "Ross Stinson",
-      role: "Head of Drone Operations",
-      bio: "Law enforcement leader who built and ran the largest public safety drone program in the U.S. at Dallas PD, proving drone operations at scale in one of the country's most demanding environments.",
-      img: "photos/ross-stinson.svg"
+      name: "Brendan Flannery",
+      role: "CTO",
+      bucket: "Built the technology",
+      chips: ["NSA · Tier 1 SOCOM (12y)", "6 patents", "USSOCOM"],
+      bio: "Twelve years embedded with the National Security Agency at Tier 1 Special Operations Command. Six patents. Builds the systems that have to work the first time, in the dark, against a thinking adversary.",
+      img: "photos/brendan-flannery.jpg"
     },
     {
-      name: "Natesh Rao",
-      role: "Business Development & Partnerships",
-      bio: "Navy aviator with 250 combat missions and NATO senior aide experience, building partnerships that scale under real-world pressure.",
-      img: "photos/natesh-rao.jpg"
+      name: "Nick Gilmour",
+      role: "Head of Product",
+      bucket: "Built the technology",
+      chips: ["Skydio", "Axon", "GoPro", "3 patents"],
+      bio: "Invented Drone-as-First-Responder at Skydio. Three patents. Axon and GoPro product launch veteran. Builds products shaped by mission reality and the operators who depend on them.",
+      img: "photos/nick-gilmour.jpg"
+    },
+    {
+      name: "Michael Egan",
+      role: "CFO",
+      bucket: "Built the business",
+      chips: ["Green Beret", "Wharton", "BCG", "JPMorgan", "Carvana", "Southwest"],
+      bio: "Wharton-trained Green Beret. BCG, JPMorgan, Carvana, Southwest. Has built and scaled finance functions across defense, capital markets, and operating companies under public-market scrutiny.",
+      img: "photos/michael-egan.jpg"
+    },
+    {
+      name: "Kevin Hill",
+      role: "Chief Business Officer",
+      bucket: "Built the business",
+      chips: ["Microsoft (MD, US Strategic Pursuits)", "IBM (15y)", "US Army"],
+      bio: "Former Microsoft Managing Director, US Strategic Pursuits. Fifteen years at IBM. Has delivered billion-dollar public-sector programs end to end.",
+      img: "photos/kevin-hill.jpg"
     },
     {
       name: "Rob Chadwick",
-      role: "GM, Public Safety & Defense",
-      bio: "Former FBI tactical leader who built national training doctrine and led the FBI Tactical Training Unit. He brings 30 years of high-risk, high-visibility mission experience and the protection planning that performs when failure is not an option.",
+      role: "GM, Public Sector",
+      bucket: "Built the business",
+      chips: ["FBI (21y)", "AG protection detail", "Federal tactical"],
+      bio: "Twenty-one years in the FBI. Built the tactical training doctrine and led the FBI Tactical Training Unit. Stood the protection details that perform when failure is not an option.",
       img: "photos/rob-chadwick.jpg"
     },
     {
       name: "Rory O'Flaherty",
       role: "GM, Enterprise Security",
-      bio: "Built and scaled national security operations for decades, delivering consistent execution across complex enterprise environments.",
+      bucket: "Built the business",
+      chips: ["Allied Universal", "Securitas", "Enterprise security"],
+      bio: "Built and scaled national enterprise security operations across decades. Knows how the existing private-security giants buy, sell, and structurally cannot build what we are building.",
       img: "photos/rory-oflaherty.jpg"
     },
     {
-      name: "Michael Egan",
-      role: "CFO",
-      bio: "Wharton-trained Green Beret and BCG consultant who has built and scaled ventures across defense, finance, and technology.",
-      img: "photos/michael-egan.jpg"
+      name: "Ward Ault",
+      role: "Chief of Staff",
+      bucket: "Built the business",
+      chips: ["Axon (Chief of Staff)", "USMC Infantry", "HBS", "PE operating"],
+      bio: "Marine infantry. HBS. Private equity operating. Former Axon Chief of Staff. Ensures complex integrations scale without losing cadence or mission focus.",
+      img: "photos/ward-ault.jpg"
     },
     {
-      name: "Winston Gamso",
-      role: "Solutions Architect",
-      bio: "Former Green Beret and D1 college football quarterback, Winston brings elite tactical training and high-performance leadership to client solution architecture. He works directly with clients to match their security needs with the right expert capabilities.",
-      img: "photos/winston-gamso.jpg"
+      name: "Natesh Rao",
+      role: "Business Development & Partnerships",
+      bucket: "Built the business",
+      chips: ["US Navy (250 combat missions)", "NATO senior aide"],
+      bio: "Navy aviator with 250 combat missions and NATO senior aide experience. Builds partnerships that scale under real-world pressure.",
+      img: "photos/natesh-rao.jpg"
     },
     {
-      name: "Kevin Hill",
-      role: "Strategic Partnerships & Projects",
-      bio: "Army veteran and enterprise tech executive who has delivered billion-dollar public sector programs with precision and scale.",
-      img: "photos/kevin-hill.jpg"
+      name: "Dean Pratt",
+      role: "Solutions Engineering",
+      bucket: "Built the technology",
+      chips: ["Accenture (Sr. Global Architect, Physical AI/CV)", "Kyndryl", "Google", "Dell", "Cisco"],
+      bio: "Senior Global Architect for Accenture's Physical AI and Computer Vision practice. Previously a technical solutions engineer at Kyndryl, Google, Dell, and Cisco. Designs secure, scalable systems built to withstand scrutiny and emerging threats.",
+      img: "photos/dean-pratt.jpg"
+    },
+    {
+      name: "Serge G.",
+      role: "cUAS & Advanced R&D",
+      bucket: "Built the technology",
+      chips: ["Green Beret", "SOTF", "Applied math + CS"],
+      bio: "Green Beret and SOTF veteran. Applied mathematics and computer science background. Has led teams from 10 to 1,200 across international environments. Designs and builds advanced cUAS solutions end to end.",
+      img: "photos/serge-g.jpg"
+    },
+    {
+      name: "Ross Stinson",
+      role: "Head of Drone Operations",
+      bucket: "Operationalized & standardized",
+      chips: ["Dallas PD (largest US public-safety drone program)"],
+      bio: "Built and ran the largest public-safety drone program in the United States at Dallas PD. Proved drone operations at scale in one of the country's most demanding environments.",
+      img: "photos/ross-stinson.svg"
     },
     {
       name: "Rob Robertson",
       role: "Drone Regulatory & Operations",
-      bio: "Public safety UAS visionary and DFR/BVLOS leader with extensive NFL, MLB, and NCAA operational experience. Known for achieving first-of-their-kind milestones by translating FAA complexity into real-world capabilities.",
+      bucket: "Operationalized & standardized",
+      chips: ["NFL (first UAS endorsement)", "MLB", "NCAA", "FAA BVLOS"],
+      bio: "Public-safety UAS leader and DFR/BVLOS authority. Extensive NFL, MLB, and NCAA operational experience. Translates FAA complexity into real-world capability.",
       img: "photos/rob-robertson.jpg"
-    },
-    {
-      name: "Nick Gilmour",
-      role: "Product",
-      bio: "Former Skydio DFR product lead and Axon and GoPro product launch veteran with end-to-end hardware and software integration experience. He builds products shaped by mission reality and the voice of the operators who depend on them.",
-      img: "photos/nick-gilmour.jpg"
     },
     {
       name: "Jon Beal",
       role: "Head of Training",
-      bio: "Co-Founder of LEDA with hands-on operational history at LAPD and Gresham Police, Jon architects UAS training programs that move agencies from zero to fully operational, compliant, and field-ready.",
+      bucket: "Operationalized & standardized",
+      chips: ["LAPD", "Gresham PD", "NTOA standards", "LEDA co-founder"],
+      bio: "LAPD and Gresham Police operational history. Co-Founder of LEDA. Architects UAS training programs that move agencies from zero to fully operational, compliant, and field-ready.",
       img: "photos/jon-beal.jpg"
     },
     {
       name: "Tyler Bayne",
       role: "Operations",
-      bio: "Global security operations executive who has managed 250+ personnel and multimillion dollar budgets across GSOC and field operations at scale. He leads the integration of robotics and guarding into hybrid security programs that are fully operationalized.",
+      bucket: "Operationalized & standardized",
+      chips: ["Total Safety (CEO, exited to Stanley Black & Decker)", "GSOC scale"],
+      bio: "Global security operations executive. Has managed 250+ personnel and multimillion-dollar budgets across GSOC and field operations at scale. Integrates robotics and guarding into hybrid security programs that are fully operationalized.",
       img: "photos/tyler-bayne.jpg"
-    },
-    {
-      name: "Tyler Morris",
-      role: "Remote Operations Manager",
-      bio: "Former Dallas PD helicopter pilot and UAS operator who trained over 70 drone pilots and integrated live aerial feeds into real-time crime centers. He brings tactical law enforcement experience across covert operations, federal taskforce support, and large-scale public safety events.",
-      img: "photos/tyler-morris.jpg"
-    },
-    {
-      name: "Danny Gritti",
-      role: "Customer Success & Drone Operations",
-      bio: "Former Axon Air Customer Success Manager and ERT drone pilot with experience onboarding agencies, training pilots, and deploying to disaster zones. He combines operational drone credibility with the communication discipline built across six years at Axon, Apple, and Nike.",
-      img: "photos/danny-gritti.jpg"
-    },
-    {
-      name: "Serge G.",
-      role: "cUAS & Advanced R&D",
-      bio: "Green Beret and SOTF veteran with a degree in applied mathematics and computer science who has led teams from 10 to 1,200 across international environments. He combines asymmetric threat expertise with the technical depth to both design and build advanced solutions.",
-      img: "photos/serge-g.jpg"
-    },
-    {
-      name: "James Nguyen",
-      role: "Remote Pilots Manager",
-      bio: "Former Dallas PD officer and top-performing drone pilot, James combines frontline law enforcement experience with advanced UAS expertise to lead remote aerial operations with precision and operational discipline.",
-      img: "photos/james-nguyen.jpg"
     },
     {
       name: "Jeff Ventrella",
       role: "GSOC Operations",
-      bio: "Marine infantry officer and PSP-certified security professional with deep executive protection and red team experience. He brings structured threat assessment and proactive risk mitigation to every environment he operates in.",
+      bucket: "Operationalized & standardized",
+      chips: ["USMC Infantry", "Cobalt Robotics (Philadelphia)", "PSP-certified"],
+      bio: "Marine infantry officer. Cobalt Robotics Philadelphia. PSP-certified. Brings structured threat assessment and proactive risk mitigation to every environment he operates in.",
       img: "photos/jeff-ventrella.jpg"
+    },
+    {
+      name: "Tyler Morris",
+      role: "Remote Operations Manager",
+      bucket: "Operationalized & standardized",
+      chips: ["Dallas PD (helicopter pilot, UAS)"],
+      bio: "Former Dallas PD helicopter pilot and UAS operator. Trained 70+ drone pilots and integrated live aerial feeds into real-time crime centers across covert operations, federal taskforce support, and large-scale public safety events.",
+      img: "photos/tyler-morris.jpg"
+    },
+    {
+      name: "James Nguyen",
+      role: "Remote Pilots Manager",
+      bucket: "Operationalized & standardized",
+      chips: ["Dallas PD"],
+      bio: "Former Dallas PD officer and top-performing drone pilot. Combines frontline law-enforcement experience with advanced UAS expertise to lead remote aerial operations with operational discipline.",
+      img: "photos/james-nguyen.jpg"
+    },
+    {
+      name: "Danny Gritti",
+      role: "Customer Success & Drone Operations",
+      bucket: "Operationalized & standardized",
+      chips: ["Axon Air (CSM)", "ERT pilot", "Apple", "Nike"],
+      bio: "Former Axon Air Customer Success Manager and ERT drone pilot. Onboarded agencies, trained pilots, and deployed to disaster zones. Combines drone credibility with the communication discipline built across six years at Axon, Apple, and Nike.",
+      img: "photos/danny-gritti.jpg"
     },
     {
       name: "Erik Larson",
       role: "Drone Operations & Research",
-      bio: "US Navy veteran and NASA Aeronautics Research Engineer with FAA certifications as a Private Pilot, Instrument Rated Pilot, and Remote Pilot UAS. He supports Air Traffic Management research across simulation and live flight, bridging advanced airspace concepts with real-world drone operations.",
+      bucket: "Operationalized & standardized",
+      chips: ["NASA (Aeronautics Research Engineer)", "US Navy", "FAA Pilot/IFR/Remote"],
+      bio: "Navy veteran and NASA Aeronautics Research Engineer. FAA-certified Private, Instrument, and Remote pilot. Bridges advanced airspace concepts with real-world drone operations.",
       img: "photos/erik-larson.jpg"
-    },
-    {
-      name: "Dean Pratt",
-      role: "Solutions Engineering",
-      bio: "Former Senior Global Architect for Accenture's Physical AI and Computer Vision practice, and previously a technical solutions engineer at Kyndryl, Google, Dell and Cisco. Dean has deep experience in enterprise and agentic AI, emerging technology and cross-platform solution architectures, designing secure, scalable systems built to withstand scrutiny and emerging threats.",
-      img: "photos/dean-pratt.jpg"
     },
     {
       name: "Christian Kellerman",
       role: "Solutions Architect",
-      bio: "Former U.S. Army Special Forces officer who built and deployed operational drone programs inside the military, including launching the Army's first mobile drone labs. He brings real-world experience leading complex missions, integrating new technology under pressure, and turning advanced capability into something teams can actually execute.",
+      bucket: "Operationalized & standardized",
+      chips: ["US Army Special Forces", "Army's first mobile drone labs"],
+      bio: "Former U.S. Army Special Forces officer. Built and deployed operational drone programs inside the military, including launching the Army's first mobile drone labs. Turns advanced capability into something teams can actually execute.",
       img: "photos/christian-kellerman.jpg"
     },
     {
-      name: "Ward Ault",
-      role: "Integrations",
-      bio: "Marine infantry veteran and former Axon Chief of Staff with HBS and private equity operating experience. He ensures complex integrations scale without losing cadence or mission focus.",
-      img: "photos/ward-ault.jpg"
+      name: "Winston Gamso",
+      role: "Solutions Architect",
+      bucket: "Operationalized & standardized",
+      chips: ["Green Beret", "D1 quarterback"],
+      bio: "Former Green Beret and D1 college football quarterback. Brings tactical training and high-performance leadership to client solution architecture. Matches client security needs with the right expert capabilities.",
+      img: "photos/winston-gamso.jpg"
     }
   ];
 
+  // Render a per-section bucket header before the cards in each bucket
   const grid = document.getElementById("grid");
-  leaders.forEach((l, i) => {
-    const num = String(i + 1).padStart(2, "0");
-    const card = document.createElement("article");
-    card.className = "card reveal" + (l.featured ? " card-featured" : "");
-    const bioHtml = l.bio.includes("|")
-      ? l.bio.split("|").map(p => `<p>${p.trim()}</p>`).join("")
-      : l.bio;
-    if (l.featured) {
-      card.innerHTML = `
-        <div class="card-photo">
-          <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
-        </div>
-        <div class="card-body">
+  const buckets = [
+    "Built the technology",
+    "Operationalized & standardized",
+    "Built the business"
+  ];
+  const renderChip = txt => `<span class="card-chip">${txt}</span>`;
+  let cardIndex = 0;
+  const total = leaders.length;
+  buckets.forEach(b => {
+    const inBucket = leaders.filter(l => l.bucket === b);
+    if (!inBucket.length) return;
+    const head = document.createElement("div");
+    head.className = "bucket-head reveal";
+    head.style.cssText = "grid-column: 1 / -1; margin: 22px 0 6px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.10);";
+    head.innerHTML = `
+      <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;">${b}</div>
+    `;
+    grid.appendChild(head);
+    inBucket.forEach(l => {
+      cardIndex += 1;
+      const num = String(cardIndex).padStart(2, "0");
+      const card = document.createElement("article");
+      card.className = "card reveal" + (l.featured ? " card-featured" : "");
+      const bioHtml = l.bio.includes("|")
+        ? l.bio.split("|").map(p => `<p>${p.trim()}</p>`).join("")
+        : l.bio;
+      const chipsHtml = l.chips && l.chips.length
+        ? `<div class="card-chips">${l.chips.map(renderChip).join("")}</div>`
+        : "";
+      if (l.featured) {
+        card.innerHTML = `
+          <div class="card-photo">
+            <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <div class="card-name">${l.name}</div>
+            <div class="card-role">${l.role}</div>
+            ${chipsHtml}
+            <div class="card-bio">${bioHtml}</div>
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="card-number">${num} / ${String(total).padStart(2, "0")}</div>
+          <div class="card-photo">
+            <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
+          </div>
           <div class="card-name">${l.name}</div>
           <div class="card-role">${l.role}</div>
+          ${chipsHtml}
           <div class="card-bio">${bioHtml}</div>
-        </div>
-      `;
-    } else {
-      card.innerHTML = `
-        <div class="card-number">${num} / ${String(leaders.length).padStart(2, "0")}</div>
-        <div class="card-photo">
-          <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
-        </div>
-        <div class="card-name">${l.name}</div>
-        <div class="card-role">${l.role}</div>
-        <div class="card-bio">${bioHtml}</div>
-        <div class="card-rule"></div>
-      `;
-    }
-    grid.appendChild(card);
+          <div class="card-rule"></div>
+        `;
+      }
+      grid.appendChild(card);
+    });
   });
 
-  // Advisors
+  // Advisors — Sec 5.6 "validate the bet"
   const advisors = [
     {
       tag: "Defense & geopolitics",
@@ -980,6 +1094,11 @@
       tag: "Critical-infrastructure",
       name: "Adam Lee",
       bio: "CSO, Dominion Energy. 22-year FBI career. Knows critical-infrastructure security from the customer side."
+    },
+    {
+      tag: "Strategic capital",
+      name: "Dennis Bovin",
+      bio: "Verbal commitment in flight. Senior strategic capital advisor — defense and aerospace M&A practitioner."
     },
     {
       tag: "Guard-services industry",
