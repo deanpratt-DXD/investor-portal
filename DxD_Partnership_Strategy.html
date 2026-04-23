@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DxD — Partnership Strategy & Ecosystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@300;400;500;600;700;800&family=Anonymous+Pro:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #111113;
+    --bg-card: #0f0f10;
+    --bg-card-hover: #141416;
+    --border: rgba(255,255,255,0.08);
+    --border-light: rgba(255,255,255,0.14);
+    --red: #D2232A;
+    --red-glow: rgba(210,35,42,0.12);
+    --text-primary: rgba(255,255,255,0.92);
+    --text-secondary: rgba(255,255,255,0.6);
+    --text-dim: rgba(255,255,255,0.38);
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --blue: #3b82f6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tomorrow', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .doc-label {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* Thesis Section */
+  .thesis {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px;
+    margin-bottom: 56px;
+  }
+
+  .thesis h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--red);
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+
+  .thesis p {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-primary);
+  }
+
+  /* Pillar Sections */
+  .pillar {
+    margin-bottom: 56px;
+  }
+
+  .pillar-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 12px;
+  }
+
+  .pillar-number {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--red);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .pillar-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .pillar-question {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 8px;
+    padding-left: 48px;
+  }
+
+  .pillar-strategy {
+    font-size: 14px;
+    color: var(--text-dim);
+    padding-left: 48px;
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+
+  /* Partner Table */
+  .partner-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-left: 48px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 800px;
+  }
+
+  thead {
+    background: rgba(255,255,255,0.03);
+  }
+
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .partner-name {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Status Badges */
+  .status {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .status-signed {
+    background: rgba(34,197,94,0.12);
+    color: var(--green);
+  }
+
+  .status-in-process {
+    background: rgba(59,130,246,0.12);
+    color: var(--blue);
+  }
+
+  .status-active {
+    background: rgba(245,158,11,0.12);
+    color: var(--amber);
+  }
+
+  .status-initial {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-dim);
+  }
+
+  /* Revenue */
+  .rev-modeled {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 12px;
+  }
+
+  .rev-potential {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 12px;
+    color: var(--green);
+  }
+
+  /* Summary Stats */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -1px;
+  }
+
+  .stat-number .accent { color: var(--red); }
+
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    padding-left: 48px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  /* Footer */
+  .doc-footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container { padding: 32px 20px; }
+    h1 { font-size: 26px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .partner-table-wrap { margin-left: 0; }
+    .pillar-question, .pillar-strategy, .legend { padding-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="doc-label">Deus X Defense — Confidential</div>
+  <h1>Partnership Strategy <span style="color:var(--red)">&</span> Ecosystem</h1>
+  <p class="subtitle">DxD scales through strategic partnerships, not headcount. Each partnership pillar answers a core investor question about how we build, sell, and defend a full-stack critical infrastructure platform without doing everything ourselves.</p>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">2<span class="accent">6</span></div>
+      <div class="stat-label">Total Partners</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><span class="accent">7</span></div>
+      <div class="stat-label">MOUs Signed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><span class="accent">5</span></div>
+      <div class="stat-label">Strategic Pillars</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">$23<span class="accent">M</span></div>
+      <div class="stat-label">Modeled Revenue</div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><span class="status status-signed">Signed</span> MOU / Agreement executed</div>
+    <div class="legend-item"><span class="status status-in-process">In-Process</span> MOU in progress</div>
+    <div class="legend-item"><span class="status status-active">Active</span> Active discussions</div>
+    <div class="legend-item"><span class="status status-initial">Initial</span> Early-stage conversations</div>
+  </div>
+
+  <!-- PILLAR 1 -->
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-number">1</div>
+      <div class="pillar-title">Enterprise Distribution & GTM</div>
+    </div>
+    <div class="pillar-question">"How do you sell into F500 without a huge sales team?"</div>
+    <div class="pillar-strategy">We plug into the existing client relationships of global consulting, security, and advisory firms. They bring their customer base and credibility; we bring the technology, operations, and drone/robotic delivery capability. DxD is the physical security and drone/robotic operations partner — we consult on hardware, operationalize the technology, and run it as-a-service. The DaaS wedge gets us in the door; PuppetMaster software follows.</div>
+
+    <div class="partner-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Status</th>
+            <th>Purpose</th>
+            <th>Rev. Modeled</th>
+            <th>Rev. Potential</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="partner-name">Accenture</td>
+            <td><span class="status status-signed">Signed</span></td>
+            <td>Primary F500 GTM. Physical AI program — we are their physical security and drone/robotic ops partner. They accelerate our dev (GSOC buildout, engineering resources, white-labeled cyber/threat intel as SIGNAL). Primary distribution for COMMAND module.</td>
+            <td class="rev-modeled">$0*</td>
+            <td class="rev-potential">$20–40M (2026)<br>Significant 2027+</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Deloitte</td>
+            <td><span class="status status-active">Active</span></td>
+            <td>Exploring GTM partnership mirroring Accenture model. Same value prop — we are the physical security and drone/robotic ops partner. Also exploring DxD takeover of Deloitte's Connected Edge drone training school operations.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">High — mirrors Accenture scale if GTM closes</td>
+          </tr>
+          <tr>
+            <td class="partner-name">M6 Global Defense</td>
+            <td><span class="status status-signed">Signed</span></td>
+            <td>Mutual GTM — enterprise and ultra-high-net-worth. Former Secret Service Presidential Protection team. They bring us in as tech + DaaS partner; we bring them in as executive protection team. Mutual force multiplier.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">~$5–10M</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Odin Labs</td>
+            <td><span class="status status-signed">Signed</span></td>
+            <td>Joint GTM + technology integration. They brought us the Stargate inference and data center deals. Working tech partnership: Odin's compliance detection + our drones/robots/sensors + our back end for regulatory reporting.</td>
+            <td class="rev-modeled">~$350K</td>
+            <td class="rev-potential">>$20M (largest upside)</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Chertoff Group</td>
+            <td><span class="status status-initial">Initial</span></td>
+            <td>Referral and pipeline partner. Premier security advisory firm with deep government and enterprise network.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Gavin de Becker & Associates</td>
+            <td><span class="status status-initial">Initial</span></td>
+            <td>Referral and pipeline partner. Premier threat assessment and executive protection firm.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11px; color:var(--text-dim); padding-left:48px; margin-top:8px;">* Accenture Phase 1 LAPD (~$4M) was not modeled in pipeline. Revenue forecast will be updated only when: (a) agreements are formal and signed, (b) mutual pipeline review confirms what's real, (c) total actual dollar values are assigned.</p>
+  </div>
+
+  <!-- PILLAR 2 -->
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-number">2</div>
+      <div class="pillar-title">Hardware & Operations Supply Chain</div>
+    </div>
+    <div class="pillar-question">"How do you stay hardware-agnostic and avoid vendor lock-in?"</div>
+    <div class="pillar-strategy">We resell best-in-class hardware and own the software + operations layer. This keeps us asset-light, gives customers proven hardware, and ensures our platform value accrues in the software and operational IP — not in hardware margins. Where we have exclusive rights (Orcrist), we capture both hardware margin and platform pull-through.</div>
+
+    <div class="partner-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Status</th>
+            <th>Purpose</th>
+            <th>Rev. Modeled</th>
+            <th>Rev. Potential</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="partner-name">Orcrist</td>
+            <td><span class="status status-signed">Signed</span></td>
+            <td>Exclusive commercial and co-development rights. DxD sells SEAM-1 and SEAM-2 kinetic cUAS interceptors ($30K/unit, reusable, GPS-denied). Co-developing HALO system and Machina launcher (handheld → fixed-site/mobile deployment).</td>
+            <td class="rev-modeled">$23M</td>
+            <td class="rev-potential">$10–40M (2026)<br>>$200M (2027+)</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Sunflower Drones</td>
+            <td><span class="status status-signed">Signed</span></td>
+            <td>DaaS hardware partner — commercial/EP/HOA segment ($9K/dock/mo). We resell their hardware. Exploring DxD takeover of post-sales services and operations for their customers.</td>
+            <td class="rev-modeled">Incl. in DaaS rev.</td>
+            <td class="rev-potential">Grows w/ DaaS + post-sales ops</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Skydio</td>
+            <td><span class="status status-signed">Signed</span></td>
+            <td>DFR hardware partner — public sector/critical infra (higher-end). We resell their hardware. Same post-sales ops expansion model as Sunflower.</td>
+            <td class="rev-modeled">Incl. in DFR rev.</td>
+            <td class="rev-potential">Grows w/ DFR + post-sales ops</td>
+          </tr>
+          <tr>
+            <td class="partner-name">PDW (Performance Drone Works)</td>
+            <td><span class="status status-active">Active</span></td>
+            <td>Joint GTM. NDAA-compliant drone manufacturer (C100 series, 100K units/yr capacity, Huntsville AL). DxD adapts hardware for BVLOS remote operations. Core hardware GTM partner. Owned by Related Digital (same parent as Odin Labs).</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Mitek / Atlas IED</td>
+            <td><span class="status status-in-process">In-Process</span></td>
+            <td>Two-part deal: (1) VAR for their legacy sensor line at ~30% reseller margins, (2) DxD develops own sensor line for target markets and licenses SW/AI capabilities. Deployed at 95% of US schools.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">$15–30M+ (2026)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PILLAR 3 -->
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-number">3</div>
+      <div class="pillar-title">Technology & Platform Co-Development</div>
+    </div>
+    <div class="pillar-question">"How do you build a full platform without 200 engineers?"</div>
+    <div class="pillar-strategy">We accelerate the Sovereign OS build by integrating best-of-breed capabilities from specialist partners. Each partner brings deep domain expertise in their vertical — autonomous ground reasoning, computer vision, encrypted comms, compliance IP — while DxD provides the unifying platform, operational deployment, and customer relationships.</div>
+
+    <div class="partner-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Status</th>
+            <th>Purpose</th>
+            <th>Rev. Modeled</th>
+            <th>Rev. Potential</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="partner-name">Data Driven (CIP IP)</td>
+            <td><span class="status status-signed">Signed</span></td>
+            <td>CIP / COMMAND IP licensing. Foundation intellectual property for the COMMAND compliance platform.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">>$25M ARR (2026)</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Alpha Z</td>
+            <td><span class="status status-active">Active</span></td>
+            <td>Potential to power the entire GROUND module. Global autonomous decision-making platform providing the reasoning layer for autonomous systems — decision-making, control, and multi-agent collaboration for ground robotics.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Levatas</td>
+            <td><span class="status status-in-process">In-Process</span></td>
+            <td>Joint GTM and co-development. Computer vision capabilities feeding into CORTEX AI pipeline. Capability acceleration partner.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">Minimal — capability acceleration</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Arya Communications</td>
+            <td><span class="status status-active">Active</span></td>
+            <td>Encrypted communications platform. Proprietary secure comms layer for platform operations.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD</td>
+          </tr>
+          <tr>
+            <td class="partner-name">[Stealth Startup]</td>
+            <td><span class="status status-in-process">In-Process</span></td>
+            <td>Co-development on quantum-hardened communication and data transmission pipelines. Core differentiated capability and development acceleration.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD — strategic differentiation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PILLAR 4 -->
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-number">4</div>
+      <div class="pillar-title">Critical Infrastructure & Standards Shaping</div>
+    </div>
+    <div class="pillar-question">"How do you become the standard, not just a vendor?"</div>
+    <div class="pillar-strategy">We partner with the organizations that write the rules — nuclear regulators, global insurers, and next-generation energy developers. By co-authoring the future CI security requirements, we ensure our technology is designed into the standard from the start. This is the most defensible position in the market: you don't compete on the standard if you wrote it.</div>
+
+    <div class="partner-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Status</th>
+            <th>Purpose</th>
+            <th>Rev. Modeled</th>
+            <th>Rev. Potential</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="partner-name">Elementl Power</td>
+            <td><span class="status status-in-process">In-Process</span></td>
+            <td>GTM and development partnership — designing the future of SMR and nuclear security with DxD's modular out-of-the-box solutions. Founded by Navy nuclear engineers, backed by Energy Impact Partners ($4B+). Google nuclear partnership. Positions DxD as default security for nuclear buildout.</td>
+            <td class="rev-modeled">TBD</td>
+            <td class="rev-potential">Massive in out-years</td>
+          </tr>
+          <tr>
+            <td class="partner-name">GNSP</td>
+            <td><span class="status status-signed">Signed</span></td>
+            <td>Global nuclear security consultant (Lloyd's, EU nuclear regulators). MOU: co-authoring future CI requirements for nuclear/data center protection. Joint selection of 1–2 development sites to prove DxD as gold standard for nuclear CI security. Standards-shaping play — writing the rules our technology meets.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">Massive long-term</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Aon</td>
+            <td><span class="status status-active">Active</span></td>
+            <td rowspan="3" style="vertical-align:middle;">Insurance reporting integration + GTM. If DxD proves risk mitigation → reduced premiums → compelling customer ROI. Back-end reporting creates data moat for underwriting. Three of the largest insurance brokers exploring simultaneously.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential" rowspan="3" style="vertical-align:middle;">TBD — creates customer ROI multiplier</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Lockton</td>
+            <td><span class="status status-active">Active</span></td>
+            <td class="rev-modeled">$0</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Brown & Brown</td>
+            <td><span class="status status-active">Active</span></td>
+            <td class="rev-modeled">$0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PILLAR 5 -->
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-number">5</div>
+      <div class="pillar-title">Public Safety & Post-Sales Operations</div>
+    </div>
+    <div class="pillar-question">"How do you expand TAM beyond direct sales?"</div>
+    <div class="pillar-strategy">Many companies in the drone, sensor, and public safety space sell hardware but can't operate it. DxD becomes the operations layer — providing post-sale services, training, and managed operations for their customers. This expands our TAM without new hardware development and creates recurring service revenue on top of existing product sales.</div>
+
+    <div class="partner-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Status</th>
+            <th>Purpose</th>
+            <th>Rev. Modeled</th>
+            <th>Rev. Potential</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="partner-name">Axon</td>
+            <td><span class="status status-initial">Initial</span></td>
+            <td>Strategic integration partner (NOT competitor). Ecosystem integration: Dedrone (cUAS detection), Fusus (real-time crime center), Evidence.com (digital evidence chain), Sky Hero TASER (non-lethal drone). Multi-layer platform integration opportunity.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD</td>
+          </tr>
+          <tr>
+            <td class="partner-name">DroneSense</td>
+            <td><span class="status status-initial">Initial</span></td>
+            <td>Potential GTM partner. DxD provides post-sale operations and services for their drone platform customers.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD</td>
+          </tr>
+          <tr>
+            <td class="partner-name">Flock Safety</td>
+            <td><span class="status status-initial">Initial</span></td>
+            <td>Post-sale operations and services. Public safety tech company (AI LPR cameras, gunshot detection, video surveillance) with 5,000+ communities and 4,500+ law enforcement agencies. Natural overlap with DxD's public sector play.</td>
+            <td class="rev-modeled">$0</td>
+            <td class="rev-potential">TBD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <span>Deus X Defense — Partnership Strategy & Ecosystem</span>
+    <span>Confidential — April 2026</span>
+  </div>
+
+</div>
+
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
