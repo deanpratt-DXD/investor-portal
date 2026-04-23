@@ -1,0 +1,2032 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Deus X Defense — Investor Pitch · April 2026 · Confidential</title>
+<meta name="description" content="Deus X Defense — Physical AI for critical infrastructure security. Investor pitch, April 2026. Confidential." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   DxD Investor Pitch v2 — dark, dense, credible, restrained
+   Bloomberg Terminal × Palantir × SOF briefing
+   ========================================================= */
+
+:root {
+  --bg: #0A0A0A;
+  --surface: #141414;
+  --surface-2: #1A1A1A;
+  --border: #2A2A2A;
+  --text: #F2F2F0;
+  --text-dim: #A8A8A6;
+  --text-faint: #6F6F6D;
+  --accent: #D2232A;
+  --accent-dim: rgba(210, 35, 42, 0.15);
+  --accent-line: rgba(210, 35, 42, 0.35);
+  --success: #4FA85E;
+  --warn: #E0A44A;
+  --info: #6B8AB5;
+  --rail-w: 240px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+/* Scroll container with snap */
+.deck {
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   Left rail (sticky navigation)
+   ========================================================= */
+.rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--rail-w);
+  height: 100vh;
+  padding: 32px 20px 24px 28px;
+  background: #070707;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: 50;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.rail-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.rail-brand .wordmark {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+.rail-brand .sub {
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.rail-brand .mark-red {
+  color: var(--accent);
+}
+
+.rail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  flex: 1;
+}
+.rail-list li a {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 8px;
+  align-items: baseline;
+  padding: 7px 8px 7px 6px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-left: 2px solid transparent;
+  transition: color 120ms, background 120ms, border-color 120ms;
+  cursor: pointer;
+}
+.rail-list li a .num {
+  color: var(--text-faint);
+  font-weight: 600;
+}
+.rail-list li a:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+.rail-list li a.active {
+  color: var(--text);
+  border-left-color: var(--accent);
+  background: var(--surface);
+}
+.rail-list li a.active .num { color: var(--accent); }
+
+.rail-foot {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  line-height: 1.5;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+/* Mobile top bar */
+.topbar {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: #070707;
+  border-bottom: 1px solid var(--border);
+  z-index: 60;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+.topbar .wm { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 12px; letter-spacing: 2px; }
+.topbar .current { font-size: 10px; letter-spacing: 2px; color: var(--text-dim); margin-left: auto; text-transform: uppercase;}
+.topbar button {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   Slide base
+   ========================================================= */
+.slide {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  padding: 120px 60px 80px;
+  margin-left: var(--rail-w);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border);
+}
+
+.slide-inner {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 24px;
+}
+.eyebrow.dim { color: var(--text-faint); }
+
+.slide h1, .slide h2 {
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.02;
+  margin: 0 0 28px;
+  color: var(--text);
+}
+.slide h1 { font-size: clamp(42px, 5.2vw, 58px); }
+.slide h2 { font-size: clamp(36px, 4vw, 48px); }
+
+.slide h3 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin: 0 0 10px;
+  color: var(--text);
+}
+
+.slide p {
+  color: var(--text);
+  margin: 0 0 18px;
+  max-width: 72ch;
+}
+.slide p.lead {
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--text);
+  max-width: 62ch;
+}
+.slide p.muted { color: var(--text-dim); }
+
+.accent-bar {
+  width: 48px;
+  height: 3px;
+  background: var(--accent);
+  margin: 0 0 24px;
+  border: 0;
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+/* Slide footer */
+.slide-foot {
+  position: absolute;
+  left: calc(var(--rail-w) + 60px);
+  right: 60px;
+  bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  pointer-events: none;
+}
+.slide-foot .watermark {
+  color: rgba(210, 35, 42, 0.15);
+  letter-spacing: 3px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   Hero
+   ========================================================= */
+#slide-01 {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(210,35,42,0.08), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(210,35,42,0.05), transparent 60%),
+    var(--bg);
+}
+#slide-01 .hero-stack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+#slide-01 h1.hero {
+  font-size: clamp(56px, 8.2vw, 96px);
+  font-weight: 900;
+  letter-spacing: -3px;
+  line-height: 0.98;
+  margin: 0;
+}
+#slide-01 .hero-sub {
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 400;
+  color: var(--text-dim);
+  max-width: 64ch;
+  line-height: 1.35;
+  margin: 0;
+}
+#slide-01 .hero-tag {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.stat-cluster {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 16px;
+}
+.stat-cluster .stat {
+  background: var(--bg);
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stat .lbl {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.stat .val {
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1;
+}
+.stat .val.accent { color: var(--accent); }
+.stat .note {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.2px;
+}
+
+.scroll-cue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-faint);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 40px;
+}
+.scroll-cue .line {
+  width: 48px;
+  height: 1px;
+  background: var(--text-faint);
+}
+
+/* =========================================================
+   Stat / card grids
+   ========================================================= */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+.card .k {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.card .k.dim { color: var(--text-faint); }
+.card .big {
+  font-size: clamp(40px, 4.2vw, 56px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.card .big.accent { color: var(--accent); }
+.card .label {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+.card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+.card p { font-size: 15px; color: var(--text-dim); margin: 0; }
+
+.card.accent-top { border-top: 2px solid var(--accent); }
+
+/* Two-column compare (category positioning) */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.compare .col {
+  background: var(--surface);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.compare .col.us {
+  background: var(--surface-2);
+  border-top: 2px solid var(--accent);
+}
+.compare .col h3 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.compare .col .who {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.compare .col.us .who { color: var(--accent); }
+.compare ul {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14.5px;
+  color: var(--text-dim);
+}
+.compare ul li::before {
+  content: "—";
+  color: var(--text-faint);
+  margin-right: 10px;
+}
+
+/* =========================================================
+   Honesty tags
+   ========================================================= */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px solid;
+  border-radius: 2px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.tag.live     { color: var(--success); border-color: var(--success); }
+.tag.signed   { color: var(--success); border-color: var(--success); background: rgba(79,168,94,0.06); }
+.tag.verbal   { color: var(--warn);    border-color: var(--warn); }
+.tag.inbuild  { color: var(--info);    border-color: var(--info); }
+.tag.roadmap  { color: var(--text-faint); border-color: var(--text-faint); }
+.tag.active   { color: var(--info);    border-color: var(--info); }
+
+/* =========================================================
+   Tables
+   ========================================================= */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.tbl th, .tbl td {
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.tbl th {
+  background: var(--surface-2);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+}
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl td.num {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--text);
+}
+.tbl td.name { font-weight: 600; color: var(--text); }
+.tbl td .sub { display: block; color: var(--text-dim); font-size: 12.5px; margin-top: 3px; }
+.tbl tr.subtotal td {
+  background: var(--surface-2);
+  font-weight: 700;
+  border-top: 1px solid var(--accent-line);
+}
+
+/* =========================================================
+   Module triad (slide 5)
+   ========================================================= */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.module {
+  background: var(--surface);
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+.module .verb {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.module .name {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  line-height: 1;
+}
+.module .desc {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Visual placeholder
+   ========================================================= */
+.visual-placeholder {
+  border: 1px dashed rgba(210, 35, 42, 0.45);
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 14px,
+      rgba(210, 35, 42, 0.03) 14px,
+      rgba(210, 35, 42, 0.03) 15px
+    ),
+    var(--surface);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  min-height: 280px;
+}
+.visual-placeholder .vp-eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.visual-placeholder .vp-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--text);
+  max-width: 72ch;
+}
+.visual-placeholder .vp-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  max-width: 80ch;
+  line-height: 1.55;
+}
+.visual-placeholder.ar-16-9 { aspect-ratio: 16/9; min-height: 320px; }
+.visual-placeholder.ar-4-3  { aspect-ratio: 4/3;  min-height: 300px; }
+
+/* =========================================================
+   Callouts
+   ========================================================= */
+.callouts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.callout .head {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.callout .body {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.callout .body strong { color: var(--text); font-weight: 600; }
+
+/* =========================================================
+   Quote block
+   ========================================================= */
+blockquote.pull {
+  margin: 32px 0;
+  padding: 22px 26px 22px 28px;
+  border-left: 2px solid var(--accent);
+  background: var(--surface);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
+  max-width: 70ch;
+}
+blockquote.pull .cite {
+  display: block;
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.kicker {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text);
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  margin-top: 32px;
+  max-width: 80ch;
+}
+.kicker strong { color: var(--accent); font-weight: 600; }
+
+/* Close line styled red/bold (ACCENT ONLY if ≥24px) */
+.close-line {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--accent);
+  margin-top: 24px;
+  max-width: 62ch;
+  line-height: 1.3;
+}
+
+/* Slide beats (slide 10) */
+.beat {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  margin-top: 28px;
+}
+.beat:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.beat .beat-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.beat .beat-num {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.beat h3 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+
+/* CTA buttons (slide 14) */
+.cta-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition: border-color 120ms, color 120ms, background 120ms;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary { border-color: var(--accent); color: var(--accent); }
+.btn.primary:hover { background: var(--accent-dim); }
+
+.signoff {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+.signoff .motto {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.signoff .sig {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.signoff .sig strong { color: var(--text); }
+
+/* =========================================================
+   Slide 11 — pipeline walk
+   ========================================================= */
+.pipeline-walk {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 8px;
+}
+.pipeline-walk .step {
+  background: var(--surface);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pipeline-walk .step.weighted {
+  background: var(--surface-2);
+  border-top: 2px solid var(--accent);
+}
+.pipeline-walk .tier {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.pipeline-walk .amount {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.pipeline-walk .step.weighted .amount { color: var(--accent); }
+.pipeline-walk .prob {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .stat-cluster { grid-template-columns: repeat(2, 1fr); }
+  .pipeline-walk { grid-template-columns: repeat(2, 1fr); }
+  .slide { padding: 110px 44px 72px; }
+}
+
+@media (max-width: 768px) {
+  :root { --rail-w: 0px; }
+  .rail { display: none; }
+  .topbar { display: flex; }
+  .slide {
+    margin-left: 0;
+    padding: 80px 24px 64px;
+    min-height: auto;
+  }
+  .slide-foot { left: 24px; right: 24px; }
+  .grid-3, .grid-2, .module-grid, .compare {
+    grid-template-columns: 1fr;
+  }
+  .callouts { grid-template-columns: 1fr; }
+  #slide-01 h1.hero { font-size: 48px; letter-spacing: -1.6px; }
+  .slide h1 { font-size: 34px; letter-spacing: -0.8px; }
+  .slide h2 { font-size: 28px; letter-spacing: -0.6px; }
+  .deck { scroll-snap-type: none; }
+}
+
+@media (max-width: 430px) {
+  .stat-cluster { grid-template-columns: 1fr; }
+  .slide { padding: 72px 18px 56px; }
+  .tbl { font-size: 12.5px; }
+  .tbl th, .tbl td { padding: 10px 10px; }
+}
+
+/* =========================================================
+   Print
+   ========================================================= */
+@media print {
+  .rail, .topbar { display: none !important; }
+  .slide { margin-left: 0; min-height: auto; padding: 40px 40px 30px; page-break-after: always; border-bottom: 0; }
+  .deck { overflow: visible; height: auto; scroll-snap-type: none; }
+  html, body { background: #fff; color: #000; }
+  .slide h1, .slide h2, .slide h3, .slide p, .card, .tbl { color: #000 !important; background: #fff !important; }
+  .tag, .eyebrow, .accent-bar, .card.accent-top { color: #000 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile top bar -->
+<header class="topbar" role="banner">
+  <span class="wm">DEUS<span style="color:var(--accent)">·</span>X<span style="color:var(--accent)">·</span>DEFENSE</span>
+  <span class="current" id="mobile-current">01 / 14</span>
+  <button id="mobile-prev" aria-label="Previous slide">Prev</button>
+  <button id="mobile-next" aria-label="Next slide">Next</button>
+</header>
+
+<!-- Sticky left rail -->
+<nav class="rail" role="navigation" aria-label="Slide navigation">
+  <div class="rail-brand">
+    <span class="wordmark">DEUS<span class="mark-red">·</span>X<span class="mark-red">·</span>DEFENSE</span>
+    <span class="sub">Investor Pitch · April 2026</span>
+  </div>
+  <ol class="rail-list" id="rail-list">
+    <li><a href="#slide-01" data-slide="1"><span class="num">01</span><span>Hero</span></a></li>
+    <li><a href="#slide-02" data-slide="2"><span class="num">02</span><span>The world changed</span></a></li>
+    <li><a href="#slide-03" data-slide="3"><span class="num">03</span><span>Why 2026</span></a></li>
+    <li><a href="#slide-04" data-slide="4"><span class="num">04</span><span>New category</span></a></li>
+    <li><a href="#slide-05" data-slide="5"><span class="num">05</span><span>What we built</span></a></li>
+    <li><a href="#slide-06" data-slide="6"><span class="num">06</span><span>The moat</span></a></li>
+    <li><a href="#slide-07" data-slide="7"><span class="num">07</span><span>Traction</span></a></li>
+    <li><a href="#slide-08" data-slide="8"><span class="num">08</span><span>Team &amp; advisors</span></a></li>
+    <li><a href="#slide-09" data-slide="9"><span class="num">09</span><span>Partnership architecture</span></a></li>
+    <li><a href="#slide-10" data-slide="10"><span class="num">10</span><span>Why not the giants</span></a></li>
+    <li><a href="#slide-11" data-slide="11"><span class="num">11</span><span>Financial spine</span></a></li>
+    <li><a href="#slide-12" data-slide="12"><span class="num">12</span><span>Capital architecture</span></a></li>
+    <li><a href="#slide-13" data-slide="13"><span class="num">13</span><span>Path forward</span></a></li>
+    <li><a href="#slide-14" data-slide="14"><span class="num">14</span><span>The ask</span></a></li>
+  </ol>
+  <div class="rail-foot">
+    ↑ ↓ · PgUp PgDn · j / k · Home / End<br/>Confidential · Qualified investors
+  </div>
+</nav>
+
+<main class="deck" id="deck" role="main">
+
+<!-- ========== SLIDE 1 — HERO ========== -->
+<section class="slide" id="slide-01" data-n="1" aria-label="Hero — The War Came Home">
+  <div class="slide-inner">
+    <div class="hero-stack">
+      <span class="hero-tag">Deus X Defense · Investor Pitch · April 2026</span>
+      <h1 class="hero">
+        The war came home.<br/>
+        We built the response.
+      </h1>
+      <p class="hero-sub">
+        Physical AI for critical infrastructure security. The operating layer that senses, decides, and responds — with the trained operators, the regulatory rights, and the data to make it real.
+      </p>
+      <p class="hero-tag" style="color:var(--text-faint);letter-spacing:3px;">The Security Immune System — one operation, one record, one throat to choke.</p>
+
+      <div class="stat-cluster" role="list">
+        <div class="stat" role="listitem">
+          <span class="lbl">Live revenue · TTM</span>
+          <span class="val accent">$27M</span>
+          <span class="note">450 operators · Day 1 profitable · 8% EBITDA baseline</span>
+        </div>
+        <div class="stat" role="listitem">
+          <span class="lbl">Signed + Verbal</span>
+          <span class="val">$22M</span>
+          <span class="note">Dallas ISD signed Apr 14 · ONEOK 1→12.5M · LAPD verbal</span>
+        </div>
+        <div class="stat" role="listitem">
+          <span class="lbl">Weighted pipeline</span>
+          <span class="val">$55&ndash;100M</span>
+          <span class="note">Against ~$700M gross book · honest calibration</span>
+        </div>
+        <div class="stat" role="listitem">
+          <span class="lbl">Airspace rights</span>
+          <span class="val">BVLOS</span>
+          <span class="note">Nationwide waiver over people &amp; moving vehicles · thru 2030</span>
+        </div>
+      </div>
+
+      <div class="scroll-cue">
+        <span>Scroll to begin</span><span class="line"></span><span>14 slides</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 01 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 2 — THE WORLD CHANGED ========== -->
+<section class="slide" id="slide-02" data-n="2" aria-label="The world changed">
+  <div class="slide-inner">
+    <p class="eyebrow">Act One · The world changed</p>
+    <hr class="accent-bar" />
+    <h1>The industry was built to detect.<br/>Nobody built the response.</h1>
+    <p class="lead">
+      Every critical-infrastructure site in America already has cameras, sensors, alarms, guards, and five vendors. None of them have an operating system. None of them have accountability. The industry's best metric — <em>time to notify</em> — is a confession that the industry cannot stop anything.
+    </p>
+
+    <div class="grid-3" style="margin-top:32px">
+      <div class="card accent-top">
+        <span class="k">Attention collapse</span>
+        <span class="big accent">95%</span>
+        <p class="label">of activity is <strong style="color:var(--text)">missed after 20 minutes</strong> of video monitoring. Human attention collapses. <span style="color:var(--text-faint)">Sandia National Laboratories / DoE</span></p>
+        <span class="tag live" style="margin-top:auto">Live fact</span>
+      </div>
+      <div class="card accent-top">
+        <span class="k">False alarms</span>
+        <span class="big accent">97%</span>
+        <p class="label">of security alarms are <strong style="color:var(--text)">false</strong>. 40%+ of U.S. cities have stopped guaranteeing police response. <span style="color:var(--text-faint)">LAPD verified / Deep Sentinel</span></p>
+        <span class="tag live" style="margin-top:auto">Live fact</span>
+      </div>
+      <div class="card accent-top">
+        <span class="k">Workforce crisis</span>
+        <span class="big accent">100–300%</span>
+        <p class="label">annual security-guard turnover. The workforce protecting critical assets <strong style="color:var(--text)">doesn't learn the site before leaving it</strong>. <span style="color:var(--text-faint)">BLS JOLTS / Security Industry Association</span></p>
+        <span class="tag live" style="margin-top:auto">Live fact</span>
+      </div>
+    </div>
+
+    <p class="kicker">
+      The reframe is the whole investment category: <strong>from &ldquo;detect and notify&rdquo; to &ldquo;detect and defend.&rdquo;</strong> The new standard every critical asset in America will be held to is <em>time to threat stopped</em>. That shift is the entire category. Deus X Defense is building for the new metric.
+    </p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 02 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 3 — WHY 2026, NOT 2020 ========== -->
+<section class="slide" id="slide-03" data-n="3" aria-label="Why 2026, not 2020">
+  <div class="slide-inner">
+    <p class="eyebrow">Market-structure inflection</p>
+    <hr class="accent-bar" />
+    <h1>Why 2026, not 2020.</h1>
+    <p class="lead">
+      The threat, the regulation, the airspace, and the capital are converging inside a single 24&ndash;36-month window. After that, the category is owned.
+    </p>
+
+    <div class="grid-3" style="margin-top:24px">
+      <div class="card">
+        <span class="k">Compliance mandate</span>
+        <h3>CIRCIA · May 2026</h3>
+        <p>72-hour mandatory cyber-physical incident reporting. CISA final rule expected May 2026. Over 300,000 covered entities.</p>
+      </div>
+      <div class="card">
+        <span class="k">Grid enforcement</span>
+        <h3>NERC CIP-003-9 · April 2026</h3>
+        <p>Low-impact BES cyber-systems enforcement date. Utilities now carry a documented physical-security burden they cannot subcontract away.</p>
+      </div>
+      <div class="card">
+        <span class="k">Airspace regime</span>
+        <h3>FAA Part 108 · BVLOS</h3>
+        <p>Commercial BVLOS framework moves from one-off waivers to a general rule. Our nationwide waiver becomes a head-start, not the finish line.</p>
+      </div>
+      <div class="card">
+        <span class="k">Threat environment</span>
+        <h3>Cartel drone incursions</h3>
+        <p>Thousands of monthly incursions across the southern border — surveillance, counter-law-enforcement, delivery. DHS/ICE verified. The airspace under 400 ft is contested.</p>
+      </div>
+      <div class="card">
+        <span class="k">Capital pull</span>
+        <h3>Hyperscaler CapEx wave</h3>
+        <p>$1T+ U.S. infrastructure buildout. $49.1B defense-tech VC in 2025. A top-3 provider has already contributed a modular data center to our operation.</p>
+      </div>
+      <div class="card">
+        <span class="k">Operational scale</span>
+        <h3>FAA 1:many waivers</h3>
+        <p>One operator, many aircraft. The unit economics of autonomous response only work at 1:many scale. We fly there today.</p>
+      </div>
+    </div>
+
+    <div class="visual-placeholder ar-16-9" style="margin-top:32px">
+      <span class="vp-eyebrow">Custom visual required</span>
+      <span class="vp-title">Regulatory + threat-event timeline, April 2025 → April 2028</span>
+      <span class="vp-desc">Horizontal timeline mapping CIRCIA (May 2026), NERC CIP-003-9 (April 2026), FAA Part 108 BVLOS, and observed threat events (Langley AFB incursions, cartel drone activity, UAE/Bahrain hyperscaler kinetic attack, 3,500+ grid breaches 2025) against the 24–36 month giant-competitor window.</span>
+    </div>
+
+    <p class="close-line">The giants have a 24&ndash;36 month window. After that, the category is owned.</p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 03 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 4 — THE NEW CATEGORY ========== -->
+<section class="slide" id="slide-04" data-n="4" aria-label="The new category">
+  <div class="slide-inner">
+    <p class="eyebrow">Act Two · Category lock</p>
+    <hr class="accent-bar" />
+    <h1>Physical AI for critical infrastructure security.</h1>
+    <p class="lead">
+      Same technology layer as Palantir and Nvidia. Different problem. Different data. Different operators. Different accountability. The education they're paying to do &mdash; we ride. The category they're not building &mdash; we own.
+    </p>
+
+    <div class="compare" style="margin-top:24px">
+      <div class="col">
+        <span class="who">Palantir · Nvidia</span>
+        <h3>Physical AI for operations &amp; efficiency</h3>
+        <ul>
+          <li>Optimize for throughput, uptime, cost</li>
+          <li>Data: process, sensor, telemetry</li>
+          <li>Operators: plant engineers, SREs, analysts</li>
+          <li>Accountability: performance metrics</li>
+          <li>Failure mode: suboptimal output</li>
+        </ul>
+      </div>
+      <div class="col us">
+        <span class="who">Deus X Defense</span>
+        <h3>Physical AI for security</h3>
+        <ul>
+          <li>Optimize for <strong style="color:var(--text)">time-to-threat-stopped</strong></li>
+          <li>Data: incident, threat, response</li>
+          <li>Operators: guards, police, EP, intelligence</li>
+          <li>Accountability: life safety, legal evidence</li>
+          <li>Failure mode: kinetic harm, loss of life</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="close-line">Somebody will build this. Different stack, different data, different operators.</p>
+
+    <p class="muted" style="margin-top:18px;max-width:72ch">
+      Category validation: Accenture is already pitching a <strong style="color:var(--text)">$3.5B Physical AI pipeline</strong> across critical-infrastructure customers — verified in their own LAPD proposal, February 2026. The category isn't ours to invent. It's ours to lead.
+    </p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 04 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 5 — WHAT WE BUILT ========== -->
+<section class="slide" id="slide-05" data-n="5" aria-label="What we built — one accountable operation">
+  <div class="slide-inner">
+    <p class="eyebrow">Act Three · What we built</p>
+    <hr class="accent-bar" />
+    <h1>One accountable operation.</h1>
+    <p class="lead">
+      Three modules. One operational spine. Each launches to our own operation first — we are our own Customer Zero — then ships to the customer as internal MVPs harden against real threats. GA follows internal MVP by ~6 months.
+    </p>
+
+    <div class="module-grid" style="margin-top:24px">
+      <div class="module">
+        <span class="verb">See</span>
+        <span class="name">Cortex</span>
+        <p class="desc">The on-site appliance. Every camera and sensor a facility operates, aggregated and AI-processed into one picture of the site.</p>
+        <span class="tag inbuild" style="margin-top:auto">In-build · Internal MVP</span>
+      </div>
+      <div class="module">
+        <span class="verb">Protect</span>
+        <span class="name">Sentinel</span>
+        <p class="desc">The response layer. Drones, robots, guards, and building systems coordinated from one unified console — including aerial defeat when the threat demands it.</p>
+        <span class="tag inbuild" style="margin-top:auto">In-build · Internal MVP</span>
+      </div>
+      <div class="module">
+        <span class="verb">Prove</span>
+        <span class="name">Command</span>
+        <p class="desc">The official record. Every action, every decision, every piece of evidence in one reviewable narrative. Compliance reports generated, not reconstructed.</p>
+        <span class="tag inbuild" style="margin-top:auto">In-build · CIRCIA wedge Q3 2026</span>
+      </div>
+    </div>
+
+    <div class="visual-placeholder ar-16-9" style="margin-top:28px">
+      <span class="vp-eyebrow">Custom visual required</span>
+      <span class="vp-title">Three-module architecture diagram — Cortex · Sentinel · Command</span>
+      <span class="vp-desc">Clean isometric or schematic showing data flow: sensor aggregation (Cortex) → unified response console (Sentinel) → official record and compliance output (Command). Atlas labeled as the integrated platform layer. Orcrist shown as the exclusive kinetic interceptor powering Sentinel's aerial defeat capability.</span>
+    </div>
+
+    <p class="close-line">One contract. One team. One throat to choke.</p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 05 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 6 — THE MOAT ========== -->
+<section class="slide" id="slide-06" data-n="6" aria-label="The moat — four layers of friction">
+  <div class="slide-inner">
+    <p class="eyebrow">The moat</p>
+    <hr class="accent-bar" />
+    <h1>Four layers of friction.</h1>
+    <p class="lead">
+      Competitors sell components. We deliver outcomes. The moat is four layers that compound over time &mdash; built on top of the operational ground we already own.
+    </p>
+
+    <div class="grid-4" style="margin-top:24px">
+      <div class="card accent-top">
+        <span class="k">Regulatory</span>
+        <h3>BVLOS waiver</h3>
+        <p>Nationwide BVLOS over people and moving vehicles — one of fewer than 5 ever issued in the U.S. FAA Certificate of Waiver 107W-2025-03831. Valid through January 31, 2030. 18 months to earn.</p>
+        <span class="tag live" style="margin-top:auto">Live · In hand</span>
+      </div>
+      <div class="card accent-top">
+        <span class="k">Operational</span>
+        <h3>CJIS-certified officers</h3>
+        <p>Law-enforcement-certified operators inside our operator pool. You cannot hire this off the street. 450 operators today across Cascadia and Invictus.</p>
+        <span class="tag live" style="margin-top:auto">Live · Operator pool</span>
+      </div>
+      <div class="card accent-top">
+        <span class="k">Deployment</span>
+        <h3>Site-specific training</h3>
+        <p>In the mud, not the demo room. Dallas ISD is the example, not the moat — $7.5M sole-source, written into specs for 26 new schools against a $6.2B bond.</p>
+        <span class="tag signed" style="margin-top:auto">Signed · April 14</span>
+      </div>
+      <div class="card accent-top">
+        <span class="k">Integration</span>
+        <h3>Accenture + Deloitte</h3>
+        <p>Distribution at a scale no drone company has ever achieved. Accenture is contracted inside LAPD Phase 1. Deloitte is in final-talk negotiation on a parallel channel.</p>
+        <span class="tag verbal" style="margin-top:auto">Signed / In negotiation</span>
+      </div>
+    </div>
+
+    <p class="close-line">The moat is all four, built on top of the operational ground we already own.</p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 06 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 7 — TRACTION ========== -->
+<section class="slide" id="slide-07" data-n="7" aria-label="Traction — named, tagged, honest">
+  <div class="slide-inner">
+    <p class="eyebrow">Traction</p>
+    <hr class="accent-bar" />
+    <h1>Named, tagged, honest.</h1>
+    <p class="lead">
+      Every customer carries its honesty tag. Live means revenue today. Signed means paper executed. Verbal means handshake with a date. In-build means engineering underway. We publish what is real; we do not inflate.
+    </p>
+
+    <div class="visual-placeholder ar-16-9" style="margin-top:20px;min-height:140px">
+      <span class="vp-eyebrow">Custom visual required</span>
+      <span class="vp-title">Customer logo wall</span>
+      <span class="vp-desc">Monochrome logos: LAPD · ONEOK · Dallas ISD · Dominion Energy · Accenture · Deloitte · Stargate · GNSP. To be rendered in a calibrated grayscale lockup consistent with the dark theme.</span>
+    </div>
+
+    <table class="tbl" style="margin-top:24px">
+      <thead>
+        <tr>
+          <th style="width:22%">Customer / Partner</th>
+          <th style="width:16%">Amount</th>
+          <th style="width:14%">Status</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name">ONEOK</td>
+          <td class="num">$1M &rarr; $12.5M</td>
+          <td><span class="tag signed">Signed</span></td>
+          <td>Expanded on performance alone. No sales cycle — they asked us to scale. Proves the land-and-expand motion.</td>
+        </tr>
+        <tr>
+          <td class="name">Dallas ISD</td>
+          <td class="num">$7.5M</td>
+          <td><span class="tag signed">Signed · Apr 14</span></td>
+          <td>Sole-source. Written into security specs for 26 new schools. $6.2B bond vote pending.</td>
+        </tr>
+        <tr>
+          <td class="name">LAPD</td>
+          <td class="num">~$2M</td>
+          <td><span class="tag verbal">Verbal</span></td>
+          <td>DxD scope inside Accenture-primed $5M program. Signing week of April 21. Deputy Chief ended the pitch early.</td>
+        </tr>
+        <tr>
+          <td class="name">Stargate · Odin</td>
+          <td class="num">Customer-pulled</td>
+          <td><span class="tag inbuild">In-build</span></td>
+          <td>Customer asked us to add full counter-drone capability before signing. NATO ranked us #1 for a $20M cUAS procurement.</td>
+        </tr>
+        <tr>
+          <td class="name">Dominion Energy</td>
+          <td class="num">Development partner</td>
+          <td><span class="tag active">Active</span></td>
+          <td>Energy / nuclear proving ground. CSO Adam Lee on advisory roster.</td>
+        </tr>
+        <tr>
+          <td class="name">Major critical-infrastructure provider</td>
+          <td class="num">Active</td>
+          <td><span class="tag active">Active</span></td>
+          <td>Reinsurer-mandate track. Top-3 hyperscaler contributed a modular data center to our operation.</td>
+        </tr>
+        <tr>
+          <td class="name">Accenture · GTM</td>
+          <td class="num">~$350M channel book</td>
+          <td><span class="tag signed">Signed</span></td>
+          <td>Contracted inside LAPD Phase 1. ≈10% of Accenture's own $3.5B Physical AI pipeline.</td>
+        </tr>
+        <tr>
+          <td class="name">Orcrist · exclusive commercial</td>
+          <td class="num">Global rights</td>
+          <td><span class="tag signed">Signed</span></td>
+          <td>Exclusive global commercial distribution on the only commercially-available hard-kill cUAS interceptor. $30K price point — parity with the threat.</td>
+        </tr>
+        <tr>
+          <td class="name">Deloitte</td>
+          <td class="num">~$250M channel book</td>
+          <td><span class="tag verbal">In negotiation</span></td>
+          <td>Reached out inbound. Final talks on a parallel channel sitting alongside Accenture.</td>
+        </tr>
+        <tr>
+          <td class="name">Hyperscaler</td>
+          <td class="num">Active</td>
+          <td><span class="tag active">Active</span></td>
+          <td>Multiple hyperscalers in early-phase conversations. Reinsurance industry's largest writer wants the platform provisioned as a mandate.</td>
+        </tr>
+        <tr>
+          <td class="name">GNSP · Nuclear</td>
+          <td class="num">Active</td>
+          <td><span class="tag active">Active</span></td>
+          <td>Bringing DxD to multiple confidential global nuclear facilities — more than we can accept today. A confidential Ohio facility via Elementl powers one of the world's largest data centers.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="muted" style="margin-top:22px">$0 fixed sales cost. Three commission-only reps. Every major deal inbound or through a partner.</p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 07 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 8 — TEAM & ADVISORS ========== -->
+<section class="slide" id="slide-08" data-n="8" aria-label="Team and advisors">
+  <div class="slide-inner">
+    <p class="eyebrow">Team &amp; advisors</p>
+    <hr class="accent-bar" />
+    <h1>The people who built it. The people who run it. The people who validate it.</h1>
+    <p class="lead">
+      An engineer who built the technology. Operators who ran it in the field. A founder who can scale it. Validators who de-risk it.
+    </p>
+
+    <h3 style="margin-top:28px;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-family:'JetBrains Mono',monospace">Operators</h3>
+    <div class="grid-3" style="margin-top:12px">
+      <div class="card">
+        <span class="k">CEO &amp; Founder</span>
+        <h3>Patrick Madden</h3>
+        <p>Ex-Axon SVP &amp; GM, TASER and Robotics — scaled the P&amp;L from ~$350M to ~$1B; led drones &amp; robotics expansion. Two years as Chief of Staff to Rick Smith. USMC Recon. Wharton. McKinsey.</p>
+      </div>
+      <div class="card">
+        <span class="k">Head of Product</span>
+        <h3>Nick Gilmour</h3>
+        <p>Invented Drone-as-First-Responder at Skydio. 3 patents. Skydio · Axon · GoPro · Amazon.</p>
+      </div>
+      <div class="card">
+        <span class="k">CTO</span>
+        <h3>Brendan Flannery</h3>
+        <p>12 years embedded NSA at Tier 1 Special Operations. 6 patents. USSOCOM.</p>
+      </div>
+      <div class="card">
+        <span class="k">CFO</span>
+        <h3>Mike Egan</h3>
+        <p>Green Beret (Army Special Forces). Wharton. BCG. JPMorgan VP. Carvana. Southwest. Operator first, finance builder second.</p>
+      </div>
+      <div class="card">
+        <span class="k">CBO</span>
+        <h3>Kevin Hill</h3>
+        <p>Managing Director, Microsoft US Strategic Pursuits. 15 years IBM. Knows how enterprise deals get done at scale.</p>
+      </div>
+      <div class="card">
+        <span class="k">GM Public Sector</span>
+        <h3>Rob Chadwick</h3>
+        <p>21 years FBI. Led protection detail for the U.S. Attorney General. Door-opener to federal LE and DHS.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:36px;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-family:'JetBrains Mono',monospace">Advisors</h3>
+    <div class="grid-3" style="margin-top:12px">
+      <div class="card">
+        <span class="k">Defense &amp; geopolitics</span>
+        <h3>Adm. James Stavridis</h3>
+        <p>16th Supreme Allied Commander, NATO. Vice-Chair, Carlyle Group. Author, <em>2034</em>.</p>
+      </div>
+      <div class="card">
+        <span class="k">Category validator</span>
+        <h3>Aaditya Devarakonda</h3>
+        <p>CEO, Dedrone — acquired by Axon, October 2024. CNBC Disruptor 50. Counter-drone market pioneer. Knows the Axon–Dedrone integration plan and its limits.</p>
+      </div>
+      <div class="card">
+        <span class="k">Federal &amp; DOJ</span>
+        <h3>William P. Barr</h3>
+        <p>77th &amp; 85th U.S. Attorney General. 6 years CIA. Longest-serving AG in U.S. history.</p>
+      </div>
+      <div class="card">
+        <span class="k">Critical-infrastructure</span>
+        <h3>Adam Lee</h3>
+        <p>CSO, Dominion Energy. 22-year FBI career. Knows critical-infrastructure security from the customer side.</p>
+      </div>
+      <div class="card">
+        <span class="k">Guard-services industry</span>
+        <h3>Senior advisor · TBC</h3>
+        <p>Senior advisor from Fortune 500 guard-services leadership — formal agreement in execution. Inside voice on why the existing private-security giants structurally cannot build this.</p>
+        <span class="tag verbal" style="margin-top:auto">Verbally committed · Formal in execution</span>
+      </div>
+      <div class="card">
+        <span class="k">Plus</span>
+        <h3>Operational depth</h3>
+        <p>Matt Koetting (USMC Recon, Purple Heart, Invictus founder). Rob Robertson (first NFL UAS endorsement). Ross Stinson (nation's largest police drone unit). Jon Beal (NTOA tactical drone standards). Jefferson Ventrella (Cobalt Robotics Philadelphia). Tyler Bayne (CEO Total Safety · exited to Stanley Black &amp; Decker).</p>
+      </div>
+    </div>
+
+    <p class="kicker">
+      Between the team and the advisors, DxD has the only network in the country that combines the people who <strong>built the technology</strong>, <strong>operationalized it</strong> into security and law enforcement, <strong>wrote the standards</strong>, and <strong>validate the bet</strong> at the federal level.
+    </p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 08 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 9 — PARTNERSHIP ARCHITECTURE ========== -->
+<section class="slide" id="slide-09" data-n="9" aria-label="Partnership architecture">
+  <div class="slide-inner">
+    <p class="eyebrow">Partnership architecture</p>
+    <hr class="accent-bar" />
+    <h1>Phase 1 ships revenue. Phase 2 builds the future.</h1>
+    <p class="lead">
+      Our partnerships are structured in two phases. Phase 1 deploys what we already have — live revenue, signed contracts, verbal commitments with paper in flight. Phase 2 uses those deployments as the R&amp;D environment for the next capability.
+    </p>
+
+    <table class="tbl" style="margin-top:24px">
+      <thead>
+        <tr>
+          <th style="width:18%">Partner</th>
+          <th style="width:14%">Status</th>
+          <th style="width:32%">Phase 1 · Revenue now</th>
+          <th>Phase 2 · Build the future</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name">LAPD</td>
+          <td><span class="tag verbal">Verbal</span></td>
+          <td>~$2M inside Accenture-primed $5M program. Signing week of April 21.</td>
+          <td>World Cup 2026 and the Olympic window — launch partner for full operational deployment. "We'll parade you around the world."</td>
+        </tr>
+        <tr>
+          <td class="name">Stargate · Odin</td>
+          <td><span class="tag inbuild">In-build</span></td>
+          <td>Customer-pulled cUAS scope; NATO ranked us #1 for $20M procurement.</td>
+          <td>Hyperscaler + sovereign data-center template. The blueprint for every subsequent CI data-center deployment.</td>
+        </tr>
+        <tr>
+          <td class="name">Major critical-infrastructure provider</td>
+          <td><span class="tag active">Active</span></td>
+          <td>Reinsurer-mandate track. Modular data center contributed for free.</td>
+          <td>Reinsurance industry's largest writer wants the platform provisioned as a mandate across covered sites.</td>
+        </tr>
+        <tr>
+          <td class="name">Accenture</td>
+          <td><span class="tag signed">Signed</span></td>
+          <td>Contracted inside LAPD Phase 1. ≈$350M channel book (10% of Accenture's $3.5B Physical AI pipeline).</td>
+          <td>Moving clients from Security Budget (OpEx) to Capital Plan (CapEx). Access to 8,000+ enterprise clients through existing trust relationships.</td>
+        </tr>
+        <tr>
+          <td class="name">Deloitte</td>
+          <td><span class="tag verbal">In negotiation</span></td>
+          <td>~$250M channel book in final talks; inbound inquiry, not outbound pitch.</td>
+          <td>Second distribution arm parallel to Accenture. Absorbs their existing UAS/cUAS programs.</td>
+        </tr>
+        <tr>
+          <td class="name">Orcrist</td>
+          <td><span class="tag signed">Signed</span></td>
+          <td>Exclusive global commercial distribution. $30K price-point interceptor parity with the threat.</td>
+          <td>Kinetic layer inside our response stack. Deploys with LAPD, the Department of War, and corrections clients. Powers aerial defeat at scale.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="close-line">Phase 1 deploys what we have. Phase 2 uses that deployment as the R&amp;D environment.</p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 09 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 10 — WHY NOT THE GIANTS ========== -->
+<section class="slide" id="slide-10" data-n="10" aria-label="Why not the giants">
+  <div class="slide-inner">
+    <p class="eyebrow">Why not the giants</p>
+    <hr class="accent-bar" />
+    <h1>They can do anything. The answer is three beats.</h1>
+    <p class="lead">
+      They aren't in our segment today, the market is structurally multi-winner, and we earn the right to own it by taking ground their margins will not let them touch.
+    </p>
+
+    <!-- BEAT 1 -->
+    <div class="beat" style="margin-top:28px">
+      <div class="beat-head">
+        <span class="beat-num">Beat 01</span>
+        <h3>The giants aren't in our segment. The window is 24&ndash;36 months.</h3>
+      </div>
+      <div class="grid-3" style="margin-top:12px">
+        <div class="card">
+          <span class="k dim">Anduril</span>
+          <p>Scaling from ~$1B to ~$4B executing a $20B Army contract and building Arsenal-1. Defense-prime trajectory. Not building commercial-CI security operations.</p>
+        </div>
+        <div class="card">
+          <span class="k dim">Palantir</span>
+          <p>115% U.S. commercial growth at 82% gross margin, 127% Rule of 40. Every quarter they have to defend that margin profile to the public markets.</p>
+        </div>
+        <div class="card">
+          <span class="k dim">Axon</span>
+          <p>Absorbed Dedrone, Sky-Hero, Prepared, and Carbyne in 18 months. Integrating four companies while scaling internationally and defending 77–80% software gross margin.</p>
+        </div>
+      </div>
+
+      <table class="tbl" style="margin-top:20px">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Gross margin</th>
+            <th>Business profile</th>
+            <th>Why they can't start a commercial-CI services arm today</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">Anduril</td>
+            <td class="num">~30% GM</td>
+            <td>Defense prime trajectory</td>
+            <td>Focused on a $20B Army contract and Arsenal-1; no CI-services buyer motion.</td>
+          </tr>
+          <tr>
+            <td class="name">Palantir</td>
+            <td class="num">80% GM</td>
+            <td>Hyperscale AI analytics</td>
+            <td>Services would break the margin story public markets price them on.</td>
+          </tr>
+          <tr>
+            <td class="name">Axon</td>
+            <td class="num">62% blended GM</td>
+            <td>Law-enforcement software</td>
+            <td>Absorbing four acquisitions; DNA is police, not commercial CI.</td>
+          </tr>
+          <tr class="subtotal">
+            <td class="name">Deus X Defense</td>
+            <td class="num">62%+ target</td>
+            <td>Physical AI for security</td>
+            <td>Day 1 profitable at 8% EBITDA; 62%+ GM at full platform deployment as the SaaS overlay scales.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="visual-placeholder ar-16-9" style="margin-top:20px">
+        <span class="vp-eyebrow">Custom visual required</span>
+        <span class="vp-title">Margin-profile quadrant — Anduril · Palantir · Axon · DxD</span>
+        <span class="vp-desc">Chart plotting gross-margin (Y axis) against revenue-scale (X axis), with DxD's target (62%+ at full deployment) positioned against the three giants. Illustrates why none of them can afford to move into commercial-CI services without breaking their investor narrative.</span>
+      </div>
+    </div>
+
+    <!-- BEAT 2 -->
+    <div class="beat">
+      <div class="beat-head">
+        <span class="beat-num">Beat 02</span>
+        <h3>Physical security is structurally multi-winner.</h3>
+      </div>
+      <p style="color:var(--text-dim);max-width:82ch">Each lane has a leader. None consolidates across guarding, communications, video, ALPR, and active response. Hardware category lock-in, regulatory specialization, and buyer fragmentation keep the market multi-winner.</p>
+      <table class="tbl" style="margin-top:12px">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Leader</th>
+            <th>Scale</th>
+            <th>Why they don't cross over</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>LMR / communications</td><td class="name">Motorola Solutions</td><td class="num">$11.7B rev</td><td>Hardware category lock-in, public-safety buyer.</td></tr>
+          <tr><td>Body cameras / TASER</td><td class="name">Axon</td><td class="num">$2.7B rev</td><td>Law-enforcement DNA, software margin profile.</td></tr>
+          <tr><td>ALPR</td><td class="name">Flock Safety</td><td class="num">$7.5B val</td><td>Municipal / police-chief buyer, passive surveillance product.</td></tr>
+          <tr><td>Alarm monitoring</td><td class="name">ADT</td><td class="num">$4.9B rev</td><td>Residential + small commercial, low-margin services.</td></tr>
+          <tr><td>Guard services</td><td class="name">Allied Universal</td><td class="num">$22B rev</td><td>Low-margin labor business, no tech platform.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BEAT 3 -->
+    <div class="beat">
+      <div class="beat-head">
+        <span class="beat-num">Beat 03</span>
+        <h3>We earn the right by taking the ground the giants' margins won't let them touch.</h3>
+      </div>
+      <blockquote class="pull">
+        I spent seven years at Axon. Two of them as Chief of Staff to Rick Smith. Five of them running TASER and Robotics as SVP &amp; GM. I pitched this thesis — a commercial critical-infrastructure security platform, operator-led, with active response — for years. Axon couldn't build it. Margins, DNA, distraction, and a stack built for evidence capture, not active defense. I also pitched Allied Universal and Securitas for years. Both declined. That's why I left. That's why DxD exists.
+        <span class="cite">Patrick Madden · CEO &amp; Founder</span>
+      </blockquote>
+      <p style="color:var(--text-dim);max-width:80ch">Axon didn't beat Motorola head-on. Axon started with TASERs. Flock started with HOA cameras. <strong style="color:var(--text)">DxD starts with guards and drone operators</strong> — unglamorous, operationally intensive ground that high-margin tech companies structurally cannot pursue. Then we build the platform on top of the ground we already own.</p>
+    </div>
+
+    <p class="close-line">Own the unglamorous ground. Build the platform on top. That's how you win physical security.</p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 10 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 11 — THE THESIS PLAYING OUT ========== -->
+<section class="slide" id="slide-11" data-n="11" aria-label="The financial spine">
+  <div class="slide-inner">
+    <p class="eyebrow">The thesis playing out · Financial spine</p>
+    <hr class="accent-bar" />
+    <h1>One reconciled forecast. Pipeline tiered by honesty.</h1>
+    <p class="lead">
+      The ProForma is the house number. Scenario ladders overlay the spine — labeled as such. Pipeline is weighted, not gross. ARR is decomposed, not blended.
+    </p>
+
+    <div class="grid-2" style="margin-top:22px">
+      <div class="card accent-top">
+        <span class="k">FY26 base</span>
+        <span class="big">$73M</span>
+        <p class="label">Revenue · <strong style="color:var(--text)">0.9% EBITDA</strong>. True SaaS ARR $8–15M. Ex-cUAS floor ~$50M.</p>
+      </div>
+      <div class="card accent-top">
+        <span class="k">FY27 base</span>
+        <span class="big">$337M</span>
+        <p class="label">Revenue · <strong style="color:var(--text)">34% EBITDA</strong>. True SaaS ARR $35–60M. cUAS concentration ~69% (flagged). Ex-cUAS floor ~$105M.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:36px;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-family:'JetBrains Mono',monospace">Pipeline walk — gross to weighted</h3>
+
+    <div class="pipeline-walk">
+      <div class="step">
+        <span class="tier">Live @ 100%</span>
+        <span class="amount">$27M</span>
+        <span class="prob">TTM · Cascadia + Invictus + DaaS/SaaS</span>
+      </div>
+      <div class="step">
+        <span class="tier">Signed / Verbal @ 90%+</span>
+        <span class="amount">$22M</span>
+        <span class="prob">Dallas ISD · ONEOK · LAPD</span>
+      </div>
+      <div class="step">
+        <span class="tier">Qualified @ 25–35%</span>
+        <span class="amount">$83–105M</span>
+        <span class="prob">Direct DaaS/DFR pipeline</span>
+      </div>
+      <div class="step">
+        <span class="tier">Channel @ 5–10%</span>
+        <span class="amount">$600M gross</span>
+        <span class="prob">Accenture + Deloitte channel book</span>
+      </div>
+      <div class="step weighted">
+        <span class="tier">Weighted total</span>
+        <span class="amount">$55–100M</span>
+        <span class="prob">The number we underwrite against</span>
+      </div>
+    </div>
+
+    <div class="visual-placeholder ar-16-9" style="margin-top:24px">
+      <span class="vp-eyebrow">Custom visual required</span>
+      <span class="vp-title">Pipeline walk — horizontal flow, not a funnel pyramid</span>
+      <span class="vp-desc">Horizontal flow: Gross $700M → Channel $600M (5–10% weighted) → Qualified $83–105M (25–35%) → Signed/Verbal $22M (90%+) → Live $27M (100%) → Weighted $55–100M. Reinforces that the $700M is the addressable book, not the forecast.</span>
+    </div>
+
+    <div class="callouts">
+      <div class="callout">
+        <span class="head">GM math · the overlay</span>
+        <span class="body"><strong>62%+ GM at full platform deployment.</strong> The math: ~7,600 deployed operator-hours, sensor nodes, and drone shifts × $1K/unit/month SaaS overlay ≈ $45M of incremental 95%-GM SaaS. The overlay lands as Command reaches scale — not before.</span>
+      </div>
+      <div class="callout">
+        <span class="head">SPV multiplier · recalibrated</span>
+        <span class="body"><strong>1.5&ndash;3x near-term, 4&ndash;8x as a 3-year best case.</strong> We no longer pitch 4–8x as the near-term number. The SPV structurally de-risks the supply chain and adds defensible upside on cUAS and counter-threat flow.</span>
+      </div>
+      <div class="callout">
+        <span class="head">Ex-cUAS FY27 floor</span>
+        <span class="body"><strong>$105M.</strong> Dallas ISD expansion, ONEOK scale, Dominion Energy, Accenture–LAPD sequel contracts. If every counter-drone dollar disappeared, the business still scales.</span>
+      </div>
+      <div class="callout">
+        <span class="head">Day 1 profitable</span>
+        <span class="body"><strong>8% EBITDA baseline</strong> at acquisition close (Cascadia + Invictus). Gross profit is positive today; cash flow is not, because we are reinvesting every dollar to keep up with pipeline.</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 11 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 12 — CAPITAL ARCHITECTURE ========== -->
+<section class="slide" id="slide-12" data-n="12" aria-label="Capital architecture — the ask">
+  <div class="slide-inner">
+    <p class="eyebrow">Capital architecture · The ask</p>
+    <hr class="accent-bar" />
+    <h1>Three legs. Structured to match the risk profile of the work.</h1>
+    <p class="lead">
+      Every other Physical AI founder is asking for $100M of dilutive equity to fund R&amp;D. We are asking for $100M structured like a grown-up company — different dollars for different risk. We are not raising to prove the thesis. We are raising to keep up with it.
+    </p>
+
+    <p class="muted" style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase">
+      [ Pre-money to be confirmed with Morgan Stanley ]
+    </p>
+
+    <table class="tbl" style="margin-top:22px">
+      <thead>
+        <tr>
+          <th style="width:22%">Source</th>
+          <th style="width:14%">Amount</th>
+          <th style="width:38%">Use</th>
+          <th style="width:14%">Risk profile</th>
+          <th>Ring-fenced?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name">Working-capital facility</td>
+          <td class="num">~$50M</td>
+          <td>Priced against the live book — drone and cUAS inventory, Orcrist pre-financing, channel cycle bridge on signed contracts.</td>
+          <td>Low</td>
+          <td>Yes — asset-backed</td>
+        </tr>
+        <tr>
+          <td class="name">Platform &amp; strategic equity</td>
+          <td class="num">~$20M</td>
+          <td>R&amp;D and solutions-engineering scale against the signed pipeline; targeted IP lockdown (~$15M across 2–3 tech-stack positions) + ~$5M aligned equity in Orcrist.</td>
+          <td>Medium</td>
+          <td>Yes — tagged</td>
+        </tr>
+        <tr>
+          <td class="name">Operations equity</td>
+          <td class="num">~$30M</td>
+          <td>Inorganic acquisitions inside the module roadmap; GSOC buildout; organic team growth to catch Accenture/Deloitte demand.</td>
+          <td>Low–Medium</td>
+          <td>Partial — M&amp;A buffer</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="name">Total raise</td>
+          <td class="num">~$100M</td>
+          <td colspan="3">Placeholder allocation — tunable with CFO and banker.</td>
+        </tr>
+        <tr>
+          <td class="name">Sovereign SPV</td>
+          <td class="num">$0 from raise</td>
+          <td>Explicitly ring-fenced from DxD raise. Parallel Patrick-led vehicle; separate LPs, separate exit path. $50M initial close / $100M target.</td>
+          <td>Separate vehicle</td>
+          <td><strong style="color:var(--accent)">Yes · $0 from DxD raise</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="visual-placeholder ar-16-9" style="margin-top:24px;min-height:140px">
+      <span class="vp-eyebrow">Visual to be finalized with MS banker</span>
+      <span class="vp-title">Sources-and-uses — formal schedule</span>
+      <span class="vp-desc">Final sources-and-uses schedule to be finalized with Morgan Stanley because pre-money valuation is TBD. Above table is the working structure. SPV ring-fenced; $0 from DxD raise; separate LPs, separate exit path.</span>
+    </div>
+
+    <p class="close-line">The $100M doesn't just fund the platform. It locks the effector, the substrate, and the sovereign supply chain of the category — before the market consolidates.</p>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 12 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 13 — PATH FORWARD ========== -->
+<section class="slide" id="slide-13" data-n="13" aria-label="The path forward">
+  <div class="slide-inner">
+    <p class="eyebrow">The path forward</p>
+    <hr class="accent-bar" />
+    <h1>We are not building a company to sell.</h1>
+
+    <blockquote class="pull" style="font-size:22px;max-width:78ch;margin-top:8px">
+      We are building the next major independent security-defense platform. The primary path is generational — IPO or major private. Partnership with Anduril, Palantir, or Axon is the likely interaction when they eventually engage, because the commercial-CI buyer wants accountability separate from a defense prime or a law-enforcement vendor. If one of them eventually pays for the operational layer, that outcome prices the thesis at a premium — but it is not the plan.
+      <span class="cite">Patrick Madden · CEO &amp; Founder</span>
+    </blockquote>
+
+    <p style="max-width:78ch">
+      We built a business that works today to fund the autonomy of tomorrow. The partners are signed. The demand is real. The moat is dug. The team is in place. Now we execute.
+    </p>
+
+    <div class="stat-cluster" style="margin-top:36px">
+      <div class="stat">
+        <span class="lbl">Today</span>
+        <span class="val">$27M</span>
+        <span class="note">Live TTM · 450 operators · Day 1 profitable</span>
+      </div>
+      <div class="stat">
+        <span class="lbl">FY26 base</span>
+        <span class="val">$73M</span>
+        <span class="note">ProForma house · 0.9% EBITDA</span>
+      </div>
+      <div class="stat">
+        <span class="lbl">FY27 base</span>
+        <span class="val">$337M</span>
+        <span class="note">ProForma house · 34% EBITDA · ex-cUAS floor $105M</span>
+      </div>
+      <div class="stat">
+        <span class="lbl">Horizon</span>
+        <span class="val accent">Independent</span>
+        <span class="note">Generational platform · IPO or major private</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 13 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+<!-- ========== SLIDE 14 — THE ASK ========== -->
+<section class="slide" id="slide-14" data-n="14" aria-label="The ask">
+  <div class="slide-inner">
+    <p class="eyebrow">The ask</p>
+    <hr class="accent-bar" />
+    <h1>~$100M. Morgan Stanley leading.</h1>
+
+    <div class="card" style="margin-top:16px;padding:36px 34px;border-top:2px solid var(--accent)">
+      <span class="k">What we are raising</span>
+      <h3 style="font-size:28px;margin-top:6px">~$100M, structured in three legs</h3>
+      <p style="color:var(--text-dim);max-width:78ch">A working-capital facility priced against the live book, platform-and-strategic equity underwriting the signed pipeline and IP lockdown, and operations equity to catch Accenture/Deloitte demand and fund targeted M&amp;A inside the module roadmap. The Sovereign SPV is a parallel vehicle — $0 from the DxD raise.</p>
+
+      <hr class="rule" style="margin:24px 0" />
+
+      <span class="k">What it funds</span>
+      <ul style="margin:8px 0 18px;padding-left:18px;color:var(--text);line-height:1.7;max-width:82ch">
+        <li>Working capital against the live book — drone, cUAS, and Orcrist inventory; channel cycle bridge on signed contracts.</li>
+        <li>R&amp;D and solutions-engineering scale against the signed pipeline — Cortex, Sentinel, Command internal MVPs into GA.</li>
+        <li>Inorganic acquisitions inside the module roadmap and targeted IP positions that become part of the platform.</li>
+      </ul>
+
+      <hr class="rule" style="margin:8px 0 24px" />
+
+      <span class="k">Who we want on the cap table</span>
+      <p style="color:var(--text);max-width:82ch">Strategic operator-capital that understands commercial-CI delivery, and category VCs who know how physical-AI moats compound. <strong style="color:var(--accent)">Morgan Stanley leading the transaction.</strong></p>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn primary" href="#letter">Read the CEO letter →</a>
+      <a class="btn" href="#data-room">Review the data room →</a>
+    </div>
+
+    <div class="signoff">
+      <p class="motto">With Our Shield or On It.</p>
+      <p class="sig">
+        <strong>Patrick Madden</strong><br/>
+        CEO &amp; Founder, Deus X Defense<br/>
+        April 2026 · Confidential · For qualified investors only
+      </p>
+    </div>
+  </div>
+  <div class="slide-foot">
+    <span>Deus X Defense · Slide 14 / 14 · Confidential · April 2026</span>
+    <span class="watermark">Confidential</span>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var deck = document.getElementById('deck');
+  var rail = document.getElementById('rail-list');
+  var links = rail.querySelectorAll('a[data-slide]');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var mobileCurrent = document.getElementById('mobile-current');
+  var prevBtn = document.getElementById('mobile-prev');
+  var nextBtn = document.getElementById('mobile-next');
+  var total = slides.length; // 14
+
+  function currentIndex() {
+    // Use the slide whose top is nearest to the viewport top (within deck)
+    var deckRect = deck.getBoundingClientRect();
+    var bestIdx = 0;
+    var bestDist = Infinity;
+    for (var i = 0; i < slides.length; i++) {
+      var r = slides[i].getBoundingClientRect();
+      var dist = Math.abs(r.top - deckRect.top);
+      if (dist < bestDist) { bestDist = dist; bestIdx = i; }
+    }
+    return bestIdx;
+  }
+
+  function setActive(idx) {
+    for (var i = 0; i < links.length; i++) {
+      links[i].classList.toggle('active', i === idx);
+    }
+    var n = (idx + 1).toString().padStart(2, '0');
+    if (mobileCurrent) mobileCurrent.textContent = n + ' / ' + total;
+    var hash = '#slide-' + n;
+    if (location.hash !== hash) {
+      try { history.replaceState(null, '', hash); } catch (_) {}
+    }
+  }
+
+  function goTo(idx, smooth) {
+    idx = Math.max(0, Math.min(total - 1, idx));
+    var target = slides[idx];
+    if (!target) return;
+    target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    setActive(idx);
+  }
+
+  // Rail clicks
+  Array.prototype.forEach.call(links, function (a, i) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      goTo(i, true);
+    });
+  });
+
+  // Mobile buttons
+  if (prevBtn) prevBtn.addEventListener('click', function () { goTo(currentIndex() - 1, true); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { goTo(currentIndex() + 1, true); });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var tag = (e.target && e.target.tagName) || '';
+    if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
+
+    var idx = currentIndex();
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'PageDown':
+      case 'j':
+      case ' ':
+        e.preventDefault();
+        goTo(idx + 1, true);
+        break;
+      case 'ArrowUp':
+      case 'PageUp':
+      case 'k':
+        e.preventDefault();
+        goTo(idx - 1, true);
+        break;
+      case 'Home':
+        e.preventDefault();
+        goTo(0, true);
+        break;
+      case 'End':
+        e.preventDefault();
+        goTo(total - 1, true);
+        break;
+    }
+  });
+
+  // Scroll → active state sync (throttled via rAF)
+  var ticking = false;
+  deck.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      setActive(currentIndex());
+      ticking = false;
+    });
+  }, { passive: true });
+
+  // Initial deep-link
+  function initFromHash() {
+    var m = (location.hash || '').match(/slide-(\d+)/);
+    if (m) {
+      var idx = Math.max(0, Math.min(total - 1, parseInt(m[1], 10) - 1));
+      // Wait one frame so layout is ready
+      requestAnimationFrame(function () { goTo(idx, false); });
+    } else {
+      setActive(0);
+    }
+  }
+  window.addEventListener('hashchange', initFromHash);
+  initFromHash();
+})();
+</script>
+
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  var scrollRaf=0;
+  function emitScroll(){
+    scrollRaf=0;
+    var x=window.scrollX||window.pageXOffset||0;
+    var y=window.scrollY||window.pageYOffset||0;
+    window.parent.postMessage({type:'INLINE_EDIT_SCROLL',scrollX:x,scrollY:y},'*');
+  }
+  window.addEventListener('scroll',function(){
+    if(scrollRaf)return;
+    scrollRaf=requestAnimationFrame(emitScroll);
+  },{passive:true,capture:true});
+  emitScroll();
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>

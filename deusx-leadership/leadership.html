@@ -474,6 +474,92 @@
     .card.card-featured .card-photo { max-width: 320px; }
   }
 
+  /* ---------- ADVISORS ---------- */
+  .advisors {
+    padding: 80px 40px 80px;
+    max-width: 1600px;
+    margin: 0 auto;
+    border-top: 1px solid var(--line);
+  }
+  .advisors-head {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 40px;
+  }
+  .advisors-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+  }
+  .advisors-head h2 {
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 16px 0 0;
+  }
+  .advisors-head h2 em { color: var(--accent); font-style: italic; }
+  .advisors-note {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    max-width: 560px;
+    margin: 0;
+  }
+  @media (max-width: 900px) {
+    .advisors { padding: 56px 20px; }
+    .advisors-head { grid-template-columns: 1fr; gap: 16px; align-items: start; }
+  }
+  .advisor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 1000px) {
+    .advisor-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .advisor-grid { grid-template-columns: 1fr; }
+  }
+  .advisor-card {
+    background: var(--bg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+  }
+  .advisor-card:hover { background: var(--surface); }
+  .advisor-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .advisor-name {
+    font-family: "Tomorrow", "Libre Caslon Text", serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .advisor-bio {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-dim);
+  }
+  .advisor-bio em { color: var(--ink); font-style: italic; }
+
   /* ---------- CONTACT BAND ---------- */
   .contact {
     padding: 140px 40px;
@@ -695,6 +781,18 @@
   <div class="grid" id="grid"></div>
 </section>
 
+<!-- ADVISORS -->
+<section class="advisors">
+  <div class="advisors-head">
+    <span class="advisors-eyebrow">Section 03 / Advisors</span>
+    <h2>The <em>network</em> behind the team.</h2>
+    <p class="advisors-note">
+      Defense, federal, critical-infrastructure, and category-defining operators who validate the bet and open the doors.
+    </p>
+  </div>
+  <div class="advisor-grid" id="advisor-grid"></div>
+</section>
+
 <script>
   // Leadership data - pulled directly from the DXD leadership page
   const leaders = [
@@ -859,6 +957,51 @@
       `;
     }
     grid.appendChild(card);
+  });
+
+  // Advisors
+  const advisors = [
+    {
+      tag: "Defense & geopolitics",
+      name: "Adm. James Stavridis",
+      bio: "16th Supreme Allied Commander, NATO. Vice-Chair, Carlyle Group. Author, <em>2034</em>."
+    },
+    {
+      tag: "Category validator",
+      name: "Aaditya Devarakonda",
+      bio: "CEO, Dedrone — acquired by Axon, October 2024. CNBC Disruptor 50. Counter-drone market pioneer. Knows the Axon–Dedrone integration plan and its limits."
+    },
+    {
+      tag: "Federal & DOJ",
+      name: "William P. Barr",
+      bio: "77th & 85th U.S. Attorney General. 6 years CIA. Longest-serving AG in U.S. history."
+    },
+    {
+      tag: "Critical-infrastructure",
+      name: "Adam Lee",
+      bio: "CSO, Dominion Energy. 22-year FBI career. Knows critical-infrastructure security from the customer side."
+    },
+    {
+      tag: "Guard-services industry",
+      name: "Senior advisor · TBC",
+      bio: "Senior advisor from Fortune 500 guard-services leadership — formal agreement in execution. Inside voice on why the existing private-security giants structurally cannot build this."
+    },
+    {
+      tag: "Operational depth",
+      name: "Plus",
+      bio: "Matt Koetting (USMC Recon, Purple Heart, Invictus founder). Rob Robertson (first NFL UAS endorsement). Ross Stinson (nation's largest police drone unit). Jon Beal (NTOA tactical drone standards). Jefferson Ventrella (Cobalt Robotics Philadelphia). Tyler Bayne (CEO Total Safety · exited to Stanley Black & Decker)."
+    }
+  ];
+  const advisorGrid = document.getElementById("advisor-grid");
+  advisors.forEach(a => {
+    const card = document.createElement("article");
+    card.className = "advisor-card reveal";
+    card.innerHTML = `
+      <div class="advisor-tag">${a.tag}</div>
+      <div class="advisor-name">${a.name}</div>
+      <div class="advisor-bio">${a.bio}</div>
+    `;
+    advisorGrid.appendChild(card);
   });
 
   // Reveal on scroll
