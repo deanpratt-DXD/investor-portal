@@ -254,6 +254,36 @@
   }
   .moat-callout .meta strong { color: var(--dxd-ink); font-weight: 600; }
 </style>
+<!-- DXD-FONT-STANDARDIZATION (Atlas · Airspace Defense theme) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Figtree:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style id="dxd-font-standardization">
+  :root {
+    --dxd-font-display: "Oswald", "Bebas Neue", "Impact", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-body:    "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-mono:    "JetBrains Mono", "Menlo", "Consolas", monospace;
+    --dxd-tracking-display: -0.02em;
+    --dxd-tracking-eyebrow: 0.18em;
+  }
+  html, body, p, li, td, th, input, textarea, select, button, label,
+  blockquote, figcaption, dd, dt {
+    font-family: var(--dxd-font-body) !important;
+  }
+  h1, h2, h3, h4, h5, h6,
+  .display, .headline, .hero-title, .section-title, .eyebrow, .nav-cta,
+  .tab, .brand, .logo, .card-role {
+    font-family: var(--dxd-font-display) !important;
+    letter-spacing: var(--dxd-tracking-display);
+  }
+  .eyebrow, [class*="eyebrow"] {
+    letter-spacing: var(--dxd-tracking-eyebrow) !important;
+    text-transform: uppercase;
+  }
+  code, pre, kbd, samp, tt, .mono, [class*="mono"] {
+    font-family: var(--dxd-font-mono) !important;
+  }
+</style>
 </head>
 <body>
 <div class="wrap">

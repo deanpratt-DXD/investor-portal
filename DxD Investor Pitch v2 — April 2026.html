@@ -894,7 +894,6 @@ blockquote.pull .cite {
   border: 1px solid var(--border);
   border-radius: 2px;
   padding: 28px 28px 24px;
-  overflow: hidden;
   isolation: isolate;
 }
 .dxd-viz::before {
@@ -907,6 +906,8 @@ blockquote.pull .cite {
   pointer-events: none;
   mask-image: radial-gradient(ellipse at 50% 50%, #000 35%, transparent 100%);
   z-index: 0;
+  border-radius: 2px;
+  overflow: hidden;
 }
 .dxd-viz > * { position: relative; z-index: 1; }
 .dxd-viz-head {
@@ -1010,16 +1011,21 @@ blockquote.pull .cite {
 
 /* ---------- v2: architecture ---------- */
 .dxd-v2 { padding-bottom: 30px; }
-.dxd-v2-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; align-items: stretch; position: relative; }
+.dxd-v2-grid {
+  display: grid;
+  grid-template-columns: 1fr 44px 1fr 44px 1fr;
+  gap: 0;
+  align-items: stretch;
+  position: relative;
+}
 .dxd-v2-mod {
   background: linear-gradient(180deg, #181818 0%, #131313 100%);
   border: 1px solid var(--border);
-  padding: 20px 18px 18px;
+  padding: 22px 20px 20px;
   position: relative;
   display: flex; flex-direction: column; gap: 10px;
-  min-height: 200px;
+  min-height: 220px;
 }
-.dxd-v2-mod + .dxd-v2-mod { border-left: 0; }
 .dxd-v2-mod .v2-verb {
   font-family: 'JetBrains Mono', monospace;
   font-size: 9.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent);
@@ -1031,13 +1037,12 @@ blockquote.pull .cite {
 .dxd-v2-mod .v2-desc {
   font-size: 12.5px; line-height: 1.45; color: var(--text-dim);
 }
-.dxd-v2-mod .v2-icon { width: 36px; height: 36px; opacity: 0.85; }
+.dxd-v2-mod .v2-icon { width: 32px; height: 32px; opacity: 0.85; }
 .dxd-v2-arrow {
-  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
-  width: 38px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
 }
-.dxd-v2-arrow.a1 { left: calc(33.333% - 19px); }
-.dxd-v2-arrow.a2 { left: calc(66.666% - 19px); }
+.dxd-v2-arrow svg { width: 100%; height: 22px; }
 .dxd-v2-platform {
   margin-top: 18px;
   background: linear-gradient(90deg, rgba(210,35,42,0.10), rgba(210,35,42,0.04) 60%, transparent);
@@ -1050,15 +1055,12 @@ blockquote.pull .cite {
 .dxd-v2-platform .p-name em { color: var(--accent); font-style: normal; }
 .dxd-v2-platform .p-desc { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); }
 .dxd-v2-orcrist {
-  position: absolute; top: -8px; right: 16px; z-index: 4;
+  display: inline-flex; align-self: flex-start;
   background: var(--accent); color: #fff;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
-  padding: 5px 9px;
-}
-.dxd-v2-orcrist::after {
-  content: ""; position: absolute; left: 24px; top: 100%;
-  border: 5px solid transparent; border-top-color: var(--accent);
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+  padding: 4px 8px;
+  margin-bottom: 4px;
 }
 
 /* ---------- v3: logo wall ---------- */
@@ -1090,10 +1092,13 @@ blockquote.pull .cite {
 .dxd-v3-tile svg { width: auto; max-width: 80%; max-height: 60%; height: auto; opacity: .82; transition: opacity 220ms ease; }
 .dxd-v3-tile:hover svg { opacity: 1; }
 .dxd-v3-tile .v3-tag {
-  position: absolute; top: 8px; left: 10px;
+  position: absolute; bottom: 6px; right: 8px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
   color: var(--text-faint);
+  background: rgba(0,0,0,0.55);
+  padding: 2px 6px;
+  border: 1px solid rgba(255,255,255,0.06);
 }
 .dxd-v3-tile .v3-tag.live   { color: var(--success); }
 .dxd-v3-tile .v3-tag.signed { color: var(--accent); }
@@ -1112,77 +1117,85 @@ blockquote.pull .cite {
 .dxd-v4 .v4-dxd-callout { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; fill: var(--accent); font-weight: 700; }
 .dxd-v4 .v4-traj { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 5 4; }
 
-/* ---------- v5: pipeline waterfall ---------- */
+/* ---------- v5: pipeline waterfall (stage cards) ---------- */
 .dxd-v5-flow {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-  align-items: end;
+  gap: 10px;
   margin-top: 10px;
-  min-height: 280px;
+  align-items: stretch;
 }
 .dxd-v5-stage {
-  display: flex; flex-direction: column; align-items: stretch;
   position: relative;
-  height: 100%;
-  justify-content: flex-end;
-}
-.dxd-v5-bar {
-  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+  display: flex; flex-direction: column;
+  background: linear-gradient(180deg, #181818 0%, #131313 100%);
   border: 1px solid var(--border);
-  border-bottom: 2px solid rgba(255,255,255,0.18);
-  position: relative;
-  transform-origin: bottom;
-  transform: scaleY(0);
-  transition: transform 900ms cubic-bezier(.2,.7,.2,1);
+  border-top: 2px solid rgba(255,255,255,0.18);
+  padding: 14px 14px 16px;
+  min-height: 200px;
+  opacity: 0; transform: translateX(-12px);
+  transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.7,.2,1);
 }
-.dxd-viz.in-view .dxd-v5-bar { transform: scaleY(1); }
-.dxd-v5-stage:nth-child(1) .dxd-v5-bar { transition-delay: 200ms; }
-.dxd-v5-stage:nth-child(2) .dxd-v5-bar { transition-delay: 360ms; }
-.dxd-v5-stage:nth-child(3) .dxd-v5-bar { transition-delay: 520ms; }
-.dxd-v5-stage:nth-child(4) .dxd-v5-bar { transition-delay: 680ms; }
-.dxd-v5-stage:nth-child(5) .dxd-v5-bar { transition-delay: 840ms; }
-.dxd-v5-stage:nth-child(6) .dxd-v5-bar {
-  transition-delay: 1000ms;
-  background: linear-gradient(180deg, var(--accent) 0%, #8a1a1f 100%);
-  border-color: var(--accent);
-  border-bottom: 2px solid #fff;
+.dxd-viz.in-view .dxd-v5-stage { opacity: 1; transform: none; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(1) { transition-delay: 100ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(2) { transition-delay: 240ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(3) { transition-delay: 380ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(4) { transition-delay: 520ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(5) { transition-delay: 660ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(6) {
+  transition-delay: 800ms;
+  border: 1px solid var(--accent);
+  border-top: 2px solid #fff;
+  background: linear-gradient(180deg, rgba(210,35,42,0.18) 0%, rgba(210,35,42,0.06) 100%);
 }
-.dxd-v5-amt {
-  font-family: 'Inter', sans-serif;
-  font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.4px;
-  margin-bottom: 8px;
-}
-.dxd-v5-stage:nth-child(6) .dxd-v5-amt { color: #fff; }
-.dxd-v5-name {
+.dxd-v5-stage .v5-name {
   font-family: 'JetBrains Mono', monospace;
   font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim);
-  margin-top: 8px;
+  margin-bottom: 6px;
 }
-.dxd-v5-stage:nth-child(6) .dxd-v5-name { color: var(--accent); }
-.dxd-v5-conv {
+.dxd-v5-flow .dxd-v5-stage:nth-child(6) .v5-name { color: var(--accent); }
+.dxd-v5-stage .v5-amt {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+  color: var(--text); line-height: 1.05;
+  margin-bottom: 14px;
+}
+.dxd-v5-flow .dxd-v5-stage:nth-child(6) .v5-amt { color: #fff; }
+.dxd-v5-stage .v5-meter {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+  margin-top: auto;
+  overflow: hidden;
+}
+.dxd-v5-stage .v5-meter > i {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, var(--text-dim), var(--text));
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1100ms cubic-bezier(.2,.7,.2,1);
+}
+.dxd-viz.in-view .dxd-v5-stage .v5-meter > i { transform: scaleX(var(--meter, 1)); }
+.dxd-v5-flow .dxd-v5-stage:nth-child(1) .v5-meter > i { transition-delay: 350ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(2) .v5-meter > i { transition-delay: 490ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(3) .v5-meter > i { transition-delay: 630ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(4) .v5-meter > i { transition-delay: 770ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(5) .v5-meter > i { transition-delay: 910ms; }
+.dxd-v5-flow .dxd-v5-stage:nth-child(6) .v5-meter > i { transition-delay: 1050ms; background: linear-gradient(90deg, var(--accent), #fff); }
+.dxd-v5-stage .v5-conv {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-faint);
-  margin-top: 4px;
+  font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-faint);
+  margin-top: 8px;
   min-height: 14px;
 }
-.dxd-v5-conv strong { color: var(--accent); font-weight: 600; }
-.dxd-v5-arrow {
-  position: absolute; right: -6px; top: 40%;
-  width: 8px; height: 8px;
-  border-top: 1.5px solid var(--text-faint);
-  border-right: 1.5px solid var(--text-faint);
-  transform: rotate(45deg);
-  opacity: 0;
-  transition: opacity 400ms ease;
+.dxd-v5-stage .v5-conv strong { color: var(--accent); font-weight: 600; }
+.dxd-v5-stage .v5-arrow {
+  position: absolute; right: -8px; top: 38px;
+  width: 14px; height: 14px; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-faint);
 }
-.dxd-viz.in-view .dxd-v5-arrow { opacity: 1; }
-.dxd-v5-stage:nth-child(1) .dxd-v5-arrow { transition-delay: 1100ms; }
-.dxd-v5-stage:nth-child(2) .dxd-v5-arrow { transition-delay: 1200ms; }
-.dxd-v5-stage:nth-child(3) .dxd-v5-arrow { transition-delay: 1300ms; }
-.dxd-v5-stage:nth-child(4) .dxd-v5-arrow { transition-delay: 1400ms; }
-.dxd-v5-stage:nth-child(5) .dxd-v5-arrow { transition-delay: 1500ms; }
-.dxd-v5-stage:nth-child(6) .dxd-v5-arrow { display: none; }
+.dxd-v5-flow .dxd-v5-stage:last-child .v5-arrow { display: none; }
 
 /* ---------- v6: sources & uses ---------- */
 .dxd-v6-grid {
@@ -1276,6 +1289,46 @@ blockquote.pull .cite {
   .dxd-v6-grid { grid-template-columns: 1fr; }
   .dxd-v6-arrow { transform: rotate(90deg); }
 }
+
+/* v1 legend swatch — striped variant for the window key */
+.dxd-v1 .legend i.swatch-stripes {
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(210,35,42,0.55) 0 3px,
+    transparent 3px 6px
+  );
+  border: 1px solid rgba(210,35,42,0.45);
+}
+</style>
+<!-- DXD-FONT-STANDARDIZATION (Atlas · Airspace Defense theme) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Figtree:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style id="dxd-font-standardization">
+  :root {
+    --dxd-font-display: "Oswald", "Bebas Neue", "Impact", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-body:    "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-mono:    "JetBrains Mono", "Menlo", "Consolas", monospace;
+    --dxd-tracking-display: -0.02em;
+    --dxd-tracking-eyebrow: 0.18em;
+  }
+  html, body, p, li, td, th, input, textarea, select, button, label,
+  blockquote, figcaption, dd, dt {
+    font-family: var(--dxd-font-body) !important;
+  }
+  h1, h2, h3, h4, h5, h6,
+  .display, .headline, .hero-title, .section-title, .eyebrow, .nav-cta,
+  .tab, .brand, .logo, .card-role {
+    font-family: var(--dxd-font-display) !important;
+    letter-spacing: var(--dxd-tracking-display);
+  }
+  .eyebrow, [class*="eyebrow"] {
+    letter-spacing: var(--dxd-tracking-eyebrow) !important;
+    text-transform: uppercase;
+  }
+  code, pre, kbd, samp, tt, .mono, [class*="mono"] {
+    font-family: var(--dxd-font-mono) !important;
+  }
 </style>
 </head>
 <body>
@@ -1573,7 +1626,7 @@ blockquote.pull .cite {
         <span><i style="background:var(--accent)"></i>Regulatory milestone</span>
         <span><i style="background:var(--warn)"></i>Continuous threat</span>
         <span><i style="background:var(--text-faint)"></i>Precedent event</span>
-        <span><i style="background:url(#dxd-v1-stripes); background-color: rgba(210,35,42,0.30)"></i>24–36 mo window</span>
+        <span><i class="swatch-stripes"></i>24–36 mo window</span>
       </div>
 
       <div class="dxd-viz-foot">
@@ -1691,8 +1744,16 @@ blockquote.pull .cite {
           <p class="v2-desc">Sensor aggregation across radar, RF, EO/IR, acoustic, and 3rd-party feeds. Normalizes the airspace and ground picture into one fused track stream.</p>
         </div>
 
+        <!-- Arrow lane 1 -->
+        <div class="dxd-v2-arrow" data-reveal data-delay="2" aria-hidden="true">
+          <svg viewBox="0 0 44 22" preserveAspectRatio="none">
+            <line class="flow" x1="2" y1="11" x2="34" y2="11" stroke="var(--accent)" stroke-width="1.4"/>
+            <polygon points="42,11 32,5 32,17" fill="var(--accent)"/>
+          </svg>
+        </div>
+
         <!-- Sentinel -->
-        <div class="dxd-v2-mod" data-reveal data-delay="3" style="position:relative">
+        <div class="dxd-v2-mod" data-reveal data-delay="3">
           <span class="dxd-v2-orcrist pulse">Orcrist · Exclusive Effector</span>
           <svg class="v2-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="var(--accent)">
             <path d="M18 3 L31 9 V19 C31 26 25 31 18 33 C11 31 5 26 5 19 V9 Z"/>
@@ -1702,6 +1763,14 @@ blockquote.pull .cite {
           <span class="v2-verb">DEFEAT</span>
           <span class="v2-name">Sentinel</span>
           <p class="v2-desc">Unified response console — operator decisions, autonomous workflows, and Orcrist as the exclusive kinetic interceptor for aerial defeat.</p>
+        </div>
+
+        <!-- Arrow lane 2 -->
+        <div class="dxd-v2-arrow" data-reveal data-delay="4" aria-hidden="true">
+          <svg viewBox="0 0 44 22" preserveAspectRatio="none">
+            <line class="flow" x1="2" y1="11" x2="34" y2="11" stroke="var(--accent)" stroke-width="1.4"/>
+            <polygon points="42,11 32,5 32,17" fill="var(--accent)"/>
+          </svg>
         </div>
 
         <!-- Command -->
@@ -1717,16 +1786,6 @@ blockquote.pull .cite {
           <span class="v2-name">Command</span>
           <p class="v2-desc">The official record. Every action, every decision, every artifact in one reviewable narrative — CIRCIA / NERC CIP-008 reports generated, not reconstructed.</p>
         </div>
-
-        <!-- Flow arrows -->
-        <svg class="dxd-v2-arrow a1" viewBox="0 0 38 18" preserveAspectRatio="none" aria-hidden="true">
-          <line class="flow" x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="1.2"/>
-          <polygon class="pop pop-d3" points="38,9 30,4 30,14" fill="var(--accent)"/>
-        </svg>
-        <svg class="dxd-v2-arrow a2" viewBox="0 0 38 18" preserveAspectRatio="none" aria-hidden="true">
-          <line class="flow" x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="1.2"/>
-          <polygon class="pop pop-d5" points="38,9 30,4 30,14" fill="var(--accent)"/>
-        </svg>
       </div>
 
       <div class="dxd-v2-platform" data-reveal data-delay="7">
@@ -2171,48 +2230,50 @@ blockquote.pull .cite {
           <text class="v4-quad-label" x="100"  y="475">Hardware-margin · Sub-scale</text>
           <text class="v4-quad-label" x="1130" y="475" text-anchor="end">Hardware-margin · At scale</text>
 
-          <!-- Anduril: ~$1B rev (private est.), ~30% GM (defense hardware estimate) → x=775, y=480 - 30*4.4 = 348 -->
+          <!-- Anduril: ~$1B rev (private est.), ~30% GM (defense hardware estimate) -->
           <g class="pop pop-d3">
             <circle cx="775" cy="348" r="11" fill="rgba(107,138,181,0.20)" stroke="var(--info)" stroke-width="1.5"/>
             <circle cx="775" cy="348" r="4" fill="var(--info)"/>
-            <text class="v4-co-label" x="790" y="345">Anduril</text>
-            <text class="v4-co-sub"   x="790" y="362">~$1.0B · ~30% GM (est.)</text>
+            <text class="v4-co-label" x="775" y="330" text-anchor="middle">Anduril</text>
+            <text class="v4-co-sub"   x="775" y="380" text-anchor="middle">~$1.0B · ~30% GM (est.)</text>
           </g>
 
-          <!-- Palantir: $2.87B FY24, 80% GAAP GM → x=1015, y=40+(100-80)*4.4 = 40+88 = 128 -->
+          <!-- Palantir: $2.87B FY24, 80% GAAP GM -->
           <g class="pop pop-d4">
             <circle cx="1015" cy="128" r="11" fill="rgba(107,138,181,0.20)" stroke="var(--info)" stroke-width="1.5"/>
             <circle cx="1015" cy="128" r="4" fill="var(--info)"/>
-            <text class="v4-co-label" x="1030" y="125">Palantir</text>
-            <text class="v4-co-sub"   x="1030" y="142">$2.87B · ~80% GM (FY24)</text>
+            <text class="v4-co-label" x="1000" y="110" text-anchor="end">Palantir</text>
+            <text class="v4-co-sub"   x="1000" y="126" text-anchor="end">$2.87B · ~80% GM</text>
+            <text class="v4-co-sub"   x="1000" y="140" text-anchor="end">FY24</text>
           </g>
 
-          <!-- Axon: $2.08B FY24, 60.6% GM → x≈970, y=40+(100-60.6)*4.4 ≈ 213 -->
+          <!-- Axon: $2.08B FY24, 60.6% GM -->
           <g class="pop pop-d5">
             <circle cx="965" cy="213" r="11" fill="rgba(107,138,181,0.20)" stroke="var(--info)" stroke-width="1.5"/>
             <circle cx="965" cy="213" r="4" fill="var(--info)"/>
-            <text class="v4-co-label" x="855" y="210" text-anchor="end">Axon</text>
-            <text class="v4-co-sub"   x="855" y="227" text-anchor="end">$2.08B · ~60% GM (FY24)</text>
+            <text class="v4-co-label" x="965" y="195" text-anchor="middle">Axon</text>
+            <text class="v4-co-sub"   x="965" y="245" text-anchor="middle">$2.08B · ~60% GM (FY24)</text>
           </g>
 
-          <!-- DxD today: ~$80M run-rate (FY27 weighted midpoint), 62% target → x=210, y=40+(100-62)*4.4 = 207 -->
-          <!-- DxD trajectory: dashed line from current to target right-of-current -->
+          <!-- DxD trajectory: dashed line from current to target -->
           <g class="pop pop-d6">
-            <path class="v4-traj" d="M 210 207 Q 380 170, 525 165"/>
-            <polygon points="525,165 515,159 515,171" fill="var(--accent)"/>
+            <path class="v4-traj" d="M 235 207 Q 380 180, 510 175"/>
+            <polygon points="518,175 506,170 506,180" fill="var(--accent)"/>
           </g>
 
+          <!-- DxD today (left) -->
           <g class="pop pop-d7" style="filter: drop-shadow(0 0 12px rgba(210,35,42,0.65))">
             <circle cx="210" cy="207" r="14" fill="rgba(210,35,42,0.22)" stroke="var(--accent)" stroke-width="2"/>
             <circle cx="210" cy="207" r="6" fill="var(--accent)"/>
-            <text class="v4-dxd-callout" x="228" y="202">DXD · Today</text>
-            <text class="v4-co-sub"      x="228" y="220">~$80M · 62%+ GM target</text>
+            <text class="v4-dxd-callout" x="210" y="190" text-anchor="middle">DXD · Today</text>
+            <text class="v4-co-sub"      x="210" y="240" text-anchor="middle">~$80M · 62%+ GM target</text>
           </g>
 
+          <!-- DxD full deployment callout (right of trajectory tip) -->
           <g class="pop pop-d8">
-            <rect x="475" y="115" width="220" height="50" fill="#161616" stroke="var(--accent-line)" stroke-width="1"/>
-            <text class="v4-dxd-callout" x="485" y="135">DxD · Full deployment</text>
-            <text class="v4-co-sub"      x="485" y="152">SaaS overlay scales · 62%+ GM</text>
+            <rect x="525" y="150" width="230" height="50" fill="#161616" stroke="var(--accent-line)" stroke-width="1"/>
+            <text class="v4-dxd-callout" x="540" y="170">DxD · Full deployment</text>
+            <text class="v4-co-sub"      x="540" y="187">SaaS overlay scales · 62%+ GM</text>
           </g>
         </svg>
 
@@ -2330,53 +2391,52 @@ blockquote.pull .cite {
       </div>
 
       <div class="dxd-v5-flow">
-        <!-- Bar heights via inline style. Square-root scale so $700M and $22M both readable.
-             scale: height = sqrt(amount_M)/sqrt(700) * 220 + minimum -->
+        <!-- Stage cards. Meter width via --meter (0..1) so $700M=full and $22M=tiny but readable. -->
         <div class="dxd-v5-stage">
-          <span class="dxd-v5-amt">$700M</span>
-          <div class="dxd-v5-bar" style="height:230px"></div>
-          <span class="dxd-v5-name">Gross</span>
-          <span class="dxd-v5-conv">Addressable book</span>
-          <span class="dxd-v5-arrow"></span>
+          <span class="v5-name">Gross</span>
+          <span class="v5-amt">$700M</span>
+          <div class="v5-meter" style="--meter:1"><i></i></div>
+          <span class="v5-conv">Addressable book</span>
+          <span class="v5-arrow"><svg viewBox="0 0 14 14" width="14" height="14"><polyline points="4,2 10,7 4,12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
 
         <div class="dxd-v5-stage">
-          <span class="dxd-v5-amt">$600M</span>
-          <div class="dxd-v5-bar" style="height:213px"></div>
-          <span class="dxd-v5-name">Channel</span>
-          <span class="dxd-v5-conv"><strong>5–10%</strong> wt</span>
-          <span class="dxd-v5-arrow"></span>
+          <span class="v5-name">Channel</span>
+          <span class="v5-amt">$600M</span>
+          <div class="v5-meter" style="--meter:0.86"><i></i></div>
+          <span class="v5-conv"><strong>5–10%</strong> conversion</span>
+          <span class="v5-arrow"><svg viewBox="0 0 14 14" width="14" height="14"><polyline points="4,2 10,7 4,12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
 
         <div class="dxd-v5-stage">
-          <span class="dxd-v5-amt">$83–105M</span>
-          <div class="dxd-v5-bar" style="height:88px"></div>
-          <span class="dxd-v5-name">Qualified</span>
-          <span class="dxd-v5-conv"><strong>25–35%</strong> wt</span>
-          <span class="dxd-v5-arrow"></span>
+          <span class="v5-name">Qualified</span>
+          <span class="v5-amt">$83–105M</span>
+          <div class="v5-meter" style="--meter:0.39"><i></i></div>
+          <span class="v5-conv"><strong>25–35%</strong> conversion</span>
+          <span class="v5-arrow"><svg viewBox="0 0 14 14" width="14" height="14"><polyline points="4,2 10,7 4,12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
 
         <div class="dxd-v5-stage">
-          <span class="dxd-v5-amt">$22M</span>
-          <div class="dxd-v5-bar" style="height:48px"></div>
-          <span class="dxd-v5-name">Signed / Verbal</span>
-          <span class="dxd-v5-conv"><strong>90%+</strong> wt</span>
-          <span class="dxd-v5-arrow"></span>
+          <span class="v5-name">Signed / Verbal</span>
+          <span class="v5-amt">$22M</span>
+          <div class="v5-meter" style="--meter:0.21"><i></i></div>
+          <span class="v5-conv"><strong>90%+</strong> conversion</span>
+          <span class="v5-arrow"><svg viewBox="0 0 14 14" width="14" height="14"><polyline points="4,2 10,7 4,12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
 
         <div class="dxd-v5-stage">
-          <span class="dxd-v5-amt">$27M</span>
-          <div class="dxd-v5-bar" style="height:53px"></div>
-          <span class="dxd-v5-name">Live</span>
-          <span class="dxd-v5-conv"><strong>100%</strong> wt</span>
-          <span class="dxd-v5-arrow"></span>
+          <span class="v5-name">Live</span>
+          <span class="v5-amt">$27M</span>
+          <div class="v5-meter" style="--meter:0.23"><i></i></div>
+          <span class="v5-conv"><strong>100%</strong> conversion</span>
+          <span class="v5-arrow"><svg viewBox="0 0 14 14" width="14" height="14"><polyline points="4,2 10,7 4,12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
 
-        <div class="dxd-v5-stage">
-          <span class="dxd-v5-amt">$55–100M</span>
-          <div class="dxd-v5-bar pulse" style="height:84px"></div>
-          <span class="dxd-v5-name">Weighted</span>
-          <span class="dxd-v5-conv"><strong>FY27 forecast</strong></span>
+        <div class="dxd-v5-stage pulse">
+          <span class="v5-name">Weighted</span>
+          <span class="v5-amt">$55–100M</span>
+          <div class="v5-meter" style="--meter:0.36"><i></i></div>
+          <span class="v5-conv"><strong>FY27 forecast</strong></span>
         </div>
       </div>
 

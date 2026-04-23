@@ -285,6 +285,109 @@ h1.headline .accent{color:var(--red)}
 /* center-badge fades out smoothly when an engine is expanded */
 .center-badge{transition:opacity .35s ease}
 
+/* ═══ FULL-SCREEN ENGINE MODAL ═══ */
+.engine-modal{
+  position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.88); backdrop-filter:blur(6px);
+  opacity:0; pointer-events:none;
+  transition:opacity .25s ease;
+  overflow-y:auto;
+}
+.engine-modal.open{ opacity:1; pointer-events:auto; }
+.engine-modal .em-shell{
+  position:relative;
+  min-height:100vh;
+  padding:48px 56px 56px;
+  background:#0a0a0b;
+  border-top:2px solid var(--accent, var(--red));
+  transform:translateY(16px);
+  opacity:0;
+  transition:transform .35s cubic-bezier(.2,.7,.3,1) .05s, opacity .35s ease .05s;
+}
+.engine-modal.open .em-shell{ transform:translateY(0); opacity:1; }
+.engine-modal .em-close{
+  position:absolute; top:24px; right:32px;
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.22em;
+  background:transparent; border:1px solid var(--border); color:var(--white-muted);
+  padding:8px 14px; cursor:pointer; z-index:10;
+  transition:border-color .2s, color .2s, background .2s;
+}
+.engine-modal .em-close:hover{
+  border-color:var(--accent, var(--red));
+  color:var(--white);
+  background:rgba(255,255,255,0.04);
+}
+.engine-modal .em-grid{
+  display:grid;
+  grid-template-columns:380px 1fr;
+  grid-template-rows:1fr;
+  gap:56px;
+  max-width:1700px; margin:0 auto;
+  min-height:calc(100vh - 104px);
+}
+@media (max-width:1100px){
+  .engine-modal .em-grid{ grid-template-columns:1fr; }
+  .engine-modal .em-shell{ padding:48px 24px; }
+}
+.engine-modal .em-copy{
+  display:flex; flex-direction:column;
+  padding-top:8px;
+}
+.engine-modal .em-eyebrow{
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--accent, var(--red)); margin-bottom:14px;
+}
+.engine-modal .em-title{
+  font-family:var(--font-heading); font-weight:900;
+  font-size:clamp(48px, 6vw, 88px); line-height:.92; letter-spacing:-.03em;
+  color:var(--white); margin:0 0 14px;
+}
+.engine-modal .em-verb{
+  font-family:var(--font-heading); font-weight:500;
+  font-size:13px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--accent, var(--red)); margin-bottom:20px;
+}
+.engine-modal .em-cap{
+  font-size:16px; line-height:1.45; color:var(--white);
+  margin-bottom:14px; font-weight:500;
+}
+.engine-modal .em-body{
+  font-size:13px; line-height:1.6; color:var(--white-muted);
+  margin:0 0 20px;
+}
+.engine-modal .em-status{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.20em; text-transform:uppercase;
+  color:var(--white-muted);
+  border:1px solid var(--border); padding:6px 10px; margin-bottom:24px;
+  align-self:flex-start;
+}
+.engine-modal .em-status .dot{
+  width:6px; height:6px; border-radius:50%;
+  background:var(--accent, var(--red));
+  box-shadow:0 0 8px var(--accent, var(--red));
+}
+.engine-modal .em-metrics{ display:flex; flex-direction:column; gap:0; }
+.engine-modal .em-metric{
+  display:grid; gap:4px;
+  padding:12px 0; border-top:1px solid var(--border);
+}
+.engine-modal .em-metric:last-child{ border-bottom:1px solid var(--border); }
+.engine-modal .em-mk{
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--accent, var(--red));
+}
+.engine-modal .em-mv{ font-size:13px; color:var(--white); line-height:1.4; }
+.engine-modal .em-stage{
+  position:relative;
+  min-height:640px;
+  border:1px solid var(--border);
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px) 0 0/40px 40px,
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px) 0 0/40px 40px,
+    radial-gradient(ellipse at center, rgba(210,35,42,0.05) 0%, transparent 60%);
+}
+
 /* flow line between engines */
 .flow-line{
   stroke:var(--border-light);stroke-width:1.4;fill:none;
@@ -662,11 +765,12 @@ section.beat.engine-beat .inner{
 <!-- DXD-FONT-STANDARDIZATION -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Tomorrow:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Figtree:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style id="dxd-font-standardization">
   :root {
-    --dxd-font-display: "Tomorrow", "Inter Tight", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --dxd-font-body:    "Inter Tight", "Tomorrow", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-display: "Oswald", "Bebas Neue", "Impact", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-body:    "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-mono:    "JetBrains Mono", "Menlo", "Consolas", monospace;
 
     /* Standardized type scale (anchored to team page hero) */
     --dxd-h1-size: clamp(36px, 5.2vw, 76px);
@@ -737,6 +841,10 @@ section.beat.engine-beat .inner{
     letter-spacing: var(--dxd-tracking-eyebrow) !important;
     text-transform: uppercase;
     font-weight: 500 !important;
+  }
+
+  code, pre, kbd, samp, tt, .mono, [class*="mono"] {
+    font-family: var(--dxd-font-mono) !important;
   }
 </style>
 </head>
