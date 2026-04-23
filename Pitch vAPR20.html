@@ -112,10 +112,10 @@
       --blue: #6b8ab5;
       --white-dim: #3a3a42;
       --red-border: rgba(210, 35, 42, 0.20);
-      --font-heading: 'Outfit', sans-serif;
-      --font-body: 'Inter', sans-serif;
+      --font-heading: 'Tomorrow', 'Inter Tight', 'Outfit', sans-serif;
+      --font-body: 'Inter Tight', 'Tomorrow', 'Inter', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
-      --font-serif: 'Source Serif 4', Georgia, serif;
+      --font-serif: 'Tomorrow', 'Inter Tight', 'Source Serif 4', Georgia, serif;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1358,14 +1358,76 @@
   :root {
     --dxd-font-display: "Tomorrow", "Inter Tight", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --dxd-font-body:    "Inter Tight", "Tomorrow", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    /* Standardized type scale (anchored to team page hero) */
+    --dxd-h1-size: clamp(36px, 5.2vw, 76px);
+    --dxd-h2-size: clamp(28px, 3.4vw, 48px);
+    --dxd-h3-size: clamp(20px, 2vw, 28px);
+    --dxd-h4-size: clamp(16px, 1.4vw, 20px);
+    --dxd-body-size: clamp(15px, 1.05vw, 17px);
+    --dxd-small-size: 13px;
+    --dxd-eyebrow-size: 12px;
+
+    --dxd-h1-weight: 400;
+    --dxd-h2-weight: 400;
+    --dxd-h3-weight: 500;
+    --dxd-h4-weight: 600;
+    --dxd-body-weight: 400;
+
+    --dxd-h1-line: 0.98;
+    --dxd-h2-line: 1.05;
+    --dxd-h3-line: 1.15;
+    --dxd-body-line: 1.55;
+
+    --dxd-tracking-display: -0.02em;
+    --dxd-tracking-eyebrow: 0.18em;
   }
-  html, body, p, li, td, th, input, textarea, select, button, label, blockquote, figcaption, dd, dt {
+
+  html, body, p, li, td, th, input, textarea, select, button, label,
+  blockquote, figcaption, dd, dt {
     font-family: var(--dxd-font-body) !important;
+    font-size: var(--dxd-body-size);
+    line-height: var(--dxd-body-line);
   }
+
   h1, h2, h3, h4, h5, h6,
   .display, .headline, .hero-title, .section-title, .eyebrow, .nav-cta,
   .tab, .brand, .logo, .card-role {
     font-family: var(--dxd-font-display) !important;
+    letter-spacing: var(--dxd-tracking-display);
+  }
+
+  h1, .display, .hero-title {
+    font-size: var(--dxd-h1-size) !important;
+    font-weight: var(--dxd-h1-weight) !important;
+    line-height: var(--dxd-h1-line) !important;
+  }
+  h2, .section-title {
+    font-size: var(--dxd-h2-size) !important;
+    font-weight: var(--dxd-h2-weight) !important;
+    line-height: var(--dxd-h2-line) !important;
+  }
+  h3 {
+    font-size: var(--dxd-h3-size) !important;
+    font-weight: var(--dxd-h3-weight) !important;
+    line-height: var(--dxd-h3-line) !important;
+  }
+  h4 {
+    font-size: var(--dxd-h4-size) !important;
+    font-weight: var(--dxd-h4-weight) !important;
+  }
+  h5, h6 {
+    font-size: var(--dxd-h4-size) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .eyebrow, [class*="eyebrow"] {
+    font-size: var(--dxd-eyebrow-size) !important;
+    letter-spacing: var(--dxd-tracking-eyebrow) !important;
+    text-transform: uppercase;
+    font-weight: 500 !important;
   }
 </style>
 </head>

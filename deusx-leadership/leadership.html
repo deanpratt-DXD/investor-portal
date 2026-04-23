@@ -422,6 +422,58 @@
     width: 40px;
   }
 
+  /* ---------- FEATURED (PAT MADDEN) CARD ---------- */
+  .card.card-featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) 1fr;
+    gap: 56px;
+    padding: 36px 40px;
+    align-items: start;
+  }
+  .card.card-featured .card-number { display: none; }
+  .card.card-featured .card-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin-bottom: 0;
+  }
+  .card.card-featured .card-body {
+    display: flex;
+    flex-direction: column;
+    padding-top: 4px;
+  }
+  .card.card-featured .card-name {
+    font-size: 14px;
+    letter-spacing: 0.28em;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .card.card-featured .card-role {
+    font-family: "Tomorrow", "Inter Tight", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0;
+    color: var(--accent);
+    margin-bottom: 22px;
+  }
+  .card.card-featured .card-bio {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 820px;
+  }
+  .card.card-featured .card-bio p { margin: 0 0 14px; }
+  .card.card-featured .card-bio p:last-child { margin-bottom: 0; }
+  .card.card-featured .card-rule { display: none; }
+  @media (max-width: 900px) {
+    .card.card-featured {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 24px;
+    }
+    .card.card-featured .card-photo { max-width: 320px; }
+  }
+
   /* ---------- CONTACT BAND ---------- */
   .contact {
     padding: 140px 40px;
@@ -574,16 +626,20 @@
     <div class="marquee-track">
       <span class="marquee-item">Axon</span>
       <span class="marquee-item">Skydio</span>
+      <span class="marquee-item">Google</span>
       <span class="marquee-item">NASA</span>
       <span class="marquee-item">Navy</span>
+      <span class="marquee-item">Dell</span>
       <span class="marquee-item">McKinsey</span>
       <span class="marquee-item">LEDA</span>
       <span class="marquee-item">Marine Force Recon</span>
+      <span class="marquee-item">Cisco</span>
       <span class="marquee-item">Gresham PD</span>
       <span class="marquee-item">Dallas PD</span>
       <span class="marquee-item">LAPD</span>
       <span class="marquee-item">FBI</span>
       <span class="marquee-item">Apple</span>
+      <span class="marquee-item">Kyndryl</span>
       <span class="marquee-item">Nike</span>
       <span class="marquee-item">GoPro</span>
       <span class="marquee-item">BCG</span>
@@ -595,16 +651,20 @@
     <div class="marquee-track" aria-hidden="true">
       <span class="marquee-item">Axon</span>
       <span class="marquee-item">Skydio</span>
+      <span class="marquee-item">Google</span>
       <span class="marquee-item">NASA</span>
       <span class="marquee-item">Navy</span>
+      <span class="marquee-item">Dell</span>
       <span class="marquee-item">McKinsey</span>
       <span class="marquee-item">LEDA</span>
       <span class="marquee-item">Marine Force Recon</span>
+      <span class="marquee-item">Cisco</span>
       <span class="marquee-item">Gresham PD</span>
       <span class="marquee-item">Dallas PD</span>
       <span class="marquee-item">LAPD</span>
       <span class="marquee-item">FBI</span>
       <span class="marquee-item">Apple</span>
+      <span class="marquee-item">Kyndryl</span>
       <span class="marquee-item">Nike</span>
       <span class="marquee-item">GoPro</span>
       <span class="marquee-item">BCG</span>
@@ -641,8 +701,9 @@
     {
       name: "Pat Madden",
       role: "Founder & CEO",
-      bio: "Marine Corps officer who led combat operations in Iraq and Afghanistan. Strategic advisor at McKinsey & Company. Former SVP & GM at Axon, where he scaled mission-critical public safety technologies globally and led expansion into advanced drone and robotics platforms. Founded Deus X Defense to close the execution gap between the technology that exists and the security postures that actually hold.",
-      img: "photos/pat-madden.jpg"
+      bio: "Marine Corps officer who led combat operations in Iraq and Afghanistan. Strategic advisor at McKinsey & Company. Former SVP & GM at Axon, where he scaled mission-critical public safety technologies globally and led expansion into advanced drone and robotics platforms.|Founded Deus X Defense to close the execution gap between the technology that exists and the security postures that actually hold.",
+      img: "photos/pat-madden.jpg",
+      featured: true
     },
     {
       name: "Ross Stinson",
@@ -770,17 +831,33 @@
   leaders.forEach((l, i) => {
     const num = String(i + 1).padStart(2, "0");
     const card = document.createElement("article");
-    card.className = "card reveal";
-    card.innerHTML = `
-      <div class="card-number">${num} / ${String(leaders.length).padStart(2, "0")}</div>
-      <div class="card-photo">
-        <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
-      </div>
-      <div class="card-name">${l.name}</div>
-      <div class="card-role">${l.role}</div>
-      <div class="card-bio">${l.bio}</div>
-      <div class="card-rule"></div>
-    `;
+    card.className = "card reveal" + (l.featured ? " card-featured" : "");
+    const bioHtml = l.bio.includes("|")
+      ? l.bio.split("|").map(p => `<p>${p.trim()}</p>`).join("")
+      : l.bio;
+    if (l.featured) {
+      card.innerHTML = `
+        <div class="card-photo">
+          <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <div class="card-name">${l.name}</div>
+          <div class="card-role">${l.role}</div>
+          <div class="card-bio">${bioHtml}</div>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="card-number">${num} / ${String(leaders.length).padStart(2, "0")}</div>
+        <div class="card-photo">
+          <img src="${l.img}" alt="Portrait of ${l.name}" loading="lazy" />
+        </div>
+        <div class="card-name">${l.name}</div>
+        <div class="card-role">${l.role}</div>
+        <div class="card-bio">${bioHtml}</div>
+        <div class="card-rule"></div>
+      `;
+    }
     grid.appendChild(card);
   });
 
