@@ -736,6 +736,16 @@
         }
         .appendix-sources ol li { margin-bottom: 6px; }
         .appendix-sources ol li::marker { color: var(--red); font-family: var(--mono); }
+        .appendix-sources ol li a {
+            color: var(--red);
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(210,35,42,0.45);
+            transition: border-color 140ms ease, color 140ms ease;
+        }
+        .appendix-sources ol li a:hover {
+            border-bottom-color: var(--red);
+            color: #ff4757;
+        }
         .appendix-sources .src-note {
             margin-top: 12px;
             font-size: 11.5px;
@@ -14031,14 +14041,14 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
           <div class="appendix-sources">
             <div class="src-eyebrow">Sources &amp; references</div>
             <ol>
-              <li>U.S. DoD, Joint Counter-small Unmanned Aircraft Systems Office (JCO) public materials (Army-led, est. 2020).</li>
-              <li>U.S. Government Accountability Office &mdash; ongoing cUAS oversight series; see GAO topic page &ldquo;Counter-Unmanned Aircraft Systems&rdquo; for currently-published reports.</li>
-              <li>Congressional Research Service, &ldquo;Department of Defense Counter-Unmanned Aircraft Systems&rdquo; (search CRS &ldquo;C-UAS&rdquo; for the latest issue).</li>
-              <li>U.S. Naval Institute and Defense News coverage of <em>Operation Prosperity Guardian</em> / <em>Operation Poseidon Archer</em> Red Sea operations, 2023&ndash;2024 (cost-exchange commentary).</li>
-              <li>Royal United Services Institute (RUSI) and Center for Strategic &amp; International Studies (CSIS) commentary on attritional drone warfare &mdash; Ukraine and Middle East theaters.</li>
-              <li>FAA Notice of Proposed Rulemaking, Part 108 (Beyond Visual Line of Sight operations), public docket (2025).</li>
-              <li>NERC CIP-003-9 standard text and FERC order of approval; CISA CIRCIA NPRM and implementation guidance.</li>
-              <li>FY2024 NDAA &sect; 5949 (covered semiconductors); Section 848 of FY2024 NDAA (trusted supply).</li>
+              <li>U.S. DoD, Joint Counter-small Unmanned Aircraft Systems Office (JCO) public materials, Army-led, est. 2020 &mdash; <a href="https://www.army.mil/" target="_blank" rel="noopener">army.mil</a>.</li>
+              <li>U.S. Government Accountability Office &mdash; ongoing cUAS oversight series; see GAO topic page &ldquo;Counter-Unmanned Aircraft Systems&rdquo; for currently-published reports &mdash; <a href="https://www.gao.gov/" target="_blank" rel="noopener">gao.gov</a>.</li>
+              <li>Congressional Research Service, &ldquo;Department of Defense Counter-Unmanned Aircraft Systems&rdquo; &mdash; <a href="https://crsreports.congress.gov/" target="_blank" rel="noopener">crsreports.congress.gov</a> (search &ldquo;C-UAS&rdquo;).</li>
+              <li>U.S. Naval Institute (<a href="https://www.usni.org/" target="_blank" rel="noopener">usni.org</a>) and Defense News (<a href="https://www.defensenews.com/" target="_blank" rel="noopener">defensenews.com</a>) coverage of <em>Operation Prosperity Guardian</em> / <em>Operation Poseidon Archer</em> Red Sea operations, 2023&ndash;2024 (cost-exchange commentary).</li>
+              <li>Royal United Services Institute (<a href="https://rusi.org/explore-our-research/publications/commentary/attritional-art-war-lessons-russian-war-ukraine" target="_blank" rel="noopener">RUSI &mdash; &ldquo;The Attritional Art of War&rdquo;</a>) and Center for Strategic &amp; International Studies (<a href="https://www.csis.org/" target="_blank" rel="noopener">CSIS</a>) commentary on attritional drone warfare &mdash; Ukraine and Middle East theaters.</li>
+              <li>FAA Notice of Proposed Rulemaking, Part 108 (Beyond Visual Line of Sight operations), public docket (2025) &mdash; <a href="https://www.faa.gov/uas" target="_blank" rel="noopener">faa.gov/uas</a>.</li>
+              <li>NERC CIP-003 standard text (<a href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" target="_blank" rel="noopener">nerc.com</a>) and FERC order of approval (<a href="https://www.ferc.gov/" target="_blank" rel="noopener">ferc.gov</a>); CISA CIRCIA NPRM and implementation guidance (<a href="https://www.cisa.gov/circia" target="_blank" rel="noopener">cisa.gov/circia</a>).</li>
+              <li>FY2024 NDAA &sect; 5949 (covered semiconductors) and Section 848 (trusted supply) &mdash; <a href="https://www.congress.gov/bill/118th-congress/house-bill/2670" target="_blank" rel="noopener">H.R.2670 / Pub.L. 118-31</a>.</li>
             </ol>
             <div class="src-note">All competitor production-rate claims above are summarized from publicly-reported company statements, DoD contract announcements, and trade-press coverage; specific monthly volumes vary by reporting period and should be re-verified for any decision use. DxD&rsquo;s Orcrist Q2 2027 target is an internal production goal disclosed under NDA, not a contracted backlog.</div>
           </div>
@@ -14090,12 +14100,12 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
           <div class="appendix-sources">
             <div class="src-eyebrow">Sources &amp; references</div>
             <ol>
-              <li>Accenture &mdash; public corporate disclosures and FY2025 Annual Report (managed-services footprint, enterprise client base).</li>
-              <li>FIFA World Cup 26 host-city public security planning materials (LA28 / LAPD public releases).</li>
-              <li>FAA waiver registry (Part 107.31 / Part 91 / BVLOS authorizations).</li>
-              <li>NERC E-ISAC public bulletins; DOE Form OE-417 grid disturbance reporting (electricity reliability).</li>
-              <li>Cascadia Global Security and Holdfast Security &mdash; standalone financials available in data room Tabs 6&ndash;7.</li>
-              <li>Invictus International Holdings LOI (Mar 2026) &mdash; data room Tab 8.</li>
+              <li>Accenture &mdash; public corporate disclosures and FY2025 Annual Report (managed-services footprint, enterprise client base) &mdash; <a href="https://www.accenture.com/us-en/about/company/investor-relations" target="_blank" rel="noopener">accenture.com investor relations</a>.</li>
+              <li>FIFA World Cup 26 host-city public security planning materials &mdash; <a href="https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener">FIFA World Cup 26</a>; LA28 (<a href="https://www.la28.org/" target="_blank" rel="noopener">la28.org</a>) and LAPD (<a href="https://www.lapdonline.org/" target="_blank" rel="noopener">lapdonline.org</a>) public releases.</li>
+              <li>FAA waiver registry (Part 107.31 / Part 91 / BVLOS authorizations) &mdash; <a href="https://www.faa.gov/uas" target="_blank" rel="noopener">faa.gov/uas</a>.</li>
+              <li>NERC E-ISAC public bulletins (<a href="https://www.eisac.com/" target="_blank" rel="noopener">eisac.com</a>); DOE Form OE-417 grid disturbance reporting (<a href="https://www.oe.netl.doe.gov/oe417.aspx" target="_blank" rel="noopener">oe.netl.doe.gov/oe417</a>).</li>
+              <li>Cascadia Global Security and Holdfast Security &mdash; standalone financials available in data room Tabs 6&ndash;7 <em>(NDA)</em>.</li>
+              <li>Invictus International Holdings LOI (Mar 2026) &mdash; data room Tab 8 <em>(NDA)</em>.</li>
             </ol>
             <div class="src-note">Partner counts, MOU counts, and combined-entity TTM figures are DxD-internal as of April 2026 and are subject to confirmation in the data room; all customer-specific arrangements (Accenture, LAPD, hyperscaler) are governed by separate executed agreements held under NDA.</div>
           </div>
@@ -14155,12 +14165,12 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
           <div class="appendix-sources">
             <div class="src-eyebrow">Sources &amp; references</div>
             <ol>
-              <li>LAPD pilot AAR &mdash; available in data room under NDA, Tab 11.</li>
-              <li>FAA Part 107 / Part 107.31 / Part 91 waiver and authorization registry.</li>
-              <li>Accenture joint-pursuit pipeline &mdash; redacted, data room Tab 5.</li>
-              <li>Cascadia + Holdfast pro-forma combined financials (audit in process), data room Tabs 6&ndash;7.</li>
+              <li>LAPD pilot AAR &mdash; available in data room under NDA, Tab 11 <em>(NDA)</em>.</li>
+              <li>FAA Part 107 / Part 107.31 / Part 91 waiver and authorization registry &mdash; <a href="https://www.faa.gov/uas" target="_blank" rel="noopener">faa.gov/uas</a>.</li>
+              <li>Accenture joint-pursuit pipeline &mdash; redacted, data room Tab 5 <em>(NDA)</em>.</li>
+              <li>Cascadia + Holdfast pro-forma combined financials (audit in process), data room Tabs 6&ndash;7 <em>(NDA)</em>.</li>
               <li>Operator-load and time-to-detect benchmarks: <em>DxD-internal field telemetry</em>, normalized across deployed sites in 2025.</li>
-              <li>NERC CIP-008-6 incident-reporting requirements; CISA CIRCIA NPRM and implementation guidance.</li>
+              <li>NERC CIP-008 incident-reporting requirements (<a href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" target="_blank" rel="noopener">nerc.com</a>); CISA CIRCIA NPRM and implementation guidance (<a href="https://www.cisa.gov/circia" target="_blank" rel="noopener">cisa.gov/circia</a>).</li>
             </ol>
             <div class="src-note">Time-to-detect, operator-load, and cost-to-operate figures are derived from DxD-instrumented deployments and are <em>internal benchmarks</em>, not third-party measurements; full methodology is available in the data room. All cited customer arrangements are governed by executed NDAs and are not independently verifiable from public sources.</div>
           </div>
@@ -14220,12 +14230,12 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
           <div class="appendix-sources">
             <div class="src-eyebrow">Sources &amp; references</div>
             <ol>
-              <li>FAA Part 107, Part 107.31, Part 91, Part 137 (where applicable to specific deployments); Part 108 NPRM public docket (2025).</li>
-              <li>NIST SP 800-171 Rev. 3; CJIS Security Policy current version (FBI CJIS Division).</li>
-              <li>NERC CIP-008-6 incident-reporting requirements; CISA CIRCIA NPRM and implementation guidance.</li>
-              <li>SOC-2 Type II audit engagement letter &mdash; data room Tab 9.</li>
-              <li>BVLOS waiver grant &mdash; on file with FAA, copy in data room Tab 10.</li>
-              <li>Operator-training curriculum and recurrence schedule &mdash; data room Tab 12.</li>
+              <li>FAA Part 107, Part 107.31, Part 91, Part 137 (where applicable to specific deployments); Part 108 NPRM public docket (2025) &mdash; <a href="https://www.faa.gov/uas" target="_blank" rel="noopener">faa.gov/uas</a>.</li>
+              <li><a href="https://csrc.nist.gov/pubs/sp/800/171/r3/final" target="_blank" rel="noopener">NIST SP 800-171 Rev. 3</a>; CJIS Security Policy current version (<a href="https://www.fbi.gov/services/cjis" target="_blank" rel="noopener">FBI CJIS Division</a>).</li>
+              <li>NERC CIP-008 incident-reporting requirements (<a href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" target="_blank" rel="noopener">nerc.com</a>); CISA CIRCIA NPRM and implementation guidance (<a href="https://www.cisa.gov/circia" target="_blank" rel="noopener">cisa.gov/circia</a>).</li>
+              <li>SOC-2 Type II audit engagement letter &mdash; data room Tab 9 <em>(NDA)</em>.</li>
+              <li>BVLOS waiver grant &mdash; on file with FAA, copy in data room Tab 10 <em>(NDA)</em>.</li>
+              <li>Operator-training curriculum and recurrence schedule &mdash; data room Tab 12 <em>(NDA)</em>.</li>
             </ol>
             <div class="src-note">All response-time figures are <em>DxD-internal measurements</em> at the customer-site level and depend on dock placement, weather, and airspace conditions; ranges shown reflect deployed performance medians and are not independently audited.</div>
           </div>
