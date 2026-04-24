@@ -193,45 +193,101 @@
       display: block;
       pointer-events: none;
     }
+    /* SVG element transforms compose with native attribute transforms.
+       Native SVG default rotation pivot is the element's local (0,0) —
+       which inside the translated <g transform="translate(600 400)">
+       is exactly the radar center. No transform-box gymnastics needed. */
     #gate .gate-radar .gr-sweep {
-      transform-origin: 0 0;
-      transform-box: fill-box;
       animation: gr-rotate 4.2s linear infinite;
-      mix-blend-mode: screen;
     }
     @keyframes gr-rotate {
       from { transform: rotate(0deg); }
       to   { transform: rotate(360deg); }
     }
     #gate .gate-radar .gr-pulse {
-      transform-origin: center;
-      transform-box: fill-box;
       animation: gr-pulse 4.2s ease-out infinite;
       opacity: 0;
     }
     #gate .gate-radar .gr-pulse-b { animation-delay: 1.4s; }
     #gate .gate-radar .gr-pulse-c { animation-delay: 2.8s; }
     @keyframes gr-pulse {
-      0%   { transform: scale(0.05); opacity: 0.0; }
-      10%  { opacity: 0.85; }
+      0%   { transform: scale(0.05); opacity: 0; }
+      8%   { opacity: 0.85; }
       100% { transform: scale(8);    opacity: 0; }
     }
-    #gate .gate-radar .gr-blip {
-      transform-origin: center;
-      animation: gr-blip 4.2s ease-out infinite;
-      animation-delay: var(--bd, 0s);
-      opacity: 0;
+    /* Drone tracks: each <g class="gr-track"> orbits the radar center.
+       Drone ride along their parent track, with a slight tilt animation. */
+    #gate .gate-radar .gr-track {
+      animation: gr-orbit var(--orbit, 22s) linear infinite;
+      animation-delay: var(--ostart, 0s);
+      transform-origin: 0 0;
     }
-    @keyframes gr-blip {
-      0%   { opacity: 0; transform: scale(0.6); }
-      8%   { opacity: 1; transform: scale(1.15); }
-      35%  { opacity: 0.55; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.9); }
+    #gate .gate-radar .gr-track.rev { animation-direction: reverse; }
+    @keyframes gr-orbit {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    /* Drone glyph itself rotates against the orbit so it stays heading-aligned
+       to its motion vector, not pointing back at center. */
+    #gate .gate-radar .gr-drone {
+      animation: gr-drone-tilt 6s ease-in-out infinite;
+    }
+    @keyframes gr-drone-tilt {
+      0%, 100% { transform: rotate(-4deg); }
+      50%      { transform: rotate(4deg); }
+    }
+    /* Track lock-on box around each drone — pulses red */
+    #gate .gate-radar .gr-lock {
+      animation: gr-lock 1.6s ease-in-out infinite;
+      transform-origin: center;
+    }
+    @keyframes gr-lock {
+      0%, 100% { opacity: 0.35; }
+      50%      { opacity: 1; }
+    }
+    /* Cursor-following target reticle (HTML overlay) */
+    #gate .gate-reticle {
+      position: absolute;
+      top: 0; left: 0;
+      width: 92px; height: 92px;
+      transform: translate3d(-9999px, -9999px, 0);
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      mix-blend-mode: screen;
+      will-change: transform;
+    }
+    #gate .gate-reticle.live { opacity: 1; }
+    #gate .gate-reticle svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    #gate .gate-reticle .ret-ring {
+      animation: ret-pulse 1.6s ease-in-out infinite;
+      transform-origin: center;
+    }
+    @keyframes ret-pulse {
+      0%, 100% { transform: scale(1);    opacity: 0.85; }
+      50%      { transform: scale(1.08); opacity: 1; }
+    }
+    #gate .gate-reticle .ret-spin { animation: ret-spin 6s linear infinite; transform-origin: center; }
+    @keyframes ret-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    #gate .gate-reticle .ret-readout {
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      fill: #FF506E;
+      text-transform: uppercase;
     }
     @media (prefers-reduced-motion: reduce) {
       #gate .gate-radar .gr-sweep,
       #gate .gate-radar .gr-pulse,
-      #gate .gate-radar .gr-blip { animation: none; opacity: 0.6; }
+      #gate .gate-radar .gr-track,
+      #gate .gate-radar .gr-drone,
+      #gate .gate-radar .gr-lock,
+      #gate .gate-reticle .ret-ring,
+      #gate .gate-reticle .ret-spin { animation: none; }
     }
     /* Vignette to suppress any tagline/subtext rendered inside the hero iframe */
     #gate .hero::after {
@@ -487,6 +543,13 @@
             <circle r="120" opacity="0.20"/>
             <circle r="60"  opacity="0.16"/>
           </g>
+          <!-- range labels -->
+          <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#5a0e18" letter-spacing="0.18em">
+            <text x="62"  y="-3">2KM</text>
+            <text x="122" y="-3">4KM</text>
+            <text x="182" y="-3">6KM</text>
+            <text x="242" y="-3">8KM</text>
+          </g>
           <!-- expanding pulse rings -->
           <circle class="gr-pulse gr-pulse-a" r="40" fill="none" stroke="#FF1F3A" stroke-width="1.5"/>
           <circle class="gr-pulse gr-pulse-b" r="40" fill="none" stroke="#FF1F3A" stroke-width="1.5"/>
@@ -496,36 +559,145 @@
             <line x1="-340" y1="0" x2="340" y2="0"/>
             <line x1="0" y1="-340" x2="0" y2="340"/>
           </g>
-          <!-- rotating sweep wedge -->
+          <!-- cardinal ticks -->
+          <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10" fill="#7a1220" letter-spacing="0.2em" text-anchor="middle">
+            <text y="-330">N</text>
+            <text y="345">S</text>
+            <text x="-340" y="3" text-anchor="end">W</text>
+            <text x="340" y="3" text-anchor="start">E</text>
+          </g>
+          <!-- rotating sweep wedge (rotates around its own (0,0) which IS center) -->
           <g class="gr-sweep">
             <path d="M0,0 L320,-90 A320,320 0 0 1 320,90 Z" fill="url(#gr-sweep)"/>
-            <line x1="0" y1="0" x2="320" y2="0" stroke="#FF1F3A" stroke-width="1.4" opacity="0.9"/>
+            <line x1="0" y1="0" x2="320" y2="0" stroke="#FF1F3A" stroke-width="1.4" opacity="0.95"/>
           </g>
-          <!-- center dot -->
-          <circle r="3" fill="#FF506E"/>
+
+          <!-- ── tracked drones orbiting at different radii/speeds ── -->
+          <!-- Drone 1: outer ring, slow CW -->
+          <g class="gr-track" style="--orbit:26s; --ostart:-3s">
+            <g transform="translate(280 0)">
+              <g class="gr-drone">
+                <!-- drone glyph: body + 4 rotor circles -->
+                <circle cx="0" cy="0" r="3" fill="#FF506E"/>
+                <line x1="-9" y1="-9" x2="9" y2="9"  stroke="#FF506E" stroke-width="1.2"/>
+                <line x1="-9" y1="9"  x2="9" y2="-9" stroke="#FF506E" stroke-width="1.2"/>
+                <circle cx="-9" cy="-9" r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
+                <circle cx="9"  cy="-9" r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
+                <circle cx="-9" cy="9"  r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
+                <circle cx="9"  cy="9"  r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
+              </g>
+              <!-- lock-on box -->
+              <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
+                <path d="M -16 -16 L -10 -16 M -16 -16 L -16 -10"/>
+                <path d="M  16 -16 L  10 -16 M  16 -16 L  16 -10"/>
+                <path d="M -16  16 L -10  16 M -16  16 L -16  10"/>
+                <path d="M  16  16 L  10  16 M  16  16 L  16  10"/>
+              </g>
+              <!-- track id label -->
+              <text x="22" y="-14" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-014</text>
+            </g>
+          </g>
+
+          <!-- Drone 2: mid ring, faster CCW -->
+          <g class="gr-track rev" style="--orbit:18s; --ostart:-7s">
+            <g transform="translate(190 0)">
+              <g class="gr-drone">
+                <circle cx="0" cy="0" r="2.6" fill="#FF506E"/>
+                <line x1="-7" y1="-7" x2="7" y2="7"  stroke="#FF506E" stroke-width="1.1"/>
+                <line x1="-7" y1="7"  x2="7" y2="-7" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="-7" cy="-7" r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="7"  cy="-7" r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="-7" cy="7"  r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="7"  cy="7"  r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+              </g>
+              <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
+                <path d="M -13 -13 L -8 -13 M -13 -13 L -13 -8"/>
+                <path d="M  13 -13 L  8 -13 M  13 -13 L  13 -8"/>
+                <path d="M -13  13 L -8  13 M -13  13 L -13  8"/>
+                <path d="M  13  13 L  8  13 M  13  13 L  13  8"/>
+              </g>
+              <text x="18" y="-12" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-027</text>
+            </g>
+          </g>
+
+          <!-- Drone 3: inner ring, medium CW -->
+          <g class="gr-track" style="--orbit:14s; --ostart:-2s">
+            <g transform="translate(120 0)">
+              <g class="gr-drone">
+                <circle cx="0" cy="0" r="2.2" fill="#FFD0D9"/>
+                <line x1="-6" y1="-6" x2="6" y2="6"  stroke="#FFD0D9" stroke-width="1"/>
+                <line x1="-6" y1="6"  x2="6" y2="-6" stroke="#FFD0D9" stroke-width="1"/>
+                <circle cx="-6" cy="-6" r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
+                <circle cx="6"  cy="-6" r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
+                <circle cx="-6" cy="6"  r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
+                <circle cx="6"  cy="6"  r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
+              </g>
+              <g class="gr-lock" fill="none" stroke="#FFD0D9" stroke-width="0.9" opacity="0.7">
+                <path d="M -11 -11 L -7 -11 M -11 -11 L -11 -7"/>
+                <path d="M  11 -11 L  7 -11 M  11 -11 L  11 -7"/>
+                <path d="M -11  11 L -7  11 M -11  11 L -11  7"/>
+                <path d="M  11  11 L  7  11 M  11  11 L  11  7"/>
+              </g>
+              <text x="16" y="-10" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="8" fill="#FFD0D9" letter-spacing="0.18em">TRK-031</text>
+            </g>
+          </g>
+
+          <!-- Drone 4: far outer, slow CCW -->
+          <g class="gr-track rev" style="--orbit:34s; --ostart:-10s">
+            <g transform="translate(310 0)">
+              <g class="gr-drone">
+                <circle cx="0" cy="0" r="2.8" fill="#FF506E"/>
+                <line x1="-8" y1="-8" x2="8" y2="8"  stroke="#FF506E" stroke-width="1.1"/>
+                <line x1="-8" y1="8"  x2="8" y2="-8" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="-8" cy="-8" r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="8"  cy="-8" r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="-8" cy="8"  r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="8"  cy="8"  r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+              </g>
+              <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
+                <path d="M -14 -14 L -9 -14 M -14 -14 L -14 -9"/>
+                <path d="M  14 -14 L  9 -14 M  14 -14 L  14 -9"/>
+                <path d="M -14  14 L -9  14 M -14  14 L -14  9"/>
+                <path d="M  14  14 L  9  14 M  14  14 L  14  9"/>
+              </g>
+              <text x="20" y="-12" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-049</text>
+            </g>
+          </g>
+
+          <!-- center dot (last so it sits on top) -->
           <circle r="9" fill="url(#gr-glow)"/>
-          <!-- contact blips (each fades in/out as the sweep passes) -->
-          <g class="gr-blip" style="--bx:120px; --by:-70px;  --bd:0s">
-            <circle cx="120" cy="-70" r="5" fill="#FF506E"/>
-            <circle cx="120" cy="-70" r="14" fill="url(#gr-glow)"/>
-          </g>
-          <g class="gr-blip" style="--bx:-180px; --by:140px; --bd:1.4s">
-            <circle cx="-180" cy="140" r="4" fill="#FF506E"/>
-            <circle cx="-180" cy="140" r="12" fill="url(#gr-glow)"/>
-          </g>
-          <g class="gr-blip" style="--bx:230px; --by:180px;  --bd:2.6s">
-            <circle cx="230" cy="180" r="3.5" fill="#FF506E"/>
-            <circle cx="230" cy="180" r="11" fill="url(#gr-glow)"/>
-          </g>
-          <g class="gr-blip" style="--bx:-270px; --by:-50px; --bd:3.2s">
-            <circle cx="-270" cy="-50" r="4.5" fill="#FF506E"/>
-            <circle cx="-270" cy="-50" r="13" fill="url(#gr-glow)"/>
-          </g>
+          <circle r="3" fill="#FF506E"/>
         </g>
 
         <!-- vignette -->
         <rect width="1200" height="800" fill="url(#gr-vignette)" pointer-events="none"/>
       </svg>
+
+      <!-- cursor-following target reticle -->
+      <div class="gate-reticle" id="gate-reticle" aria-hidden="true">
+        <svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- spinning outer dashed ring -->
+          <circle class="ret-spin" r="38" fill="none" stroke="#FF1F3A" stroke-width="0.8" stroke-dasharray="3 5" opacity="0.7"/>
+          <!-- pulsing main ring -->
+          <g class="ret-ring">
+            <circle r="30" fill="none" stroke="#FF1F3A" stroke-width="1.2"/>
+            <!-- corner brackets -->
+            <path d="M -30 -22 L -30 -30 L -22 -30" fill="none" stroke="#FF506E" stroke-width="1.4"/>
+            <path d="M  30 -22 L  30 -30 L  22 -30" fill="none" stroke="#FF506E" stroke-width="1.4"/>
+            <path d="M -30  22 L -30  30 L -22  30" fill="none" stroke="#FF506E" stroke-width="1.4"/>
+            <path d="M  30  22 L  30  30 L  22  30" fill="none" stroke="#FF506E" stroke-width="1.4"/>
+          </g>
+          <!-- crosshair -->
+          <line x1="-44" y1="0" x2="-10" y2="0" stroke="#FF506E" stroke-width="1"/>
+          <line x1="10"  y1="0" x2="44"  y2="0" stroke="#FF506E" stroke-width="1"/>
+          <line x1="0" y1="-44" x2="0" y2="-10" stroke="#FF506E" stroke-width="1"/>
+          <line x1="0" y1="10"  x2="0" y2="44"  stroke="#FF506E" stroke-width="1"/>
+          <!-- center dot -->
+          <circle r="1.6" fill="#FFD0D9"/>
+          <!-- readout -->
+          <text class="ret-readout" x="34" y="-32">TRACK</text>
+        </svg>
+      </div>
       <div class="hero-logo"><span class="mark">DEUS<span class="x">X</span>DEFENSE</span></div>
       <div class="hero-title">THREATS DON'T WAIT.</div>
     </div>
@@ -567,6 +739,32 @@
       gateEl.hidden = false;
       // Defer focus so it works after layout
       setTimeout(() => gatePassword.focus(), 0);
+      initGateReticle();
+    }
+
+    // Cursor-following target reticle (lerps for slight tracker lag)
+    function initGateReticle() {
+      const ret = document.getElementById("gate-reticle");
+      if (!ret || ret._init) return;
+      ret._init = true;
+      let tx = -200, ty = -200, x = -200, y = -200, raf = 0, live = false;
+      const tick = () => {
+        x += (tx - x) * 0.18;
+        y += (ty - y) * 0.18;
+        ret.style.transform = `translate3d(${x - 46}px, ${y - 46}px, 0)`;
+        raf = requestAnimationFrame(tick);
+      };
+      gateEl.addEventListener("mousemove", (e) => {
+        const r = gateEl.getBoundingClientRect();
+        tx = e.clientX - r.left;
+        ty = e.clientY - r.top;
+        if (!live) { live = true; ret.classList.add("live"); x = tx; y = ty; }
+        if (!raf) raf = requestAnimationFrame(tick);
+      });
+      gateEl.addEventListener("mouseleave", () => {
+        live = false;
+        ret.classList.remove("live");
+      });
     }
 
     if (sessionStorage.getItem(STORAGE_KEY) === "1") {
