@@ -1255,13 +1255,14 @@ section.beat.engine-beat .inner{
         <line x1="744" y1="450" x2="680" y2="390" stroke="#D2232A" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arch-arrow-red)"/>
         <line x1="948" y1="450" x2="800" y2="390" stroke="#a78bfa" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arch-arrow-white)"/>
 
-        <!-- Legend -->
-        <rect x="40" y="450" width="6" height="6" fill="#4ade80" rx="3"/>
-        <text x="52" y="458" fill="#4ade80" font-size="8" letter-spacing="1">LIVE</text>
-        <rect x="100" y="450" width="6" height="6" fill="#f59e0b" rx="3"/>
-        <text x="112" y="458" fill="#f59e0b" font-size="8" letter-spacing="1">NEXT</text>
-        <rect x="160" y="450" width="6" height="6" fill="#60a5fa" rx="3"/>
-        <text x="172" y="458" fill="#60a5fa" font-size="8" letter-spacing="1">BUILDING</text>
+        <!-- Legend (placed below Tier 1; previously at y=450 which collided
+             with the top of the NERVE tile, hiding LIVE/NEXT/BUILDING) -->
+        <rect x="40" y="652" width="6" height="6" fill="#4ade80" rx="3"/>
+        <text x="52" y="660" fill="#4ade80" font-size="8" letter-spacing="1">LIVE</text>
+        <rect x="100" y="652" width="6" height="6" fill="#f59e0b" rx="3"/>
+        <text x="112" y="660" fill="#f59e0b" font-size="8" letter-spacing="1">NEXT</text>
+        <rect x="160" y="652" width="6" height="6" fill="#60a5fa" rx="3"/>
+        <text x="172" y="660" fill="#60a5fa" font-size="8" letter-spacing="1">BUILDING</text>
       </svg>
     </div>
 
