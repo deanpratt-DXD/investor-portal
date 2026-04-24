@@ -2914,7 +2914,7 @@ blockquote.pull .cite {
 
   // Fit-to-viewport: shrink each .slide-inner so its content fits without scrolling.
   // Measures natural content height vs available height, applies transform: scale.
-  // Scale is clamped at 0.6 minimum (anything tighter is too small to read).
+  // Scale is clamped at 0.45 minimum so even very dense slides still fit one page.
   function fitSlides() {
     var slides = document.querySelectorAll('.slide');
     slides.forEach(function (slide) {
@@ -2929,7 +2929,7 @@ blockquote.pull .cite {
       var avail = slide.clientHeight - padTop - padBot;
       var natural = inner.scrollHeight;
       if (natural > avail + 2) {
-        var scale = Math.max(0.6, avail / natural);
+        var scale = Math.max(0.45, avail / natural);
         inner.style.transform = 'scale(' + scale.toFixed(4) + ')';
         // Compensate so the scaled box still occupies the right block-size,
         // preventing residual scroll inside the snap container.
