@@ -184,6 +184,55 @@
       background: #000;
       pointer-events: auto;
     }
+    /* Inline animated radar (replaces iframe) */
+    #gate .gate-radar {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+    }
+    #gate .gate-radar .gr-sweep {
+      transform-origin: 0 0;
+      transform-box: fill-box;
+      animation: gr-rotate 4.2s linear infinite;
+      mix-blend-mode: screen;
+    }
+    @keyframes gr-rotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    #gate .gate-radar .gr-pulse {
+      transform-origin: center;
+      transform-box: fill-box;
+      animation: gr-pulse 4.2s ease-out infinite;
+      opacity: 0;
+    }
+    #gate .gate-radar .gr-pulse-b { animation-delay: 1.4s; }
+    #gate .gate-radar .gr-pulse-c { animation-delay: 2.8s; }
+    @keyframes gr-pulse {
+      0%   { transform: scale(0.05); opacity: 0.0; }
+      10%  { opacity: 0.85; }
+      100% { transform: scale(8);    opacity: 0; }
+    }
+    #gate .gate-radar .gr-blip {
+      transform-origin: center;
+      animation: gr-blip 4.2s ease-out infinite;
+      animation-delay: var(--bd, 0s);
+      opacity: 0;
+    }
+    @keyframes gr-blip {
+      0%   { opacity: 0; transform: scale(0.6); }
+      8%   { opacity: 1; transform: scale(1.15); }
+      35%  { opacity: 0.55; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.9); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #gate .gate-radar .gr-sweep,
+      #gate .gate-radar .gr-pulse,
+      #gate .gate-radar .gr-blip { animation: none; opacity: 0.6; }
+    }
     /* Vignette to suppress any tagline/subtext rendered inside the hero iframe */
     #gate .hero::after {
       content: "";
@@ -313,14 +362,14 @@
       text-align: center;
     }
   </style>
-<!-- DXD-FONT-STANDARDIZATION (Atlas · Airspace Defense theme) -->
+<!-- DXD-FONT-STANDARDIZATION -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Figtree:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Tomorrow:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
 <style id="dxd-font-standardization">
   :root {
-    --dxd-font-display: "Oswald", "Bebas Neue", "Impact", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --dxd-font-body:    "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-display: "Tomorrow", "Inter Tight", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-body:    "Inter Tight", "Tomorrow", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --dxd-font-mono:    "JetBrains Mono", "Menlo", "Consolas", monospace;
 
     /* Standardized type scale (anchored to team page hero) */
@@ -402,7 +451,81 @@
 <body>
   <div id="gate" hidden role="dialog" aria-modal="true" aria-label="Investor Portal sign in — Threats Don't Wait">
     <div class="hero" aria-hidden="true">
-      <iframe id="gate-bg" src="Threats Dont Wait.html" title="" tabindex="-1" scrolling="no"></iframe>
+      <svg id="gate-radar" class="gate-radar" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gr-vignette" cx="50%" cy="50%" r="65%">
+            <stop offset="0%"  stop-color="#000" stop-opacity="0"/>
+            <stop offset="70%" stop-color="#000" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#000" stop-opacity="1"/>
+          </radialGradient>
+          <linearGradient id="gr-sweep" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+            <stop offset="0%"  stop-color="#FF1F3A" stop-opacity="0.85"/>
+            <stop offset="60%" stop-color="#FF1F3A" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#FF1F3A" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="gr-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FF506E" stop-opacity="0.95"/>
+            <stop offset="60%" stop-color="#FF506E" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#FF506E" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- backdrop grid -->
+        <rect width="1200" height="800" fill="#000"/>
+        <g opacity="0.18" stroke="#3a0a10" stroke-width="0.6">
+          <path d="M0 100 H1200 M0 200 H1200 M0 300 H1200 M0 400 H1200 M0 500 H1200 M0 600 H1200 M0 700 H1200"/>
+          <path d="M100 0 V800 M200 0 V800 M300 0 V800 M400 0 V800 M500 0 V800 M600 0 V800 M700 0 V800 M800 0 V800 M900 0 V800 M1000 0 V800 M1100 0 V800"/>
+        </g>
+
+        <!-- radar -->
+        <g transform="translate(600 400)">
+          <!-- concentric range rings -->
+          <g fill="none" stroke="#C8102E" stroke-width="1.2">
+            <circle r="320" opacity="0.30"/>
+            <circle r="240" opacity="0.28"/>
+            <circle r="180" opacity="0.24"/>
+            <circle r="120" opacity="0.20"/>
+            <circle r="60"  opacity="0.16"/>
+          </g>
+          <!-- expanding pulse rings -->
+          <circle class="gr-pulse gr-pulse-a" r="40" fill="none" stroke="#FF1F3A" stroke-width="1.5"/>
+          <circle class="gr-pulse gr-pulse-b" r="40" fill="none" stroke="#FF1F3A" stroke-width="1.5"/>
+          <circle class="gr-pulse gr-pulse-c" r="40" fill="none" stroke="#FF1F3A" stroke-width="1.5"/>
+          <!-- crosshair -->
+          <g stroke="#5a0e18" stroke-width="0.8" opacity="0.6">
+            <line x1="-340" y1="0" x2="340" y2="0"/>
+            <line x1="0" y1="-340" x2="0" y2="340"/>
+          </g>
+          <!-- rotating sweep wedge -->
+          <g class="gr-sweep">
+            <path d="M0,0 L320,-90 A320,320 0 0 1 320,90 Z" fill="url(#gr-sweep)"/>
+            <line x1="0" y1="0" x2="320" y2="0" stroke="#FF1F3A" stroke-width="1.4" opacity="0.9"/>
+          </g>
+          <!-- center dot -->
+          <circle r="3" fill="#FF506E"/>
+          <circle r="9" fill="url(#gr-glow)"/>
+          <!-- contact blips (each fades in/out as the sweep passes) -->
+          <g class="gr-blip" style="--bx:120px; --by:-70px;  --bd:0s">
+            <circle cx="120" cy="-70" r="5" fill="#FF506E"/>
+            <circle cx="120" cy="-70" r="14" fill="url(#gr-glow)"/>
+          </g>
+          <g class="gr-blip" style="--bx:-180px; --by:140px; --bd:1.4s">
+            <circle cx="-180" cy="140" r="4" fill="#FF506E"/>
+            <circle cx="-180" cy="140" r="12" fill="url(#gr-glow)"/>
+          </g>
+          <g class="gr-blip" style="--bx:230px; --by:180px;  --bd:2.6s">
+            <circle cx="230" cy="180" r="3.5" fill="#FF506E"/>
+            <circle cx="230" cy="180" r="11" fill="url(#gr-glow)"/>
+          </g>
+          <g class="gr-blip" style="--bx:-270px; --by:-50px; --bd:3.2s">
+            <circle cx="-270" cy="-50" r="4.5" fill="#FF506E"/>
+            <circle cx="-270" cy="-50" r="13" fill="url(#gr-glow)"/>
+          </g>
+        </g>
+
+        <!-- vignette -->
+        <rect width="1200" height="800" fill="url(#gr-vignette)" pointer-events="none"/>
+      </svg>
       <div class="hero-logo"><span class="mark">DEUS<span class="x">X</span>DEFENSE</span></div>
       <div class="hero-title">THREATS DON'T WAIT.</div>
     </div>
@@ -444,35 +567,6 @@
       gateEl.hidden = false;
       // Defer focus so it works after layout
       setTimeout(() => gatePassword.focus(), 0);
-      // Strip text content from the hero iframe, leaving only the radar/canvas/svg.
-      const bg = document.getElementById("gate-bg");
-      if (bg) {
-        const sanitize = () => {
-          try {
-            const doc = bg.contentDocument;
-            if (!doc) return;
-            const style = doc.createElement("style");
-            style.textContent = `
-              body { background: #000 !important; overflow: hidden !important; }
-              h1, h2, h3, h4, h5, h6, p, li, blockquote, span, small, strong, em, label, button, a, figcaption, time, address {
-                color: transparent !important;
-                text-shadow: none !important;
-                background: transparent !important;
-                border: 0 !important;
-                box-shadow: none !important;
-                visibility: hidden !important;
-              }
-            `;
-            (doc.head || doc.documentElement).appendChild(style);
-          } catch (_) { /* cross-origin or not ready */ }
-        };
-        bg.addEventListener("load", () => {
-          sanitize();
-          // Bundle replaces document after load; re-apply a few times.
-          let n = 0;
-          const iv = setInterval(() => { sanitize(); if (++n > 20) clearInterval(iv); }, 250);
-        });
-      }
     }
 
     if (sessionStorage.getItem(STORAGE_KEY) === "1") {
