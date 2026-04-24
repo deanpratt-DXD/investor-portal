@@ -1013,7 +1013,7 @@ blockquote.pull .cite {
 .dxd-v2 { padding-bottom: 30px; }
 .dxd-v2-grid {
   display: grid;
-  grid-template-columns: 1fr 44px 1fr 44px 1fr;
+  grid-template-columns: 1fr 36px 1fr 36px 1fr 36px 1fr;
   gap: 0;
   align-items: stretch;
   position: relative;
@@ -1697,15 +1697,21 @@ blockquote.pull .cite {
     <hr class="accent-bar" />
     <h1>One accountable operation.</h1>
     <p class="lead">
-      Three modules. One operational spine. Each launches to our own operation first — we are our own Customer Zero — then ships to the customer as internal MVPs harden against real threats. GA follows internal MVP by ~6 months.
+      Four modules. One operational spine. Each launches to our own operation first &mdash; we are our own Customer Zero &mdash; then ships to the customer as internal MVPs harden against real threats. GA follows internal MVP by ~6 months.
     </p>
 
     <div class="module-grid" style="margin-top:24px">
       <div class="module">
+        <span class="verb">Sense</span>
+        <span class="name">Nerve</span>
+        <p class="desc">The sensor fabric. Every camera, radar, RF, EO/IR, acoustic, and 3rd-party feed ingested at the edge, encrypted, and normalized into a single track stream.</p>
+        <span class="tag inbuild" style="margin-top:auto">Live &middot; Production</span>
+      </div>
+      <div class="module">
         <span class="verb">See</span>
         <span class="name">Cortex</span>
         <p class="desc">The on-site appliance. Every camera and sensor a facility operates, aggregated and AI-processed into one picture of the site.</p>
-        <span class="tag inbuild" style="margin-top:auto">In-build · Internal MVP</span>
+        <span class="tag inbuild" style="margin-top:auto">In-build &middot; Internal MVP</span>
       </div>
       <div class="module">
         <span class="verb">Protect</span>
@@ -1723,13 +1729,37 @@ blockquote.pull .cite {
 
     <div class="dxd-viz dxd-v2" style="margin-top:28px">
       <div class="dxd-viz-head">
-        <span class="dxd-viz-eyebrow">Three-Module Architecture</span>
-        <span class="dxd-viz-title">Cortex · Sentinel · Command — Atlas as the integrated platform layer</span>
+        <span class="dxd-viz-eyebrow">Four-Module Architecture</span>
+        <span class="dxd-viz-title">Nerve · Cortex · Sentinel · Command — Atlas as the integrated platform layer</span>
       </div>
 
       <div class="dxd-v2-grid">
-        <!-- Cortex -->
+        <!-- Nerve -->
         <div class="dxd-v2-mod" data-reveal data-delay="1">
+          <svg class="v2-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="var(--accent)">
+            <circle cx="18" cy="18" r="1.6" fill="currentColor" stroke="none"/>
+            <path d="M18 18 L6 6"/><circle cx="6" cy="6" r="1.6" fill="currentColor" stroke="none"/>
+            <path d="M18 18 L30 6"/><circle cx="30" cy="6" r="1.6" fill="currentColor" stroke="none"/>
+            <path d="M18 18 L6 30"/><circle cx="6" cy="30" r="1.6" fill="currentColor" stroke="none"/>
+            <path d="M18 18 L30 30"/><circle cx="30" cy="30" r="1.6" fill="currentColor" stroke="none"/>
+            <path d="M18 18 L18 4"/><circle cx="18" cy="4" r="1.6" fill="currentColor" stroke="none"/>
+            <path d="M18 18 L18 32"/><circle cx="18" cy="32" r="1.6" fill="currentColor" stroke="none"/>
+          </svg>
+          <span class="v2-verb">SENSE</span>
+          <span class="v2-name">Nerve</span>
+          <p class="v2-desc">Edge sensor fabric. Cameras, radar, RF, EO/IR, acoustic, and 3rd-party feeds ingested on-device, encrypted (AES-256), and normalized into one track stream feeding the rest of the platform.</p>
+        </div>
+
+        <!-- Arrow lane 0 -->
+        <div class="dxd-v2-arrow" data-reveal data-delay="2" aria-hidden="true">
+          <svg viewBox="0 0 44 22" preserveAspectRatio="none">
+            <line class="flow" x1="2" y1="11" x2="34" y2="11" stroke="var(--accent)" stroke-width="1.4"/>
+            <polygon points="42,11 32,5 32,17" fill="var(--accent)"/>
+          </svg>
+        </div>
+
+        <!-- Cortex -->
+        <div class="dxd-v2-mod" data-reveal data-delay="3">
           <svg class="v2-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="var(--accent)">
             <circle cx="18" cy="18" r="2.5"/>
             <circle cx="18" cy="18" r="7" opacity=".6"/>
