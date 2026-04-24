@@ -1,0 +1,2861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deus X Defense — Investor Pitch · April 2026</title>
+  <script>
+    (function() {
+      const CANONICAL_ORIGIN = "https://investor.deusxdefense.com";
+      if (/\.railway\.app$/i.test(window.location.hostname)) {
+        window.location.replace(
+          CANONICAL_ORIGIN +
+          window.location.pathname +
+          window.location.search +
+          window.location.hash
+        );
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- When embedded inside the investor portal shell, hide the deck's own
+       top nav so we don't render two stacked nav bars, and reclaim that space. -->
+  <script>
+    (function() {
+      try { if (window.self !== window.top) document.documentElement.classList.add('embedded'); } catch (_) { document.documentElement.classList.add('embedded'); }
+    })();
+  </script>
+  <style>
+    html.embedded .slide-nav { display: none !important; }
+    html.embedded .slides-wrapper { top: 0 !important; }
+
+    /* Red bottom navigation: arrows + slide counter */
+    .nav-btn {
+      color: var(--red) !important;
+      border-color: var(--red-border) !important;
+    }
+    .nav-btn:hover:not(:disabled) {
+      color: #fff !important;
+      border-color: var(--red) !important;
+      background: rgba(210,35,42,0.15) !important;
+    }
+    .nav-btn:disabled {
+      color: var(--red) !important;
+      opacity: 0.35 !important;
+    }
+    .slide-progress {
+      color: var(--red) !important;
+    }
+
+    /* Autoplay countdown ring — only visible while autoplay is running */
+    .autoplay-timer {
+      width: 22px;
+      height: 22px;
+      margin-left: 8px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .autoplay-timer.active { display: inline-flex; }
+    .autoplay-timer svg { transform: rotate(-90deg); display: block; }
+    .autoplay-timer-track {
+      fill: none;
+      stroke: rgba(210,35,42,0.18);
+      stroke-width: 3;
+    }
+    .autoplay-timer-fill {
+      fill: none;
+      stroke: var(--red);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 88;
+      stroke-dashoffset: 88;
+      transition: stroke-dashoffset 0.1s linear;
+    }
+
+    /* Attention pulse on load — runs 3 times */
+    @keyframes navAttentionPulse {
+      0%   { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(210,35,42,0)); }
+      50%  { transform: scale(1.18); filter: drop-shadow(0 0 10px rgba(210,35,42,0.8)); }
+      100% { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(210,35,42,0)); }
+    }
+    .nav-controls .pulse-attention {
+      animation: navAttentionPulse 0.7s ease-in-out 3;
+      transform-origin: center;
+    }
+  </style>  <style>
+    /* ═══════════════════════════════════════════
+       DXD PITCH DECK — DESIGN SYSTEM
+       Matches Investor Portal vAPR15
+    ═══════════════════════════════════════════ */
+    :root {
+      --black: #0a0a0b;
+      --black-soft: #111113;
+      --surface: #151517;
+      --surface-alt: #1a1a1d;
+      --border: #2a2a2e;
+      --border-light: #333338;
+      --white: #f0f0f0;
+      --white-muted: #b0b0b4;
+      --white-faint: #707078;
+      --red: #D2232A;
+      --red-dark: #a01c22;
+      --red-glow: rgba(210, 35, 42, 0.15);
+      --green: #575B41;
+      --green-light: #7a7f5a;
+      --navy: #00205B;
+      --amber: #c4953a;
+      --amber-dark: #8a6a28;
+      --teal: #3a8a8a;
+      --blue: #6b8ab5;
+      --white-dim: #3a3a42;
+      --red-border: rgba(210, 35, 42, 0.20);
+      --font-heading: 'Tomorrow', 'Inter Tight', 'Outfit', sans-serif;
+      --font-body: 'Inter Tight', 'Tomorrow', 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-serif: 'Tomorrow', 'Inter Tight', 'Source Serif 4', Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══ SLIDE SYSTEM ═══ */
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 60px 80px;
+      overflow: hidden;
+    }
+
+    .slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .slide-inner {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ═══ GRID OVERLAY (crisis slides) ═══ */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ═══ NAVIGATION ═══ */
+    .slide-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: rgba(10,10,11,0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 1000;
+    }
+
+    .nav-logo {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .nav-logo .x { color: var(--red); }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-faint);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-link:hover { color: var(--white); border-color: var(--border); }
+
+    .nav-right {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    /* ═══ SECTION LABEL ═══ */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: "";
+      display: inline-block;
+      width: 28px;
+      height: 2px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    /* ═══ TYPOGRAPHY ═══ */
+    .slide-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(32px, 4.5vw, 52px);
+      line-height: 1.08;
+      color: var(--white);
+      margin-bottom: 32px;
+      max-width: 950px;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-headline .accent { color: var(--red); }
+
+    .slide-subhead {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: clamp(16px, 1.8vw, 22px);
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .body-text {
+      font-size: 15px;
+      color: var(--white-muted);
+      line-height: 1.7;
+      max-width: 800px;
+    }
+
+    .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white-faint);
+    }
+
+    /* ═══ PANELS / CARDS ═══ */
+    .panel-grid { display: grid; gap: 20px; }
+    .panel-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .panel-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .panel-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      position: relative;
+    }
+
+    .panel.red-left { border-left: 3px solid var(--red); }
+    .panel.amber-left { border-left: 3px solid var(--amber); }
+    .panel.green-left { border-left: 3px solid var(--green-light); }
+    .panel.teal-left { border-left: 3px solid var(--teal); }
+    .panel.blue-left { border-left: 3px solid var(--blue); }
+
+    .panel-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--white);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .panel-body {
+      font-size: 13px;
+      color: var(--white-muted);
+      line-height: 1.6;
+    }
+
+    /* ═══ STAT CALLOUT ═══ */
+    .stat-callout { text-align: center; padding: 24px 0; }
+    .stat-callout .number {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(40px, 5vw, 72px);
+      color: var(--red);
+      line-height: 1;
+    }
+    .stat-callout .descriptor {
+      font-size: 15px;
+      color: var(--white-muted);
+      margin-top: 8px;
+    }
+
+    /* ═══ CRISIS STAT STACK ═══ */
+    .crisis-stat-stack { display: flex; flex-direction: column; gap: 0; max-width: 900px; margin: 0 auto; }
+    .crisis-stat-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 24px;
+      align-items: baseline;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .crisis-stat-row:last-child { border-bottom: none; }
+    .crisis-stat-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(32px, 4.5vw, 52px);
+      color: var(--red);
+      line-height: 1;
+      text-align: right;
+    }
+    .crisis-stat-label { font-size: 15px; color: var(--white-muted); line-height: 1.4; }
+    .crisis-stat-source {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ═══ PULL QUOTE ═══ */
+    .pull-quote {
+      background: var(--surface);
+      border-left: 3px solid var(--red);
+      padding: 20px 28px;
+      margin: 20px 0;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--white);
+      line-height: 1.5;
+    }
+    .pull-quote .attribution {
+      font-style: normal;
+      font-size: 11px;
+      color: var(--white-faint);
+      margin-top: 8px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ═══ BADGE ═══ */
+    .badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      margin-bottom: 8px;
+    }
+    .badge.green { background: rgba(87,91,65,0.4); color: var(--green-light); border: 1px solid var(--green); }
+    .badge.amber { background: rgba(196,149,58,0.15); color: var(--amber); border: 1px solid var(--amber-dark); }
+    .badge.red { background: var(--red-glow); color: var(--red); border: 1px solid var(--red-dark); }
+    .badge.blue { background: rgba(0,32,91,0.4); color: #6688bb; border: 1px solid var(--navy); }
+    .badge.signed { background: rgba(87,91,65,0.4); color: var(--green-light); border: 1px solid var(--green); }
+    .badge.white { background: rgba(255,255,255,0.06); color: var(--white-muted); border: 1px solid var(--border); }
+
+    /* ═══ DATA TABLE ═══ */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table th {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white-faint);
+      text-align: left;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 400;
+    }
+    .data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--white-muted);
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table td.highlight { color: var(--white); font-weight: 600; }
+    .data-table td.red { color: var(--red); font-weight: 700; font-family: var(--font-heading); }
+
+    /* ═══ FADE IN ANIMATION ═══ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-d1 { transition-delay: 0.15s; }
+    .fade-in-d2 { transition-delay: 0.3s; }
+    .fade-in-d3 { transition-delay: 0.45s; }
+    .fade-in-d4 { transition-delay: 0.6s; }
+    .fade-in-d5 { transition-delay: 0.75s; }
+    .fade-in-d6 { transition-delay: 0.9s; }
+
+    /* ═══ COVER SLIDE ═══ */
+    .slide-cover {
+      background: var(--black);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .cover-logo {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(52px, 6vw, 72px);
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 0.9;
+      margin-bottom: 20px;
+    }
+    .cover-logo .x { color: var(--red); }
+
+    .cover-tagline {
+      font-family: var(--font-heading);
+      font-size: clamp(14px, 1.6vw, 18px);
+      font-weight: 500;
+      color: var(--white-muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .cover-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--white-faint);
+      letter-spacing: 0.1em;
+      line-height: 2;
+      margin-top: 48px;
+    }
+
+    /* ═══ CRISIS BEAT SLIDE ═══ */
+    .crisis-beat {
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ═══ INTEL STACK (threat items) ═══ */
+    .intel-stack { display: flex; flex-direction: column; gap: 0; }
+    .intel-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 20px;
+      align-items: start;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .intel-item:last-child { border-bottom: none; }
+    .intel-date {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--red);
+      text-transform: uppercase;
+      padding-top: 2px;
+    }
+    .intel-text { font-size: 14px; color: var(--white-muted); line-height: 1.5; }
+    .intel-text strong { color: var(--white); font-weight: 600; }
+
+    /* ═══ TEAM CARDS ═══ */
+    .team-section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .team-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+
+    .team-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .team-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--surface-alt);
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--white-muted);
+      flex-shrink: 0;
+    }
+
+    .team-info { flex: 1; min-width: 0; }
+    .team-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 2px;
+    }
+    .team-role {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+    .team-tag { font-size: 11px; color: var(--white-muted); line-height: 1.4; }
+    .team-logos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
+    }
+    .team-logo-badge {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white-faint);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+    }
+
+    /* ═══ ADVISOR ROW ═══ */
+    .advisor-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .advisor-card {
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+    }
+    .advisor-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--white);
+      margin-bottom: 3px;
+    }
+    .advisor-bio { font-size: 11px; color: var(--white-muted); line-height: 1.4; }
+
+    /* ═══ PRODUCT ARCHITECTURE ═══ */
+    .arch-flow {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin: 12px 0;
+    }
+    .arch-module {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 14px 12px;
+      position: relative;
+      text-align: center;
+    }
+    .arch-module.active { border-color: var(--red); background: rgba(210,35,42,0.06); }
+    .arch-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      color: var(--white-faint);
+      font-size: 18px;
+    }
+    .arch-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .arch-name .accent { color: var(--red); }
+    .arch-role {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-faint);
+      margin-bottom: 8px;
+    }
+    .arch-desc { font-size: 11px; color: var(--white-muted); line-height: 1.4; }
+    .arch-status {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+    }
+    .arch-status.live { background: rgba(87,91,65,0.4); color: var(--green-light); border: 1px solid var(--green); }
+    .arch-status.next { background: rgba(196,149,58,0.15); color: var(--amber); border: 1px solid var(--amber-dark); }
+    .arch-status.building { background: rgba(107,138,181,0.15); color: var(--blue); border: 1px solid rgba(107,138,181,0.4); }
+
+    /* ═══ INCIDENT CARD ═══ */
+    .incident-card {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      padding: 20px 24px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .incident-header {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .incident-line { color: var(--white-muted); }
+    .incident-line .time { color: var(--white-faint); margin-right: 16px; }
+    .incident-line .event { color: var(--white); }
+    .incident-footer {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .incident-stat-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-faint); margin-bottom: 3px; }
+    .incident-stat-val { font-size: 13px; color: var(--white); font-weight: 600; }
+    .incident-stat-val.red { color: var(--red); }
+    .incident-stat-val.green { color: var(--green-light); }
+
+    /* ═══ MARGIN BAR ═══ */
+    .margin-bar {
+      display: flex;
+      overflow: hidden;
+      height: 72px;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+    }
+    .margin-segment {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      font-family: var(--font-heading);
+      color: #fff;
+    }
+    .margin-segment .seg-value { font-size: 22px; font-weight: 800; line-height: 1; }
+    .margin-segment .seg-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; opacity: 0.7; }
+
+    /* ═══ MOAT CARDS ═══ */
+    .moat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .moat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 16px;
+      position: relative;
+    }
+    .moat-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+    .moat-icon { font-family: var(--font-heading); font-weight: 900; font-size: 28px; line-height: 1; flex-shrink: 0; }
+    .moat-name { font-family: var(--font-heading); font-weight: 800; font-size: 16px; color: var(--white); line-height: 1.2; }
+    .moat-sub { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white-faint); margin-top: 3px; }
+    .moat-detail { font-size: 12px; color: var(--white-muted); line-height: 1.5; margin-bottom: 8px; }
+    .moat-number {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 64px;
+      color: rgba(210,35,42,0.12);
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      line-height: 1;
+    }
+    .moat-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--white);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .moat-stat {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--red);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+      line-height: 1.4;
+    }
+    .moat-body { font-size: 12px; color: var(--white-muted); line-height: 1.5; margin-bottom: 8px; }
+    .moat-widens {
+      font-size: 11px;
+      color: var(--white-faint);
+      font-style: italic;
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* ═══ TRACTION HERO ═══ */
+    .traction-hero {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .traction-stat {
+      padding: 24px 20px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .traction-stat:last-child { border-right: none; }
+    .traction-num {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(32px, 4vw, 52px);
+      color: var(--white);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .traction-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-top: 6px;
+    }
+    .traction-sub { font-size: 11px; color: var(--white-faint); margin-top: 4px; }
+
+    /* ═══ PROOF POINTS ═══ */
+    .proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .proof-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--red);
+      padding: 20px;
+    }
+    .proof-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 8px;
+    }
+    .proof-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--white);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .proof-body { font-size: 12px; color: var(--white-muted); line-height: 1.5; }
+
+    /* ═══ PIPELINE BREAKDOWN ═══ */
+    .pipeline-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 120px;
+      gap: 16px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .pipeline-row:last-child { border-bottom: none; }
+    .pipeline-name { font-size: 13px; color: var(--white); font-weight: 500; }
+    .pipeline-bar-wrap { height: 6px; background: var(--surface); border-radius: 0; overflow: hidden; }
+    .pipeline-bar { height: 100%; background: var(--red); }
+    .pipeline-amount {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--white);
+      text-align: right;
+    }
+    .pipeline-amount.faint { color: var(--white-faint); font-size: 12px; font-weight: 400; }
+
+    /* ═══ WHAT YOU HAVE TO BELIEVE ═══ */
+    .believe-item {
+      display: grid;
+      grid-template-columns: 24px 1fr 80px;
+      gap: 16px;
+      align-items: start;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .believe-item:last-child { border-bottom: none; }
+    .believe-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--white-faint);
+      padding-top: 2px;
+    }
+    .believe-text { font-size: 13px; color: var(--white-muted); line-height: 1.5; }
+    .believe-text strong { color: var(--white); }
+    .believe-status {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: right;
+      padding-top: 2px;
+    }
+    .believe-status.executing { color: var(--green-light); }
+    .believe-status.active { color: var(--amber); }
+    .believe-status.pending { color: var(--white-faint); }
+
+    /* ═══ PRODUCT ROADMAP ═══ */
+    .roadmap-row {
+      display: grid;
+      grid-template-columns: 120px 180px 1fr 90px 110px;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .roadmap-row:first-child {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white-faint);
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.02);
+    }
+    .roadmap-module {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--white);
+    }
+    .roadmap-role { font-size: 12px; color: var(--white-muted); }
+    .roadmap-unlock { font-size: 12px; color: var(--white-muted); }
+    .roadmap-timing {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--white-faint);
+      letter-spacing: 0.05em;
+    }
+
+    /* ═══ ASK SLIDE ═══ */
+    .ask-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .capital-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .capital-block.closed { border-left: 3px solid var(--green-light); }
+    .capital-block.open { border-left: 3px solid var(--amber); }
+    .capital-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-faint);
+      margin-bottom: 8px;
+    }
+    .capital-amount {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .capital-terms { font-size: 12px; color: var(--white-muted); margin-bottom: 10px; }
+    .capital-use { font-size: 12px; color: var(--white-muted); line-height: 1.5; }
+
+    .game-plan-row {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .game-plan-row:last-child { border-bottom: none; }
+    .game-plan-phase {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--red);
+      padding-top: 2px;
+    }
+    .game-plan-text { font-size: 12px; color: var(--white-muted); line-height: 1.5; }
+    .game-plan-text strong { color: var(--white); }
+
+    /* ═══ CLOSING SLIDE ═══ */
+    .closing-slide {
+      background: #050506;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* ═══ SLIDE COUNTER ═══ */
+    .slide-counter {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--white-faint);
+      z-index: 2;
+    }
+
+    /* ═══ RED BOTTOM RULE ═══ */
+    .red-rule {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--red);
+    }
+
+    /* ═══ DIVIDER ═══ */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    /* ═══ SLIDE WRAPPER & ACTIVE STATE ═══ */
+    .slides-wrapper {
+      position: fixed;
+      top: 52px;
+      left: 0;
+      right: 0;
+      bottom: 48px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute !important;
+      inset: 0 !important;
+      min-height: unset !important;
+      height: 100% !important;
+      scroll-snap-align: unset !important;
+      padding: 60px 80px !important;
+      padding-top: 72px !important;
+      overflow-y: auto !important;
+      visibility: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.45s;
+    }
+    .slide.active {
+      visibility: visible !important;
+      pointer-events: auto !important;
+      opacity: 1 !important;
+      transform: translateX(0) !important;
+      transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s !important;
+    }
+    .slide.exit-left {
+      opacity: 0 !important;
+      transform: translateX(-40px) !important;
+      transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1) !important;
+    }
+    .slide.enter-right {
+      transform: translateX(40px);
+      opacity: 0;
+    }
+    .slide.enter-left {
+      transform: translateX(-40px);
+      opacity: 0;
+    }
+    .slide.exit-right {
+      opacity: 0 !important;
+      transform: translateX(40px) !important;
+      transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1) !important;
+    }
+    /* Active nav link */
+    .nav-link.active {
+      color: var(--white);
+      border-color: var(--border);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* ═══ NAV CONTROLS ═══ */
+    .nav-controls {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: rgba(10,10,11,0.95);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 1000;
+    }
+    .nav-center { display: flex; align-items: center; gap: 16px; }
+    /* One-shot intro: nav controls load huge then shrink to normal so users notice them */
+    .nav-center { transform-origin: center center; }
+    .nav-controls.intro-pulse .nav-center {
+      animation: navCenterIntro 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+    }
+    @keyframes navCenterIntro {
+      0%   { transform: scale(4.2); opacity: 0; }
+      18%  { transform: scale(4.2); opacity: 1; }
+      55%  { transform: scale(2.4); opacity: 1; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+    /* While the intro is playing, lift the bar above slide content so the
+       enlarged controls don't clip behind anything. */
+    .nav-controls.intro-pulse {
+      overflow: visible;
+      z-index: 2000;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav-controls.intro-pulse .nav-center { animation: none; }
+    }
+    .nav-side { display: flex; align-items: center; gap: 8px; }
+    .nav-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--white-muted);
+      font-size: 16px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      border-radius: 2px;
+    }
+    .nav-btn:hover:not(:disabled) { border-color: var(--red); color: var(--white); background: rgba(210,35,42,0.08); }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .nav-btn.active { border-color: var(--red); color: var(--red); background: rgba(210,35,42,0.1); }
+    .nav-icon-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--white-faint);
+      font-size: 11px;
+      height: 28px;
+      padding: 0 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .nav-icon-btn:hover { border-color: var(--border-light); color: var(--white-muted); }
+    .nav-icon-btn.active { border-color: var(--red); color: var(--red); }
+    /* Autoplay ring */
+    .autoplay-ring {
+      position: relative;
+      width: 32px;
+      height: 32px;
+    }
+    .autoplay-ring svg {
+      position: absolute;
+      inset: 0;
+      transform: rotate(-90deg);
+    }
+    .autoplay-ring circle {
+      fill: none;
+      stroke: var(--red);
+      stroke-width: 2;
+      stroke-dasharray: 88;
+      stroke-dashoffset: 88;
+      transition: stroke-dashoffset 0.1s linear;
+    }
+
+    /* ═══ THUMBNAIL STRIP ═══ */
+    .thumbnail-strip {
+      position: fixed;
+      bottom: 50px;
+      left: 0;
+      right: 0;
+      height: 0;
+      overflow: hidden;
+      background: rgba(10,10,11,0.97);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 20px;
+      z-index: 999;
+      transition: height 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .thumbnail-strip.open {
+      height: 90px;
+    }
+    .thumb {
+      width: 120px;
+      height: 68px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .thumb:hover { border-color: var(--border-light); transform: translateY(-2px); }
+    .thumb.active-thumb { border-color: var(--red); }
+    .thumb-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white-faint);
+      text-align: center;
+      padding: 4px;
+      line-height: 1.3;
+    }
+    .thumb-num {
+      position: absolute;
+      top: 3px;
+      left: 5px;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--white-faint);
+    }
+    .thumb.active-thumb .thumb-num { color: var(--red); }
+
+    /* ═══ KEYBOARD HINT OVERLAY ═══ */
+    .kbd-hint {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10,10,11,0.9);
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      z-index: 2000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+    .kbd-hint.hidden { opacity: 0; }
+    .kbd-key {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--white-faint);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .kbd-key kbd {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      padding: 2px 6px;
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: var(--white-muted);
+      border-radius: 2px;
+    }
+
+    /* ═══ STAT COUNTER ANIMATION ═══ */
+    .count-up { display: inline; }
+
+    /* ═══ ANIMATED REVENUE BARS ═══ */
+    .rev-bar[data-width] {
+      width: 0 !important;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .rev-bar[data-width].animated {
+      width: var(--target-width) !important;
+    }
+
+    /* ═══ PRINT / PDF EXPORT ═══ */
+    @media print {
+      .slide-nav, .nav-controls, .progress-bar-wrap, .thumbnail-strip, .kbd-hint { display: none !important; }
+      .slides-wrapper { position: static !important; top: auto !important; bottom: auto !important; overflow: visible !important; }
+      .slide {
+        position: relative !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        page-break-after: always;
+        break-after: page;
+        overflow: hidden !important;
+      }
+    }
+
+    .slide-progress {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--white-faint);
+      letter-spacing: 0.1em;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .progress-bar-wrap {
+      position: fixed;
+      bottom: 48px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border);
+      z-index: 1001;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--red);
+      transition: width 0.3s ease;
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 900px) {
+      .slide { padding: 40px 32px; }
+      .panel-grid.cols-3, .panel-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .traction-hero { grid-template-columns: repeat(2, 1fr); }
+      .moat-grid { grid-template-columns: 1fr; }
+      .ask-grid { grid-template-columns: 1fr; }
+      .advisor-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 720px) {
+      .slide { padding: 32px 20px !important; padding-top: 64px !important; }
+      .slide-headline { font-size: clamp(24px, 6vw, 32px); }
+      .slide-subhead { font-size: 14px; }
+      .panel-grid.cols-3, .panel-grid.cols-4, .panel-grid.cols-2 { grid-template-columns: 1fr; gap: 14px; }
+      .team-grid, .advisor-row, .traction-hero { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .nav-controls { padding: 0 10px; height: 52px; gap: 6px; }
+      .nav-center { gap: 6px; }
+      .nav-side { display: none; }   /* drop the "Slides" + date side cells on phones */
+      .nav-btn { width: 36px; height: 36px; font-size: 16px; }
+      .autoplay-text-btn { padding: 0 9px !important; font-size: 9px !important; }
+      .slide-progress { font-size: 10px; min-width: 44px; }
+      .progress-bar-wrap { bottom: 52px; }
+      html.embedded .slides-wrapper { bottom: 52px; }
+    }
+    @media (max-width: 480px) {
+      .slide { padding: 24px 14px !important; padding-top: 56px !important; }
+      .slide-headline { font-size: clamp(22px, 7vw, 28px); }
+      .team-grid, .advisor-row, .traction-hero { grid-template-columns: 1fr; }
+      /* Hide the autoplay button + countdown ring on very small phones —
+         arrows + counter remain so users can still navigate. */
+      .autoplay-text-btn, .autoplay-timer { display: none !important; }
+    }
+  </style>
+<!-- DXD-FONT-STANDARDIZATION -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Tomorrow:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<style id="dxd-font-standardization">
+  :root {
+    --dxd-font-display: "Tomorrow", "Inter Tight", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-body:    "Inter Tight", "Tomorrow", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --dxd-font-mono:    "JetBrains Mono", "Menlo", "Consolas", monospace;
+
+    /* Standardized type scale (anchored to team page hero) */
+    --dxd-h1-size: clamp(36px, 5.2vw, 76px);
+    --dxd-h2-size: clamp(28px, 3.4vw, 48px);
+    --dxd-h3-size: clamp(20px, 2vw, 28px);
+    --dxd-h4-size: clamp(16px, 1.4vw, 20px);
+    --dxd-body-size: clamp(15px, 1.05vw, 17px);
+    --dxd-small-size: 13px;
+    --dxd-eyebrow-size: 12px;
+
+    --dxd-h1-weight: 400;
+    --dxd-h2-weight: 400;
+    --dxd-h3-weight: 500;
+    --dxd-h4-weight: 600;
+    --dxd-body-weight: 400;
+
+    --dxd-h1-line: 0.98;
+    --dxd-h2-line: 1.05;
+    --dxd-h3-line: 1.15;
+    --dxd-body-line: 1.55;
+
+    --dxd-tracking-display: -0.02em;
+    --dxd-tracking-eyebrow: 0.18em;
+  }
+
+  html, body, p, li, td, th, input, textarea, select, button, label,
+  blockquote, figcaption, dd, dt {
+    font-family: var(--dxd-font-body) !important;
+    font-size: var(--dxd-body-size);
+    line-height: var(--dxd-body-line);
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .display, .headline, .hero-title, .section-title, .eyebrow, .nav-cta,
+  .tab, .brand, .logo, .card-role {
+    font-family: var(--dxd-font-display) !important;
+    letter-spacing: var(--dxd-tracking-display);
+  }
+
+  h1, .display, .hero-title {
+    font-size: var(--dxd-h1-size) !important;
+    font-weight: var(--dxd-h1-weight) !important;
+    line-height: var(--dxd-h1-line) !important;
+  }
+  h2, .section-title {
+    font-size: var(--dxd-h2-size) !important;
+    font-weight: var(--dxd-h2-weight) !important;
+    line-height: var(--dxd-h2-line) !important;
+  }
+  h3 {
+    font-size: var(--dxd-h3-size) !important;
+    font-weight: var(--dxd-h3-weight) !important;
+    line-height: var(--dxd-h3-line) !important;
+  }
+  h4 {
+    font-size: var(--dxd-h4-size) !important;
+    font-weight: var(--dxd-h4-weight) !important;
+  }
+  h5, h6 {
+    font-size: var(--dxd-h4-size) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .eyebrow, [class*="eyebrow"] {
+    font-size: var(--dxd-eyebrow-size) !important;
+    letter-spacing: var(--dxd-tracking-eyebrow) !important;
+    text-transform: uppercase;
+    font-weight: 500 !important;
+  }
+
+  code, pre, kbd, samp, tt, .mono, [class*="mono"] {
+    font-family: var(--dxd-font-mono) !important;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="slide-nav">
+  <div class="nav-logo">DEUS <span class="x">X</span> DEFENSE</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#slide-cover">Cover</a>
+    <a class="nav-link" href="#slide-threat">Threat</a>
+    <a class="nav-link" href="#slide-broken">Broken Model</a>
+    <a class="nav-link" href="#slide-intro">Company</a>
+    <a class="nav-link" href="#slide-team-a">Team</a>
+    <a class="nav-link" href="#slide-sovereign">Platform</a>
+    <a class="nav-link" href="#slide-roadmap">Roadmap</a>
+    <a class="nav-link" href="#slide-model">Business</a>
+    <a class="nav-link" href="#slide-moats">Moats</a>
+    <a class="nav-link" href="#slide-traction">Traction</a>
+    <a class="nav-link" href="#slide-believe">Financials</a>
+    <a class="nav-link" href="#slide-ask">The Ask</a>
+  </div>
+  <div class="nav-right" style="display:flex;align-items:center;gap:8px;">
+    <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-right:8px;">Confidential</span>
+    <button class="nav-icon-btn" id="downloadBtn" title="Export as PDF" onclick="exportPDF()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      PDF
+    </button>
+    <button class="nav-icon-btn" id="fullscreenBtn" title="Toggle fullscreen" onclick="toggleFullscreen()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="fsIcon"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════
+     SLIDES WRAPPER
+════════════════════════════════════════════════ -->
+<div class="slides-wrapper">
+<!-- ════════════════════════════════════════════════
+     SLIDE 1 — COVER
+════════════════════════════════════════════════ -->
+<section class="slide slide-cover" id="slide-cover" style="padding-top:112px;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:url('assets/generated/cover_bg.png') center/cover no-repeat;z-index:0;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,11,0.55) 0%, rgba(10,10,11,0.30) 40%, rgba(10,10,11,0.62) 100%);z-index:1;"></div>
+  <div class="slide-inner" style="justify-content:center;align-items:center;text-align:center;position:relative;z-index:2;">
+    <div class="fade-in">
+      <!-- DXD Shield SVG Logo -->
+      <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 24px;display:block;">
+        <path d="M50 8 L88 24 L88 52 C88 72 70 88 50 94 C30 88 12 72 12 52 L12 24 Z" fill="none" stroke="#D2232A" stroke-width="2.5"/>
+        <path d="M50 18 L80 31 L80 52 C80 68 66 81 50 87 C34 81 20 68 20 52 L20 31 Z" fill="rgba(210,35,42,0.08)" stroke="rgba(210,35,42,0.3)" stroke-width="1"/>
+        <text x="50" y="62" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="900" font-size="22" fill="#D2232A" letter-spacing="-1">DXD</text>
+      </svg>
+    </div>
+    <div class="fade-in fade-in-d1">
+      <div class="cover-logo">DEUS <span class="x">X</span> DEFENSE</div>
+    </div>
+    <div class="fade-in fade-in-d2">
+      <div class="cover-tagline">The Immune System for Critical Infrastructure</div>
+      <div style="font-family:var(--font-heading);font-weight:400;font-size:13px;color:var(--white-faint);letter-spacing:3px;text-transform:uppercase;margin-bottom:48px;">Defend Our Way of Life</div>
+    </div>
+    <div class="fade-in fade-in-d3">
+      <div style="width:48px;height:2px;background:var(--red);margin:0 auto 40px;"></div>
+    </div>
+    <div class="fade-in fade-in-d4">
+      <div class="cover-meta">
+        Confidential — For Qualified Investors Only<br>
+        April 2026 &nbsp;·&nbsp; Patrick Madden, Founder &amp; CEO<br>
+        <span style="color:var(--red);">dxdefense.com</span>
+      </div>
+    </div>
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">01 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 2 — THE WAR IS COMING HOME
+════════════════════════════════════════════════ -->
+<section class="slide crisis-beat" id="slide-threat" style="background: radial-gradient(ellipse at 30% 40%, rgba(210,35,42,0.06) 0%, var(--black) 60%);">
+  <div class="grid-overlay"></div>
+  <div class="slide-inner" style="justify-content:center;max-width:1100px;margin:0 auto;">
+
+    <div class="fade-in" style="text-align:center;margin-bottom:40px;">
+      <div class="section-label" style="justify-content:center;">The Threat</div>
+      <h1 style="font-family:var(--font-heading);font-weight:800;font-size:clamp(28px,4vw,48px);line-height:1.1;color:#fff;letter-spacing:-1px;max-width:800px;margin:0 auto;">
+        The War is <span style="color:var(--red);">Coming Home.</span>
+      </h1>
+    </div>
+
+    <!-- Anchor Quote -->
+    <div class="fade-in fade-in-d1" style="text-align:center;margin-bottom:40px;">
+      <p style="font-family:var(--font-serif);font-style:italic;font-size:clamp(18px,2.2vw,24px);color:rgba(255,255,255,0.85);line-height:1.4;max-width:780px;margin:0 auto;">
+        &ldquo;Our homeland is no longer a sanctuary.&rdquo;
+      </p>
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:10px;">
+        — Rear Admiral Paul Spedero, U.S. Navy · Congressional Testimony, April 2025
+      </div>
+    </div>
+
+    <!-- Four-panel threat grid -->
+    <div class="fade-in fade-in-d2" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--red);padding:20px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Mar 1, 2026 · Data Centers</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;color:var(--white);margin-bottom:8px;line-height:1.3;">Iranian Shahed drones strike two AWS data centers in the UAE and a third in Bahrain</div>
+        <div style="font-size:12px;color:var(--white-muted);line-height:1.5;">First kinetic attack on hyperscaler infrastructure in history. Iran has explicitly threatened the Stargate facility our customer is building.</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--red);padding:20px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Dec 2023 – Jan 2024 · Military Bases</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;color:var(--white);margin-bottom:8px;line-height:1.3;">Unidentified drones swarmed Langley AFB for 17 consecutive nights</div>
+        <div style="font-size:12px;color:var(--white-muted);line-height:1.5;">The Air Force relocated its F-22s. The Pentagon still doesn't know who sent them. Dozens of U.S. military installations have reported similar incursions.</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--red);padding:20px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">H2 2024 · Southern Border</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;color:var(--white);margin-bottom:8px;line-height:1.3;">60,000 cartel drone flights crossed the U.S. southern border</div>
+        <div style="font-size:12px;color:var(--white-muted);line-height:1.5;">Over 1,000 incursions per month. Surveillance, counter-law enforcement, drug delivery — all uncontested. DHS/ICE verified data.</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--red);padding:20px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">2021–Present · Critical Infrastructure</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;color:var(--white);margin-bottom:8px;line-height:1.3;">China pre-positioned inside U.S. power grids, water systems, and communications for 5+ years</div>
+        <div style="font-size:12px;color:var(--white-muted);line-height:1.5;">CISA/FBI/NSA Joint Advisory AA24-038A. Undetected. NERC reported 3,500+ physical security breaches of U.S. grid infrastructure in 2025.</div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">02 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 3 — THE BROKEN MODEL
+════════════════════════════════════════════════ -->
+<section class="slide crisis-beat" id="slide-broken" style="background: linear-gradient(180deg, var(--black) 0%, #0d0d10 100%);">
+  <div class="grid-overlay"></div>
+  <div class="slide-inner" style="justify-content:center;max-width:1000px;margin:0 auto;">
+
+    <div class="fade-in" style="text-align:center;margin-bottom:48px;">
+      <div class="section-label" style="justify-content:center;">The Problem</div>
+      <h2 style="font-family:var(--font-heading);font-weight:800;font-size:clamp(28px,4vw,46px);color:#fff;letter-spacing:-0.5px;line-height:1.1;">
+        The Industry Built to Protect Us <span style="color:var(--red);">Is Failing.</span>
+      </h2>
+    </div>
+
+    <div class="crisis-stat-stack fade-in fade-in-d1">
+      <div class="crisis-stat-row">
+        <div class="crisis-stat-num" data-count="95" data-suffix="%">95%</div>
+        <div>
+          <div class="crisis-stat-label">Of activity is missed after 20 minutes of video monitoring — attention falls below acceptable levels</div>
+          <div class="crisis-stat-source">Sandia National Laboratories / U.S. Department of Energy</div>
+        </div>
+      </div>
+      <div class="crisis-stat-row">
+        <div class="crisis-stat-num" data-count="97" data-suffix="%">97%</div>
+        <div>
+          <div class="crisis-stat-label">Of security alarms are false — 40%+ of U.S. cities have stopped guaranteeing police response to unverified alarms</div>
+          <div class="crisis-stat-source">LAPD verified data · Deep Sentinel analysis</div>
+        </div>
+      </div>
+      <div class="crisis-stat-row">
+        <div class="crisis-stat-num" data-count="300" data-prefix="100–" data-suffix="%">100–300%</div>
+        <div>
+          <div class="crisis-stat-label">Annual security guard turnover. The people protecting your most critical assets are gone before they learn the job.</div>
+          <div class="crisis-stat-source">BLS JOLTS 2024 · Security Industry Association</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-in fade-in-d3" style="margin-top:36px;padding:20px 24px;background:rgba(210,35,42,0.06);border:1px solid var(--red-border);border-left:3px solid var(--red);">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;text-align:center;">
+        <div>
+          <div style="font-family:var(--font-heading);font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--white);line-height:1;letter-spacing:-0.02em;">$120B</div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);margin-top:6px;">Spent annually on physical security</div>
+          <div style="font-size:12px;color:var(--white-muted);margin-top:4px;">Cameras. Sensors. Guards. Alarms.</div>
+        </div>
+        <div style="font-family:var(--font-heading);font-weight:900;font-size:32px;color:var(--border-light);">→</div>
+        <div>
+          <div style="font-family:var(--font-heading);font-weight:900;font-size:clamp(28px,3.5vw,44px);color:var(--red);line-height:1;letter-spacing:-0.02em;">$0</div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);margin-top:6px;">Spent on the response layer</div>
+          <div style="font-size:12px;color:var(--white-muted);margin-top:4px;">All of it feeds a human who misses 95% of what happens.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-in fade-in-d4" style="text-align:center;margin-top:32px;">
+      <p style="font-family:var(--font-heading);font-weight:700;font-size:clamp(18px,2.2vw,26px);color:#fff;line-height:1.25;letter-spacing:-0.01em;">
+        The industry built detection. <span style="color:var(--red);">Nobody built the response.</span>
+      </p>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">03 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE T — TRANSITION: AMERICAN DYNAMISM
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-transition" style="background:#050506;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:url('assets/generated/transition_bg.png') center/cover no-repeat;z-index:0;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(5,5,6,0.88) 0%, rgba(5,5,6,0.70) 50%, rgba(5,5,6,0.90) 100%);z-index:1;"></div>
+  <div class="slide-inner" style="justify-content:center;align-items:center;max-width:900px;margin:0 auto;position:relative;z-index:2;">
+
+    <div class="fade-in">
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);margin-bottom:32px;">American Dynamism</div>
+    </div>
+
+    <div class="fade-in fade-in-d1">
+      <p style="font-family:var(--font-serif);font-style:italic;font-size:clamp(22px,3vw,34px);line-height:1.35;color:rgba(255,255,255,0.9);letter-spacing:-0.01em;max-width:820px;margin:0 auto;">
+        &ldquo;American dynamism is for builders. It is the belief that the values upon which the country was founded are real and <span style="color:var(--red);font-style:normal;font-weight:700;">worth defending.</span>&rdquo;
+      </p>
+    </div>
+
+    <div class="fade-in fade-in-d2" style="margin-top:28px;">
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.45);">
+        — Katherine Boyle, General Partner, Andreessen Horowitz
+      </div>
+    </div>
+
+    <div class="fade-in fade-in-d3" style="margin-top:56px;">
+      <div style="width:48px;height:1px;background:var(--border);margin:0 auto 32px;"></div>
+      <p style="font-family:var(--font-heading);font-weight:700;font-size:clamp(16px,2vw,22px);color:rgba(255,255,255,0.55);line-height:1.4;max-width:680px;margin:0 auto;">
+        This is why we assembled this team.<br>
+        This is why we are obsessed.<br>
+        <span style="color:rgba(255,255,255,0.85);">We swore an oath. We intend to keep it.</span>
+      </p>
+    </div>
+
+  </div>
+  <div class="slide-counter">04 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 4 — INTRODUCING DEUS X DEFENSE
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-intro" style="background: radial-gradient(ellipse 110% 75% at 50% -8%, rgba(255,255,255,0.11) 0%, transparent 58%), linear-gradient(180deg, #2a2e3a 0%, #20242f 100%);">
+  <div class="slide-inner" style="max-width:1100px;margin:0 auto;">
+
+    <div class="fade-in">
+      <div class="section-label">The Company</div>
+      <div class="slide-headline">We Didn't Find This Problem.<br><span class="accent">The Problem Found Us.</span></div>
+    </div>
+
+    <div class="fade-in fade-in-d1" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;">
+      <div>
+        <p class="body-text" style="margin-bottom:16px;">
+          Deus X Defense is the physical security operating system for critical infrastructure — built by the operators, engineers, and intelligence professionals who lived the problem firsthand.
+        </p>
+        <p class="body-text">
+          We didn't start with a pitch deck and look for a problem. We started with the problem — and assembled the only team in the world with the credentials to solve it.
+        </p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:var(--font-heading);font-weight:900;font-size:36px;color:var(--white);line-height:1;letter-spacing:-0.02em;">$27M</div>
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);margin-top:6px;">TTM Revenue</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:var(--font-heading);font-weight:900;font-size:36px;color:var(--white);line-height:1;letter-spacing:-0.02em;">~450</div>
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);margin-top:6px;">Operators</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:var(--font-heading);font-weight:900;font-size:36px;color:var(--white);line-height:1;letter-spacing:-0.02em;">Day 1</div>
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);margin-top:6px;">Profitable</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:var(--font-heading);font-weight:900;font-size:36px;color:var(--white);line-height:1;letter-spacing:-0.02em;">Oct '25</div>
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);margin-top:6px;">Founded</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two acquisitions -->
+    <div class="fade-in fade-in-d2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div style="background:rgba(8,10,14,0.55);border:1px solid rgba(255,255,255,0.1);padding:18px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:6px;">Acquisition 01</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:16px;color:#fff;margin-bottom:10px;">Cascadia Global Security</div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px;">
+          <span style="font-family:var(--font-heading);font-weight:900;font-size:28px;color:#fff;line-height:1;letter-spacing:-0.02em;">$21M</span>
+          <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:rgba(255,255,255,0.5);text-transform:uppercase;">TTM Rev</span>
+          <span style="color:rgba(255,255,255,0.3);">·</span>
+          <span style="font-family:var(--font-heading);font-weight:600;font-size:16px;color:rgba(255,255,255,0.7);">~350</span>
+          <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:rgba(255,255,255,0.5);text-transform:uppercase;">Ops</span>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">Pacific Northwest · Critical infrastructure · Energy · Data centers · BVLOS waiver holder</div>
+      </div>
+      <div style="background:rgba(8,10,14,0.55);border:1px solid rgba(255,255,255,0.1);padding:18px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:6px;">Acquisition 02</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:16px;color:#fff;margin-bottom:10px;">Invictus International Holdings</div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px;">
+          <span style="font-family:var(--font-heading);font-weight:900;font-size:28px;color:#fff;line-height:1;letter-spacing:-0.02em;">$6M</span>
+          <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:rgba(255,255,255,0.5);text-transform:uppercase;">TTM Rev</span>
+          <span style="color:rgba(255,255,255,0.3);">·</span>
+          <span style="font-family:var(--font-heading);font-weight:600;font-size:16px;color:rgba(255,255,255,0.7);">~100</span>
+          <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:rgba(255,255,255,0.5);text-transform:uppercase;">Ops</span>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">Executive protection · High-profile events · USMC Recon-led · Founder Matt Koetting, Purple Heart</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">05 / 13</div>
+</section>
+
+</body>
+</html>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 5 — SOVEREIGN OS: THE PLATFORM WE'RE BUILDING
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-sovereign" style="background: linear-gradient(180deg, #0d0d10 0%, var(--black) 100%);">
+  <div class="slide-inner" style="max-width:1200px;margin:0 auto;">
+
+    <div class="fade-in">
+      <div class="section-label">The Platform</div>
+      <div class="slide-headline" style="margin-bottom:8px;">The Platform We're Building —<br><span class="accent">On Top of a Business That's Already Running.</span></div>
+      <p class="body-text" style="margin-bottom:28px;">CORTEX and ATLAS are live and generating revenue today. We are building the full The Immune System for Critical Infrastructure on top of the operation we already own — funded by the cash flow it generates.</p>
+    </div>
+
+    <!-- Architecture Flow -->
+    <div class="fade-in fade-in-d1" style="margin-bottom:24px;">
+      <div class="arch-flow">
+        <div class="arch-module active">
+          <span class="arch-status live">Live</span>
+          <div class="arch-name">NERVE</div>
+          <div class="arch-role">The Senses</div>
+          <div class="arch-desc">DxD-native smart sensor suite. Edge AI endpoints. Audio, visual, multi-sensor. Feeds CORTEX.</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-module active">
+          <span class="arch-status live">Live</span>
+          <div class="arch-name">CORTEX</div>
+          <div class="arch-role">The Mind</div>
+          <div class="arch-desc">Physical edge appliance. Connects to all existing cameras &amp; sensors — any vendor, any age. Runs SENTINEL AI locally.</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-module active">
+          <span class="arch-status live">Live</span>
+          <div class="arch-name">ATLAS</div>
+          <div class="arch-role">The Will</div>
+          <div class="arch-desc">Unified C2. One console controls drones, robots, guards, and building systems as a single coordinated response.</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-module">
+          <span class="arch-status next">Next</span>
+          <div class="arch-name">COMMAND</div>
+          <div class="arch-role">The Record</div>
+          <div class="arch-desc">Compliance automation. CIRCIA. NERC CIP. Official legal record built in real time as the response happens.</div>
+        </div>
+        <div class="arch-arrow">↻</div>
+        <div class="arch-module">
+          <span class="arch-status building">Building</span>
+          <div class="arch-name">SENTINEL</div>
+          <div class="arch-role">The Memory</div>
+          <div class="arch-desc">Proprietary AI model. Learns from every operator correction, every incident, every site. The compounding moat.</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--white-faint);font-family:var(--font-mono);letter-spacing:0.1em;">
+        ↑ SENTINEL learns from every response and improves every module — compounds with every deployment ↑
+      </div>
+    </div>
+
+    <!-- Incident Card -->
+    <div class="fade-in fade-in-d2" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+      <div class="incident-card">
+        <div class="incident-header">Incident #2847 · Filed · Digitally Signed · April 7, 2026 · 02:14 AM</div>
+        <div style="margin-bottom:8px;">
+          <div class="incident-line"><span class="time">02:14:33</span><span class="event">CORTEX detected motion, cameras 14 &amp; 16. No badge activity. Vehicle on cam 12.</span></div>
+          <div class="incident-line"><span class="time">02:15:01</span><span class="event">ATLAS dispatched SKY-01 — autonomous drone response initiated.</span></div>
+          <div class="incident-line"><span class="time">02:15:44</span><span class="event">Drone confirmed: cut fence, one subject on foot, moving east.</span></div>
+          <div class="incident-line"><span class="time">02:16:03</span><span class="event">Threat deterred. Ground team en route. Perimeter secured.</span></div>
+          <div class="incident-line"><span class="time">02:16:44</span><span class="event">COMMAND: incident report auto-assembled, filed, retained.</span></div>
+          <div class="incident-line"><span class="time">02:16:45</span><span class="event">SENTINEL: incident logged to AI training pipeline.</span></div>
+        </div>
+        <div class="incident-footer">
+          <div>
+            <div class="incident-stat-label">Response Time</div>
+            <div class="incident-stat-val red">&lt; 60 seconds</div>
+          </div>
+          <div>
+            <div class="incident-stat-label">Drones Dispatched</div>
+            <div class="incident-stat-val green">Autonomous</div>
+          </div>
+          <div>
+            <div class="incident-stat-label">Human Compliance</div>
+            <div class="incident-stat-val green">Auto-filed</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--red);padding:16px;">
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:6px;">The Paradigm Shift</div>
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;color:var(--white);line-height:1.3;">Not an alert to a human.<br>A drone. In under 60 seconds.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--amber);padding:16px;">
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">The Compounding Moat</div>
+          <div style="font-size:13px;color:var(--white-muted);line-height:1.5;">450+ operators generating training data every shift. A competitor can copy the software. They cannot copy the data.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--teal);padding:16px;">
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">Hardware Agnostic — Except Where It Matters</div>
+          <div style="font-size:13px;color:var(--white-muted);line-height:1.5;">CORTEX connects to any existing camera or sensor. NERVE — our own sensor suite, built with Atlas IED — is the edge layer we own for security reasons.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">06 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 5B — THE BUILD SEQUENCE (Product Roadmap)
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-roadmap" style="background:var(--black);">
+  <div class="slide-inner" style="max-width:1200px;margin:0 auto;">
+
+    <div class="fade-in">
+      <div class="section-label">Product Roadmap</div>
+      <div class="slide-headline" style="margin-bottom:8px;">Every Product Unlocks <span class="accent">The Next.</span></div>
+      <p class="body-text" style="margin-bottom:28px;">Each module generates revenue independently. Each one makes every other module stickier. The build sequence is the business model.</p>
+    </div>
+
+    <div class="fade-in fade-in-d1" style="border:1px solid var(--border);overflow:hidden;">
+      <div class="roadmap-row" style="background:rgba(255,255,255,0.02);">
+        <div>Module</div>
+        <div>Role</div>
+        <div>Revenue Unlock</div>
+        <div>Launch</div>
+        <div>Status</div>
+      </div>
+      <div class="roadmap-row" style="background:rgba(87,91,65,0.06);">
+        <div class="roadmap-module">CORTEX</div>
+        <div class="roadmap-role">Edge AI appliance — connects to all existing infrastructure. The cold-start wedge.</div>
+        <div class="roadmap-unlock">DaaS contracts. $3K–$8K/mo per site.</div>
+        <div class="roadmap-timing">Now</div>
+        <div><span class="badge green">Live</span></div>
+      </div>
+      <div class="roadmap-row" style="background:rgba(87,91,65,0.06);">
+        <div class="roadmap-module">ATLAS</div>
+        <div class="roadmap-role">Unified C2 — drones, robots, guards, building systems. One console.</div>
+        <div class="roadmap-unlock">DFR-as-a-Service. $5K–$15K/mo per site.</div>
+        <div class="roadmap-timing">Now</div>
+        <div><span class="badge green">Live</span></div>
+      </div>
+      <div class="roadmap-row">
+        <div class="roadmap-module">Atlas · Airspace Defense / Orcrist</div>
+        <div class="roadmap-role">Counter-UAS kill chain — detect, track, defeat. Integrated into ATLAS.</div>
+        <div class="roadmap-unlock">$30K/unit hardware + $1K/mo SW. $23M+ FY26 model.</div>
+        <div class="roadmap-timing">Q2–Q3 2026</div>
+        <div><span class="badge amber">Next</span></div>
+      </div>
+      <div class="roadmap-row">
+        <div class="roadmap-module">COMMAND</div>
+        <div class="roadmap-role">Compliance engine — CIRCIA, NERC CIP. Auto-assembles the legal record.</div>
+        <div class="roadmap-unlock">SaaS — 300K+ entities face CIRCIA enforcement May 2026.</div>
+        <div class="roadmap-timing">Q3 2026</div>
+        <div><span class="badge amber">Next</span></div>
+      </div>
+      <div class="roadmap-row">
+        <div class="roadmap-module">NERVE</div>
+        <div class="roadmap-role">DxD-native sensor suite — edge AI endpoints, gunshot detection, multi-sensor.</div>
+        <div class="roadmap-unlock">Hardware switching costs + SaaS. Built with Atlas IED (5% rev share, exclusivity in CI).</div>
+        <div class="roadmap-timing">Q4 2026</div>
+        <div><span class="badge blue">Building</span></div>
+      </div>
+      <div class="roadmap-row">
+        <div class="roadmap-module">SENTINEL</div>
+        <div class="roadmap-role">Proprietary AI model — learns from every operator, every incident, every site.</div>
+        <div class="roadmap-unlock">Cross-site intelligence. The moat that compounds daily. The OpenClaw for critical infrastructure.</div>
+        <div class="roadmap-timing">H1 2027</div>
+        <div><span class="badge blue">Building</span></div>
+      </div>
+      <div class="roadmap-row" style="background:rgba(210,35,42,0.04);border-top:1px solid var(--red-border);">
+        <div class="roadmap-module" style="color:var(--red);">The Immune System for Critical Infrastructure</div>
+        <div class="roadmap-role" style="color:var(--white-muted);">The full platform — NERVE → CORTEX → ATLAS → COMMAND → SENTINEL. The security immune system.</div>
+        <div class="roadmap-unlock" style="color:var(--white-muted);">LA28 Olympics blueprint. The standard for critical infrastructure protection, built into national infrastructure like fire safety.</div>
+        <div class="roadmap-timing">2027</div>
+        <div><span class="badge red">Vision</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">07 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 6 — HOW WE GET THERE: THE BODY + BRAIN MODEL
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-model" style="background: linear-gradient(180deg, #0d0d10 0%, var(--black) 100%);">
+  <div class="slide-inner" style="max-width:1200px;margin:0 auto;">
+
+    <div class="fade-in">
+      <div class="section-label">Business Model</div>
+      <div class="slide-headline" style="margin-bottom:8px;">The Cold Start <span class="accent">Is Solved.</span></div>
+      <p class="body-text" style="margin-bottom:28px;">We didn't build a product and look for customers. We acquired the operators, the contracts, and the cash flow — then we build the platform on top. The manned security business funds the tech build. The tech build multiplies the margin.</p>
+    </div>
+
+    <div class="fade-in fade-in-d1" style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+
+      <!-- Left: Five-step path -->
+      <div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);margin-bottom:16px;">The Five-Step Path</div>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="display:grid;grid-template-columns:32px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--font-heading);font-weight:900;font-size:20px;color:var(--red);line-height:1;">1</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);margin-bottom:3px;">Acquire</div>
+              <div style="font-size:12px;color:var(--white-muted);line-height:1.4;">Cascadia ($21M TTM) + Invictus ($6M TTM) — profitable operators, existing contracts, trained workforce. 8% EBITDA from day one.</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--font-heading);font-weight:900;font-size:20px;color:var(--red);line-height:1;">2</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);margin-bottom:3px;">Meet Them Where They Are</div>
+              <div style="font-size:12px;color:var(--white-muted);line-height:1.4;">Deploy CORTEX on existing infrastructure. No rip-and-replace. Customers pay for capability, not hardware. 14% GM.</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--font-heading);font-weight:900;font-size:20px;color:var(--red);line-height:1;">3</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);margin-bottom:3px;">Own the Problem</div>
+              <div style="font-size:12px;color:var(--white-muted);line-height:1.4;">One contract. One throat to choke. DxD is accountable for the outcome — not the camera, not the software, not the guard. 22% GM.</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--font-heading);font-weight:900;font-size:20px;color:var(--red);line-height:1;">4</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);margin-bottom:3px;">Train the Models</div>
+              <div style="font-size:12px;color:var(--white-muted);line-height:1.4;">Every operator shift generates RLHF training data for SENTINEL. The operators aren't a cost center — they train the AI. 35% GM.</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px 1fr;gap:12px;padding:14px 0;">
+            <div style="font-family:var(--font-heading);font-weight:900;font-size:20px;color:var(--red);line-height:1;">5</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);margin-bottom:3px;">Expand the Platform</div>
+              <div style="font-size:12px;color:var(--white-muted);line-height:1.4;">Layer COMMAND, NERVE, SENTINEL. Replace guards with autonomous response. 62%+ GM at full The Immune System for Critical Infrastructure deployment.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Margin staircase -->
+      <div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);margin-bottom:16px;">Gross Margin Expansion</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);width:100px;text-align:right;">Day 1 Baseline</div>
+            <div style="height:36px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;padding:0 12px;flex:0 0 60px;">
+              <span style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white-muted);">8%</span>
+            </div>
+            <div style="font-size:11px;color:var(--white-faint);">Manned security baseline</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);width:100px;text-align:right;">+ DaaS</div>
+            <div style="height:36px;background:rgba(210,35,42,0.15);border:1px solid var(--red-border);display:flex;align-items:center;padding:0 12px;flex:0 0 90px;">
+              <span style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);">14%</span>
+            </div>
+            <div style="font-size:11px;color:var(--white-faint);">CORTEX + drone services</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);width:100px;text-align:right;">+ COMMAND</div>
+            <div style="height:36px;background:rgba(210,35,42,0.25);border:1px solid var(--red-border);display:flex;align-items:center;padding:0 12px;flex:0 0 120px;">
+              <span style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);">22%</span>
+            </div>
+            <div style="font-size:11px;color:var(--white-faint);">Compliance SaaS layer</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);width:100px;text-align:right;">+ SENTINEL</div>
+            <div style="height:36px;background:rgba(210,35,42,0.4);border:1px solid var(--red-border);display:flex;align-items:center;padding:0 12px;flex:0 0 160px;">
+              <span style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);">35%</span>
+            </div>
+            <div style="font-size:11px;color:var(--white-faint);">AI model layer</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);width:100px;text-align:right;">Full Platform</div>
+            <div style="height:36px;background:var(--red);display:flex;align-items:center;padding:0 12px;flex:0 0 220px;">
+              <span style="font-family:var(--font-heading);font-weight:800;font-size:16px;color:#fff;">62%+</span>
+            </div>
+            <div style="font-size:11px;color:var(--white-faint);">The Immune System for Critical Infrastructure deployed</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;padding:14px 16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);">
+          <div style="font-size:12px;color:var(--white-muted);line-height:1.5;font-style:italic;">
+            "The operators aren't a cost center. They train the models, care for the fleet, and collaborate with the AI. Every shift makes the system smarter."
+          </div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);margin-top:6px;letter-spacing:0.1em;">— Patrick Madden, CEO</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">08 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 7 — COMPOUNDING MOATS
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-moats" style="background:var(--black-soft);">
+  <div class="slide-inner" style="max-width:1200px;margin:0 auto;">
+
+    <div class="fade-in">
+      <div class="section-label">Competitive Advantage</div>
+      <div class="slide-headline" style="margin-bottom:8px;">Features Get Copied. <span class="accent">Our Moat Widens Every Day.</span></div>
+      <p class="body-text" style="margin-bottom:16px;">These aren't product advantages. They are structural barriers that compound with every deployment, every operator shift, and every compliance cycle. A competitor starting today cannot catch up.</p>
+    </div>
+
+    <div class="fade-in fade-in-d1" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+      <div class="moat-card">
+        <div class="moat-header">
+          <div class="moat-icon" style="color:var(--red);">01</div>
+          <div>
+            <div class="moat-name">The Waiver</div>
+            <div class="moat-sub">FAA Certificate of Waiver 107W-2025-03831</div>
+          </div>
+        </div>
+        <div class="moat-stat">One of fewer than 10 private companies in the U.S. authorized to fly BVLOS + over people + over moving vehicles — nationwide — simultaneously.</div>
+        <div class="moat-detail">Valid through January 31, 2030. Issued January 27, 2026. As Part 108 finalizes, competitors start from zero. DxD bridges directly.</div>
+        <div class="moat-widens">Why it widens: The waiver took years to earn. Every competitor is still waiting. Every new site we fly adds operational data that strengthens the next renewal.</div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-header">
+          <div class="moat-icon" style="color:var(--amber);">02</div>
+          <div>
+            <div class="moat-name">The Data</div>
+            <div class="moat-sub">SENTINEL AI Training Pipeline</div>
+          </div>
+        </div>
+        <div class="moat-stat">450+ operators generating real-world RLHF training data every single shift. Every incident. Every correction. Every site.</div>
+        <div class="moat-detail">SENTINEL is trained on real operational data — not synthetic, not simulated. The model improves with every deployment. Cross-site intelligence compounds daily.</div>
+        <div class="moat-widens">Why it widens: You can copy the software. You cannot copy six years of operational data from 450 operators across critical infrastructure sites.</div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-header">
+          <div class="moat-icon" style="color:var(--teal);">03</div>
+          <div>
+            <div class="moat-name">The Record</div>
+            <div class="moat-sub">COMMAND — System of Record for Compliance</div>
+          </div>
+        </div>
+        <div class="moat-stat">COMMAND holds the official legal compliance record. CIRCIA final rule expected May 2026 — 72-hour mandatory reporting for 16 CI sectors.</div>
+        <div class="moat-detail">Once DxD is the system of record for CIRCIA and NERC CIP compliance, customers don't migrate. The switching cost is the legal record itself.</div>
+        <div class="moat-widens">Why it widens: CIRCIA enforcement opens the compliance SaaS market to 300K+ entities. DxD is already building the product. The rule creates the moat.</div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-header">
+          <div class="moat-icon" style="color:var(--blue);">04</div>
+          <div>
+            <div class="moat-name">Written In</div>
+            <div class="moat-sub">Capital Plans, Insurance Requirements, Security Specs</div>
+          </div>
+        </div>
+        <div class="moat-stat">DxD is being written into capital plans and security specifications before buildings are built. Dallas ISD: $7.5M sole-source signed April 14, 2026. Designed into 26 new schools.</div>
+        <div class="moat-detail">Dominion Energy. Stargate. BlackRock/GIP. ONEOK. When we're in the capital plan, we're in before the concrete is poured.</div>
+        <div class="moat-widens">Why it widens: Every new construction project that writes DxD into spec is a 20-year relationship before the first operator walks on-site.</div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">09 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 8A — TRACTION: THE MARKET FOUND US
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-traction" style="background: linear-gradient(180deg, var(--black) 0%, #0d0d10 100%);">
+  <div class="slide-inner" style="max-width:1200px;margin:0 auto;">
+
+    <div class="fade-in">
+      <div class="section-label">Traction</div>
+      <div class="slide-headline" style="margin-bottom:8px;">The Market <span class="accent">Found Us.</span></div>
+      <p class="body-text" style="margin-bottom:24px;">$27M in trailing twelve-month revenue. $0 fixed sales cost. Three commission-only reps. Every major deal has been inbound or through a partner.</p>
+    </div>
+
+    <!-- Hero Stats -->
+    <div class="fade-in fade-in-d1" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+      <div class="stat-callout">
+        <div class="stat-number" data-count="27" data-prefix="$" data-suffix="M">$27M</div>
+        <div class="stat-label">TTM Revenue</div>
+        <div class="stat-sub">Cascadia + Invictus · Day 1 profitable</div>
+      </div>
+      <div class="stat-callout">
+        <div class="stat-number">$0</div>
+        <div class="stat-label">Fixed Sales Cost</div>
+        <div class="stat-sub">3 commission-only reps · All inbound or channel</div>
+      </div>
+      <div class="stat-callout">
+        <div class="stat-number" data-count="105" data-prefix="$" data-suffix="M+">$105M+</div>
+        <div class="stat-label">Direct Qualified Pipeline</div>
+        <div class="stat-sub">DaaS only · Excludes manned, cUAS, channel</div>
+      </div>
+      <div class="stat-callout">
+        <div class="stat-number" data-count="600" data-prefix="$" data-suffix="M+">$600M+</div>
+        <div class="stat-label">Channel Pipeline</div>
+        <div class="stat-sub">Accenture ~$300M + Deloitte ~$300M · Directional</div>
+      </div>
+    </div>
+
+    <!-- Three Thesis Proof Points -->
+    <div class="fade-in fade-in-d2" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--red);padding:16px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Proof Point 1 · Land &amp; Expand</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);margin-bottom:6px;">ONEOK: $1M → $12.5M</div>
+        <div style="font-size:12px;color:var(--white-muted);line-height:1.5;">Started with a single site. Expanded to $12.5M on performance alone. No sales cycle — they asked us to scale.</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--amber);padding:16px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--amber);margin-bottom:8px;">Proof Point 2 · Written Into Infrastructure</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);margin-bottom:6px;">Dallas ISD: $7.5M Sole-Source</div>
+        <div style="font-size:12px;color:var(--white-muted);line-height:1.5;">Signed April 14, 2026. Written into security specs for 26 new schools. $6.2B bond vote pending. We're in before the concrete is poured.</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--teal);padding:16px;">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">Proof Point 3 · Customer Pulls the Product</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);margin-bottom:6px;">Stargate: Added cUAS Before Signing</div>
+        <div style="font-size:12px;color:var(--white-muted);line-height:1.5;">Stargate asked us to add full counter-drone capability before they'd sign. NATO ranked us #1 for a $20M cUAS procurement. The customer defines the product.</div>
+      </div>
+    </div>
+
+    <!-- Customer Logo Strip -->
+    <div class="fade-in fade-in-d3">
+      <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--white-faint);margin-bottom:10px;display:flex;align-items:center;gap:10px;">
+        Customers &amp; Partners
+        <span style="flex:1;height:1px;background:var(--border);"></span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span class="customer-badge">Dallas ISD</span>
+        <span class="customer-badge">Dominion Energy</span>
+        <span class="customer-badge">BlackRock / GIP</span>
+        <span class="customer-badge">ONEOK</span>
+        <span class="customer-badge">Accenture</span>
+        <span class="customer-badge">Deloitte</span>
+        <span class="customer-badge">Stargate</span>
+        <span class="customer-badge">CleanSpark</span>
+        <span class="customer-badge">LAPD</span>
+        <span class="customer-badge">NATO</span>
+        <span class="customer-badge">Richland County</span>
+        <span class="customer-badge">University Park PD</span>
+      </div>
+    </div>
+
+  </div>
+  <div style="position:absolute;bottom:24px;left:32px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);z-index:2;">$0 Fixed Sales Cost. The Customers Come to Us.</div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">10 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 8B — WHAT YOU HAVE TO BELIEVE
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-believe" style="background:var(--black-soft);">
+  <div class="slide-inner" style="max-width:1200px;margin:0 auto;">
+
+    <div class="fade-in">
+      <div class="section-label">Financial Picture</div>
+      <div class="slide-headline" style="margin-bottom:8px;">What You Have <span class="accent">to Believe.</span></div>
+      <p class="body-text" style="margin-bottom:24px;">We're not asking you to take our word for it. Here is exactly what has to be true for the model to work — and what's already executing.</p>
+    </div>
+
+    <div class="fade-in fade-in-d1" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+
+      <!-- Assumptions -->
+      <div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);margin-bottom:12px;">6 Assumptions</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="belief-row executing">
+            <div class="belief-status">Executing</div>
+            <div class="belief-text">Manned security ($35M FY26) — Cascadia + Invictus organic growth. Contracts in hand.</div>
+          </div>
+          <div class="belief-row executing">
+            <div class="belief-status">Executing</div>
+            <div class="belief-text">DaaS/DFR expansion ($15M+ FY26) — ONEOK, Dallas ISD, LAPD, CleanSpark. Pipeline qualified.</div>
+          </div>
+          <div class="belief-row executing">
+            <div class="belief-status">Executing</div>
+            <div class="belief-text">BVLOS waiver maintained — FAA CoW 107W-2025-03831 valid through 2030. In hand.</div>
+          </div>
+          <div class="belief-row executing">
+            <div class="belief-status">Executing</div>
+            <div class="belief-text">$0 fixed sales cost — 3 commission-only reps. Inbound demand. Proven to date.</div>
+          </div>
+          <div class="belief-row in-motion">
+            <div class="belief-status amber">In Motion</div>
+            <div class="belief-text">cUAS/Orcrist ($23M+ FY26) — Stargate signed, NATO ranked #1, inventory financing needed.</div>
+          </div>
+          <div class="belief-row in-motion">
+            <div class="belief-status amber">In Motion</div>
+            <div class="belief-text">LAPD as Client Zero for Accenture channel — Phase 1 signing. Unlocks ~$300M Accenture pipeline.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue Model -->
+      <div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);margin-bottom:12px;">Revenue Trajectory</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+          <div class="rev-bar-row">
+            <div class="rev-label">TTM</div>
+            <div class="rev-bar-wrap">
+              <div class="rev-bar" data-width="8" style="--target-width:8%;width:0%;background:var(--surface);border:1px solid var(--border);">
+                <span class="rev-val">$27M</span>
+              </div>
+            </div>
+            <div class="rev-note">Actual</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-label">FY2026</div>
+            <div class="rev-bar-wrap">
+              <div class="rev-bar" data-width="22" style="--target-width:22%;width:0%;background:rgba(210,35,42,0.3);border:1px solid var(--red-border);">
+                <span class="rev-val">$73M</span>
+              </div>
+            </div>
+            <div class="rev-note">Base case</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-label">FY2027</div>
+            <div class="rev-bar-wrap">
+              <div class="rev-bar" data-width="100" style="--target-width:100%;width:0%;background:var(--red);">
+                <span class="rev-val" style="color:#fff;font-weight:800;">$337M+</span>
+              </div>
+            </div>
+            <div class="rev-note" style="color:var(--red);font-weight:700;">The Floor</div>
+          </div>
+        </div>
+        <div style="padding:14px 16px;background:rgba(210,35,42,0.06);border:1px solid var(--red-border);">
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:6px;">What $337M Excludes</div>
+          <div style="font-size:12px;color:var(--white-muted);line-height:1.6;">
+            $0 from Accenture channel (~$300M directional)<br>
+            $0 from Deloitte channel (~$300M directional)<br>
+            $0 from COMMAND / SENTINEL SaaS<br>
+            $0 from NERVE sensor hardware<br>
+            $0 from sovereign / international contracts<br>
+            $0 from bond-funded public sector expansion
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--white-faint);font-style:italic;">Kevin Hill, Apr 15: "Pipeline is real (~$330M DxD potential), gated by LAPD execution."</div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">11 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE 9 — THE ASK: SCALE WHAT'S ALREADY WORKING
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-ask" style="background: linear-gradient(180deg, #0d0d10 0%, var(--black) 100%);">
+  <div class="slide-inner" style="max-width:1200px;margin:0 auto;">
+
+    <div class="fade-in">
+      <div class="section-label">The Ask</div>
+      <div class="slide-headline" style="margin-bottom:8px;">Scale What's <span class="accent">Already Working.</span></div>
+      <p class="body-text" style="margin-bottom:28px;">The seed is closed. The thesis is proven. Three demand signals arrived simultaneously — faster than organic cash flow can support. We're raising a growth round to scale into demand that's already there.</p>
+    </div>
+
+    <div class="fade-in fade-in-d1" style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+
+      <!-- Left: Capital Structure -->
+      <div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);margin-bottom:16px;">Capital Structure</div>
+
+        <div style="margin-bottom:16px;padding:16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-left:3px solid var(--white-faint);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);">Seed Round</div>
+            <span style="background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;padding:2px 8px;text-transform:uppercase;">Closed ✓</span>
+          </div>
+          <div style="font-family:var(--font-heading);font-weight:800;font-size:22px;color:var(--white);margin-bottom:4px;">$14.5M raised · $49M pre-money</div>
+          <div style="font-size:12px;color:var(--white-muted);line-height:1.5;">Funded the acquisitions, the platform foundation, the BVLOS waiver, and the first proof points.</div>
+        </div>
+
+        <div style="margin-bottom:16px;padding:16px;background:rgba(210,35,42,0.06);border:1px solid var(--red-border);border-left:3px solid var(--red);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--white);">Growth Round</div>
+            <span style="background:rgba(210,35,42,0.2);border:1px solid var(--red-border);color:var(--red);font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;padding:2px 8px;text-transform:uppercase;">Opening</span>
+          </div>
+          <div style="font-family:var(--font-heading);font-weight:800;font-size:22px;color:var(--red);margin-bottom:8px;">$[TBD] · $[TBD] pre-money</div>
+          <div style="font-size:12px;color:var(--white-muted);line-height:1.6;margin-bottom:10px;">Three demand signals arrived simultaneously:</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--white-muted);">
+              <span style="color:var(--red);font-weight:700;flex-shrink:0;">→</span>
+              <span><strong style="color:var(--white);">Accenture channel:</strong> ~$300M pipeline, gated by GSOC buildout and engineering capacity</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--white-muted);">
+              <span style="color:var(--red);font-weight:700;flex-shrink:0;">→</span>
+              <span><strong style="color:var(--white);">Deloitte channel:</strong> ~$300M pipeline, opening now</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--white-muted);">
+              <span style="color:var(--red);font-weight:700;flex-shrink:0;">→</span>
+              <span><strong style="color:var(--white);">cUAS/Orcrist:</strong> $23M+ FY26 model requires inventory financing — hardware lead times are long</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Game Plan -->
+      <div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);margin-bottom:16px;">The Game Plan</div>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);padding-top:2px;">Done</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px;">Seed Closed. Acquisitions. Waiver. Proof Points.</div>
+              <div style="font-size:11px;color:var(--white-faint);">$14.5M raised · Cascadia + Invictus acquired · BVLOS waiver issued · Dallas ISD signed</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--red);padding-top:2px;font-weight:700;">Now</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px;">LAPD Phase 1 Signing. ATLAS Live. CIRCIA Enforcement.</div>
+              <div style="font-size:11px;color:var(--white-faint);">CIRCIA final rule May 2026 · Dallas ISD $6.2B bond vote · FIFA World Cup June 2026</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);padding-top:2px;">Q3 2026</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px;">COMMAND MVP. Orcrist Shipping. Accenture Activated.</div>
+              <div style="font-size:11px;color:var(--white-faint);">LAPD as Client Zero unlocks Accenture channel · COMMAND SaaS in market</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);padding-top:2px;">Q4 2026</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px;">$1M+/mo Free Cash Flow. NERVE Deploying.</div>
+              <div style="font-size:11px;color:var(--white-faint);">Growth facility closed · NERVE sensors in field · Deloitte channel active</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;padding:12px 0;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--white-faint);padding-top:2px;">2027</div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px;">Full The Immune System for Critical Infrastructure. LA28 Olympic Blueprint. $337M+ Floor.</div>
+              <div style="font-size:11px;color:var(--white-faint);">SENTINEL live · LA28 Olympics · The standard for critical infrastructure protection</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="red-rule"></div>
+  <div class="slide-counter">12 / 13</div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE CLOSING — THE OATH
+════════════════════════════════════════════════ -->
+<section class="slide" id="slide-closing" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:url('assets/generated/closing_bg.png') center/cover no-repeat;z-index:0;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.82) 100%);z-index:1;"></div>
+  <div class="noise-overlay"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;max-width:900px;margin:0 auto;">
+
+    <div class="fade-in" style="margin-bottom:32px;">
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:var(--white-faint);margin-bottom:20px;">Our Mission</div>
+      <div style="font-family:var(--font-heading);font-weight:900;font-style:italic;font-size:clamp(22px,3.5vw,44px);color:var(--white);line-height:1.2;margin-bottom:20px;">
+        "I do solemnly swear to support and defend<br>the Constitution of the United States<br>against <span class="accent">all enemies, foreign and domestic.</span>"
+      </div>
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-faint);">— Oath of Office, U.S. Armed Forces</div>
+    </div>
+
+    <div class="fade-in fade-in-d2" style="max-width:600px;margin-bottom:40px;">
+      <p style="font-size:15px;color:var(--white-muted);line-height:1.7;">
+        We swore this oath. The battlefield has shifted. The future of our country — and the wars that will define it — will be won or lost based on our ability to protect the critical assets that power American greatness. This is why we assembled this team. This is why we won't stop.
+      </p>
+    </div>
+
+    <div class="fade-in fade-in-d3" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="font-family:var(--font-heading);font-weight:900;font-size:clamp(18px,2.5vw,28px);letter-spacing:0.08em;color:var(--white);">DEUS X DEFENSE</div>
+      <div style="width:60px;height:2px;background:var(--red);"></div>
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--white-faint);">Confidential · April 2026</div>
+      <div style="margin-top:8px;font-family:var(--font-mono);font-size:10px;color:var(--white-faint);">deusxdefense.com</div>
+    </div>
+
+  </div>
+
+  <div class="red-rule"></div>
+  <div class="slide-counter">13 / 13</div>
+</section>
+
+</div><!-- end slides-wrapper -->
+
+<!-- ════ NAVIGATION ════ -->
+<!-- Thumbnail Strip -->
+<div class="thumbnail-strip" id="thumbStrip"></div>
+
+<!-- Keyboard Hint -->
+<div class="kbd-hint" id="kbdHint">
+  <span class="kbd-key"><kbd>←</kbd><kbd>→</kbd> Navigate</span>
+  <span class="kbd-key"><kbd>Space</kbd> Auto-play</span>
+  <span class="kbd-key"><kbd>F</kbd> Fullscreen</span>
+  <span class="kbd-key"><kbd>T</kbd> Thumbnails</span>
+</div>
+
+<div class="nav-controls intro-pulse" id="navControls">
+  <div class="nav-side">
+    <button class="nav-icon-btn" id="thumbBtn" title="Toggle thumbnails (T)" onclick="toggleThumbs()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="5"/><rect x="14" y="3" width="7" height="5"/><rect x="3" y="12" width="7" height="5"/><rect x="14" y="12" width="7" height="5"/></svg>
+      Slides
+    </button>
+  </div>
+  <div class="nav-center">
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" title="Previous (&#8592;)" disabled>&#8592;</button>
+    <div class="slide-progress">
+      <span id="currentSlide">1</span> / <span id="totalSlides">13</span>
+    </div>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)" title="Next (→)">&#8594;</button>
+    <button class="nav-btn autoplay-text-btn" id="autoplayRing" title="Auto-play (Space)" onclick="toggleAutoplay()" style="margin-left:8px;width:auto;padding:0 12px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;">
+      <span id="autoplayLabel">Auto-Play</span>
+      <svg width="0" height="0" style="position:absolute;visibility:hidden;"><polygon points="5 3 19 12 5 21 5 3" id="autoplayIcon"/></svg>
+    </button>
+    <div class="autoplay-timer" id="autoplayTimer" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="14" class="autoplay-timer-track"/>
+        <circle cx="16" cy="16" r="14" class="autoplay-timer-fill" id="autoplayCircle"/>
+      </svg>
+    </div>
+  </div>
+  <div class="nav-side" style="justify-content:flex-end;">
+    <span style="font-family:var(--font-mono);font-size:9px;color:var(--white-faint);letter-spacing:0.1em;">Apr 2026</span>
+  </div>
+</div>
+<script>
+  (function () {
+    var nc = document.getElementById('navControls');
+    if (!nc) return;
+    var center = nc.querySelector('.nav-center');
+    if (!center) return;
+
+    function playIntro() {
+      // Restart the CSS animation by toggling the class.
+      nc.classList.remove('intro-pulse');
+      // Force reflow so the animation can re-trigger.
+      void nc.offsetWidth;
+      nc.classList.add('intro-pulse');
+    }
+
+    center.addEventListener('animationend', function () {
+      nc.classList.remove('intro-pulse');
+    });
+
+    // Replay every time the portal shell signals this tab became active.
+    window.addEventListener('message', function (e) {
+      if (e && e.data && e.data.type === 'dxd:tab-activated') playIntro();
+    });
+
+    // Also replay when the page becomes visible (browser tab switch / bfcache).
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') playIntro();
+    });
+    window.addEventListener('pageshow', playIntro);
+  })();
+</script>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progressFill"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DXD PITCH DECK — INTERACTIVE ENGINE
+// ═══════════════════════════════════════
+
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+let prevIdx = -1;
+let autoplayTimer = null;
+let autoplayActive = false;
+const AUTOPLAY_DURATION = 8000; // 8 seconds per slide
+let autoplayStart = 0;
+let autoplayRaf = null;
+
+// ─── SLIDE NAMES FOR THUMBNAILS ───
+const slideNames = [
+  'Cover', 'Threat', 'Broken\nModel', 'American\nDynamism', 'Company',
+  'Team A', 'Team B', 'Platform', 'Roadmap', 'Business\nModel',
+  'Moats', 'Traction', 'Financials', 'The Ask', 'Closing'
+];
+
+// ─── SLIDE COLORS FOR THUMBNAILS ───
+const slideColors = [
+  '#0a0a0b','#0a0a0b','#0a0a0b','#050506','#2a2e3a',
+  '#111113','#111113','#0d0d10','#0a0a0b','#0d0d10',
+  '#111113','#0a0a0b','#111113','#0d0d10','#050506'
+];
+
+// ─── NAVIGATE ───
+function navigate(dir) {
+  const next = Math.max(0, Math.min(slides.length - 1, current + dir));
+  if (next === current) return;
+  goToSlide(next, dir > 0 ? 'forward' : 'backward');
+}
+
+function goToSlide(idx, direction) {
+  if (idx === current) return;
+  const prev = current;
+  prevIdx = prev;
+  current = idx;
+
+  // Directional transition
+  const entering = slides[idx];
+  const leaving = slides[prev];
+
+  // Set enter position
+  entering.classList.remove('active', 'exit-left', 'enter-right', 'enter-left');
+  entering.classList.add(direction === 'forward' ? 'enter-right' : 'enter-left');
+  entering.offsetHeight; // force reflow
+
+  // Animate out
+  leaving.classList.add(direction === 'forward' ? 'exit-left' : 'exit-right');
+
+  // Animate in
+  entering.classList.add('active');
+  entering.classList.remove('enter-right', 'enter-left');
+
+  // Clean up leaving slide after transition
+  setTimeout(() => {
+    leaving.classList.remove('active', 'exit-left', 'exit-right');
+  }, 500);
+
+  updateUI(idx);
+  triggerSlideAnimations(idx);
+  updateThumbs(idx);
+}
+
+// ─── UPDATE UI ───
+function updateUI(idx) {
+  document.getElementById('currentSlide').textContent = idx + 1;
+  document.getElementById('progressFill').style.width = ((idx + 1) / slides.length * 100) + '%';
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === slides.length - 1;
+
+  // Update active nav link
+  const slideId = slides[idx].id;
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + slideId);
+  });
+}
+
+// ─── SLIDE ENTRY ANIMATIONS ───
+function triggerSlideAnimations(idx) {
+  const slide = slides[idx];
+
+  // Fade-in elements
+  const fadeEls = slide.querySelectorAll('.fade-in');
+  fadeEls.forEach((el, i) => {
+    el.classList.remove('visible');
+    el.offsetHeight;
+    setTimeout(() => el.classList.add('visible'), 100 + i * 100);
+  });
+
+  // Stat counters
+  setTimeout(() => {
+    slide.querySelectorAll('[data-count]').forEach(el => {
+      animateCounter(el);
+    });
+  }, 300);
+
+  // Revenue bars
+  setTimeout(() => {
+    slide.querySelectorAll('.rev-bar[data-width]').forEach((bar, i) => {
+      setTimeout(() => {
+        bar.style.width = bar.style.getPropertyValue('--target-width') || bar.dataset.width + '%';
+        bar.style.transition = 'width 1.2s cubic-bezier(0.4,0,0.2,1)';
+      }, i * 200);
+    });
+  }, 400);
+}
+
+// ─── COUNTER ANIMATION ───
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.count);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const duration = 1200;
+  const start = performance.now();
+  const isDecimal = String(target).includes('.');
+
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const val = target * eased;
+    el.textContent = prefix + (isDecimal ? val.toFixed(1) : Math.round(val)) + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = prefix + target + suffix;
+  }
+  requestAnimationFrame(tick);
+}
+
+// ─── AUTOPLAY ───
+function toggleAutoplay() {
+  if (autoplayActive) {
+    stopAutoplay();
+  } else {
+    startAutoplay();
+  }
+}
+
+function startAutoplay() {
+  autoplayActive = true;
+  document.getElementById('autoplayIcon').style.color = 'var(--red)';
+  document.getElementById('autoplayRing').classList.add('active');
+  const lbl = document.getElementById('autoplayLabel');
+  if (lbl) lbl.textContent = 'Pause';
+  const timer = document.getElementById('autoplayTimer');
+  if (timer) timer.classList.add('active');
+  scheduleAutoplay();
+}
+
+function stopAutoplay() {
+  autoplayActive = false;
+  document.getElementById('autoplayIcon').style.color = 'var(--white-faint)';
+  document.getElementById('autoplayRing').classList.remove('active');
+  const lbl = document.getElementById('autoplayLabel');
+  if (lbl) lbl.textContent = 'Auto-Play';
+  const timer = document.getElementById('autoplayTimer');
+  if (timer) timer.classList.remove('active');
+  if (autoplayTimer) { clearTimeout(autoplayTimer); autoplayTimer = null; }
+  if (autoplayRaf) { cancelAnimationFrame(autoplayRaf); autoplayRaf = null; }
+  document.getElementById('autoplayCircle').style.strokeDashoffset = '88';
+}
+
+function scheduleAutoplay() {
+  if (!autoplayActive) return;
+  autoplayStart = performance.now();
+  const circle = document.getElementById('autoplayCircle');
+
+  function tick(now) {
+    if (!autoplayActive) return;
+    const elapsed = now - autoplayStart;
+    const progress = Math.min(elapsed / AUTOPLAY_DURATION, 1);
+    // strokeDashoffset goes from 88 (empty) to 0 (full)
+    circle.style.strokeDashoffset = 88 * (1 - progress);
+    if (progress < 1) {
+      autoplayRaf = requestAnimationFrame(tick);
+    } else {
+      circle.style.strokeDashoffset = '88';
+      if (current < slides.length - 1) {
+        navigate(1);
+        scheduleAutoplay();
+      } else {
+        stopAutoplay();
+      }
+    }
+  }
+  autoplayRaf = requestAnimationFrame(tick);
+}
+
+// ─── FULLSCREEN ───
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  const btn = document.getElementById('fullscreenBtn');
+  const icon = document.getElementById('fsIcon');
+  if (document.fullscreenElement) {
+    btn.classList.add('active');
+    icon.innerHTML = '<path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 0 2-2h3M3 16h3a2 2 0 0 0 2 2v3"/>';
+  } else {
+    btn.classList.remove('active');
+    icon.innerHTML = '<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>';
+  }
+});
+
+// ─── THUMBNAIL STRIP ───
+let thumbsOpen = false;
+
+function buildThumbs() {
+  const strip = document.getElementById('thumbStrip');
+  slides.forEach((slide, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb' + (i === 0 ? ' active-thumb' : '');
+    thumb.style.background = slideColors[i] || '#111';
+    thumb.innerHTML = `
+      <span class="thumb-num">${String(i+1).padStart(2,'0')}</span>
+      <span class="thumb-label">${slideNames[i] || ''}</span>
+    `;
+    thumb.addEventListener('click', () => {
+      goToSlide(i, i > current ? 'forward' : 'backward');
+    });
+    strip.appendChild(thumb);
+  });
+}
+
+function updateThumbs(idx) {
+  document.querySelectorAll('.thumb').forEach((t, i) => {
+    t.classList.toggle('active-thumb', i === idx);
+  });
+  // Scroll active thumb into view
+  const strip = document.getElementById('thumbStrip');
+  const active = strip.querySelectorAll('.thumb')[idx];
+  if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function toggleThumbs() {
+  thumbsOpen = !thumbsOpen;
+  document.getElementById('thumbStrip').classList.toggle('open', thumbsOpen);
+  document.getElementById('thumbBtn').classList.toggle('active', thumbsOpen);
+  // Adjust slides-wrapper bottom
+  document.querySelector('.slides-wrapper').style.bottom = thumbsOpen ? '138px' : '50px';
+}
+
+// ─── PDF EXPORT ───
+function exportPDF() {
+  // Make all slides visible for print
+  slides.forEach(s => {
+    s.style.visibility = 'visible';
+    s.style.opacity = '1';
+    s.style.transform = 'none';
+    s.style.position = 'relative';
+  });
+  window.print();
+  // Restore after print dialog closes
+  setTimeout(() => {
+    slides.forEach((s, i) => {
+      s.style.visibility = '';
+      s.style.opacity = '';
+      s.style.transform = '';
+      s.style.position = '';
+    });
+    // Re-activate current slide
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === current);
+    });
+  }, 1000);
+}
+
+// ─── KEYBOARD SHORTCUTS ───
+let kbdDismissed = false;
+document.addEventListener('keydown', (e) => {
+  // Dismiss hint on first keypress
+  if (!kbdDismissed) {
+    kbdDismissed = true;
+    const hint = document.getElementById('kbdHint');
+    hint.classList.add('hidden');
+    setTimeout(() => hint.style.display = 'none', 600);
+  }
+
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); navigate(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
+  if (e.key === ' ') { e.preventDefault(); toggleAutoplay(); }
+  if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
+  if (e.key === 't' || e.key === 'T') { toggleThumbs(); }
+  if (e.key === 'Escape') { if (autoplayActive) stopAutoplay(); }
+});
+
+// ─── TOUCH / SWIPE ───
+let touchStartX = 0;
+let touchStartY = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = touchStartX - e.changedTouches[0].clientX;
+  const dy = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+    navigate(dx > 0 ? 1 : -1);
+  }
+}, { passive: true });
+
+// ─── NAV LINK CLICKS ───
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const targetId = link.getAttribute('href').replace('#', '');
+    const idx = Array.from(slides).findIndex(s => s.id === targetId);
+    if (idx !== -1) goToSlide(idx, idx > current ? 'forward' : 'backward');
+  });
+});
+
+// ─── INIT ───
+buildThumbs();
+
+// Show first slide without transition
+slides[0].classList.add('active');
+updateUI(0);
+triggerSlideAnimations(0);
+
+// ─── ATTENTION PULSE on load ───
+// Pulse the prev/counter/next/play controls 3 times to draw the user's eye.
+setTimeout(() => {
+  const targets = ['prevBtn', 'currentSlide', 'nextBtn', 'autoplayRing']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+  // Pulse counter via its parent so the whole "1 / 15" group animates.
+  const progressEl = document.querySelector('.slide-progress');
+  const animEls = targets.map(el => el.id === 'currentSlide' ? progressEl : el);
+  animEls.forEach(el => el.classList.add('pulse-attention'));
+  // Total animation length: 0.7s * 3 = 2.1s — clean up so it doesn't replay on re-render.
+  setTimeout(() => animEls.forEach(el => el.classList.remove('pulse-attention')), 2300);
+}, 400);
+
+// Dismiss keyboard hint after 4 seconds
+setTimeout(() => {
+  if (!kbdDismissed) {
+    kbdDismissed = true;
+    const hint = document.getElementById('kbdHint');
+    hint.classList.add('hidden');
+    setTimeout(() => hint.style.display = 'none', 600);
+  }
+}, 4000);
+</script>
+
+</body>
+</html>
