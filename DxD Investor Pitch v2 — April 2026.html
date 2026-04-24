@@ -197,12 +197,13 @@ body {
 .slide {
   min-height: 100vh;
   scroll-snap-align: start;
-  padding: 120px 60px 80px;
+  padding: 80px 60px 56px;
   margin-left: var(--rail-w);
   position: relative;
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--border);
+  overflow: hidden;
 }
 
 .slide-inner {
@@ -212,6 +213,8 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  transform-origin: top center;
+  will-change: transform;
 }
 
 .eyebrow {
@@ -2908,6 +2911,45 @@ blockquote.pull .cite {
     // Fallback: just show everything.
     vizEls.forEach(function (el) { el.classList.add('in-view'); });
   }
+
+  // Fit-to-viewport: shrink each .slide-inner so its content fits without scrolling.
+  // Measures natural content height vs available height, applies transform: scale.
+  // Scale is clamped at 0.6 minimum (anything tighter is too small to read).
+  function fitSlides() {
+    var slides = document.querySelectorAll('.slide');
+    slides.forEach(function (slide) {
+      var inner = slide.querySelector('.slide-inner');
+      if (!inner) return;
+      // Reset any prior transform so we measure natural size.
+      inner.style.transform = '';
+      inner.style.height = '';
+      var cs = getComputedStyle(slide);
+      var padTop = parseFloat(cs.paddingTop) || 0;
+      var padBot = parseFloat(cs.paddingBottom) || 0;
+      var avail = slide.clientHeight - padTop - padBot;
+      var natural = inner.scrollHeight;
+      if (natural > avail + 2) {
+        var scale = Math.max(0.6, avail / natural);
+        inner.style.transform = 'scale(' + scale.toFixed(4) + ')';
+        // Compensate so the scaled box still occupies the right block-size,
+        // preventing residual scroll inside the snap container.
+        inner.style.height = (natural * scale) + 'px';
+      }
+    });
+  }
+  // Run after layout, on resize, and after fonts settle.
+  if ('requestAnimationFrame' in window) requestAnimationFrame(fitSlides);
+  else fitSlides();
+  window.addEventListener('resize', function () {
+    // Debounce.
+    clearTimeout(window.__fitT);
+    window.__fitT = setTimeout(fitSlides, 120);
+  });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fitSlides).catch(function () {});
+  }
+  // Re-fit once images load (they may grow content height).
+  window.addEventListener('load', fitSlides);
 })();
 </script>
 
