@@ -44,12 +44,17 @@ function MapboxSite({ site, layout, tweaks, activeType,
     if (!containerRef.current) return;
 
     const zoom = zoomMode === 'wide' ? site.mapZoomWide : site.mapZoomTight;
+    // Allow the user to zoom out a couple of levels for context, then
+    // hand the wheel back to the page so the next scroll moves the
+    // outer document instead of zooming the world out to space.
+    const minZoom = Math.max(0, zoom - 2);
 
     const map = new window.mapboxgl.Map({
       container: containerRef.current,
       style: styleUrl,
       center: [site.lng, site.lat],
       zoom,
+      minZoom,
       pitch: pitch,
       bearing: bearing,
       antialias: true,
@@ -61,6 +66,21 @@ function MapboxSite({ site, layout, tweaks, activeType,
       maxPitch: 85,
     });
     mapRef.current = map;
+
+    // Wheel passthrough: when the map is already at its minZoom floor
+    // and the user keeps scrolling "out" (deltaY > 0), intercept the
+    // wheel event in the capture phase before Mapbox sees it so the
+    // browser performs its native page scroll instead.
+    const onWheelCapture = (e) => {
+      if (!mapRef.current) return;
+      const z = mapRef.current.getZoom();
+      const min = mapRef.current.getMinZoom();
+      if (e.deltaY > 0 && z <= min + 0.01) {
+        e.stopImmediatePropagation();
+        // do NOT preventDefault — let the browser scroll the page
+      }
+    };
+    containerRef.current.addEventListener('wheel', onWheelCapture, { capture: true, passive: true });
 
     // Sync state when user drags/rotates/pitches
     map.on('rotate', () => setBearing(map.getBearing()));
@@ -157,6 +177,9 @@ function MapboxSite({ site, layout, tweaks, activeType,
 
     return () => {
       try {
+        if (containerRef.current) {
+          containerRef.current.removeEventListener('wheel', onWheelCapture, { capture: true });
+        }
         markersRef.current.forEach(m => m.remove());
         markersRef.current = [];
         map.remove();

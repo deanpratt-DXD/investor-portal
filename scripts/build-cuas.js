@@ -152,6 +152,22 @@ const TEMPLATE_REPLACEMENTS = [
   ['RTB · mission recorder sealed · handing scene to Sheriff and FBI.', 'RTB · mission recorder sealed · handing scene to CCSO and FBI-RIC.'],
   ['Evidence bundle sealed · INC-2026-CI-0173 · SHA-256 committed', 'Evidence bundle sealed · INC-2026-CHE-0173 · SHA-256 committed'],
   ['Incident closed on airspace · sector incident report staged · no damage to assets · watch resumes nominal', 'Incident closed on airspace · NERC CIP-008 report staged · no damage to assets · watch resumes nominal'],
+
+  // ---- mapbox-site.jsx: minZoom floor + wheel passthrough so the user can
+  // zoom out a little for context, and after the floor is hit further wheel
+  // scrolls are handed back to the page (so the briefing keeps scrolling).
+  [
+    "    const zoom = zoomMode === 'wide' ? site.mapZoomWide : site.mapZoomTight;\n\n    const map = new window.mapboxgl.Map({\n      container: containerRef.current,\n      style: styleUrl,\n      center: [site.lng, site.lat],\n      zoom,\n      pitch: pitch,\n      bearing: bearing,",
+    "    const zoom = zoomMode === 'wide' ? site.mapZoomWide : site.mapZoomTight;\n    // Allow the user to zoom out two levels for context, then hand the\n    // wheel back to the page so further scroll moves the document.\n    const minZoom = Math.max(0, zoom - 2);\n\n    const map = new window.mapboxgl.Map({\n      container: containerRef.current,\n      style: styleUrl,\n      center: [site.lng, site.lat],\n      zoom,\n      minZoom,\n      pitch: pitch,\n      bearing: bearing,"
+  ],
+  [
+    "    mapRef.current = map;\n\n    // Sync state when user drags/rotates/pitches",
+    "    mapRef.current = map;\n\n    // Wheel passthrough: when the map is at its minZoom floor and the user\n    // keeps scrolling \"out\" (deltaY > 0), stop Mapbox's wheel handler in\n    // the capture phase so the browser performs its native page scroll.\n    const onWheelCapture = (e) => {\n      if (!mapRef.current) return;\n      const z = mapRef.current.getZoom();\n      const min = mapRef.current.getMinZoom();\n      if (e.deltaY > 0 && z <= min + 0.01) {\n        e.stopImmediatePropagation();\n      }\n    };\n    containerRef.current.addEventListener('wheel', onWheelCapture, { capture: true, passive: true });\n\n    // Sync state when user drags/rotates/pitches"
+  ],
+  [
+    "    return () => {\n      try {\n        markersRef.current.forEach(m => m.remove());\n        markersRef.current = [];\n        map.remove();\n      } catch (e) {}\n    };",
+    "    return () => {\n      try {\n        if (containerRef.current) {\n          containerRef.current.removeEventListener('wheel', onWheelCapture, { capture: true });\n        }\n        markersRef.current.forEach(m => m.remove());\n        markersRef.current = [];\n        map.remove();\n      } catch (e) {}\n    };"
+  ],
 ];
 
 const TEXT_MIME_PATTERNS = [
