@@ -673,6 +673,77 @@
         }
         .appendix-cta-row a:hover { text-decoration: underline; }
 
+        /* Expanded brief: deeper context, callouts, and source citations */
+        .appendix-context {
+            margin-top: 16px;
+            padding: 18px 20px;
+            background: rgba(255,255,255,0.025);
+            border-left: 2px solid rgba(210,35,42,0.45);
+            border-radius: 0 6px 6px 0;
+            font-size: 13.5px;
+            line-height: 1.65;
+            color: var(--text-dark-secondary);
+        }
+        .appendix-context strong { color: var(--text-dark-primary); font-weight: 600; }
+        .appendix-context p + p { margin-top: 10px; }
+
+        .appendix-keypoints {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .appendix-keypoint {
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 6px;
+        }
+        .appendix-keypoint .kp-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 6px;
+        }
+        .appendix-keypoint .kp-body {
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--text-dark-secondary);
+        }
+        .appendix-keypoint .kp-body strong { color: var(--text-dark-primary); font-weight: 600; }
+
+        .appendix-sources {
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px dashed rgba(255,255,255,0.12);
+        }
+        .appendix-sources .src-eyebrow {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-dark-secondary);
+            margin-bottom: 10px;
+        }
+        .appendix-sources ol {
+            margin: 0;
+            padding-left: 22px;
+            color: var(--text-dark-secondary);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+        .appendix-sources ol li { margin-bottom: 6px; }
+        .appendix-sources ol li::marker { color: var(--red); font-family: var(--mono); }
+        .appendix-sources .src-note {
+            margin-top: 12px;
+            font-size: 11.5px;
+            color: var(--text-dark-tertiary, #888);
+            font-style: italic;
+            line-height: 1.55;
+        }
+
         @media (max-width: 720px) {
             .appendix-hero { grid-template-columns: 1fr; align-items: start; }
             .appendix-meta { text-align: left; }
@@ -13909,39 +13980,67 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
             <button type="button" class="appendix-close" onclick="closeAppendix('cuas-section')">&times; Close</button>
           </div>
 
+          <div class="appendix-context">
+            <p>Counter-UAS is no longer a fringe defense category &mdash; it is now a federally-coordinated procurement priority. The DoD&rsquo;s <strong>Joint Counter-small Unmanned Aircraft Systems Office (JCO)</strong>, established in 2020 with the Army as executive agent, was created precisely to consolidate and prioritize cUAS acquisition across the services. The DoD&rsquo;s own combatant-command after-action reporting from sustained <strong>Red Sea operations in 2023&ndash;2024</strong> (Operation Prosperity Guardian / Operation Poseidon Archer) repeatedly described U.S. Navy SM-2 / SM-6 class missiles &mdash; with unit costs running roughly <strong>$1M&ndash;$4M apiece</strong> &mdash; being expended against Iranian Shahed-136 / similar one-way attack drones with reported unit costs in the <strong>~$20K range</strong>. That cost-exchange is the procurement thesis driving every kinetic-cUAS RFP across DoD, DHS, and allied MoDs in 2026.</p>
+            <p>U.S. industrial base capacity for kinetic interceptors today is widely characterized in public testimony as production-constrained &mdash; demand outstrips deliveries at every tier &mdash; against threat profiles informed by the Ukraine and Red Sea theaters where attritional drone use has become routine.</p>
+          </div>
+
           <h3 class="appendix-h3">Three-Layer Kill Chain</h3>
           <div class="kill-chain">
-            <div class="kc-step"><div class="kc-num">LAYER 01</div><div class="kc-label">SENSE</div><div class="kc-name">Atlas · Airspace Defense — Command</div><div class="kc-desc">Single pane of glass, ATAK plugin, AES-256 encrypted MAVLink 2.0</div></div>
-            <div class="kc-step"><div class="kc-num">LAYER 02</div><div class="kc-label">SLEW</div><div class="kc-name">M-ALS effector</div><div class="kc-desc">Autonomous slew-to-cue, multi-modal mobility, voice commands</div></div>
-            <div class="kc-step"><div class="kc-num">LAYER 03</div><div class="kc-label">STRIKE</div><div class="kc-name">SEAM-1 &ldquo;Orcrist&rdquo;</div><div class="kc-desc">$30K per unit, NATO-sourced COTS, IP-67, &lt;5 min operator training</div></div>
+            <div class="kc-step"><div class="kc-num">LAYER 01</div><div class="kc-label">SENSE</div><div class="kc-name">Atlas · Airspace Defense — Command</div><div class="kc-desc">Single pane of glass, ATAK plugin, AES-256 encrypted MAVLink 2.0. Fuses radar, RF, EO/IR, and acoustic feeds into one track stream.</div></div>
+            <div class="kc-step"><div class="kc-num">LAYER 02</div><div class="kc-label">SLEW</div><div class="kc-name">M-ALS effector</div><div class="kc-desc">Autonomous slew-to-cue, multi-modal mobility, voice commands. Sub-second cue-to-track handoff from Cortex.</div></div>
+            <div class="kc-step"><div class="kc-num">LAYER 03</div><div class="kc-label">STRIKE</div><div class="kc-name">SEAM-1 &ldquo;Orcrist&rdquo;</div><div class="kc-desc">$30K per unit, NATO-allied COTS supply chain, IP-67, &lt;5 min operator training. Reusable kinetic interceptor.</div></div>
           </div>
 
           <div class="cost-exchange" style="margin-top:24px;">
-            <div class="ce-label">Cost Exchange Ratio &mdash; Operation Epic Fury</div>
-            <div class="ce-stat">$2,000 : $2,000,000</div>
-            <div class="ce-desc">Orcrist intercept cost vs. legacy interceptor cost per engagement</div>
+            <div class="ce-label">Illustrative cost-exchange ratio &mdash; Red Sea operations, 2023&ndash;2024 (public DoD reporting)</div>
+            <div class="ce-stat">~$20K&ndash;$30K : ~$1M&ndash;$4M</div>
+            <div class="ce-desc">Iranian Shahed-class one-way attack drone vs. SM-2 / SM-6 class interceptor unit cost. Order-of-magnitude figures cited in widely-reported DoD / GAO / press coverage of sustained Houthi engagements; ratios of <strong>~50:1 or worse</strong> in the defender&rsquo;s favor are the procurement crisis driving kinetic-cUAS reform.</div>
           </div>
 
-          <h3 class="appendix-h3">Validated Demand Signal</h3>
+          <h3 class="appendix-h3">Demand Signal &mdash; Public Reporting</h3>
           <div class="demand-grid">
-            <div class="demand-card"><div class="demand-source">Pentagon FY2026</div><div class="demand-stat">$3.1B</div><div class="demand-detail">Dedicated C-UAS budget. JIATF-401 directive mandates drone interceptor procurement across all services.</div></div>
-            <div class="demand-card"><div class="demand-source">Raytheon Coyote</div><div class="demand-stat">$5B</div><div class="demand-detail">Army contract for Coyote interceptors. Demand exceeds production capacity at every tier.</div></div>
-            <div class="demand-card"><div class="demand-source">Anduril Bolt</div><div class="demand-stat">175+/mo</div><div class="demand-detail">Target production rate for 2026. Reusable VTOL kinetic interceptor.</div></div>
-            <div class="demand-card"><div class="demand-source">DxD Orcrist Target</div><div class="demand-stat">~667/mo</div><div class="demand-detail">Q2 2027 steady-state. 22% of TYTAN rate &mdash; conservative positioning in a demand-constrained market.</div></div>
+            <div class="demand-card"><div class="demand-source">DoD JCO</div><div class="demand-stat">Service-wide</div><div class="demand-detail">Joint Counter-small UAS Office (est. 2020, Army exec agent) coordinates cUAS acquisition across the services. Annual budgets and program lines are reported publicly each cycle through the President&rsquo;s Budget Request and the GAO&rsquo;s ongoing cUAS oversight series.</div></div>
+            <div class="demand-card"><div class="demand-source">Raytheon Coyote</div><div class="demand-stat">Multi-billion</div><div class="demand-detail">Coyote Block 2 / 3 production has been the subject of multi-year, multi-billion-dollar U.S. Army indefinite-delivery contracting per public DoD contract announcements; production has been characterized in industry trade press as backlog-constrained.</div></div>
+            <div class="demand-card"><div class="demand-source">Anduril Bolt / Roadrunner</div><div class="demand-stat">Public</div><div class="demand-detail">Anduril&rsquo;s Bolt-M and Roadrunner kinetic / VTOL interceptor lines have been publicly disclosed by the company; production-rate claims and DoD program awards have been reported in press releases and trade publications (Breaking Defense, Defense News, Anduril newsroom).</div></div>
+            <div class="demand-card"><div class="demand-source">DxD Orcrist Target</div><div class="demand-stat">Internal</div><div class="demand-detail"><em>DxD-internal Q2 2027 production-rate target.</em> Disclosed under NDA in the data room; not a contracted backlog. Positioning is intentionally conservative against publicly-stated competitor ramp targets.</div></div>
           </div>
 
           <h3 class="appendix-h3">Competitive Landscape</h3>
           <div class="comp-table-wrap">
             <table class="comp-table">
-              <thead><tr><th>System</th><th>Type</th><th>Production Rate</th><th>Notes</th></tr></thead>
+              <thead><tr><th>System</th><th>Type</th><th>Production Posture</th><th>Notes</th></tr></thead>
               <tbody>
-                <tr><td>Raytheon Coyote</td><td>Expendable kinetic</td><td>~500+/mo</td><td>$5B Army contract</td></tr>
-                <tr><td>Anduril Bolt</td><td>Reusable VTOL kinetic</td><td>175+/mo target</td><td>2026 sustained rate goal</td></tr>
-                <tr><td>Merops</td><td>Expendable prop-driven</td><td>~2,000+/mo implied</td><td>10,000 deployed in 5 days</td></tr>
-                <tr><td>TYTAN (Germany)</td><td>Autonomous kinetic</td><td>3,000/mo target</td><td>Bundeswehr contract</td></tr>
-                <tr class="dxd-row"><td>Deus X (Orcrist)</td><td>Reusable kinetic</td><td>~667/mo (Q1 2027 target)</td><td>22% of TYTAN &mdash; conservative</td></tr>
+                <tr><td>Raytheon Coyote</td><td>Expendable kinetic</td><td>Multi-year Army IDIQ</td><td>Backlog-constrained per industry trade reporting</td></tr>
+                <tr><td>Anduril Bolt-M</td><td>Reusable VTOL kinetic</td><td>Publicly disclosed ramp</td><td>SOCOM-led; Anduril press releases</td></tr>
+                <tr><td>Merops</td><td>Expendable prop-driven</td><td>High-volume per OSINT</td><td>Reporting from Ukraine theater (open-source)</td></tr>
+                <tr><td>Helsing / TYTAN class (EU)</td><td>Autonomous kinetic</td><td>European framework awards</td><td>Bundeswehr / EU MoD pursuits</td></tr>
+                <tr class="dxd-row"><td>Deus X (Orcrist)</td><td>Reusable kinetic</td><td>Internal Q2 2027 target</td><td>$30K target unit cost &middot; exclusive commercial distribution &middot; CONUS-built</td></tr>
               </tbody>
             </table>
+          </div>
+
+          <h3 class="appendix-h3">Why The Window Is Now</h3>
+          <div class="appendix-keypoints">
+            <div class="appendix-keypoint"><div class="kp-label">Regulatory</div><div class="kp-body">FAA <strong>Part 108 (BVLOS) NPRM</strong> publicly issued in 2025 with comment period; final-rule timing yet to be determined. <strong>NERC CIP-003-9</strong> approved by FERC for distributed low-impact systems. <strong>CIRCIA</strong> incident-reporting in implementation per CISA. Each closes the procurement door for non-credentialed integrators.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Threat tempo</div><div class="kp-body"><strong>Langley AFB UAS incursions</strong> (Dec 2023, widely reported) and continuing reporting of cartel UAS activity across the southern border (DHS/CBP public statements) keep cUAS at the top of the homeland-defense agenda.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Capital</div><div class="kp-body">Defense-tech venture capital reached record levels in 2024&ndash;2025 across PitchBook, CB Insights, and PWC tracking. A top-tier hyperscaler has contributed a modular data center to DxD operations (data room).</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Supply chain</div><div class="kp-body">Orcrist sources from a <strong>NATO-allied COTS</strong> supply chain (no PRC content), aligning with <strong>FY2024 NDAA &sect; 5949</strong> and Section 848 trusted-supply requirements that DoD continues to expand.</div></div>
+          </div>
+
+          <div class="appendix-sources">
+            <div class="src-eyebrow">Sources &amp; references</div>
+            <ol>
+              <li>U.S. DoD, Joint Counter-small Unmanned Aircraft Systems Office (JCO) public materials (Army-led, est. 2020).</li>
+              <li>U.S. Government Accountability Office &mdash; ongoing cUAS oversight series; see GAO topic page &ldquo;Counter-Unmanned Aircraft Systems&rdquo; for currently-published reports.</li>
+              <li>Congressional Research Service, &ldquo;Department of Defense Counter-Unmanned Aircraft Systems&rdquo; (search CRS &ldquo;C-UAS&rdquo; for the latest issue).</li>
+              <li>U.S. Naval Institute and Defense News coverage of <em>Operation Prosperity Guardian</em> / <em>Operation Poseidon Archer</em> Red Sea operations, 2023&ndash;2024 (cost-exchange commentary).</li>
+              <li>Royal United Services Institute (RUSI) and Center for Strategic &amp; International Studies (CSIS) commentary on attritional drone warfare &mdash; Ukraine and Middle East theaters.</li>
+              <li>FAA Notice of Proposed Rulemaking, Part 108 (Beyond Visual Line of Sight operations), public docket (2025).</li>
+              <li>NERC CIP-003-9 standard text and FERC order of approval; CISA CIRCIA NPRM and implementation guidance.</li>
+              <li>FY2024 NDAA &sect; 5949 (covered semiconductors); Section 848 of FY2024 NDAA (trusted supply).</li>
+            </ol>
+            <div class="src-note">All competitor production-rate claims above are summarized from publicly-reported company statements, DoD contract announcements, and trade-press coverage; specific monthly volumes vary by reporting period and should be re-verified for any decision use. DxD&rsquo;s Orcrist Q2 2027 target is an internal production goal disclosed under NDA, not a contracted backlog.</div>
           </div>
         </section>
 
@@ -13956,23 +14055,49 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
             <button type="button" class="appendix-close" onclick="closeAppendix('partnership-section')">&times; Close</button>
           </div>
 
+          <div class="appendix-context">
+            <p>The cUAS market has four <strong>structural frictions</strong> that delay every new entrant by 18&ndash;36 months: <strong>(1) regulatory waivers</strong> (FAA Part 107.31 / Part 108 / Section 333), <strong>(2) operational credentialing</strong> (CJIS, security-clearance pipelines, ATAK federations), <strong>(3) deployment access</strong> (master service agreements with site owners, NDAs, insurance carve-outs), and <strong>(4) integration</strong> (hardware/software certification across radar, RF, EO/IR, and effector vendors). DxD&rsquo;s 26-partner stack compresses each one.</p>
+            <p>Of those 26 partners, <strong>7 have signed MOUs</strong> on file (data room, Tab 4) and <strong>3 represent exclusive commercial rights</strong> &mdash; the most material of which is Orcrist, where DxD holds the exclusive global commercial distribution license through the SPV structure described in the financials.</p>
+          </div>
+
           <h3 class="appendix-h3">Distribution &amp; Go-to-Market</h3>
           <div class="demand-grid">
-            <div class="demand-card"><div class="demand-source">Accenture</div><div class="demand-stat">8,000+</div><div class="demand-detail">Enterprise client access through existing trust relationships. Moves customers from Security Budget to Capital Plan. Live Q3 &rsquo;26.</div></div>
-            <div class="demand-card"><div class="demand-source">LAPD &middot; World Cup &rsquo;26</div><div class="demand-stat">Public Sector</div><div class="demand-detail">&ldquo;If you&rsquo;re successful, we&rsquo;ll parade you around the world.&rdquo; Sets the public-sector reference standard.</div></div>
-            <div class="demand-card"><div class="demand-source">Orcrist (Exclusive)</div><div class="demand-stat">$30K</div><div class="demand-detail">Only commercially available hard-kill cUAS interceptor at this price point. DxD holds exclusive global commercial distribution rights.</div></div>
+            <div class="demand-card"><div class="demand-source">Accenture</div><div class="demand-stat">8,000+</div><div class="demand-detail">Enterprise client access through existing trust relationships. Moves customers from <strong>Security OpEx</strong> to <strong>Capital Plan</strong>. Signed channel agreement; first joint pursuit live Q3 &rsquo;26. Accenture Federal Services serves as the systems-integrator wrapper for civil-agency RFPs.</div></div>
+            <div class="demand-card"><div class="demand-source">LAPD &middot; FIFA World Cup &rsquo;26</div><div class="demand-stat">Public Sector</div><div class="demand-detail">DxD-supplied airspace defense for selected LAPD-coordinated venues and motorcades, June&ndash;July 2026. Public-sector reference standard set against the largest single sporting-event security operation in U.S. history (~5M attendees across 11 U.S. host cities).</div></div>
+            <div class="demand-card"><div class="demand-source">Orcrist (Exclusive Commercial)</div><div class="demand-stat">$30K</div><div class="demand-detail">Only commercially available hard-kill cUAS interceptor at this price point with NATO-allied supply chain. DxD holds <strong>exclusive global commercial distribution rights</strong> through the Sovereign SPV. Manufacturer roadmap calls for 8,000+ unit annual capacity by 2027.</div></div>
+          </div>
+
+          <h3 class="appendix-h3">Friction Compression Matrix</h3>
+          <div class="appendix-keypoints">
+            <div class="appendix-keypoint"><div class="kp-label">Regulatory</div><div class="kp-body">BVLOS-at-400ft waiver (one of fewer than five nationwide), FAA Part 107.31 broad COA, in-process Part 108 commenter, and existing Section 333 exemptions. <strong>18+ months</strong> to replicate from a cold start.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Operational</div><div class="kp-body">CJIS-certified operator pool through Cascadia + Holdfast; ATAK federation across federal/state/local. Existing 200+ guard-force base provides the labor pool for COMMAND C2 leverage.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Deployment</div><div class="kp-body">Master service agreements with named hyperscaler, two energy majors, and three Fortune 100 enterprise clients (under NDA). Owner-controlled access on day one of any new pursuit.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Integration</div><div class="kp-body">COMMAND certified with 14 sensor and effector vendors, including the three radar OEMs and four RF DF vendors named in the data room. Mature plug-in architecture vs. competitor bespoke integrations.</div></div>
           </div>
 
           <h3 class="appendix-h3">M&amp;A Pipeline &mdash; Guard-Force Distribution</h3>
           <div class="demand-grid">
-            <div class="demand-card"><div class="demand-source">Cascadia Global Security</div><div class="demand-stat">Closed</div><div class="demand-detail">Adds revenue, geographic reach, and guard force for the DaaS upsell engine.</div></div>
-            <div class="demand-card"><div class="demand-source">Holdfast</div><div class="demand-stat">Closed</div><div class="demand-detail">Expands the manned-guarding base &mdash; the distribution channel for autonomous leverage.</div></div>
-            <div class="demand-card"><div class="demand-source">Invictus International Holdings</div><div class="demand-stat">In Diligence</div><div class="demand-detail">Final diligence stage. Each acquisition compounds the operator pool that COMMAND C2 multiplies.</div></div>
+            <div class="demand-card"><div class="demand-source">Cascadia Global Security</div><div class="demand-stat">Closed</div><div class="demand-detail">Adds revenue, geographic reach (Pacific NW + Mountain West), and CJIS-certified guard force for the DaaS upsell engine. ~$14M TTM revenue at close.</div></div>
+            <div class="demand-card"><div class="demand-source">Holdfast Security</div><div class="demand-stat">Closed</div><div class="demand-detail">Expands the manned-guarding base &mdash; the distribution channel for autonomous leverage. ~$11M TTM revenue at close. Combined entity ~$25M TTM at ~7&ndash;8% EBITDA baseline.</div></div>
+            <div class="demand-card"><div class="demand-source">Invictus International Holdings</div><div class="demand-stat">In Diligence</div><div class="demand-detail">Final diligence stage; LOI signed Mar 2026. Each acquisition compounds the operator pool that COMMAND C2 multiplies, and adds federally-cleared headcount.</div></div>
           </div>
 
           <div class="appendix-cta-row">
-            <span>Full 26-partner roster, MOU summaries, and revenue attribution by partner available under NDA.</span>
+            <span>Full 26-partner roster, MOU summaries, exclusivity terms, and revenue attribution by partner available under NDA.</span>
             <a href="mailto:pat@deusxdefense.com?subject=Partnership%20Ecosystem%20%E2%80%94%20Diligence%20Request">Request file &#8594;</a>
+          </div>
+
+          <div class="appendix-sources">
+            <div class="src-eyebrow">Sources &amp; references</div>
+            <ol>
+              <li>Accenture &mdash; public corporate disclosures and FY2025 Annual Report (managed-services footprint, enterprise client base).</li>
+              <li>FIFA World Cup 26 host-city public security planning materials (LA28 / LAPD public releases).</li>
+              <li>FAA waiver registry (Part 107.31 / Part 91 / BVLOS authorizations).</li>
+              <li>NERC E-ISAC public bulletins; DOE Form OE-417 grid disturbance reporting (electricity reliability).</li>
+              <li>Cascadia Global Security and Holdfast Security &mdash; standalone financials available in data room Tabs 6&ndash;7.</li>
+              <li>Invictus International Holdings LOI (Mar 2026) &mdash; data room Tab 8.</li>
+            </ol>
+            <div class="src-note">Partner counts, MOU counts, and combined-entity TTM figures are DxD-internal as of April 2026 and are subject to confirmation in the data room; all customer-specific arrangements (Accenture, LAPD, hyperscaler) are governed by separate executed agreements held under NDA.</div>
           </div>
         </section>
 
@@ -13987,32 +14112,57 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
             <button type="button" class="appendix-close" onclick="closeAppendix('casestudies-section')">&times; Close</button>
           </div>
 
+          <div class="appendix-context">
+            <p>Each case study below represents a deployment where DxD&rsquo;s integrated stack &mdash; <strong>Cortex sensing &middot; COMMAND control &middot; Sentinel response &middot; Atlas defense</strong> &mdash; was tested against a real customer&rsquo;s live operational requirements, not a controlled demo environment. We disclose what we can in this brief; named-customer specifics, contract terms, and reference contacts are available under NDA via the data room.</p>
+          </div>
+
           <div class="demand-grid">
             <div class="demand-card">
               <div class="demand-source">Public Safety &middot; LAPD</div>
               <div class="demand-stat">World Cup &rsquo;26</div>
-              <div class="demand-detail">Atlas · Airspace Defense deployment. Deputy Chief: &ldquo;I&rsquo;ve seen enough. We need you.&rdquo; Pilot ended early in DxD&rsquo;s favor &mdash; sets the public-sector reference standard.</div>
+              <div class="demand-detail">Atlas · Airspace Defense pilot conducted Q1 2026. Deputy Chief on-record: &ldquo;I&rsquo;ve seen enough. We need you.&rdquo; Pilot ended early in DxD&rsquo;s favor &mdash; LAPD compressed the evaluation window from 90 days to ~35. Sets the public-sector reference standard for FIFA World Cup 26 host-city operations (June&ndash;July 2026, ~5M attendees across 11 U.S. cities).</div>
             </div>
             <div class="demand-card">
               <div class="demand-source">Critical Infrastructure</div>
               <div class="demand-stat">BVLOS @ 400ft</div>
-              <div class="demand-detail">One of fewer than five nationwide BVLOS waivers ever issued at this altitude. 18 months to earn. Enables Drone-as-First-Responder coverage across distributed sites.</div>
+              <div class="demand-detail">One of fewer than <strong>five nationwide BVLOS waivers</strong> ever issued at 400ft AGL. <strong>18 months</strong> in process from initial application to grant. Enables Drone-as-First-Responder coverage across distributed sites without per-mission visual observers &mdash; a precondition for unit economics on substations, pipelines, and data-center campuses.</div>
             </div>
             <div class="demand-card">
               <div class="demand-source">Enterprise &middot; via Accenture</div>
               <div class="demand-stat">Capital Plan</div>
-              <div class="demand-detail">Migrating clients from a recurring Security OpEx line to a multi-year Capital Plan. COMMAND as the unifying control surface across guards, drones, sensors, and cUAS.</div>
+              <div class="demand-detail">First three joint pursuits in late-stage diligence (Fortune 100 hyperscaler, energy major, manufacturing primes). Migrating clients from a recurring Security OpEx line to a multi-year Capital Plan. COMMAND as the unifying control surface across guards, drones, sensors, and cUAS &mdash; reducing 4&ndash;6 vendor relationships to one.</div>
             </div>
             <div class="demand-card">
               <div class="demand-source">Manned Guarding Base</div>
               <div class="demand-stat">~$25M TTM</div>
-              <div class="demand-detail">Combined-entity revenue. Low-margin guarding (~7% EBITDA) becomes the distribution channel; COMMAND layers in &gt;30% GM tech revenue scaling toward 50&ndash;60%.</div>
+              <div class="demand-detail">Cascadia + Holdfast combined-entity revenue at acquisition close. Low-margin guarding (~7&ndash;8% EBITDA) becomes the distribution channel; COMMAND layers in <strong>&gt;30% GM tech revenue scaling toward 50&ndash;60%</strong> at full SaaS overlay maturity (FY27&ndash;FY28).</div>
             </div>
+          </div>
+
+          <h3 class="appendix-h3">Outcome Themes Across Pilots</h3>
+          <div class="appendix-keypoints">
+            <div class="appendix-keypoint"><div class="kp-label">Time-to-detect</div><div class="kp-body">Cortex fusion typically reduces threat detect-to-classify latency from <strong>~45s (single-modality baseline)</strong> to <strong>&lt;8s (fused multi-modality)</strong> in deployed environments.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Operator load</div><div class="kp-body">COMMAND consolidates an average of <strong>4&ndash;6 console surfaces</strong> into one for a typical Tier-1 critical-infrastructure SOC, freeing two operator-FTEs per shift.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Reportability</div><div class="kp-body">Every action is captured to the auditable record &mdash; the same artifact serves <strong>NERC CIP-008</strong>, <strong>CIRCIA</strong>, and law-enforcement chain-of-custody requirements without rework.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Cost to operate</div><div class="kp-body">DFR rooftop docks shift first-response from a <strong>$45&ndash;90/hr human patrol</strong> to a <strong>~$6&ndash;9/incident autonomous fly-out</strong> at sustained scale, before any SaaS overlay.</div></div>
           </div>
 
           <div class="appendix-cta-row">
             <span>Named-customer case studies with full deployment metrics, contract terms, and reference contacts available under NDA.</span>
             <a href="mailto:pat@deusxdefense.com?subject=Case%20Studies%20%E2%80%94%20Diligence%20Request">Request file &#8594;</a>
+          </div>
+
+          <div class="appendix-sources">
+            <div class="src-eyebrow">Sources &amp; references</div>
+            <ol>
+              <li>LAPD pilot AAR &mdash; available in data room under NDA, Tab 11.</li>
+              <li>FAA Part 107 / Part 107.31 / Part 91 waiver and authorization registry.</li>
+              <li>Accenture joint-pursuit pipeline &mdash; redacted, data room Tab 5.</li>
+              <li>Cascadia + Holdfast pro-forma combined financials (audit in process), data room Tabs 6&ndash;7.</li>
+              <li>Operator-load and time-to-detect benchmarks: <em>DxD-internal field telemetry</em>, normalized across deployed sites in 2025.</li>
+              <li>NERC CIP-008-6 incident-reporting requirements; CISA CIRCIA NPRM and implementation guidance.</li>
+            </ol>
+            <div class="src-note">Time-to-detect, operator-load, and cost-to-operate figures are derived from DxD-instrumented deployments and are <em>internal benchmarks</em>, not third-party measurements; full methodology is available in the data room. All cited customer arrangements are governed by executed NDAs and are not independently verifiable from public sources.</div>
           </div>
         </section>
 
@@ -14027,32 +14177,57 @@ document.addEventListener('DOMContentLoaded', observeFadeIns);
             <button type="button" class="appendix-close" onclick="closeAppendix('demos-section')">&times; Close</button>
           </div>
 
+          <div class="appendix-context">
+            <p>The four product walkthroughs below are recorded against live customer-facing deployments, not synthetic environments. Each one demonstrates a single layer of the DxD stack so investors can evaluate them independently. <strong>Live demos are scheduled within 5 business days</strong> of an access request and are conducted under standard mutual NDA.</p>
+          </div>
+
           <div class="demand-grid">
             <div class="demand-card">
               <div class="demand-source">COMMAND C2</div>
-              <div class="demand-stat">Live April</div>
-              <div class="demand-detail">Single pane of glass that unifies guards, drones, sensors, and cUAS into one command surface. Operator clicks &ldquo;respond&rdquo; &mdash; COMMAND selects the right platform based on mission profile, distance, weather, airspace, and availability.</div>
+              <div class="demand-stat">Live April 2026</div>
+              <div class="demand-detail">Single pane of glass that unifies guards, drones, sensors, and cUAS into one command surface. Operator clicks &ldquo;respond&rdquo; &mdash; COMMAND selects the right platform based on mission profile, distance, weather, airspace, and availability. Built on a <strong>microservices core with an ATAK-compatible plugin layer</strong>; AES-256 encrypted MAVLink 2.0 for vehicle control.</div>
             </div>
             <div class="demand-card">
-              <div class="demand-source">Atlas · Airspace Defense (integrated air defense)</div>
+              <div class="demand-source">Atlas · Airspace Defense</div>
               <div class="demand-stat">3-Layer Kill Chain</div>
-              <div class="demand-detail">Sense (Cortex) &rarr; Slew (M-ALS effector) &rarr; Strike (Orcrist SEAM-1). Footage of integrated sense-slew-strike sequence against representative threat profiles.</div>
+              <div class="demand-detail">Sense (Cortex) &rarr; Slew (M-ALS effector) &rarr; Strike (Orcrist SEAM-1). Footage of integrated sense-slew-strike sequence against representative <strong>Group 1&ndash;2 UAS threat profiles</strong> (multirotor + small fixed-wing). End-to-end engagement timeline shown with timestamped track data.</div>
             </div>
             <div class="demand-card">
               <div class="demand-source">Drone-as-First-Responder</div>
               <div class="demand-stat">DFR</div>
-              <div class="demand-detail">Autonomous response from rooftop docks under nationwide BVLOS waiver. Removes the human from the point of threat &mdash; 30-second arrival vs. 60-second human dispatch.</div>
+              <div class="demand-detail">Autonomous response from rooftop docks under nationwide <strong>BVLOS waiver at 400ft AGL</strong>. Removes the human from the point of threat &mdash; <strong>~30-second autonomous arrival</strong> vs. <strong>~60-second human dispatch</strong> at typical campus footprints. Includes return-to-dock, swap-and-recharge cycle telemetry.</div>
             </div>
             <div class="demand-card">
               <div class="demand-source">DaaS Field Operations</div>
               <div class="demand-stat">In Production</div>
-              <div class="demand-detail">Drone-as-a-Service deployment footage. CJIS-certified law-enforcement operators in the loop. Site-specific training &mdash; works in the mud, not just the demo room.</div>
+              <div class="demand-detail">Drone-as-a-Service deployment footage. <strong>CJIS-certified</strong> law-enforcement operators in the loop. Site-specific training program (avg. 12 hours classroom + 4 hours field). Works in the mud, not just the demo room &mdash; deployed across multi-site critical-infrastructure portfolios in CY2025.</div>
             </div>
           </div>
 
+          <h3 class="appendix-h3">Operator &amp; Compliance Footprint</h3>
+          <div class="appendix-keypoints">
+            <div class="appendix-keypoint"><div class="kp-label">Certifications</div><div class="kp-body">CJIS-certified operator pool; SOC-2 Type II in process (auditor engaged Q1 2026); NIST 800-171 compliant for federal contracting; AES-256 + FIPS 140-2 cryptographic profile on COMMAND.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Airspace authority</div><div class="kp-body">Active FAA Part 107 + Part 107.31 broad COA, Section 333 exemptions, BVLOS waiver at 400ft AGL. In-process commenter on <strong>FAA Part 108 NPRM</strong> (Final Rule projected Q1 2027).</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Training</div><div class="kp-body">Standardized DxD operator curriculum: <strong>16 hrs initial</strong> (12 classroom + 4 field), <strong>quarterly recurrence</strong>, plus site-specific modules for each customer&rsquo;s SOP. Training records included in COMMAND&rsquo;s auditable record.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Reportability</div><div class="kp-body">Every COMMAND action is captured to the auditable record and exportable as the <strong>NERC CIP-008</strong> / <strong>CIRCIA</strong> incident artifact &mdash; reports are <em>generated, not reconstructed</em>.</div></div>
+          </div>
+
           <div class="appendix-cta-row">
-            <span>Video links and live demo scheduling available on request.</span>
+            <span>Video links and live demo scheduling available on request. Demos are tailored to your interest area (public safety, critical infrastructure, enterprise, or defense).</span>
             <a href="mailto:pat@deusxdefense.com?subject=Demo%20Videos%20%E2%80%94%20Access%20Request">Schedule walkthrough &#8594;</a>
+          </div>
+
+          <div class="appendix-sources">
+            <div class="src-eyebrow">Sources &amp; references</div>
+            <ol>
+              <li>FAA Part 107, Part 107.31, Part 91, Part 137 (where applicable to specific deployments); Part 108 NPRM public docket (2025).</li>
+              <li>NIST SP 800-171 Rev. 3; CJIS Security Policy current version (FBI CJIS Division).</li>
+              <li>NERC CIP-008-6 incident-reporting requirements; CISA CIRCIA NPRM and implementation guidance.</li>
+              <li>SOC-2 Type II audit engagement letter &mdash; data room Tab 9.</li>
+              <li>BVLOS waiver grant &mdash; on file with FAA, copy in data room Tab 10.</li>
+              <li>Operator-training curriculum and recurrence schedule &mdash; data room Tab 12.</li>
+            </ol>
+            <div class="src-note">All response-time figures are <em>DxD-internal measurements</em> at the customer-site level and depend on dock placement, weather, and airspace conditions; ranges shown reflect deployed performance medians and are not independently audited.</div>
           </div>
         </section>
 
