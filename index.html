@@ -236,6 +236,17 @@
       0%, 100% { transform: rotate(-4deg); }
       50%      { transform: rotate(4deg); }
     }
+    /* Track-ID labels counter-rotate against their parent .gr-track so the
+       text stays upright through the full 360° orbit (otherwise IDs read
+       upside-down past the bottom of the sweep). Same orbit duration +
+       delay as the parent, but reverse direction cancels the rotation. */
+    #gate .gate-radar .gr-label {
+      animation: gr-orbit var(--orbit, 22s) linear infinite;
+      animation-delay: var(--ostart, 0s);
+      animation-direction: reverse;
+      transform-origin: 0 0;
+    }
+    #gate .gate-radar .gr-track.rev .gr-label { animation-direction: normal; }
     /* Track lock-on box around each drone — pulses red */
     #gate .gate-radar .gr-lock {
       animation: gr-lock 1.6s ease-in-out infinite;
@@ -286,6 +297,7 @@
       #gate .gate-radar .gr-track,
       #gate .gate-radar .gr-drone,
       #gate .gate-radar .gr-lock,
+      #gate .gate-radar .gr-label,
       #gate .gate-reticle .ret-ring,
       #gate .gate-reticle .ret-spin { animation: none; }
     }
@@ -593,8 +605,10 @@
                 <path d="M -16  16 L -10  16 M -16  16 L -16  10"/>
                 <path d="M  16  16 L  10  16 M  16  16 L  16  10"/>
               </g>
-              <!-- track id label -->
-              <text x="22" y="-14" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-014</text>
+              <!-- track id label (counter-rotates to stay upright) -->
+              <g class="gr-label">
+                <text x="22" y="-14" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-014</text>
+              </g>
             </g>
           </g>
 
@@ -616,7 +630,9 @@
                 <path d="M -13  13 L -8  13 M -13  13 L -13  8"/>
                 <path d="M  13  13 L  8  13 M  13  13 L  13  8"/>
               </g>
-              <text x="18" y="-12" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-027</text>
+              <g class="gr-label">
+                <text x="18" y="-12" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-027</text>
+              </g>
             </g>
           </g>
 
@@ -638,7 +654,9 @@
                 <path d="M -11  11 L -7  11 M -11  11 L -11  7"/>
                 <path d="M  11  11 L  7  11 M  11  11 L  11  7"/>
               </g>
-              <text x="16" y="-10" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="8" fill="#FFD0D9" letter-spacing="0.18em">TRK-031</text>
+              <g class="gr-label">
+                <text x="16" y="-10" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="8" fill="#FFD0D9" letter-spacing="0.18em">TRK-031</text>
+              </g>
             </g>
           </g>
 
@@ -660,7 +678,9 @@
                 <path d="M -14  14 L -9  14 M -14  14 L -14  9"/>
                 <path d="M  14  14 L  9  14 M  14  14 L  14  9"/>
               </g>
-              <text x="20" y="-12" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-049</text>
+              <g class="gr-label">
+                <text x="20" y="-12" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-049</text>
+              </g>
             </g>
           </g>
 
