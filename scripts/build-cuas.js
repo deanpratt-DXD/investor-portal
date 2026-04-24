@@ -11,7 +11,7 @@ const zlib = require('zlib');
 
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'atlas-airspace-defense.html');
-const DEST = path.join(ROOT, 'CUAS', 'index.html');
+const DEST = path.join(ROOT, 'atlas.html');
 
 const OUTER_TITLE = 'DXD · Counter-UAS · Critical Infrastructure';
 
