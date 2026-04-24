@@ -8345,8 +8345,15 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 });
 
 function initPortal() {
+  // Standalone-mode safe boot: this file contains exactly one tab-pane.
+  // Pick whichever pane actually exists in the DOM rather than the
+  // legacy default of 'story' (which would deactivate the only pane
+  // when this file is loaded directly, e.g. ceo-letter.html).
+  const onlyPane = document.querySelector('.tab-pane');
+  const onlyId = onlyPane ? (onlyPane.id || '').replace(/^tab-/,'') : '';
   const hash = window.location.hash.replace('#','');
-  showTab(TAB_IDS.includes(hash) ? hash : 'story');
+  const fallback = TAB_IDS.includes(onlyId) ? onlyId : 'story';
+  showTab(TAB_IDS.includes(hash) ? hash : fallback);
   window.addEventListener('hashchange', () => {
     const h = window.location.hash.replace('#','');
     if (TAB_IDS.includes(h)) showTab(h);
