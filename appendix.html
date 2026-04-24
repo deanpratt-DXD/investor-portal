@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deus X Defense</title>
+  <link rel="stylesheet" href="assets/dxd-components.css">
+  <script>
+    (function() {
+      const CANONICAL_ORIGIN = "https://investor.deusxdefense.com";
+      if (/\.railway\.app$/i.test(window.location.hostname)) {
+        window.location.replace(
+          CANONICAL_ORIGIN +
+          window.location.pathname +
+          window.location.search +
+          window.location.hash
+        );
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js"></script>
+
+  <!-- When embedded inside the investor portal shell (index.html), hide
+       the inner top navigation so we don't render two stacked tab bars. -->
+  <script>
+    (function() {
+      try { if (window.self !== window.top) document.documentElement.classList.add('embedded'); } catch (_) { document.documentElement.classList.add('embedded'); }
+    })();
+  </script>
+  <style>
+    html.embedded .portal-nav { display: none !important; }
+    html.embedded .portal-content { padding-top: 0 !important; }
+  </style>
+
+  <!-- PORTAL SHELL CSS -->
+  <link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+
+<!-- PORTAL (single-tab standalone) -->
+<div class="portal" id="portal">
+  <div class="portal-content">
+
+    <div class="tab-pane active" id="tab-appendix">
+      <div class="fin-container">
+
+        <header class="appendix-hero">
+          <div>
+            <div class="appendix-eyebrow">Appendix &middot; Diligence Reference</div>
+            <h2>Deep-dive materials</h2>
+            <p class="lead">Background context for the investor narrative. Click any card to expand a focused brief inline. Full files are released under NDA.</p>
+          </div>
+          <div class="appendix-meta">
+            <span><strong>4</strong> &nbsp;Briefs</span>
+            <span>Updated &nbsp;<strong>Apr 2026</strong></span>
+            <span>Confidential</span>
+          </div>
+        </header>
+
+
+        <div class="appendix-grid">
+          <button type="button" class="appendix-card" onclick="toggleAppendix(this, 'cuas-section')">
+            <div class="appendix-card-head">
+              <span class="appendix-card-letter">A</span>
+              <span class="appendix-card-title">cUAS / Atlas · Airspace Defense Market Primer</span>
+            </div>
+            <div class="appendix-card-body">Atlas · Airspace Defense (integrated air defense) deep-dive: three-layer kill chain, cost-exchange analysis, combat-validated demand signals, competitive landscape, and the DxD production model.</div>
+            <div class="appendix-card-tags">
+              <span class="appendix-card-tag">3-Layer Kill Chain</span>
+              <span class="appendix-card-tag">Cost Exchange</span>
+              <span class="appendix-card-tag">Orcrist</span>
+            </div>
+            <div class="appendix-card-cta"><span>Open Brief</span><span class="arrow">&#8594;</span></div>
+          </button>
+
+          <button type="button" class="appendix-card" onclick="toggleAppendix(this, 'partnership-section')">
+            <div class="appendix-card-head">
+              <span class="appendix-card-letter">B</span>
+              <span class="appendix-card-title">Partnership Ecosystem</span>
+            </div>
+            <div class="appendix-card-body">26 partners across 5 strategic pillars. 7 MOUs signed. Includes Accenture distribution, the M&amp;A pipeline, and channel coverage.</div>
+            <div class="appendix-card-tags">
+              <span class="appendix-card-tag">Accenture</span>
+              <span class="appendix-card-tag">LAPD</span>
+              <span class="appendix-card-tag">M&amp;A</span>
+            </div>
+            <div class="appendix-card-cta"><span>Open Brief</span><span class="arrow">&#8594;</span></div>
+          </button>
+
+          <button type="button" class="appendix-card" onclick="toggleAppendix(this, 'casestudies-section')">
+            <div class="appendix-card-head">
+              <span class="appendix-card-letter">C</span>
+              <span class="appendix-card-title">Case Studies</span>
+            </div>
+            <div class="appendix-card-body">Quantified deployment outcomes across public safety (LAPD &middot; World Cup &rsquo;26), critical infrastructure, and enterprise via Accenture.</div>
+            <div class="appendix-card-tags">
+              <span class="appendix-card-tag">World Cup &rsquo;26</span>
+              <span class="appendix-card-tag">BVLOS @ 400ft</span>
+              <span class="appendix-card-tag">Enterprise</span>
+            </div>
+            <div class="appendix-card-cta"><span>Open Brief</span><span class="arrow">&#8594;</span></div>
+          </button>
+
+          <button type="button" class="appendix-card" onclick="toggleAppendix(this, 'demos-section')">
+            <div class="appendix-card-head">
+              <span class="appendix-card-letter">D</span>
+              <span class="appendix-card-title">Product Demos</span>
+            </div>
+            <div class="appendix-card-body">Walkthroughs and deployment footage across COMMAND C2, Atlas · Airspace Defense (integrated air defense), Drone-as-First-Responder, and DaaS field operations.</div>
+            <div class="appendix-card-tags">
+              <span class="appendix-card-tag">COMMAND</span>
+              <span class="appendix-card-tag">DFR</span>
+              <span class="appendix-card-tag">DaaS</span>
+            </div>
+            <div class="appendix-card-cta"><span>Open Brief</span><span class="arrow">&#8594;</span></div>
+          </button>
+        </div>
+
+        <!-- A. cUAS Primer -->
+        <section id="cuas-section" class="appendix-section" style="display:none;">
+          <div class="appendix-section-head">
+            <div>
+              <div class="appendix-section-eyebrow">Brief A &middot; Investment Committee &middot; April 2026</div>
+              <h2>Atlas · Airspace Defense (integrated air defense) &amp; Counter-UAS Market Primer</h2>
+              <p class="sub">Atlas · Airspace Defense is one module within COMMAND &mdash; DxD&rsquo;s heterogeneous command &amp; control platform. This brief focuses on the counter-UAS capability and its market.</p>
+            </div>
+            <button type="button" class="appendix-close" onclick="closeAppendix('cuas-section')">&times; Close</button>
+          </div>
+
+          <div class="appendix-context">
+            <p>Counter-UAS is no longer a fringe defense category &mdash; it is now a federally-coordinated procurement priority. The DoD&rsquo;s <strong>Joint Counter-small Unmanned Aircraft Systems Office (JCO)</strong>, established in 2020 with the Army as executive agent, was created precisely to consolidate and prioritize cUAS acquisition across the services. The DoD&rsquo;s own combatant-command after-action reporting from sustained <strong>Red Sea operations in 2023&ndash;2024</strong> (Operation Prosperity Guardian / Operation Poseidon Archer) repeatedly described U.S. Navy SM-2 / SM-6 class missiles &mdash; with unit costs running roughly <strong>$1M&ndash;$4M apiece</strong> &mdash; being expended against Iranian Shahed-136 / similar one-way attack drones with reported unit costs in the <strong>~$20K range</strong>. That cost-exchange is the procurement thesis driving every kinetic-cUAS RFP across DoD, DHS, and allied MoDs in 2026.</p>
+            <p>U.S. industrial base capacity for kinetic interceptors today is widely characterized in public testimony as production-constrained &mdash; demand outstrips deliveries at every tier &mdash; against threat profiles informed by the Ukraine and Red Sea theaters where attritional drone use has become routine.</p>
+          </div>
+
+          <h3 class="appendix-h3">Three-Layer Kill Chain</h3>
+          <div class="kill-chain">
+            <div class="kc-step"><div class="kc-num">LAYER 01</div><div class="kc-label">SENSE</div><div class="kc-name">Atlas · Airspace Defense — Command</div><div class="kc-desc">Single pane of glass, ATAK plugin, AES-256 encrypted MAVLink 2.0. Fuses radar, RF, EO/IR, and acoustic feeds into one track stream.</div></div>
+            <div class="kc-step"><div class="kc-num">LAYER 02</div><div class="kc-label">SLEW</div><div class="kc-name">M-ALS effector</div><div class="kc-desc">Autonomous slew-to-cue, multi-modal mobility, voice commands. Sub-second cue-to-track handoff from Cortex.</div></div>
+            <div class="kc-step"><div class="kc-num">LAYER 03</div><div class="kc-label">STRIKE</div><div class="kc-name">SEAM-1 &ldquo;Orcrist&rdquo;</div><div class="kc-desc">$30K per unit, NATO-allied COTS supply chain, IP-67, &lt;5 min operator training. Reusable kinetic interceptor.</div></div>
+          </div>
+
+          <div class="cost-exchange" style="margin-top:24px;">
+            <div class="ce-label">Illustrative cost-exchange ratio &mdash; Red Sea operations, 2023&ndash;2024 (public DoD reporting)</div>
+            <div class="ce-stat">~$20K&ndash;$30K : ~$1M&ndash;$4M</div>
+            <div class="ce-desc">Iranian Shahed-class one-way attack drone vs. SM-2 / SM-6 class interceptor unit cost. Order-of-magnitude figures cited in widely-reported DoD / GAO / press coverage of sustained Houthi engagements; ratios of <strong>~50:1 or worse</strong> in the defender&rsquo;s favor are the procurement crisis driving kinetic-cUAS reform.</div>
+          </div>
+
+          <h3 class="appendix-h3">Demand Signal &mdash; Public Reporting</h3>
+          <div class="demand-grid">
+            <div class="demand-card"><div class="demand-source">DoD JCO</div><div class="demand-stat">Service-wide</div><div class="demand-detail">Joint Counter-small UAS Office (est. 2020, Army exec agent) coordinates cUAS acquisition across the services. Annual budgets and program lines are reported publicly each cycle through the President&rsquo;s Budget Request and the GAO&rsquo;s ongoing cUAS oversight series.</div></div>
+            <div class="demand-card"><div class="demand-source">Raytheon Coyote</div><div class="demand-stat">Multi-billion</div><div class="demand-detail">Coyote Block 2 / 3 production has been the subject of multi-year, multi-billion-dollar U.S. Army indefinite-delivery contracting per public DoD contract announcements; production has been characterized in industry trade press as backlog-constrained.</div></div>
+            <div class="demand-card"><div class="demand-source">Anduril Bolt / Roadrunner</div><div class="demand-stat">Public</div><div class="demand-detail">Anduril&rsquo;s Bolt-M and Roadrunner kinetic / VTOL interceptor lines have been publicly disclosed by the company; production-rate claims and DoD program awards have been reported in press releases and trade publications (Breaking Defense, Defense News, Anduril newsroom).</div></div>
+            <div class="demand-card"><div class="demand-source">DxD Orcrist Target</div><div class="demand-stat">Internal</div><div class="demand-detail"><em>DxD-internal Q2 2027 production-rate target.</em> Disclosed under NDA in the data room; not a contracted backlog. Positioning is intentionally conservative against publicly-stated competitor ramp targets.</div></div>
+          </div>
+
+          <h3 class="appendix-h3">Competitive Landscape</h3>
+          <div class="comp-table-wrap">
+            <table class="comp-table">
+              <thead><tr><th>System</th><th>Type</th><th>Production Posture</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Raytheon Coyote</td><td>Expendable kinetic</td><td>Multi-year Army IDIQ</td><td>Backlog-constrained per industry trade reporting</td></tr>
+                <tr><td>Anduril Bolt-M</td><td>Reusable VTOL kinetic</td><td>Publicly disclosed ramp</td><td>SOCOM-led; Anduril press releases</td></tr>
+                <tr><td>Merops</td><td>Expendable prop-driven</td><td>High-volume per OSINT</td><td>Reporting from Ukraine theater (open-source)</td></tr>
+                <tr><td>Helsing / TYTAN class (EU)</td><td>Autonomous kinetic</td><td>European framework awards</td><td>Bundeswehr / EU MoD pursuits</td></tr>
+                <tr class="dxd-row"><td>Deus X (Orcrist)</td><td>Reusable kinetic</td><td>Internal Q2 2027 target</td><td>$30K target unit cost &middot; exclusive commercial distribution &middot; CONUS-built</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="appendix-h3">Why The Window Is Now</h3>
+          <div class="appendix-keypoints">
+            <div class="appendix-keypoint"><div class="kp-label">Regulatory</div><div class="kp-body">FAA <strong>Part 108 (BVLOS) NPRM</strong> publicly issued in 2025 with comment period; final-rule timing yet to be determined. <strong>NERC CIP-003-9</strong> approved by FERC for distributed low-impact systems. <strong>CIRCIA</strong> incident-reporting in implementation per CISA. Each closes the procurement door for non-credentialed integrators.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Threat tempo</div><div class="kp-body"><strong>Langley AFB UAS incursions</strong> (Dec 2023, widely reported) and continuing reporting of cartel UAS activity across the southern border (DHS/CBP public statements) keep cUAS at the top of the homeland-defense agenda.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Capital</div><div class="kp-body">Defense-tech venture capital reached record levels in 2024&ndash;2025 across PitchBook, CB Insights, and PWC tracking. A top-tier hyperscaler has contributed a modular data center to DxD operations (data room).</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Supply chain</div><div class="kp-body">Orcrist sources from a <strong>NATO-allied COTS</strong> supply chain (no PRC content), aligning with <strong>FY2024 NDAA &sect; 5949</strong> and Section 848 trusted-supply requirements that DoD continues to expand.</div></div>
+          </div>
+
+          <div class="appendix-sources">
+            <div class="src-eyebrow">Sources &amp; references</div>
+            <ol>
+              <li>U.S. DoD, Joint Counter-small Unmanned Aircraft Systems Office (JCO) public materials, Army-led, est. 2020 &mdash; <a href="https://www.army.mil/" target="_blank" rel="noopener">army.mil</a>.</li>
+              <li>U.S. Government Accountability Office &mdash; ongoing cUAS oversight series; see GAO topic page &ldquo;Counter-Unmanned Aircraft Systems&rdquo; for currently-published reports &mdash; <a href="https://www.gao.gov/" target="_blank" rel="noopener">gao.gov</a>.</li>
+              <li>Congressional Research Service, &ldquo;Department of Defense Counter-Unmanned Aircraft Systems&rdquo; &mdash; <a href="https://crsreports.congress.gov/" target="_blank" rel="noopener">crsreports.congress.gov</a> (search &ldquo;C-UAS&rdquo;).</li>
+              <li>U.S. Naval Institute (<a href="https://www.usni.org/" target="_blank" rel="noopener">usni.org</a>) and Defense News (<a href="https://www.defensenews.com/" target="_blank" rel="noopener">defensenews.com</a>) coverage of <em>Operation Prosperity Guardian</em> / <em>Operation Poseidon Archer</em> Red Sea operations, 2023&ndash;2024 (cost-exchange commentary).</li>
+              <li>Royal United Services Institute (<a href="https://rusi.org/explore-our-research/publications/commentary/attritional-art-war-lessons-russian-war-ukraine" target="_blank" rel="noopener">RUSI &mdash; &ldquo;The Attritional Art of War&rdquo;</a>) and Center for Strategic &amp; International Studies (<a href="https://www.csis.org/" target="_blank" rel="noopener">CSIS</a>) commentary on attritional drone warfare &mdash; Ukraine and Middle East theaters.</li>
+              <li>FAA Notice of Proposed Rulemaking, Part 108 (Beyond Visual Line of Sight operations), public docket (2025) &mdash; <a href="https://www.faa.gov/uas" target="_blank" rel="noopener">faa.gov/uas</a>.</li>
+              <li>NERC CIP-003 standard text (<a href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" target="_blank" rel="noopener">nerc.com</a>) and FERC order of approval (<a href="https://www.ferc.gov/" target="_blank" rel="noopener">ferc.gov</a>); CISA CIRCIA NPRM and implementation guidance (<a href="https://www.cisa.gov/circia" target="_blank" rel="noopener">cisa.gov/circia</a>).</li>
+              <li>FY2024 NDAA &sect; 5949 (covered semiconductors) and Section 848 (trusted supply) &mdash; <a href="https://www.congress.gov/bill/118th-congress/house-bill/2670" target="_blank" rel="noopener">H.R.2670 / Pub.L. 118-31</a>.</li>
+            </ol>
+            <div class="src-note">All competitor production-rate claims above are summarized from publicly-reported company statements, DoD contract announcements, and trade-press coverage; specific monthly volumes vary by reporting period and should be re-verified for any decision use. DxD&rsquo;s Orcrist Q2 2027 target is an internal production goal disclosed under NDA, not a contracted backlog.</div>
+          </div>
+        </section>
+
+        <!-- B. Partnership Ecosystem -->
+        <section id="partnership-section" class="appendix-section" style="display:none;">
+          <div class="appendix-section-head">
+            <div>
+              <div class="appendix-section-eyebrow">Brief B &middot; 26 partners &middot; 7 MOUs signed</div>
+              <h2>Partnership Ecosystem</h2>
+              <p class="sub">DxD&rsquo;s moat is a stack of partners that each compress one of the four frictions blocking competitors: regulatory, operational, deployment, and integration.</p>
+            </div>
+            <button type="button" class="appendix-close" onclick="closeAppendix('partnership-section')">&times; Close</button>
+          </div>
+
+          <div class="appendix-context">
+            <p>The cUAS market has four <strong>structural frictions</strong> that delay every new entrant by 18&ndash;36 months: <strong>(1) regulatory waivers</strong> (FAA Part 107.31 / Part 108 / Section 333), <strong>(2) operational credentialing</strong> (CJIS, security-clearance pipelines, ATAK federations), <strong>(3) deployment access</strong> (master service agreements with site owners, NDAs, insurance carve-outs), and <strong>(4) integration</strong> (hardware/software certification across radar, RF, EO/IR, and effector vendors). DxD&rsquo;s 26-partner stack compresses each one.</p>
+            <p>Of those 26 partners, <strong>7 have signed MOUs</strong> on file (data room, Tab 4) and <strong>3 represent exclusive commercial rights</strong> &mdash; the most material of which is Orcrist, where DxD holds the exclusive global commercial distribution license through the SPV structure described in the financials.</p>
+          </div>
+
+          <h3 class="appendix-h3">Distribution &amp; Go-to-Market</h3>
+          <div class="demand-grid">
+            <div class="demand-card"><div class="demand-source">Accenture</div><div class="demand-stat">8,000+</div><div class="demand-detail">Enterprise client access through existing trust relationships. Moves customers from <strong>Security OpEx</strong> to <strong>Capital Plan</strong>. Signed channel agreement; first joint pursuit live Q3 &rsquo;26. Accenture Federal Services serves as the systems-integrator wrapper for civil-agency RFPs.</div></div>
+            <div class="demand-card"><div class="demand-source">LAPD &middot; FIFA World Cup &rsquo;26</div><div class="demand-stat">Public Sector</div><div class="demand-detail">DxD-supplied airspace defense for selected LAPD-coordinated venues and motorcades, June&ndash;July 2026. Public-sector reference standard set against the largest single sporting-event security operation in U.S. history (~5M attendees across 11 U.S. host cities).</div></div>
+            <div class="demand-card"><div class="demand-source">Orcrist (Exclusive Commercial)</div><div class="demand-stat">$30K</div><div class="demand-detail">Only commercially available hard-kill cUAS interceptor at this price point with NATO-allied supply chain. DxD holds <strong>exclusive global commercial distribution rights</strong> through the Sovereign SPV. Manufacturer roadmap calls for 8,000+ unit annual capacity by 2027.</div></div>
+          </div>
+
+          <h3 class="appendix-h3">Friction Compression Matrix</h3>
+          <div class="appendix-keypoints">
+            <div class="appendix-keypoint"><div class="kp-label">Regulatory</div><div class="kp-body">BVLOS-at-400ft waiver (one of fewer than five nationwide), FAA Part 107.31 broad COA, in-process Part 108 commenter, and existing Section 333 exemptions. <strong>18+ months</strong> to replicate from a cold start.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Operational</div><div class="kp-body">CJIS-certified operator pool through Cascadia + Holdfast; ATAK federation across federal/state/local. Existing 200+ guard-force base provides the labor pool for COMMAND C2 leverage.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Deployment</div><div class="kp-body">Master service agreements with named hyperscaler, two energy majors, and three Fortune 100 enterprise clients (under NDA). Owner-controlled access on day one of any new pursuit.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Integration</div><div class="kp-body">COMMAND certified with 14 sensor and effector vendors, including the three radar OEMs and four RF DF vendors named in the data room. Mature plug-in architecture vs. competitor bespoke integrations.</div></div>
+          </div>
+
+          <h3 class="appendix-h3">M&amp;A Pipeline &mdash; Guard-Force Distribution</h3>
+          <div class="demand-grid">
+            <div class="demand-card"><div class="demand-source">Cascadia Global Security</div><div class="demand-stat">Closed</div><div class="demand-detail">Adds revenue, geographic reach (Pacific NW + Mountain West), and CJIS-certified guard force for the DaaS upsell engine. ~$14M TTM revenue at close.</div></div>
+            <div class="demand-card"><div class="demand-source">Holdfast Security</div><div class="demand-stat">Closed</div><div class="demand-detail">Expands the manned-guarding base &mdash; the distribution channel for autonomous leverage. ~$11M TTM revenue at close. Combined entity ~$25M TTM at ~7&ndash;8% EBITDA baseline.</div></div>
+            <div class="demand-card"><div class="demand-source">Invictus International Holdings</div><div class="demand-stat">In Diligence</div><div class="demand-detail">Final diligence stage; LOI signed Mar 2026. Each acquisition compounds the operator pool that COMMAND C2 multiplies, and adds federally-cleared headcount.</div></div>
+          </div>
+
+          <div class="appendix-cta-row">
+            <span>Full 26-partner roster, MOU summaries, exclusivity terms, and revenue attribution by partner available under NDA.</span>
+            <a href="mailto:pat@deusxdefense.com?subject=Partnership%20Ecosystem%20%E2%80%94%20Diligence%20Request">Request file &#8594;</a>
+          </div>
+
+          <div class="appendix-sources">
+            <div class="src-eyebrow">Sources &amp; references</div>
+            <ol>
+              <li>Accenture &mdash; public corporate disclosures and FY2025 Annual Report (managed-services footprint, enterprise client base) &mdash; <a href="https://www.accenture.com/us-en/about/company/investor-relations" target="_blank" rel="noopener">accenture.com investor relations</a>.</li>
+              <li>FIFA World Cup 26 host-city public security planning materials &mdash; <a href="https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener">FIFA World Cup 26</a>; LA28 (<a href="https://www.la28.org/" target="_blank" rel="noopener">la28.org</a>) and LAPD (<a href="https://www.lapdonline.org/" target="_blank" rel="noopener">lapdonline.org</a>) public releases.</li>
+              <li>FAA waiver registry (Part 107.31 / Part 91 / BVLOS authorizations) &mdash; <a href="https://www.faa.gov/uas" target="_blank" rel="noopener">faa.gov/uas</a>.</li>
+              <li>NERC E-ISAC public bulletins (<a href="https://www.eisac.com/" target="_blank" rel="noopener">eisac.com</a>); DOE Form OE-417 grid disturbance reporting (<a href="https://www.oe.netl.doe.gov/oe417.aspx" target="_blank" rel="noopener">oe.netl.doe.gov/oe417</a>).</li>
+              <li>Cascadia Global Security and Holdfast Security &mdash; standalone financials available in data room Tabs 6&ndash;7 <em>(NDA)</em>.</li>
+              <li>Invictus International Holdings LOI (Mar 2026) &mdash; data room Tab 8 <em>(NDA)</em>.</li>
+            </ol>
+            <div class="src-note">Partner counts, MOU counts, and combined-entity TTM figures are DxD-internal as of April 2026 and are subject to confirmation in the data room; all customer-specific arrangements (Accenture, LAPD, hyperscaler) are governed by separate executed agreements held under NDA.</div>
+          </div>
+        </section>
+
+        <!-- C. Case Studies -->
+        <section id="casestudies-section" class="appendix-section" style="display:none;">
+          <div class="appendix-section-head">
+            <div>
+              <div class="appendix-section-eyebrow">Brief C &middot; Quantified outcomes</div>
+              <h2>Case Studies</h2>
+              <p class="sub">Deployment outcomes across three verticals: public safety, critical infrastructure, and enterprise distribution.</p>
+            </div>
+            <button type="button" class="appendix-close" onclick="closeAppendix('casestudies-section')">&times; Close</button>
+          </div>
+
+          <div class="appendix-context">
+            <p>Each case study below represents a deployment where DxD&rsquo;s integrated stack &mdash; <strong>Cortex sensing &middot; COMMAND control &middot; Sentinel response &middot; Atlas defense</strong> &mdash; was tested against a real customer&rsquo;s live operational requirements, not a controlled demo environment. We disclose what we can in this brief; named-customer specifics, contract terms, and reference contacts are available under NDA via the data room.</p>
+          </div>
+
+          <div class="demand-grid">
+            <div class="demand-card">
+              <div class="demand-source">Public Safety &middot; LAPD</div>
+              <div class="demand-stat">World Cup &rsquo;26</div>
+              <div class="demand-detail">Atlas · Airspace Defense pilot conducted Q1 2026. Deputy Chief on-record: &ldquo;I&rsquo;ve seen enough. We need you.&rdquo; Pilot ended early in DxD&rsquo;s favor &mdash; LAPD compressed the evaluation window from 90 days to ~35. Sets the public-sector reference standard for FIFA World Cup 26 host-city operations (June&ndash;July 2026, ~5M attendees across 11 U.S. cities).</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Critical Infrastructure</div>
+              <div class="demand-stat">BVLOS @ 400ft</div>
+              <div class="demand-detail">One of fewer than <strong>five nationwide BVLOS waivers</strong> ever issued at 400ft AGL. <strong>18 months</strong> in process from initial application to grant. Enables Drone-as-First-Responder coverage across distributed sites without per-mission visual observers &mdash; a precondition for unit economics on substations, pipelines, and data-center campuses.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Enterprise &middot; via Accenture</div>
+              <div class="demand-stat">Capital Plan</div>
+              <div class="demand-detail">First three joint pursuits in late-stage diligence (Fortune 100 hyperscaler, energy major, manufacturing primes). Migrating clients from a recurring Security OpEx line to a multi-year Capital Plan. COMMAND as the unifying control surface across guards, drones, sensors, and cUAS &mdash; reducing 4&ndash;6 vendor relationships to one.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Manned Guarding Base</div>
+              <div class="demand-stat">~$25M TTM</div>
+              <div class="demand-detail">Cascadia + Holdfast combined-entity revenue at acquisition close. Low-margin guarding (~7&ndash;8% EBITDA) becomes the distribution channel; COMMAND layers in <strong>&gt;30% GM tech revenue scaling toward 50&ndash;60%</strong> at full SaaS overlay maturity (FY27&ndash;FY28).</div>
+            </div>
+          </div>
+
+          <h3 class="appendix-h3">Outcome Themes Across Pilots</h3>
+          <div class="appendix-keypoints">
+            <div class="appendix-keypoint"><div class="kp-label">Time-to-detect</div><div class="kp-body">Cortex fusion typically reduces threat detect-to-classify latency from <strong>~45s (single-modality baseline)</strong> to <strong>&lt;8s (fused multi-modality)</strong> in deployed environments.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Operator load</div><div class="kp-body">COMMAND consolidates an average of <strong>4&ndash;6 console surfaces</strong> into one for a typical Tier-1 critical-infrastructure SOC, freeing two operator-FTEs per shift.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Reportability</div><div class="kp-body">Every action is captured to the auditable record &mdash; the same artifact serves <strong>NERC CIP-008</strong>, <strong>CIRCIA</strong>, and law-enforcement chain-of-custody requirements without rework.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Cost to operate</div><div class="kp-body">DFR rooftop docks shift first-response from a <strong>$45&ndash;90/hr human patrol</strong> to a <strong>~$6&ndash;9/incident autonomous fly-out</strong> at sustained scale, before any SaaS overlay.</div></div>
+          </div>
+
+          <div class="appendix-cta-row">
+            <span>Named-customer case studies with full deployment metrics, contract terms, and reference contacts available under NDA.</span>
+            <a href="mailto:pat@deusxdefense.com?subject=Case%20Studies%20%E2%80%94%20Diligence%20Request">Request file &#8594;</a>
+          </div>
+
+          <div class="appendix-sources">
+            <div class="src-eyebrow">Sources &amp; references</div>
+            <ol>
+              <li>LAPD pilot AAR &mdash; available in data room under NDA, Tab 11 <em>(NDA)</em>.</li>
+              <li>FAA Part 107 / Part 107.31 / Part 91 waiver and authorization registry &mdash; <a href="https://www.faa.gov/uas" target="_blank" rel="noopener">faa.gov/uas</a>.</li>
+              <li>Accenture joint-pursuit pipeline &mdash; redacted, data room Tab 5 <em>(NDA)</em>.</li>
+              <li>Cascadia + Holdfast pro-forma combined financials (audit in process), data room Tabs 6&ndash;7 <em>(NDA)</em>.</li>
+              <li>Operator-load and time-to-detect benchmarks: <em>DxD-internal field telemetry</em>, normalized across deployed sites in 2025.</li>
+              <li>NERC CIP-008 incident-reporting requirements (<a href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" target="_blank" rel="noopener">nerc.com</a>); CISA CIRCIA NPRM and implementation guidance (<a href="https://www.cisa.gov/circia" target="_blank" rel="noopener">cisa.gov/circia</a>).</li>
+            </ol>
+            <div class="src-note">Time-to-detect, operator-load, and cost-to-operate figures are derived from DxD-instrumented deployments and are <em>internal benchmarks</em>, not third-party measurements; full methodology is available in the data room. All cited customer arrangements are governed by executed NDAs and are not independently verifiable from public sources.</div>
+          </div>
+        </section>
+
+        <!-- D. Demo Videos -->
+        <section id="demos-section" class="appendix-section" style="display:none;">
+          <div class="appendix-section-head">
+            <div>
+              <div class="appendix-section-eyebrow">Brief D &middot; Product walkthroughs</div>
+              <h2>Product Demos</h2>
+              <p class="sub">Demonstrations and field deployment footage. Live demos available on request.</p>
+            </div>
+            <button type="button" class="appendix-close" onclick="closeAppendix('demos-section')">&times; Close</button>
+          </div>
+
+          <div class="appendix-context">
+            <p>The four product walkthroughs below are recorded against live customer-facing deployments, not synthetic environments. Each one demonstrates a single layer of the DxD stack so investors can evaluate them independently. <strong>Live demos are scheduled within 5 business days</strong> of an access request and are conducted under standard mutual NDA.</p>
+          </div>
+
+          <div class="demand-grid">
+            <div class="demand-card">
+              <div class="demand-source">COMMAND C2</div>
+              <div class="demand-stat">Live April 2026</div>
+              <div class="demand-detail">Single pane of glass that unifies guards, drones, sensors, and cUAS into one command surface. Operator clicks &ldquo;respond&rdquo; &mdash; COMMAND selects the right platform based on mission profile, distance, weather, airspace, and availability. Built on a <strong>microservices core with an ATAK-compatible plugin layer</strong>; AES-256 encrypted MAVLink 2.0 for vehicle control.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Atlas · Airspace Defense</div>
+              <div class="demand-stat">3-Layer Kill Chain</div>
+              <div class="demand-detail">Sense (Cortex) &rarr; Slew (M-ALS effector) &rarr; Strike (Orcrist SEAM-1). Footage of integrated sense-slew-strike sequence against representative <strong>Group 1&ndash;2 UAS threat profiles</strong> (multirotor + small fixed-wing). End-to-end engagement timeline shown with timestamped track data.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">Drone-as-First-Responder</div>
+              <div class="demand-stat">DFR</div>
+              <div class="demand-detail">Autonomous response from rooftop docks under nationwide <strong>BVLOS waiver at 400ft AGL</strong>. Removes the human from the point of threat &mdash; <strong>~30-second autonomous arrival</strong> vs. <strong>~60-second human dispatch</strong> at typical campus footprints. Includes return-to-dock, swap-and-recharge cycle telemetry.</div>
+            </div>
+            <div class="demand-card">
+              <div class="demand-source">DaaS Field Operations</div>
+              <div class="demand-stat">In Production</div>
+              <div class="demand-detail">Drone-as-a-Service deployment footage. <strong>CJIS-certified</strong> law-enforcement operators in the loop. Site-specific training program (avg. 12 hours classroom + 4 hours field). Works in the mud, not just the demo room &mdash; deployed across multi-site critical-infrastructure portfolios in CY2025.</div>
+            </div>
+          </div>
+
+          <h3 class="appendix-h3">Operator &amp; Compliance Footprint</h3>
+          <div class="appendix-keypoints">
+            <div class="appendix-keypoint"><div class="kp-label">Certifications</div><div class="kp-body">CJIS-certified operator pool; SOC-2 Type II in process (auditor engaged Q1 2026); NIST 800-171 compliant for federal contracting; AES-256 + FIPS 140-2 cryptographic profile on COMMAND.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Airspace authority</div><div class="kp-body">Active FAA Part 107 + Part 107.31 broad COA, Section 333 exemptions, BVLOS waiver at 400ft AGL. In-process commenter on <strong>FAA Part 108 NPRM</strong> (Final Rule projected Q1 2027).</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Training</div><div class="kp-body">Standardized DxD operator curriculum: <strong>16 hrs initial</strong> (12 classroom + 4 field), <strong>quarterly recurrence</strong>, plus site-specific modules for each customer&rsquo;s SOP. Training records included in COMMAND&rsquo;s auditable record.</div></div>
+            <div class="appendix-keypoint"><div class="kp-label">Reportability</div><div class="kp-body">Every COMMAND action is captured to the auditable record and exportable as the <strong>NERC CIP-008</strong> / <strong>CIRCIA</strong> incident artifact &mdash; reports are <em>generated, not reconstructed</em>.</div></div>
+          </div>
+
+          <div class="appendix-cta-row">
+            <span>Video links and live demo scheduling available on request. Demos are tailored to your interest area (public safety, critical infrastructure, enterprise, or defense).</span>
+            <a href="mailto:pat@deusxdefense.com?subject=Demo%20Videos%20%E2%80%94%20Access%20Request">Schedule walkthrough &#8594;</a>
+          </div>
+
+          <div class="appendix-sources">
+            <div class="src-eyebrow">Sources &amp; references</div>
+            <ol>
+              <li>FAA Part 107, Part 107.31, Part 91, Part 137 (where applicable to specific deployments); Part 108 NPRM public docket (2025) &mdash; <a href="https://www.faa.gov/uas" target="_blank" rel="noopener">faa.gov/uas</a>.</li>
+              <li><a href="https://csrc.nist.gov/pubs/sp/800/171/r3/final" target="_blank" rel="noopener">NIST SP 800-171 Rev. 3</a>; CJIS Security Policy current version (<a href="https://www.fbi.gov/services/cjis" target="_blank" rel="noopener">FBI CJIS Division</a>).</li>
+              <li>NERC CIP-008 incident-reporting requirements (<a href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" target="_blank" rel="noopener">nerc.com</a>); CISA CIRCIA NPRM and implementation guidance (<a href="https://www.cisa.gov/circia" target="_blank" rel="noopener">cisa.gov/circia</a>).</li>
+              <li>SOC-2 Type II audit engagement letter &mdash; data room Tab 9 <em>(NDA)</em>.</li>
+              <li>BVLOS waiver grant &mdash; on file with FAA, copy in data room Tab 10 <em>(NDA)</em>.</li>
+              <li>Operator-training curriculum and recurrence schedule &mdash; data room Tab 12 <em>(NDA)</em>.</li>
+            </ol>
+            <div class="src-note">All response-time figures are <em>DxD-internal measurements</em> at the customer-site level and depend on dock placement, weather, and airspace conditions; ranges shown reflect deployed performance medians and are not independently audited.</div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- 7. DATA ROOM -->
+
+  </div><!-- /portal-content -->
+</div><!-- /portal -->
+
+<script>
+
+/* ── Portal Boot ── */
+// Auth is handled at the platform layer. The portal renders
+// directly; tab routing initializes once the DOM is ready.
+const portal = document.getElementById('portal');
+
+/* ── Tab System ── */
+const TAB_IDS = ['story','letter','product','pitch','financials','dataroom','appendix'];
+
+function showTab(name) {
+  if (!TAB_IDS.includes(name)) name = 'story';
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const pane = document.getElementById('tab-' + name);
+  if (pane) pane.classList.add('active');
+  const navTab = document.querySelector('.nav-tab[data-tab="' + name + '"]');
+  if (navTab) navTab.classList.add('active');
+  window.location.hash = name;
+  const pc = document.querySelector('.portal-content');
+  if (pc) pc.scrollTop = 0;
+  window.scrollTo(0, 0);
+  if (name === 'financials' && !window._finInit) { window._finInit = true; setupFinancials(); }
+  if (name === 'product'    && !window._prodInit) { window._prodInit = true; initProductTabs(); }
+  if (name === 'story'      && !window._storyInit) { window._storyInit = true; initStory(); }
+  if (name === 'pitch'      && !window._pitchInit) { window._pitchInit = true; initPitch(); }
+}
+
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => showTab(tab.dataset.tab));
+});
+
+function initPortal() {
+  const hash = window.location.hash.replace('#','');
+  showTab(TAB_IDS.includes(hash) ? hash : 'story');
+  window.addEventListener('hashchange', () => {
+    const h = window.location.hash.replace('#','');
+    if (TAB_IDS.includes(h)) showTab(h);
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPortal);
+} else {
+  initPortal();
+}
+
+/* ── Appendix expandable sections ── */
+function toggleAppendix(card, sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+  const open = section.style.display === 'none' || section.style.display === '';
+
+  // Close all other open sections + reset their cards.
+  document.querySelectorAll('#tab-appendix .appendix-section').forEach(s => {
+    if (s.id !== sectionId) s.style.display = 'none';
+  });
+  document.querySelectorAll('#tab-appendix .appendix-card').forEach(c => {
+    if (c !== card) c.classList.remove('is-open');
+  });
+  // Backward-compat for any old `.cuas-toggle-label` markup.
+  document.querySelectorAll('#tab-appendix .cuas-toggle-label, #tab-appendix .appendix-toggle-label').forEach(l => {
+    if (!card.contains(l)) l.textContent = 'Click to expand \u2192';
+  });
+
+  section.style.display = open ? 'block' : 'none';
+  card.classList.toggle('is-open', open);
+
+  // Legacy text-label support inside the new card markup (if present).
+  const label = card.querySelector('.appendix-toggle-label, .cuas-toggle-label');
+  if (label) label.textContent = open ? 'Click to collapse \u2191' : 'Click to expand \u2192';
+
+  if (open) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeAppendix(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (section) section.style.display = 'none';
+  document.querySelectorAll('#tab-appendix .appendix-card').forEach(c => c.classList.remove('is-open'));
+  // Scroll back to the cards grid.
+  const grid = document.querySelector('#tab-appendix .appendix-grid');
+  if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Backward-compat alias for any cached pages still calling toggleCuas.
+function toggleCuas(card) { toggleAppendix(card, 'cuas-section'); }
+
+/* ── Product Sub-tabs ── */
+function initProductTabs() {
+  const pnavTabs = document.querySelectorAll('#tab-product .pnav-tab');
+  const panels   = document.querySelectorAll('#tab-product .tab-panel');
+  pnavTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      pnavTabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const target = document.querySelector('#tab-product [id="panel-' + tab.dataset.tab + '"]');
+      if (target) target.classList.add('active');
+    });
+  });
+  const reveals = document.querySelectorAll('#tab-product .reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
+}
+
+/* ── Story init ── */
+function initStory() {
+  // Observe .reveal and .fade-in elements for scroll-based reveal
+  const reveals = document.querySelectorAll('#tab-story .reveal, #tab-story [data-reveal], #tab-story .fade-in');
+  if (reveals.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+    reveals.forEach(el => obs.observe(el));
+  }
+  // Also immediately reveal hero elements that are already in viewport
+  setTimeout(() => {
+    document.querySelectorAll('#tab-story .hero .fade-in').forEach(el => el.classList.add('visible'));
+  }, 50);
+  if (typeof initStoryCharts === 'function') initStoryCharts();
+}
+
+/* ── Pitch init ── */
+function initPitch() {
+  const slideLinks = document.querySelectorAll('#tab-pitch .slide-nav a');
+  const slides     = document.querySelectorAll('#tab-pitch .slide');
+  if (slideLinks.length && slides.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = e.target.id;
+          slideLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+        }
+      });
+    }, { threshold: 0.5 });
+    slides.forEach(s => obs.observe(s));
+  }
+}
+
+/* FINANCIALS DATA & FUNCTIONS */
+const baseData = {
+            quarters: ["Q1'26", "Q2'26", "Q3'26", "Q4'26", "FY 2026", "Q1'27", "Q2'27", "Q3'27", "Q4'27", "FY 2027"],
+            rows: [
+                { label: 'Total Revenue', values: [6.9, 10.3, 21.0, 35.1, 73.4, 50.7, 87.1, 95.5, 103.9, 337.3], bold: true },
+                { label: 'Manned Guarding', values: [6.7, 8.1, 9.4, 10.8, 35.0, 11.8, 12.3, 13.0, 13.6, 50.7] },
+                { label: 'DaaS (All Segments)', values: [0.1, 0.6, 5.0, 9.1, 14.8, 11.1, 12.8, 14.6, 16.3, 54.8] },
+                { label: 'cUAS (Orcrist)', values: [0, 1.6, 6.5, 15.2, 23.2, 27.8, 61.8, 67.8, 73.8, 231.2] },
+                { label: 'Training & Consulting', values: [0.1, 0.1, 0.1, 0.1, 0.4, 0.1, 0.1, 0.2, 0.2, 0.7] },
+                { label: 'Gross Profit', values: [0.6, 1.7, 5.5, 11.2, 19.0, 18.5, 35.9, 42.7, 49.4, 146.5], bold: true },
+                { label: 'Gross Margin %', values: [9.2, 16.5, 26.1, 31.8, 25.9, 36.4, 41.2, 44.7, 47.6, 43.4], muted: true },
+                { label: 'EBITDA', values: [-3.2, -2.5, 0.7, 5.7, 0.7, 12.0, 28.6, 34.4, 39.9, 115.0], bold: true },
+                { label: 'EBITDA Margin %', values: [-46.1, -24.7, 3.3, 16.2, 0.9, 23.7, 32.9, 36.0, 38.4, 34.1], muted: true }
+            ]
+        };
+
+        const adjustedData = {
+            quarters: baseData.quarters,
+            rows: [
+                { label: 'Total Revenue', values: [6.9, 8.8, 14.5, 20.0, 50.1, 23.0, 25.3, 27.7, 30.1, 106.2], bold: true },
+                { label: 'Manned Guarding', values: [6.7, 8.1, 9.4, 10.8, 35.0, 11.8, 12.3, 13.0, 13.6, 50.7] },
+                { label: 'DaaS (All Segments)', values: [0.1, 0.6, 5.0, 9.1, 14.8, 11.1, 12.8, 14.6, 16.3, 54.8] },
+                { label: 'cUAS (Orcrist)', values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+                { label: 'Training & Consulting', values: [0.1, 0.1, 0.1, 0.1, 0.4, 0.1, 0.1, 0.2, 0.2, 0.7] },
+                { label: 'Gross Profit', values: [0.6, 1.0, 2.6, 4.1, 8.4, 4.9, 5.6, 6.4, 7.1, 24.0], bold: true },
+                { label: 'Gross Margin %', values: [9.2, 12.0, 17.7, 20.6, 16.7, 21.3, 22.2, 23.0, 23.7, 22.6], muted: true },
+                { label: 'EBITDA', values: [-3.2, -3.2, -2.2, -1.4, -10.0, -1.5, -1.7, -1.9, -2.4, -7.5], bold: true },
+                { label: 'EBITDA Margin %', values: [-46.1, -36.5, -15.4, -6.8, -19.9, -6.7, -6.6, -6.9, -7.9, -7.1], muted: true }
+            ]
+        };
+
+        function setupFinancials() {
+            let currentScenario = 'base';
+            const scenarioBtns = document.querySelectorAll('.scenario-btn');
+            const finSubtabs = document.querySelectorAll('.fin-subtab');
+
+            scenarioBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    scenarioBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentScenario = btn.dataset.scenario;
+                    renderTable(currentScenario);
+                    renderRevenueChart(currentScenario);
+                });
+            });
+
+            finSubtabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    finSubtabs.forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.fin-subtab-content').forEach(tc => tc.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.subtab).classList.add('active');
+
+                    if (tab.dataset.subtab === 'summary') {
+                        renderTable(currentScenario);
+                        renderRevenueChart(currentScenario);
+                    } else if (tab.dataset.subtab === 'drivers') {
+                        renderDrivers();
+                    } else if (tab.dataset.subtab === 'sensitivity') {
+                        renderSensitivity();
+                    } else if (tab.dataset.subtab === 'assumptions') {
+                        renderAssumptions();
+                    } else if (tab.dataset.subtab === 'units') {
+                        renderUnitEconomics();
+                    }
+                });
+            });
+
+            renderTable(currentScenario);
+            renderRevenueChart(currentScenario);
+        }
+
+        function renderTable(scenario) {
+            const data = scenario === 'base' ? baseData : adjustedData;
+            const header = document.getElementById('table-header');
+            const body = document.getElementById('table-body');
+
+            header.innerHTML = '<th>Metric</th>' + data.quarters.map((q, i) => {
+                const isFY = i === 4 || i === 9;
+                return `<th style="${isFY ? 'background: #eae7e2;' : ''}">${q}</th>`;
+            }).join('');
+
+            body.innerHTML = data.rows.map(row => {
+                const rowClass = row.bold ? 'bold' : row.muted ? 'muted' : '';
+                const isPercent = row.muted || row.label.includes('%');
+                return `<tr class="${rowClass}">
+                    <td>${row.label}</td>
+                    ${row.values.map((val, i) => {
+                        const isFY = i === 4 || i === 9;
+                        let valStr;
+                        if (isPercent) {
+                            valStr = val < 0 ? `<span class="negative">${val.toFixed(1)}%</span>` : `${val.toFixed(1)}%`;
+                        } else if (val === 0) {
+                            valStr = '<span style="color:var(--text-light-tertiary)">—</span>';
+                        } else if (val < 0) {
+                            valStr = `<span class="negative">($${Math.abs(val).toFixed(1)}M)</span>`;
+                        } else {
+                            valStr = `$${val.toFixed(1)}M`;
+                        }
+                        return `<td style="${isFY ? 'background: #eae7e2;' : ''}">${valStr}</td>`;
+                    }).join('')}
+                </tr>`;
+            }).join('');
+        }
+
+        let revenueChart = null;
+        function renderRevenueChart(scenario) {
+            const data = scenario === 'base' ? baseData : adjustedData;
+            const labels = data.quarters;
+            const totalRev = data.rows.find(r => r.label === 'Total Revenue').values;
+            const guarding = data.rows.find(r => r.label === 'Manned Guarding').values;
+            const daas = data.rows.find(r => r.label === 'DaaS (All Segments)').values;
+            const cuas = data.rows.find(r => r.label === 'cUAS (Orcrist)').values;
+            const training = data.rows.find(r => r.label === 'Training & Consulting').values;
+
+            const ctx = document.getElementById('revenueChart');
+            if (revenueChart) revenueChart.destroy();
+
+            revenueChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Manned Guarding',
+                            data: guarding,
+                            backgroundColor: 'rgba(154, 149, 142, 0.35)',
+                            borderColor: 'rgba(154, 149, 142, 0.6)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'DaaS',
+                            data: daas,
+                            backgroundColor: 'rgba(210, 35, 42, 0.25)',
+                            borderColor: 'rgba(210, 35, 42, 0.5)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'cUAS (Orcrist)',
+                            data: cuas,
+                            backgroundColor: 'rgba(210, 35, 42, 0.7)',
+                            borderColor: '#D2232A',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Training',
+                            data: training,
+                            backgroundColor: 'rgba(154, 149, 142, 0.15)',
+                            borderColor: 'rgba(154, 149, 142, 0.3)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#4a4540',
+                                font: { family: "'Outfit', sans-serif", size: 11, weight: '600' },
+                                boxWidth: 12,
+                                padding: 16
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1a1715',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            borderColor: 'rgba(0,0,0,0.1)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ctx.dataset.label + ': $' + ctx.parsed.y.toFixed(1) + 'M';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            ticks: { color: '#4a4540', font: { family: "'JetBrains Mono', monospace", size: 11 } },
+                            grid: { color: 'rgba(0,0,0,0.06)' }
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                color: '#4a4540',
+                                font: { family: "'JetBrains Mono', monospace", size: 11 },
+                                callback: function(val) { return '$' + val + 'M'; }
+                            },
+                            grid: { color: 'rgba(0,0,0,0.06)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderDrivers() {
+            const el = document.getElementById('drivers-content');
+            const getBase = (label) => baseData.rows.find(r => r.label === label).values[4];
+            const getFY27 = (label) => baseData.rows.find(r => r.label === label).values[9];
+
+            el.innerHTML = `
+                <p style="color:var(--text-light-secondary);margin-bottom:32px;line-height:1.7;max-width:720px;font-family:var(--body);">The Price × Quantity math behind each revenue line. Every number below comes from the current financial model. Lines held at $0 are identified with rationale.</p>
+
+                <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;margin-bottom:16px;color:var(--text-light-primary);">Modeled Revenue Lines</h3>
+                <div class="table-scroll-wrap" style="margin-bottom:40px;">
+                    <table class="financials-table" style="min-width:800px;">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Segment</th>
+                                <th>Price</th>
+                                <th>Quantity / Ramp</th>
+                                <th>FY2026</th>
+                                <th>FY2027</th>
+                                <th>Gross Margin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bold">
+                                <td>Manned Guarding</td>
+                                <td>~$25M TTM base</td>
+                                <td>40% growth via cross-sell + pricing</td>
+                                <td>$${getBase('Manned Guarding').toFixed(1)}M</td>
+                                <td>$${getFY27('Manned Guarding').toFixed(1)}M</td>
+                                <td>8% → 14%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:32px;color:var(--text-light-secondary);">DaaS — Sunflower</td>
+                                <td>$9K/dock/mo</td>
+                                <td>1 customer/mo from Jun '26, 2 docks each</td>
+                                <td style="text-align:center;">—</td>
+                                <td style="text-align:center;">—</td>
+                                <td>35% VAR</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:32px;color:var(--text-light-secondary);">DaaS — Skydio</td>
+                                <td>$270K kit</td>
+                                <td>8 enterprise + 2 public sector deals in 2026</td>
+                                <td style="text-align:center;">—</td>
+                                <td style="text-align:center;">—</td>
+                                <td>35% VAR</td>
+                            </tr>
+                            <tr class="bold">
+                                <td style="padding-left:32px;">DaaS Combined</td>
+                                <td></td>
+                                <td></td>
+                                <td>$${getBase('DaaS (All Segments)').toFixed(1)}M</td>
+                                <td>$${getFY27('DaaS (All Segments)').toFixed(1)}M</td>
+                                <td></td>
+                            </tr>
+                            <tr class="bold">
+                                <td>cUAS (Orcrist SEAM-1)</td>
+                                <td>$30K/unit + $1K/mo SW</td>
+                                <td>0 → 700 units (2026); 6,900 (2027)</td>
+                                <td>$${getBase('cUAS (Orcrist)').toFixed(1)}M</td>
+                                <td>$${getFY27('cUAS (Orcrist)').toFixed(1)}M</td>
+                                <td>50% HW margin</td>
+                            </tr>
+                            <tr>
+                                <td>Training & Consulting</td>
+                                <td>$13.5K/course</td>
+                                <td>Modest volume</td>
+                                <td>$${getBase('Training & Consulting').toFixed(1)}M</td>
+                                <td>$${getFY27('Training & Consulting').toFixed(1)}M</td>
+                                <td>40%</td>
+                            </tr>
+                            <tr class="bold" style="border-top:2px solid var(--bg-light-border);">
+                                <td>Total Revenue</td>
+                                <td></td>
+                                <td></td>
+                                <td>$${getBase('Total Revenue').toFixed(1)}M</td>
+                                <td>$${getFY27('Total Revenue').toFixed(1)}M</td>
+                                <td>${getBase('Gross Margin %').toFixed(1)}% / ${getFY27('Gross Margin %').toFixed(1)}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p style="color:var(--text-light-secondary);font-size:13px;margin-bottom:8px;"><strong style="color:var(--text-light-primary);">DaaS model:</strong> DxD resells drone hardware + bundles COMMAND Air software + DxD operators run it. One contract, one team. Commercial = Drone-as-a-Service. Public sector = DFR-as-a-Service.</p>
+                <p style="color:var(--text-light-secondary);font-size:13px;margin-bottom:40px;"><strong style="color:var(--text-light-primary);">cUAS GA timeline:</strong> Accelerated — active evaluation by multiple US and Allied nation defense departments and federal agencies.</p>
+
+                <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;margin-bottom:16px;color:var(--text-light-primary);">Revenue Lines at $0 — Not Modeled</h3>
+                <p style="color:var(--text-light-secondary);margin-bottom:24px;line-height:1.7;max-width:720px;font-family:var(--body);">These are not aspirational line items — they are real opportunities we have chosen not to model until they convert. Revenue is recognized only when three gates are met: <strong style="color:var(--text-light-primary);">(a)</strong> agreements are formal and signed, <strong style="color:var(--text-light-primary);">(b)</strong> mutual pipeline review confirms what's real, <strong style="color:var(--text-light-primary);">(c)</strong> actual dollar values are assigned.</p>
+
+                <div class="assumptions-grid">
+                    <div class="assumption-card">
+                        <div class="assumption-label">Go-to-Market Partnerships</div>
+                        <div class="assumption-detail">
+                            26-partner ecosystem across five strategic pillars. Three revenue recognition gates apply to all partner revenue.
+                            <br><br>
+                            <strong style="color:var(--red);">Pillar 1 — Enterprise Distribution &amp; GTM</strong><br>
+                            How DxD sells into F500 without a large sales team. <strong>Accenture</strong> (signed — F500 distribution + COMMAND module), <strong>Deloitte</strong> (active — mirrored GTM model). Plus M6 Global Defense, Chertoff Group, Gavin de Becker.
+                            <br><br>
+                            <strong style="color:var(--red);">Pillar 2 — Hardware &amp; Operations Supply Chain</strong><br>
+                            Hardware-agnostic, avoid vendor lock-in. <strong>Orcrist</strong> (signed — exclusive commercial cUAS, $23M modeled), <strong>Sunflower</strong> and <strong>Skydio</strong> (signed — DaaS/DFR hardware, in DaaS line). Plus PDW (NDAA manufacturing) and Mitek/Atlas IED (sensors at 95% of US schools).
+                            <br><br>
+                            <strong style="color:var(--red);">Pillar 3 — Technology &amp; Platform Co-Development</strong><br>
+                            Full platform without 200 engineers. <strong>Data Driven</strong> (signed — CIP IP foundation for COMMAND) and <strong>Sentinel</strong> (active — autonomous decision platform). Plus computer vision, secure comms, quantum-hardened data transmission partnerships.
+                            <br><br>
+                            <strong style="color:var(--red);">Pillar 4 — Critical Infrastructure &amp; Standards Shaping</strong><br>
+                            Standard, not just a vendor. <strong>GNSP</strong> (signed — co-authoring nuclear/data center CI protection requirements) and <strong>Elementl Power</strong> (in-process — SMR/nuclear security). Plus three major insurance brokers (Aon, Lockton, Brown &amp; Brown).
+                            <br><br>
+                            <strong style="color:var(--red);">Pillar 5 — Public Safety &amp; Post-Sales Operations</strong><br>
+                            TAM beyond direct sales. <strong>Axon</strong> (strategic integration — Dedrone, Fusus, Evidence.com, Sky Hero TASER) and <strong>Flock Safety</strong> (5,000+ communities).
+                            <br><br>
+                            <em>Note: $23M+ already modeled from hardware partnerships (Orcrist). DaaS/DFR includes Sunflower and Skydio hardware. All other partnership revenue held at $0.</em>
+                            <br><br>
+                            <strong style="color:var(--red);cursor:pointer;" onclick="document.getElementById('partnership').style.display='block';document.getElementById('financials').classList.remove('active');document.getElementById('partnership').classList.add('active');window.scrollTo(0,0);">View full partnership ecosystem &rarr;</strong>
+                        </div>
+                    </div>
+                    <div class="assumption-card">
+                        <div class="assumption-label">SaaS Products</div>
+                        <div class="assumption-detail">All products launch as internal MVPs first — deployed to DxD operators to build, hone, and refine. GA ~6 months post-MVP. Pricing uses value-based model with A/B testing before GA.<br><br><strong>COMMAND (Protect):</strong> Air (MVP Q2 '26), Atlas · Airspace Defense cUAS (MVP Q2 '26 — GA accelerated), Site (MVP Q4 '26), Ground (MVP Q4 '26)<br><br><strong>COMMAND (Prove):</strong> Report (MVP Q2 '26), Posture (MVP Q3 '26), Verify (MVP Q4 '26), Evidence (MVP H1 '27)<br><br><strong>Virtual Red Cell:</strong> Autonomy training engine — AI-powered adversary simulation using real operational data. Architecture designed; building on Phase 1 deployment data.<br><br><em>$0 SaaS revenue modeled. Pricing not yet developed — intentional.</em></div>
+                    </div>
+                    <div class="assumption-card">
+                        <div class="assumption-label">Hardware VAR & Integrated Solutions</div>
+                        <div class="assumption-detail"><strong>UGV / Robotics ($0):</strong> Ascento (in negotiation), Ghost Robotics / Boston Dynamics (paused — refocused on DaaS + cUAS). Unitree paused — NDAA compliance and potential import ban.<br><br><strong>Edge Devices / Sensors ($0):</strong> Atlas IED / Mitek partnership — analog VAR (35% margin), IP hardware co-development, Highlander software, AI models. Deployed at 95% of US schools. All in negotiation.<br><br><strong>cUAS Detection ($0):</strong> DxD is vendor-agnostic on detection — RF, radar, EO/IR, acoustic. Must integrate with Atlas · Airspace Defense. Revenue potential TBD.<br><br><strong>PDW ($0):</strong> NDAA-compliant drone manufacturer. DaaS hardware + BVLOS ops partner. Active discussion.</div>
+                    </div>
+                    <div class="assumption-card">
+                        <div class="assumption-label">Large Deal Upside</div>
+                        <div class="assumption-detail">The model is built on a portfolio of small and mid-sized deals. No single flagship contract is assumed. Examples of deals <strong>NOT</strong> in the model:<br><br>• <strong>Dallas ISD</strong> — $7.5M Phase 1 sole-source RFP (award in process), $6.2B bond vote May 2, 2026 (26 replacement schools), national next-gen schools blueprint pipeline<br>• Dominion-scale transmission deployments<br>• DoS / Ukraine-class defense contracts<br>• Hyperscaler full-platform deployments<br><br><em>These represent upside, not plan. The base case is what we can execute with high confidence.</em></div>
+                    </div>
+                </div>
+
+                <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;margin:40px 0 16px;color:var(--text-light-primary);">What Must Be True for the Base Case</h3>
+                <div class="assumptions-grid">
+                    <div class="assumption-card">
+                        <div class="assumption-label" style="color:var(--red);">1. Guarding Base Holds</div>
+                        <div class="assumption-detail">$25M TTM grows to $35M through cross-sell and pricing. Margins improve from 8% to 14% via operational efficiencies.</div>
+                    </div>
+                    <div class="assumption-card">
+                        <div class="assumption-label" style="color:var(--red);">2. DaaS Deals Close</div>
+                        <div class="assumption-detail">1-2 new customers/month in 2026, stepping up in 2027. Both Sunflower (commercial) and Skydio (public sector/enterprise) platforms.</div>
+                    </div>
+                    <div class="assumption-card">
+                        <div class="assumption-label" style="color:var(--red);">3. Public Sector Converts</div>
+                        <div class="assumption-detail">LAPD, Dallas, Richland commitments convert from verbal to contracted. CJIS-compliant pilots execute successfully.</div>
+                    </div>
+                    <div class="assumption-card">
+                        <div class="assumption-label" style="color:var(--red);">4. Orcrist Validates & Ships</div>
+                        <div class="assumption-detail">Hundreds of units/month (not thousands) at 40-50% blended margins. Supply chain cooperates. LRIP scales from 50 to 100 units/mo by EoY 2026.</div>
+                    </div>
+                    <div class="assumption-card">
+                        <div class="assumption-label" style="color:var(--red);">5. Capital Closes</div>
+                        <div class="assumption-detail">Remaining Seed and Strategic Bridge fund sales, engineering, and inventory ahead of payment cycles.</div>
+                    </div>
+                    <div class="assumption-card">
+                        <div class="assumption-label" style="color:var(--red);">6. Regulatory Holds</div>
+                        <div class="assumption-detail">National BVLOS waiver and CJIS model remain intact. Model hedges with slower operator ratios and delayed benefits.</div>
+                    </div>
+                </div>
+                <div style="margin-top:16px;padding:16px 20px;background:var(--bg-light-card);border:1px solid var(--bg-light-border);font-size:13px;color:var(--text-light-secondary);line-height:1.7;border-radius:8px;">
+                    <strong style="color:var(--text-light-primary);">Downside:</strong> If multiple items slip simultaneously, the result is the Adjusted (ex-cUAS) scenario: ~$50M revenue, EBITDA-negative, but the core guarding + DaaS business still operates.
+                </div>
+
+                <div style="margin-top:40px;padding:16px 20px;background:var(--bg-light-card);border:1px solid var(--bg-light-border);font-size:13px;color:var(--text-light-secondary);line-height:1.7;border-radius:8px;">
+                    <strong style="color:var(--text-light-primary);font-family:var(--heading);font-size:11px;letter-spacing:0.05em;text-transform:uppercase;">Decision Framework</strong><br>
+                    Our product architecture is governed by a formal decision framework tracking 8 strategic flags across AI approach, hardware strategy, security architecture, and platform migration. Each flag has defined options, recommendations, and dependency chains. Available for review in diligence.
+                </div>
+            `;
+        }
+
+        function renderAssumptions() {
+            const grid = document.getElementById('assumptions-grid');
+            grid.innerHTML = `
+                <div class="assumption-card">
+                    <div class="assumption-label">Manned Guarding</div>
+                    <div class="assumption-detail"><strong>Combined TTM Revenue:</strong> $25M (two acquisitions)<br><strong>2026 Target:</strong> $35M (40% growth via cross-sell + pricing)<br><strong>Gross Margin:</strong> 8% → 14% (operational efficiencies)<br><strong>2027 Growth:</strong> 5% quarterly revenue growth; margin → 18% by Q4'27</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">DaaS — Sunflower</div>
+                    <div class="assumption-detail"><strong>Monthly Rate:</strong> $9,000/dock/month as-a-service<br><strong>VAR Margin:</strong> 35%<br><strong>Operator Ratio:</strong> 1:4 (BVLOS waiver enabled)<br><strong>M&A Upsell:</strong> 1 customer/month from June '26, 2 docks each</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">DaaS — Skydio</div>
+                    <div class="assumption-detail"><strong>X10 Kit:</strong> $270K (w/ cellular: $285K)<br><strong>DxD Cost:</strong> $208,264<br><strong>Operator Ratio:</strong> 1:2 in 2026, 1:4 in 2027<br><strong>Public Sector:</strong> 100% Skydio, 4 docks per deal</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">cUAS (Orcrist)</div>
+                    <div class="assumption-detail"><strong>MSRP:</strong> $30,000 | COGS: $15,000 (50% HW margin)<br><strong>SW License:</strong> $1,000/unit/month<br><strong>Commission:</strong> 10% direct, 20% distributor discount<br><strong>Ramp:</strong> 0 → 700 units in 2026; 6,900 in 2027</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">Operating Expenses</div>
+                    <div class="assumption-detail"><strong>Model:</strong> AI-optimized lean model, contractor-heavy<br><strong>Salaries:</strong> $486K/mo base, 2.5%/mo growth<br><strong>Engineering:</strong> $147K/mo, 10%/mo growth (invest posture)<br><strong>R&D:</strong> $83K/mo, 10%/mo growth</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">Model Governance</div>
+                    <div class="assumption-detail">This financial model is maintained by DxD leadership and updated as material changes occur — new contracts, revised timelines, or shifts in market conditions. Assumptions are reviewed monthly. Prior versions are archived. If you are reviewing this model more than 30 days after your last briefing, request an updated version from the DxD team.</div>
+                </div>
+            `;
+        }
+
+        function renderUnitEconomics() {
+            const grid = document.getElementById('units-grid');
+            grid.innerHTML = `
+                <div class="assumption-card">
+                    <div class="assumption-label">Manned Guarding</div>
+                    <div class="assumption-detail"><strong>Annual Revenue:</strong> ~$35M (2026)<br><strong>Gross Margin:</strong> 8-14%<br><strong>Gross Profit:</strong> ~$2.9M-$4.9M</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">DaaS (Sunflower)</div>
+                    <div class="assumption-detail"><strong>Monthly Rate:</strong> $9K/dock<br><strong>VAR Margin:</strong> 35%<br><strong>Operator Ratio:</strong> 1:4</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">DaaS (Skydio)</div>
+                    <div class="assumption-detail"><strong>Kit Cost:</strong> $270K MSRP<br><strong>DxD Cost:</strong> $208K<br><strong>Operator Ratio:</strong> 1:2 (2026)</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">cUAS (Orcrist)</div>
+                    <div class="assumption-detail"><strong>MSRP:</strong> $30K<br><strong>HW Margin:</strong> 50% ($15K COGS)<br><strong>SW License:</strong> $1K/unit/month</div>
+                </div>
+                <div class="assumption-card">
+                    <div class="assumption-label">Training & Consulting</div>
+                    <div class="assumption-detail"><strong>Per Course:</strong> $13.5K<br><strong>Gross Margin:</strong> 40%<br><strong>Gross Profit:</strong> ~$5.4K per course</div>
+                </div>
+            `;
+        }
+
+        function renderSensitivity() {
+            const grid = document.getElementById('sensitivity-grid');
+
+            // Helper: get FY2026 value (index 4) from baseData by row label
+            const getBase = (label) => baseData.rows.find(r => r.label === label).values[4];
+
+            const baseRevenue = getBase('Total Revenue');
+            const baseEBITDA = getBase('EBITDA');
+            const baseCUAS = getBase('cUAS (Orcrist)');
+            const baseGuarding = getBase('Manned Guarding');
+            const baseDaaS = getBase('DaaS (All Segments)');
+
+            // Scenario 1: cUAS ramps 50% slower
+            const cuasHalf = baseCUAS * 0.5;
+            const cuasRevDelta = -cuasHalf;
+            const cuasGPDelta = -(cuasHalf * 0.5); // ~50% HW gross margin
+            const cuasEBITDANew = baseEBITDA + cuasGPDelta;
+
+            // Scenario 2: Manned Guarding grows 20% vs 40%
+            // Base: Q1=6.7 to FY=35.0. Growth over base Q1 annualized = 35.0 - (6.7*4) = 8.2M growth
+            // At half growth: delta = -4.1M revenue
+            const guardingQ1Annual = baseData.rows.find(r => r.label === 'Manned Guarding').values[0] * 4;
+            const guardingGrowth = baseGuarding - guardingQ1Annual;
+            const guardingRevDelta = -(guardingGrowth * 0.5);
+            const guardingGPDelta = guardingRevDelta * 0.11; // ~11% avg gross margin
+            const guardingEBITDANew = baseEBITDA + guardingGPDelta;
+
+            // Scenario 3: DaaS adoption delays 2 quarters
+            // Shift DaaS revenue right by 2Q: Q1=0, Q2=0, Q3=Q1base, Q4=Q2base
+            const daasRow = baseData.rows.find(r => r.label === 'DaaS (All Segments)');
+            const daasBaseQ = [daasRow.values[0], daasRow.values[1], daasRow.values[2], daasRow.values[3]];
+            const daasDelayedFY = daasBaseQ[0] + daasBaseQ[1]; // only Q1+Q2 base values land in Q3+Q4
+            const daasRevDelta = daasDelayedFY - baseDaaS;
+            const daasGPDelta = daasRevDelta * 0.35; // ~35% VAR margin
+            const daasEBITDANew = baseEBITDA + daasGPDelta;
+
+            function fmtDelta(val) {
+                const sign = val >= 0 ? '+' : '';
+                return `${sign}$${val.toFixed(1)}M`;
+            }
+
+            function fmtPct(delta, base) {
+                if (base === 0) return '';
+                const pct = (delta / base * 100);
+                const sign = pct >= 0 ? '+' : '';
+                return `${sign}${pct.toFixed(1)}% vs plan`;
+            }
+
+            grid.innerHTML = `
+                <div class="sensitivity-card">
+                    <div class="sensitivity-scenario">If cUAS ramps 50% slower</div>
+                    <div class="sensitivity-deltas">
+                        <div class="sensitivity-delta">
+                            <div class="sensitivity-delta-label">FY2026 Revenue</div>
+                            <div class="sensitivity-delta-value">${fmtDelta(cuasRevDelta)}</div>
+                            <div class="sensitivity-delta-pct">${fmtPct(cuasRevDelta, baseRevenue)}</div>
+                        </div>
+                        <div class="sensitivity-delta">
+                            <div class="sensitivity-delta-label">FY2026 EBITDA</div>
+                            <div class="sensitivity-delta-value">$${cuasEBITDANew.toFixed(1)}M</div>
+                            <div class="sensitivity-delta-pct">${fmtDelta(cuasGPDelta)} vs plan</div>
+                        </div>
+                    </div>
+                    <div class="sensitivity-takeaway">Revenue drops to ~$${(baseRevenue + cuasRevDelta).toFixed(0)}M. EBITDA turns negative at $${cuasEBITDANew.toFixed(1)}M. Company would need to pull forward DaaS or guarding growth to offset.</div>
+                    <div class="sensitivity-assumption"><strong>Assumption:</strong> cUAS unit sales cut 50% across all quarters. All other revenue lines unchanged. Gross margin impact assumes 50% hardware margin on cUAS revenue.</div>
+                </div>
+
+                <div class="sensitivity-card">
+                    <div class="sensitivity-scenario">If Guarding grows 20% vs 40%</div>
+                    <div class="sensitivity-deltas">
+                        <div class="sensitivity-delta">
+                            <div class="sensitivity-delta-label">FY2026 Revenue</div>
+                            <div class="sensitivity-delta-value">${fmtDelta(guardingRevDelta)}</div>
+                            <div class="sensitivity-delta-pct">${fmtPct(guardingRevDelta, baseRevenue)}</div>
+                        </div>
+                        <div class="sensitivity-delta">
+                            <div class="sensitivity-delta-label">FY2026 EBITDA</div>
+                            <div class="sensitivity-delta-value">$${guardingEBITDANew.toFixed(1)}M</div>
+                            <div class="sensitivity-delta-pct">${fmtDelta(guardingGPDelta)} vs plan</div>
+                        </div>
+                    </div>
+                    <div class="sensitivity-takeaway">Modest impact. Guarding is the low-margin base — even at half the growth rate, EBITDA remains near breakeven at $${guardingEBITDANew.toFixed(1)}M. Validates that the upside case is driven by technology lines, not legacy guarding.</div>
+                    <div class="sensitivity-assumption"><strong>Assumption:</strong> Guarding organic growth halved (20% vs 40% over Q1 baseline). Average gross margin of ~11% applied to the revenue delta. All other lines unchanged.</div>
+                </div>
+
+                <div class="sensitivity-card">
+                    <div class="sensitivity-scenario">If DaaS adoption delays 2 quarters</div>
+                    <div class="sensitivity-deltas">
+                        <div class="sensitivity-delta">
+                            <div class="sensitivity-delta-label">FY2026 Revenue</div>
+                            <div class="sensitivity-delta-value">${fmtDelta(daasRevDelta)}</div>
+                            <div class="sensitivity-delta-pct">${fmtPct(daasRevDelta, baseRevenue)}</div>
+                        </div>
+                        <div class="sensitivity-delta">
+                            <div class="sensitivity-delta-label">FY2026 EBITDA</div>
+                            <div class="sensitivity-delta-value">$${daasEBITDANew.toFixed(1)}M</div>
+                            <div class="sensitivity-delta-pct">${fmtDelta(daasGPDelta)} vs plan</div>
+                        </div>
+                    </div>
+                    <div class="sensitivity-takeaway">Significant impact — DaaS is the highest-margin recurring line. A 2-quarter delay drops FY2026 revenue to ~$${(baseRevenue + daasRevDelta).toFixed(0)}M and pushes EBITDA to $${daasEBITDANew.toFixed(1)}M. Underscores the importance of early DaaS wins.</div>
+                    <div class="sensitivity-assumption"><strong>Assumption:</strong> DaaS revenue curve shifted right by 2 quarters (Q3 gets Q1's value, Q4 gets Q2's value, Q1-Q2 are zero). 35% VAR gross margin applied to revenue delta. All other lines unchanged.</div>
+                </div>
+            `;
+        }
+</script>
+
+<!-- STORY SCRIPT (deduped — HLS init lives in the earlier story script block) -->
+
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script><script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script><script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script>
+
+<!-- PRODUCT SCRIPT -->
+<script>
+// Embedded mode
+if (window.location.search.includes('embedded=true')) {
+  document.body.classList.add('embedded');
+}
+
+// Tab navigation
+const pnavTabs = document.querySelectorAll('.pnav-tab');
+pnavTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    pnavTabs.forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const id = 'tab-' + tab.dataset.tab;
+    const panel = document.getElementById(id);
+    if (panel) { panel.classList.add('active'); window.scrollTo(0,0); observeFadeIns(); }
+  });
+});
+
+// Accordion
+function toggleExpand(header) {
+  const expand = header.closest('.expand');
+  expand.classList.toggle('open');
+}
+
+// Fade-in observer
+function observeFadeIns() {
+  const els = document.querySelectorAll('.fi:not(.vis)');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', observeFadeIns);
+</script>
+
+</body>
+</html>

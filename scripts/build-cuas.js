@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Build CUAS/index.html by patching the bundled briefing in place.
-// Reads "DXD Counter-UAS Briefing.html", rewrites generic copy in both the
+// Reads "atlas-airspace-defense.html", rewrites generic copy in both the
 // embedded HTML template and the compressed text manifest entries, injects
 // the Inter Tight + Tomorrow font system, and writes the merged single-file
 // artifact. Run again whenever the briefing is regenerated.
@@ -10,7 +10,7 @@ const path = require('path');
 const zlib = require('zlib');
 
 const ROOT = path.resolve(__dirname, '..');
-const SRC = path.join(ROOT, 'DXD Counter-UAS Briefing.html');
+const SRC = path.join(ROOT, 'atlas-airspace-defense.html');
 const DEST = path.join(ROOT, 'CUAS', 'index.html');
 
 const OUTER_TITLE = 'DXD · Counter-UAS · Critical Infrastructure';
