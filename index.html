@@ -750,8 +750,13 @@
     const gatePassword = document.getElementById("gate-password");
     const gateError = document.getElementById("gate-error");
 
-    function showPortal() {
+    function showPortal(opts) {
       gateEl.remove();
+      // On a fresh sign-in (not a session resume), always land on the
+      // CEO Letter regardless of any stale hash in the URL.
+      if (opts && opts.freshSignIn) {
+        try { history.replaceState(null, "", location.pathname + location.search); } catch (_) {}
+      }
       initPortal();
     }
 
@@ -795,7 +800,7 @@
         e.preventDefault();
         if (gatePassword.value === ACCESS_CODE) {
           try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch (_) {}
-          showPortal();
+          showPortal({ freshSignIn: true });
         } else {
           gateError.textContent = "Incorrect access code.";
           gatePassword.select();
