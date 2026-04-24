@@ -809,15 +809,12 @@
     }
 
     function initPortal() {
-    // Each tab maps a label to a file in the repo root.
-    // Files are loaded lazily on first activation, then cached in the DOM
-    // so switching tabs is instant and no single response is "too big".
-    // Each tab maps a label to a source file (and optional in-page hash).
-    // Tabs that share the same `src` reuse a single iframe instance —
-    // switching just updates the iframe's hash so the inner page can
-    // navigate without reloading. The Q1 2026 quarterly portal
-    // (`index 2.html`) listens for hashchange and switches its own
-    // sub-tabs accordingly.
+    // Each tab maps a label to a single source file at the repo root.
+    // Files are loaded lazily on first activation, then cached in the
+    // DOM so switching tabs is instant and no single response is
+    // "too big". Each tab now owns its own file (the legacy
+    // `index 2.html` monolith was split into ceo-letter.html,
+    // the-story.html, financials.html, appendix.html, data-room.html).
     const TABS = [
       { id: "investor",     label: "CEO Letter",                       src: "ceo-letter.html" },
       { id: "pitch",        label: "Deus X Defense",                   src: "deus-x-defense.html" },
