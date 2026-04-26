@@ -15,6 +15,7 @@ const path = require('path');
 const app = express();
 const ROOT = __dirname;
 const PORT = parseInt(process.env.PORT || '3000', 10);
+const FAVICON_PATH = path.join(ROOT, 'CUAS', 'assets', 'dxd-red-x-icon.png');
 
 // gzip everything compressible above ~1KB. Threshold avoids overhead on tiny responses.
 app.use(compression({ threshold: 1024 }));
@@ -36,6 +37,13 @@ app.use((req, res, next) => {
 // Root rewrite (was: serve.json `rewrites: [{ source: "/", destination: "/index.html" }]`)
 app.get('/', (_req, res) => {
   res.sendFile(path.join(ROOT, 'index.html'));
+});
+
+// Browsers will probe /favicon.ico by default even when no explicit link tag
+// exists. Serve the existing DXD icon asset at that path so the portal shell
+// and any deep-linked deck stop logging a 404 on first load.
+app.get('/favicon.ico', (_req, res) => {
+  res.sendFile(FAVICON_PATH);
 });
 
 // Static files. `index: 'index.html'` makes /CUAS/, /Product Walkthrough/, etc. resolve.
