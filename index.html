@@ -787,8 +787,6 @@
     // Simple client-side access gate. Not cryptographic security — intended
     // to keep the portal out of casual / unauthenticated view.
     const ACCESS_CODE = "dxd2026";
-    const STORAGE_KEY = "dxd-portal-auth";
-
     const gateEl = document.getElementById("gate");
     const gateForm = document.getElementById("gate-form");
     const gatePassword = document.getElementById("gate-password");
@@ -796,6 +794,7 @@
     const headerEl = document.querySelector("header");
     const portalMainEl = document.getElementById("main");
     let portalInitialized = false;
+    let isAuthenticated = false;
 
     function setPortalLocked(isLocked) {
       gateEl.hidden = !isLocked;
@@ -829,15 +828,6 @@
       initGateReticle();
     }
 
-    function clearPortalSession() {
-      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
-    }
-
-    function lockPortal() {
-      clearPortalSession();
-      showGate();
-    }
-
     // Cursor-following target reticle (lerps for slight tracker lag)
     function initGateReticle() {
       const ret = document.getElementById("gate-reticle");
@@ -863,7 +853,7 @@
       });
     }
 
-    if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+    if (isAuthenticated) {
       showPortal();
     } else {
       showGate();
@@ -872,18 +862,11 @@
     gateForm.addEventListener("submit", (e) => {
       e.preventDefault();
       if (gatePassword.value === ACCESS_CODE) {
-        try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch (_) {}
+        isAuthenticated = true;
         showPortal({ freshSignIn: true });
       } else {
         gateError.textContent = "Incorrect access code.";
         gatePassword.select();
-      }
-    });
-
-    window.addEventListener("pagehide", clearPortalSession);
-    window.addEventListener("pageshow", () => {
-      if (sessionStorage.getItem(STORAGE_KEY) !== "1") {
-        showGate();
       }
     });
 
