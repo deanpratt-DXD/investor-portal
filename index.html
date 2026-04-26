@@ -832,7 +832,12 @@
       }
     });
 
-    window.addEventListener("pagehide", lockPortal);
+    // pagehide must only clear the session token — calling showGate() here races
+    // with a successful sign-in and immediately bounces the shell back to the gate
+    // (fixed in d8a1676; re-broken when cf5b877 reverted to sessionStorage).
+    window.addEventListener("pagehide", () => {
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
+    });
     window.addEventListener("pageshow", () => {
       if (sessionStorage.getItem(STORAGE_KEY) !== "1") {
         showGate();
