@@ -301,45 +301,6 @@
       #gate .gate-reticle .ret-ring,
       #gate .gate-reticle .ret-spin { animation: none; }
     }
-    /* ── Counter-UAS intercept overlay elements ── */
-    .gr-intercept {
-      position: fixed;
-      width: 32px; height: 32px;
-      pointer-events: none;
-      z-index: 9998;
-      will-change: transform;
-      transition: transform 0.38s linear;
-    }
-    .gr-burst {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      animation: gr-burst-anim 0.7s ease-out forwards;
-    }
-    @keyframes gr-burst-anim {
-      0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.15); }
-      40%  { opacity: 0.9; transform: translate(-50%, -50%) scale(1.4); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); }
-    }
-    .gr-neutralize-flash {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: #00FF88;
-      white-space: nowrap;
-      animation: gr-flash-anim 1.6s ease-out forwards;
-    }
-    @keyframes gr-flash-anim {
-      0%   { opacity: 1; transform: translateY(0); }
-      60%  { opacity: 0.8; }
-      100% { opacity: 0; transform: translateY(-18px); }
-    }
-    /* Hover glow on drone hitboxes to hint clickability */
-    .gr-hitbox { transition: opacity 0.15s; }
-    .gr-hitbox:hover ~ .gr-drone circle { fill: #00FF88 !important; }
     /* Vignette to suppress any tagline/subtext rendered inside the hero iframe */
     #gate .hero::after {
       content: "";
@@ -637,8 +598,6 @@
                 <circle cx="-9" cy="9"  r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
                 <circle cx="9"  cy="9"  r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
               </g>
-              <!-- clickable hitbox (transparent, sits on top) -->
-              <circle r="22" fill="transparent" class="gr-hitbox" style="pointer-events:all;cursor:crosshair;"/>
               <!-- lock-on box -->
               <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
                 <path d="M -16 -16 L -10 -16 M -16 -16 L -16 -10"/>
@@ -665,7 +624,6 @@
                 <circle cx="-7" cy="7"  r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
                 <circle cx="7"  cy="7"  r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
               </g>
-              <circle r="20" fill="transparent" class="gr-hitbox" style="pointer-events:all;cursor:crosshair;"/>
               <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
                 <path d="M -13 -13 L -8 -13 M -13 -13 L -13 -8"/>
                 <path d="M  13 -13 L  8 -13 M  13 -13 L  13 -8"/>
@@ -690,7 +648,6 @@
                 <circle cx="-6" cy="6"  r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
                 <circle cx="6"  cy="6"  r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
               </g>
-              <circle r="18" fill="transparent" class="gr-hitbox" style="pointer-events:all;cursor:crosshair;"/>
               <g class="gr-lock" fill="none" stroke="#FFD0D9" stroke-width="0.9" opacity="0.7">
                 <path d="M -11 -11 L -7 -11 M -11 -11 L -11 -7"/>
                 <path d="M  11 -11 L  7 -11 M  11 -11 L  11 -7"/>
@@ -715,7 +672,6 @@
                 <circle cx="-8" cy="8"  r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
                 <circle cx="8"  cy="8"  r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
               </g>
-              <circle r="22" fill="transparent" class="gr-hitbox" style="pointer-events:all;cursor:crosshair;"/>
               <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
                 <path d="M -14 -14 L -9 -14 M -14 -14 L -14 -9"/>
                 <path d="M  14 -14 L  9 -14 M  14 -14 L  14 -9"/>
@@ -740,6 +696,8 @@
       <!-- cursor-following target reticle -->
       <div class="gate-reticle" id="gate-reticle" aria-hidden="true">
         <svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- spinning outer dashed ring -->
+          <circle class="ret-spin" r="38" fill="none" stroke="#FF1F3A" stroke-width="0.8" stroke-dasharray="3 5" opacity="0.7"/>
           <!-- pulsing main ring -->
           <g class="ret-ring">
             <circle r="30" fill="none" stroke="#FF1F3A" stroke-width="1.2"/>
@@ -785,6 +743,8 @@
     // Simple client-side access gate. Not cryptographic security — intended
     // to keep the portal out of casual / unauthenticated view.
     const ACCESS_CODE = "dxd2026";
+    const STORAGE_KEY = "dxd-portal-auth";
+
     const gateEl = document.getElementById("gate");
     const gateForm = document.getElementById("gate-form");
     const gatePassword = document.getElementById("gate-password");
@@ -792,7 +752,6 @@
     const headerEl = document.querySelector("header");
     const portalMainEl = document.getElementById("main");
     let portalInitialized = false;
-    let isAuthenticated = false;
 
     function setPortalLocked(isLocked) {
       gateEl.hidden = !isLocked;
@@ -826,6 +785,11 @@
       initGateReticle();
     }
 
+    function lockPortal() {
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
+      showGate();
+    }
+
     // Cursor-following target reticle (lerps for slight tracker lag)
     function initGateReticle() {
       const ret = document.getElementById("gate-reticle");
@@ -851,7 +815,7 @@
       });
     }
 
-    if (isAuthenticated) {
+    if (sessionStorage.getItem(STORAGE_KEY) === "1") {
       showPortal();
     } else {
       showGate();
@@ -860,11 +824,18 @@
     gateForm.addEventListener("submit", (e) => {
       e.preventDefault();
       if (gatePassword.value === ACCESS_CODE) {
-        isAuthenticated = true;
+        try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch (_) {}
         showPortal({ freshSignIn: true });
       } else {
         gateError.textContent = "Incorrect access code.";
         gatePassword.select();
+      }
+    });
+
+    window.addEventListener("pagehide", lockPortal);
+    window.addEventListener("pageshow", () => {
+      if (sessionStorage.getItem(STORAGE_KEY) !== "1") {
+        showGate();
       }
     });
 
