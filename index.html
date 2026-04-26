@@ -863,17 +863,35 @@
             const svg = document.getElementById("gate-radar");
             if (!svg || svg._droneInteract) return;
             svg._droneInteract = true;
-            // Enable pointer events on the SVG so hitboxes register clicks
-            svg.style.pointerEvents = "all";
 
-            svg.querySelectorAll(".gr-hitbox").forEach((hb) => {
-              const innerG = hb.parentElement; // the translate(R 0) group
-              const trackG = innerG.parentElement; // the .gr-track group
-              hb.addEventListener("click", (e) => {
-                e.stopPropagation();
+            // Root cause of the first attempt: transparent SVG hit-circles on
+            // animated groups are not consistently easy to hit across browsers.
+            // Instead, let the user click anywhere on the radar and resolve the
+            // nearest live drone under the reticle/cursor.
+            gateEl.addEventListener("click", (e) => {
+              if (!gateEl.hidden && gateForm.contains(e.target)) return;
+
+              const clickX = e.clientX;
+              const clickY = e.clientY;
+              let best = null;
+
+              svg.querySelectorAll(".gr-track").forEach((trackG) => {
                 if (trackG.dataset.neutralized) return;
-                launchInterceptor(trackG, innerG);
+                const innerG = trackG.firstElementChild;
+                if (!innerG) return;
+                const rect = innerG.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const dx = centerX - clickX;
+                const dy = centerY - clickY;
+                const distance = Math.hypot(dx, dy);
+                if (!best || distance < best.distance) {
+                  best = { trackG, innerG, distance };
+                }
               });
+
+              if (!best || best.distance > 40) return;
+              launchInterceptor(best.trackG, best.innerG);
             });
           }
 
