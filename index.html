@@ -839,7 +839,6 @@
       const ret = document.getElementById("gate-reticle");
       if (!ret || ret._init) return;
       ret._init = true;
-      initDroneInteraction();
       let tx = -200, ty = -200, x = -200, y = -200, raf = 0, live = false;
       const tick = () => {
         x += (tx - x) * 0.18;
@@ -857,9 +856,10 @@
       gateEl.addEventListener("mouseleave", () => {
         live = false;
         ret.classList.remove("live");
+      });
 
-          // ── Counter-UAS intercept: click a drone to launch a friendly interceptor ──
-          function initDroneInteraction() {
+      // ── Counter-UAS intercept: click a drone to launch a friendly interceptor ──
+      function initDroneInteraction() {
             const svg = document.getElementById("gate-radar");
             if (!svg || svg._droneInteract) return;
             svg._droneInteract = true;
@@ -979,7 +979,8 @@
               }, 2800);
             }, { once: true });
           }
-      });
+
+      initDroneInteraction();
     }
 
     if (sessionStorage.getItem(STORAGE_KEY) === "1") {
