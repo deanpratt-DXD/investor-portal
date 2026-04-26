@@ -829,8 +829,12 @@
       initGateReticle();
     }
 
-    function lockPortal() {
+    function clearPortalSession() {
       try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
+    }
+
+    function lockPortal() {
+      clearPortalSession();
       showGate();
     }
 
@@ -1000,7 +1004,7 @@
       }
     });
 
-    window.addEventListener("pagehide", lockPortal);
+    window.addEventListener("pagehide", clearPortalSession);
     window.addEventListener("pageshow", () => {
       if (sessionStorage.getItem(STORAGE_KEY) !== "1") {
         showGate();
