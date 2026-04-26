@@ -895,23 +895,25 @@
               });
 
               if (!best || best.distance > 40) return;
-              launchInterceptor(best.trackG, best.innerG);
+              // Pass the actual click position so the intercept flies to
+              // exactly where the user clicked, not a bounding-rect estimate.
+              launchInterceptor(best.trackG, clickX, clickY);
             });
           }
 
-          function launchInterceptor(trackEl, innerEl) {
+          function launchInterceptor(trackEl, clickX, clickY) {
             const gateEl   = document.getElementById("gate");
             const svgEl    = document.getElementById("gate-radar");
             const svgR     = svgEl.getBoundingClientRect();
-            const innerR   = innerEl.getBoundingClientRect();
             const gateR    = gateEl.getBoundingClientRect();
 
-            // Radar center: viewBox "0 0 1200 800" + xMidYMid slice → center maps to element center
+            // Radar center in gate-relative coords
             const cx = svgR.left + svgR.width  * 0.5 - gateR.left;
             const cy = svgR.top  + svgR.height * 0.5 - gateR.top;
-            // Target drone center in gate-relative coords
-            const tx = innerR.left + innerR.width  / 2 - gateR.left;
-            const ty = innerR.top  + innerR.height / 2 - gateR.top;
+            // Use the actual click coords — bounding rect of the <g> group
+            // includes the text label and would skew the center estimate.
+            const tx = clickX - gateR.left;
+            const ty = clickY - gateR.top;
 
             trackEl.dataset.neutralized = "1";
 
