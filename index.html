@@ -301,6 +301,45 @@
       #gate .gate-reticle .ret-ring,
       #gate .gate-reticle .ret-spin { animation: none; }
     }
+    /* ── Counter-UAS intercept overlay elements ── */
+    .gr-intercept {
+      position: fixed;
+      width: 32px; height: 32px;
+      pointer-events: none;
+      z-index: 9998;
+      will-change: transform;
+      transition: transform 0.38s linear;
+    }
+    .gr-burst {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      animation: gr-burst-anim 0.7s ease-out forwards;
+    }
+    @keyframes gr-burst-anim {
+      0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.15); }
+      40%  { opacity: 0.9; transform: translate(-50%, -50%) scale(1.4); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); }
+    }
+    .gr-neutralize-flash {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: #00FF88;
+      white-space: nowrap;
+      animation: gr-flash-anim 1.6s ease-out forwards;
+    }
+    @keyframes gr-flash-anim {
+      0%   { opacity: 1; transform: translateY(0); }
+      60%  { opacity: 0.8; }
+      100% { opacity: 0; transform: translateY(-18px); }
+    }
+    /* Hover glow on drone hitboxes to hint clickability */
+    .gr-hitbox { transition: opacity 0.15s; }
+    .gr-hitbox:hover ~ .gr-drone circle { fill: #00FF88 !important; }
     /* Vignette to suppress any tagline/subtext rendered inside the hero iframe */
     #gate .hero::after {
       content: "";
@@ -598,6 +637,8 @@
                 <circle cx="-9" cy="9"  r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
                 <circle cx="9"  cy="9"  r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
               </g>
+              <!-- clickable hitbox (transparent, sits on top) -->
+              <circle r="22" fill="transparent" class="gr-hitbox" style="pointer-events:all;cursor:crosshair;"/>
               <!-- lock-on box -->
               <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
                 <path d="M -16 -16 L -10 -16 M -16 -16 L -16 -10"/>
@@ -624,6 +665,7 @@
                 <circle cx="-7" cy="7"  r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
                 <circle cx="7"  cy="7"  r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
               </g>
+              <circle r="20" fill="transparent" class="gr-hitbox" style="pointer-events:all;cursor:crosshair;"/>
               <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
                 <path d="M -13 -13 L -8 -13 M -13 -13 L -13 -8"/>
                 <path d="M  13 -13 L  8 -13 M  13 -13 L  13 -8"/>
@@ -648,6 +690,7 @@
                 <circle cx="-6" cy="6"  r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
                 <circle cx="6"  cy="6"  r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
               </g>
+              <circle r="18" fill="transparent" class="gr-hitbox" style="pointer-events:all;cursor:crosshair;"/>
               <g class="gr-lock" fill="none" stroke="#FFD0D9" stroke-width="0.9" opacity="0.7">
                 <path d="M -11 -11 L -7 -11 M -11 -11 L -11 -7"/>
                 <path d="M  11 -11 L  7 -11 M  11 -11 L  11 -7"/>
@@ -672,6 +715,7 @@
                 <circle cx="-8" cy="8"  r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
                 <circle cx="8"  cy="8"  r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
               </g>
+              <circle r="22" fill="transparent" class="gr-hitbox" style="pointer-events:all;cursor:crosshair;"/>
               <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
                 <path d="M -14 -14 L -9 -14 M -14 -14 L -14 -9"/>
                 <path d="M  14 -14 L  9 -14 M  14 -14 L  14 -9"/>
@@ -749,22 +793,45 @@
     const gateForm = document.getElementById("gate-form");
     const gatePassword = document.getElementById("gate-password");
     const gateError = document.getElementById("gate-error");
+    const headerEl = document.querySelector("header");
+    const portalMainEl = document.getElementById("main");
+    let portalInitialized = false;
+
+    function setPortalLocked(isLocked) {
+      gateEl.hidden = !isLocked;
+      headerEl.hidden = isLocked;
+      portalMainEl.hidden = isLocked;
+      headerEl.inert = isLocked;
+      portalMainEl.inert = isLocked;
+      if (isLocked) {
+        gateError.textContent = "";
+        gatePassword.value = "";
+      }
+    }
 
     function showPortal(opts) {
-      gateEl.remove();
+      setPortalLocked(false);
       // On a fresh sign-in (not a session resume), always land on the
       // CEO Letter regardless of any stale hash in the URL.
       if (opts && opts.freshSignIn) {
         try { history.replaceState(null, "", location.pathname + location.search); } catch (_) {}
       }
-      initPortal();
+      if (!portalInitialized) {
+        initPortal();
+        portalInitialized = true;
+      }
     }
 
     function showGate() {
-      gateEl.hidden = false;
+      setPortalLocked(true);
       // Defer focus so it works after layout
       setTimeout(() => gatePassword.focus(), 0);
       initGateReticle();
+    }
+
+    function lockPortal() {
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
+      showGate();
     }
 
     // Cursor-following target reticle (lerps for slight tracker lag)
@@ -772,6 +839,7 @@
       const ret = document.getElementById("gate-reticle");
       if (!ret || ret._init) return;
       ret._init = true;
+      initDroneInteraction();
       let tx = -200, ty = -200, x = -200, y = -200, raf = 0, live = false;
       const tick = () => {
         x += (tx - x) * 0.18;
@@ -789,6 +857,110 @@
       gateEl.addEventListener("mouseleave", () => {
         live = false;
         ret.classList.remove("live");
+
+          // ── Counter-UAS intercept: click a drone to launch a friendly interceptor ──
+          function initDroneInteraction() {
+            const svg = document.getElementById("gate-radar");
+            if (!svg || svg._droneInteract) return;
+            svg._droneInteract = true;
+            // Enable pointer events on the SVG so hitboxes register clicks
+            svg.style.pointerEvents = "all";
+
+            svg.querySelectorAll(".gr-hitbox").forEach((hb) => {
+              const innerG = hb.parentElement; // the translate(R 0) group
+              const trackG = innerG.parentElement; // the .gr-track group
+              hb.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (trackG.dataset.neutralized) return;
+                launchInterceptor(trackG, innerG);
+              });
+            });
+          }
+
+          function launchInterceptor(trackEl, innerEl) {
+            const gateEl   = document.getElementById("gate");
+            const svgEl    = document.getElementById("gate-radar");
+            const svgR     = svgEl.getBoundingClientRect();
+            const innerR   = innerEl.getBoundingClientRect();
+            const gateR    = gateEl.getBoundingClientRect();
+
+            // Radar center: viewBox "0 0 1200 800" + xMidYMid slice → center maps to element center
+            const cx = svgR.left + svgR.width  * 0.5 - gateR.left;
+            const cy = svgR.top  + svgR.height * 0.5 - gateR.top;
+            // Target drone center in gate-relative coords
+            const tx = innerR.left + innerR.width  / 2 - gateR.left;
+            const ty = innerR.top  + innerR.height / 2 - gateR.top;
+
+            trackEl.dataset.neutralized = "1";
+
+            // ── Counter-drone element (DXD green) ──
+            const cdiv = document.createElement("div");
+            cdiv.className = "gr-intercept";
+            cdiv.style.transform = `translate(${cx - 16}px,${cy - 16}px)`;
+            cdiv.innerHTML = `<svg viewBox="-16 -16 32 32" xmlns="http://www.w3.org/2000/svg">
+              <circle r="2.5" fill="#00FF88"/>
+              <line x1="-8" y1="-8" x2="8" y2="8"  stroke="#00FF88" stroke-width="1.2"/>
+              <line x1="-8" y1="8"  x2="8" y2="-8" stroke="#00FF88" stroke-width="1.2"/>
+              <circle cx="-8" cy="-8" r="2"   fill="none" stroke="#00FF88" stroke-width="1.1"/>
+              <circle cx="8"  cy="-8" r="2"   fill="none" stroke="#00FF88" stroke-width="1.1"/>
+              <circle cx="-8" cy="8"  r="2"   fill="none" stroke="#00FF88" stroke-width="1.1"/>
+              <circle cx="8"  cy="8"  r="2"   fill="none" stroke="#00FF88" stroke-width="1.1"/>
+              <circle r="11" fill="none" stroke="#00FF88" stroke-width="0.7" opacity="0.5"
+                      stroke-dasharray="2 3"/>
+            </svg>`;
+            // Position relative to gate (which is position:relative / absolute)
+            cdiv.style.position = "absolute";
+            gateEl.appendChild(cdiv);
+
+            // Force reflow, then fly to target
+            void cdiv.getBoundingClientRect();
+            cdiv.style.transform = `translate(${tx - 16}px,${ty - 16}px)`;
+
+            cdiv.addEventListener("transitionend", () => {
+              cdiv.remove();
+
+              // ── Impact burst ──
+              const burst = document.createElement("div");
+              burst.className = "gr-burst";
+              burst.style.cssText = `position:absolute;left:${tx}px;top:${ty}px;`;
+              burst.innerHTML = `<svg viewBox="-28 -28 56 56" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+                <circle r="20" fill="none" stroke="#FFD700" stroke-width="2.5" opacity="0.9"/>
+                <circle r="12" fill="#FFD700" opacity="0.45"/>
+                <circle r="5"  fill="#FFFFFF" opacity="0.9"/>
+                <line x1="-22" y1="0"   x2="-14" y2="0"  stroke="#FFD700" stroke-width="1.5"/>
+                <line x1="14"  y1="0"   x2="22"  y2="0"  stroke="#FFD700" stroke-width="1.5"/>
+                <line x1="0"   y1="-22" x2="0"   y2="-14" stroke="#FFD700" stroke-width="1.5"/>
+                <line x1="0"   y1="14"  x2="0"   y2="22"  stroke="#FFD700" stroke-width="1.5"/>
+              </svg>`;
+              gateEl.appendChild(burst);
+              burst.addEventListener("animationend", () => burst.remove(), { once: true });
+
+              // ── Neutralize the target drone visually ──
+              const droneEl = trackEl.querySelector(".gr-drone");
+              const lockEl  = trackEl.querySelector(".gr-lock");
+              const labelEl = trackEl.querySelector(".gr-label text");
+              if (droneEl) { droneEl.style.opacity = "0"; droneEl.style.transition = "opacity 0.1s"; }
+              if (lockEl)  { lockEl.style.opacity  = "0"; }
+              const origFill = labelEl ? labelEl.getAttribute("fill") : null;
+              if (labelEl) { labelEl.setAttribute("fill", "#00FF88"); }
+
+              // ── "NEUTRALIZED" floating label ──
+              const flash = document.createElement("div");
+              flash.className = "gr-neutralize-flash";
+              flash.style.cssText = `position:absolute;left:${tx + 14}px;top:${ty - 10}px;`;
+              flash.textContent = "[ NEUTRALIZED ]";
+              gateEl.appendChild(flash);
+              flash.addEventListener("animationend", () => flash.remove(), { once: true });
+
+              // ── Restore drone after delay ──
+              setTimeout(() => {
+                if (droneEl) { droneEl.style.opacity = ""; droneEl.style.transition = ""; }
+                if (lockEl)  { lockEl.style.opacity  = ""; }
+                if (labelEl && origFill) { labelEl.setAttribute("fill", origFill); }
+                delete trackEl.dataset.neutralized;
+              }, 2800);
+            }, { once: true });
+          }
       });
     }
 
@@ -796,17 +968,25 @@
       showPortal();
     } else {
       showGate();
-      gateForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (gatePassword.value === ACCESS_CODE) {
-          try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch (_) {}
-          showPortal({ freshSignIn: true });
-        } else {
-          gateError.textContent = "Incorrect access code.";
-          gatePassword.select();
-        }
-      });
     }
+
+    gateForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (gatePassword.value === ACCESS_CODE) {
+        try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch (_) {}
+        showPortal({ freshSignIn: true });
+      } else {
+        gateError.textContent = "Incorrect access code.";
+        gatePassword.select();
+      }
+    });
+
+    window.addEventListener("pagehide", lockPortal);
+    window.addEventListener("pageshow", () => {
+      if (sessionStorage.getItem(STORAGE_KEY) !== "1") {
+        showGate();
+      }
+    });
 
     function initPortal() {
     // Each tab maps a label to a single source file at the repo root.
