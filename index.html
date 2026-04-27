@@ -749,45 +749,22 @@
     const gateForm = document.getElementById("gate-form");
     const gatePassword = document.getElementById("gate-password");
     const gateError = document.getElementById("gate-error");
-    const headerEl = document.querySelector("header");
-    const portalMainEl = document.getElementById("main");
-    let portalInitialized = false;
-
-    function setPortalLocked(isLocked) {
-      gateEl.hidden = !isLocked;
-      headerEl.hidden = isLocked;
-      portalMainEl.hidden = isLocked;
-      headerEl.inert = isLocked;
-      portalMainEl.inert = isLocked;
-      if (isLocked) {
-        gateError.textContent = "";
-        gatePassword.value = "";
-      }
-    }
 
     function showPortal(opts) {
-      setPortalLocked(false);
+      gateEl.remove();
       // On a fresh sign-in (not a session resume), always land on the
       // CEO Letter regardless of any stale hash in the URL.
       if (opts && opts.freshSignIn) {
         try { history.replaceState(null, "", location.pathname + location.search); } catch (_) {}
       }
-      if (!portalInitialized) {
-        initPortal();
-        portalInitialized = true;
-      }
+      initPortal();
     }
 
     function showGate() {
-      setPortalLocked(true);
+      gateEl.hidden = false;
       // Defer focus so it works after layout
       setTimeout(() => gatePassword.focus(), 0);
       initGateReticle();
-    }
-
-    function lockPortal() {
-      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
-      showGate();
     }
 
     // Cursor-following target reticle (lerps for slight tracker lag)
@@ -819,30 +796,17 @@
       showPortal();
     } else {
       showGate();
+      gateForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (gatePassword.value === ACCESS_CODE) {
+          try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch (_) {}
+          showPortal({ freshSignIn: true });
+        } else {
+          gateError.textContent = "Incorrect access code.";
+          gatePassword.select();
+        }
+      });
     }
-
-    gateForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (gatePassword.value === ACCESS_CODE) {
-        try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch (_) {}
-        showPortal({ freshSignIn: true });
-      } else {
-        gateError.textContent = "Incorrect access code.";
-        gatePassword.select();
-      }
-    });
-
-    // pagehide must only clear the session token — calling showGate() here races
-    // with a successful sign-in and immediately bounces the shell back to the gate
-    // (fixed in d8a1676; re-broken when cf5b877 reverted to sessionStorage).
-    window.addEventListener("pagehide", () => {
-      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
-    });
-    window.addEventListener("pageshow", () => {
-      if (sessionStorage.getItem(STORAGE_KEY) !== "1") {
-        showGate();
-      }
-    });
 
     function initPortal() {
     // Each tab maps a label to a single source file at the repo root.
