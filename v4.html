@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Deus X Defense v4 - Consolidated Pitch Deck</title>
+<meta name="description" content="Standalone v4 consolidated investor pitch deck draft for Deus X Defense. Not wired to the portal." />
+<style>
+:root {
+  --bg: #080808;
+  --panel: #111111;
+  --panel-2: #171717;
+  --line: #2a2a2a;
+  --text: #f4f1ec;
+  --muted: #a8a29a;
+  --faint: #706a62;
+  --red: #d2232a;
+  --red-soft: rgba(210, 35, 42, 0.16);
+  --green: #64b46b;
+  --gold: #d8a34a;
+  --blue: #6f95c7;
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--bg); color: var(--text); }
+body {
+  margin: 0;
+  font-family: var(--font);
+  line-height: 1.45;
+  background: radial-gradient(circle at 85% 5%, rgba(210, 35, 42, 0.12), transparent 28rem), var(--bg);
+  color: var(--text);
+}
+a { color: inherit; }
+.deck-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(8, 8, 8, 0.92);
+  backdrop-filter: blur(12px);
+}
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.mark { width: 11px; height: 11px; background: var(--red); display: inline-block; }
+.header-note { color: var(--muted); font-size: 13px; }
+.slide {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  padding: 56px 64px;
+  border-bottom: 1px solid var(--line);
+}
+.slide-inner {
+  width: min(1240px, 100%);
+  margin: auto;
+}
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 800;
+}
+.kicker::before { content: ""; width: 26px; height: 2px; background: var(--red); }
+h1, h2, h3 { margin: 0; line-height: 0.98; letter-spacing: 0; }
+h1 { max-width: 980px; margin-top: 22px; font-size: clamp(50px, 7vw, 104px); font-weight: 900; }
+h2 { max-width: 980px; margin-top: 18px; font-size: clamp(40px, 5vw, 74px); font-weight: 900; }
+h3 { font-size: 22px; font-weight: 800; }
+p.lede { max-width: 920px; margin: 26px 0 0; color: var(--muted); font-size: clamp(20px, 2.5vw, 30px); line-height: 1.28; }
+p { color: var(--muted); }
+.grid { display: grid; gap: 16px; }
+.grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.card {
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+}
+.card.tight { padding: 16px; }
+.card h3 { margin-bottom: 10px; }
+.card p, .card li { color: var(--muted); }
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-left: 3px solid var(--red);
+  padding-left: 14px;
+}
+.stat strong { font-size: clamp(30px, 4vw, 52px); line-height: 1; }
+.stat span { color: var(--muted); font-size: 14px; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tag.live { color: var(--green); border-color: rgba(100, 180, 107, 0.35); background: rgba(100, 180, 107, 0.08); }
+.tag.signed { color: #82d78d; border-color: rgba(130, 215, 141, 0.35); background: rgba(130, 215, 141, 0.07); }
+.tag.verbal { color: var(--gold); border-color: rgba(216, 163, 74, 0.35); background: rgba(216, 163, 74, 0.08); }
+.tag.build { color: var(--blue); border-color: rgba(111, 149, 199, 0.35); background: rgba(111, 149, 199, 0.08); }
+.tag.roadmap { color: #b9b0a5; }
+ul { margin: 12px 0 0; padding-left: 18px; }
+li { margin: 8px 0; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+table { width: 100%; border-collapse: collapse; min-width: 720px; }
+th, td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; background: rgba(255, 255, 255, 0.03); }
+td { color: var(--muted); }
+.phase-ladder { display: grid; gap: 12px; margin-top: 28px; }
+.phase {
+  display: grid;
+  grid-template-columns: 130px 1fr 1.25fr;
+  gap: 16px;
+  align-items: start;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.phase b { color: var(--red); text-transform: uppercase; letter-spacing: 0.1em; font-size: 12px; }
+.product-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: end;
+}
+.product-name { font-size: clamp(42px, 6vw, 82px); }
+.tam-box {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+}
+.source {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.note {
+  margin-top: 18px;
+  color: var(--faint);
+  font-size: 13px;
+}
+.big-quote {
+  margin-top: 28px;
+  padding: 28px;
+  border-left: 4px solid var(--red);
+  background: var(--red-soft);
+  color: var(--text);
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 1.16;
+  font-weight: 800;
+}
+.footer {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+@media (max-width: 900px) {
+  .deck-header { position: static; align-items: flex-start; flex-direction: column; }
+  .slide { padding: 42px 22px; }
+  .grid.two, .grid.three, .grid.four, .tam-box { grid-template-columns: 1fr; }
+  .phase { grid-template-columns: 1fr; }
+  .product-head { grid-template-columns: 1fr; }
+}
+@media print {
+  body { background: #080808; }
+  .deck-header { display: none; }
+  .slide { min-height: 100vh; page-break-after: always; break-after: page; padding: 40px; }
+}
+</style>
+</head>
+<body>
+<header class="deck-header">
+  <div class="brand"><span class="mark"></span><span>Deus X Defense v4</span></div>
+  <div class="header-note">Standalone consolidated deck draft - not wired to investor portal - April 29, 2026</div>
+</header>
+
+<main>
+  <section class="slide" id="slide-01">
+    <div class="slide-inner">
+      <div class="kicker">01 / CEO Letter</div>
+      <h1>The physical world is soft.</h1>
+      <p class="lede">Deus X Defense is building the Immune System for Critical Infrastructure: a unified platform that combines human judgment, autonomous speed, and accountable evidence across the places America cannot afford to lose.</p>
+      <div class="grid four" style="margin-top:34px">
+        <div class="card stat"><strong>$27M</strong><span>TTM live revenue across Security-as-a-Service and Drone-as-a-Service.</span></div>
+        <div class="card stat"><strong>450</strong><span>Operators across Cascadia and Invictus, already working in the field.</span></div>
+        <div class="card stat"><strong>5</strong><span>Engineers moving multiple platform MVPs through 2026.</span></div>
+        <div class="card stat"><strong>$0</strong><span>Fixed sales cost: 3 commission-only reps; major deals inbound or channel-led.</span></div>
+      </div>
+      <div class="meta-row"><span class="tag live">Live</span><span class="tag build">In-build</span><span class="tag">Confidential</span></div>
+      <div class="footer"><span>CEO Letter</span><span>Slide 1</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-02">
+    <div class="slide-inner">
+      <div class="kicker">02 / CEO Letter</div>
+      <h2>The guard force is the distribution channel. The technology is the margin engine.</h2>
+      <div class="grid two" style="margin-top:30px">
+        <div class="card">
+          <h3>What changes</h3>
+          <ul>
+            <li>Low-margin manned guarding revenue starts the customer relationship and solves the cold-start problem.</li>
+            <li>Autonomous leverage through Command, Atlas, Cortex, Nerve, and Sentinel moves revenue toward software and hardware-enabled margin.</li>
+            <li>One contract, one team, one point of accountability for critical infrastructure operators.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Capital architecture</h3>
+          <ul>
+            <li>Remaining Seed Capital: $3.5M.</li>
+            <li>Strategic Bridge: $500K/month for sales and engineering capacity, product hardening, and inventory financing.</li>
+            <li>Series plan: approximately $100M, Morgan Stanley leading, with different dollars for different risk.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">Use-of-proceeds allocation in this draft is modeled from current FY26/FY27 plan and requires CFO tie-out before external use.</div>
+      <div class="footer"><span>CEO Letter</span><span>Slide 2</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-03">
+    <div class="slide-inner">
+      <div class="kicker">03 / The Origin</div>
+      <h2>The company begins with an operational wound, not a market map.</h2>
+      <div class="grid three" style="margin-top:30px">
+        <div class="card"><h3>2010 / Afghanistan</h3><p>A platoon pinned down in a high-stress ambush. Air support saved men on the ground. The next morning, 52 civilian casualties were reported. The lesson: the tools at point of contact decide how the next tragedy is written.</p></div>
+        <div class="card"><h3>2018 / Las Vegas</h3><p>After Mandalay Bay, Pat asked the LVMPD chief what would have happened if a TASER drone could have reached the window in under a minute. The answer: over 50 lives would have been saved.</p></div>
+        <div class="card"><h3>2022 / Uvalde</h3><p>Working prototypes were not enough. Responsible operators, law enforcement coordination, and a unified system mattered as much as the technology.</p></div>
+      </div>
+      <div class="big-quote">"The answer was not just technology. The answer was responsible operators, coordinating with law enforcement, inside a unified system."</div>
+      <div class="footer"><span>The Origin</span><span>Slide 3</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-04">
+    <div class="slide-inner">
+      <div class="kicker">04 / The Origin</div>
+      <h2>An oath became a system.</h2>
+      <div class="grid two" style="margin-top:30px">
+        <div class="card">
+          <h3>Founder conviction</h3>
+          <p>"That obsession is not rational. It is not a market analysis. It is an oath I took when I was 23 years old, renewed every time another headline writes itself before the first responder reaches the door."</p>
+        </div>
+        <div class="card">
+          <h3>The product lesson</h3>
+          <ul>
+            <li>Not a drone company.</li>
+            <li>Not a guarding company.</li>
+            <li>Not a widget company.</li>
+            <li>A credentialed operator network plus a software-defined immune system for physical infrastructure.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>The Origin</span><span>Slide 4</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-05">
+    <div class="slide-inner">
+      <div class="kicker">05 / The Story</div>
+      <h2>The timeline compressed from thesis to operating company.</h2>
+      <div class="table-wrap" style="margin-top:28px">
+        <table>
+          <thead><tr><th>Moment</th><th>Milestone</th><th>Deck language</th></tr></thead>
+          <tbody>
+            <tr><td>2010</td><td>The Mission</td><td>Helmand ambush; air support; 52 civilian casualties reported; the point-of-contact tool thesis begins.</td></tr>
+            <tr><td>2018</td><td>The Motivation</td><td>LVMPD conversation after Mandalay Bay: "Over 50 lives would have been saved."</td></tr>
+            <tr><td>2020</td><td>The Opportunity</td><td>Robotics, drones, and AI to stop threats in under 30 seconds.</td></tr>
+            <tr><td>2022</td><td>The Lesson</td><td>Uvalde proved prototypes were not enough; operators and doctrine had to be part of the product.</td></tr>
+            <tr><td>2023-24</td><td>Paris Olympics</td><td>The realization: not a better widget, an immune system.</td></tr>
+            <tr><td>Oct 2025</td><td>Founded DxD</td><td>Deus X Defense incorporated.</td></tr>
+            <tr><td>Apr 2026</td><td>Traction confirmed</td><td>$27M TTM, 450 operators, Dallas ISD signed, LAPD verbal, NATO #1 rating.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footer"><span>The Story</span><span>Slide 5</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-06">
+    <div class="slide-inner">
+      <div class="kicker">06 / The Story</div>
+      <h2>Why 2026, not 2030.</h2>
+      <div class="grid two" style="margin-top:30px">
+        <div class="card"><h3>Regulation closes</h3><ul><li>CIRCIA final rule expected May 2026; 300K+ entities brought into 72-hour cyber incident reporting.</li><li>NERC CIP-003-9 enforcement in April 2026.</li><li>SAFER SKIES Act creates a statutory path for state and local counter-drone action.</li><li>FAA Part 108 pushes BVLOS from exception toward rule.</li></ul></div>
+        <div class="card"><h3>Demand arrives</h3><ul><li>Hyperscaler capex and data center buildout create new physical target surfaces.</li><li>World Cup 2026, America 250, and LA Olympics 2028 compress the public-safety calendar.</li><li>$625M DHS/FEMA World Cup pool and $500M+ federal cUAS grants create funded demand.</li><li>Physical AI moved from research demo to operating doctrine.</li></ul></div>
+      </div>
+      <div class="footer"><span>The Story</span><span>Slide 6</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-07">
+    <div class="slide-inner">
+      <div class="kicker">07 / The Team</div>
+      <h2>Operators first. Builders second. That is the point.</h2>
+      <div class="table-wrap" style="margin-top:28px">
+        <table>
+          <thead><tr><th>Name</th><th>Role</th><th>Credential</th></tr></thead>
+          <tbody>
+            <tr><td>Pat Madden</td><td>Founder & CEO</td><td>Marine Force Recon; Wharton MBA; McKinsey; Axon Chief of Staff; SVP/GM scaling TASER and Robotics from $350M to $1B.</td></tr>
+            <tr><td>Brendan Flannery</td><td>CTO</td><td>12 years embedded with NSA at Tier 1 Special Operations Command; six patents.</td></tr>
+            <tr><td>Nick Gilmour</td><td>Head of Product</td><td>Invented Drone-as-First-Responder at Skydio; three patents; Axon and GoPro launch veteran.</td></tr>
+            <tr><td>Michael Egan</td><td>CFO</td><td>Wharton-trained Green Beret; BCG, JPMorgan, Carvana, Southwest.</td></tr>
+            <tr><td>Kevin Hill</td><td>Chief Business Officer</td><td>Former Microsoft Managing Director, US Strategic Pursuits; 15 years at IBM.</td></tr>
+            <tr><td>Rob Chadwick</td><td>GM, Public Sector</td><td>21 years FBI; built tactical training doctrine and led FBI Tactical Training Unit.</td></tr>
+            <tr><td>Rory O'Flaherty</td><td>GM, Enterprise Security</td><td>Scaled national enterprise security operations across decades.</td></tr>
+            <tr><td>Ward Ault</td><td>Chief of Staff</td><td>Marine infantry; HBS; private equity operating; former Axon Chief of Staff.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footer"><span>The Team</span><span>Slide 7</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-08">
+    <div class="slide-inner">
+      <div class="kicker">08 / The Team</div>
+      <h2>The bench spans drones, public safety, GSOC, federal doctrine, and strategic capital.</h2>
+      <div class="grid two" style="margin-top:30px">
+        <div class="card">
+          <h3>Operating bench</h3>
+          <ul>
+            <li>Ross Stinson: built and ran the largest public-safety drone program in the US at Dallas PD.</li>
+            <li>Rob Robertson: public-safety UAS leader and DFR/BVLOS authority.</li>
+            <li>Dean Pratt: Accenture Physical AI and Computer Vision senior global architect.</li>
+            <li>Serge G.: Green Beret, SOTF veteran, applied math and computer science background.</li>
+            <li>Christian Kellerman and Winston Gamso: Special Forces operators turned solutions architects.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Advisors</h3>
+          <ul>
+            <li>Adm. James Stavridis: 16th Supreme Allied Commander, NATO; Vice Chair, Carlyle.</li>
+            <li>Aaditya Devarakonda: CEO of Dedrone, acquired by Axon; counter-drone market pioneer.</li>
+            <li>William P. Barr: 77th and 85th US Attorney General; 6 years CIA.</li>
+            <li>Adam Lee: CSO, Dominion Energy; 22-year FBI career.</li>
+            <li>Dennis Bovin: verbal commitment; senior defense and aerospace M&A advisor.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>The Team</span><span>Slide 8</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-09">
+    <div class="slide-inner">
+      <div class="kicker">09 / Deus X Defense + Deus X Defense v2</div>
+      <h2>One accountable operation for the places where failure is not an option.</h2>
+      <div class="grid three" style="margin-top:30px">
+        <div class="card stat"><strong>People</strong><span>Security-as-a-Service and DaaS create the staffed operating layer.</span></div>
+        <div class="card stat"><strong>Platform</strong><span>Nerve, Cortex, Atlas, Sentinel, and Command unify site awareness, action, learning, and proof.</span></div>
+        <div class="card stat"><strong>Proof</strong><span>Every claim is tagged Live, Signed, Verbal, In-build, or Roadmap.</span></div>
+      </div>
+      <p class="lede">Deus X Defense is the commercial immune system: sense, think, control, learn, and prove across critical infrastructure.</p>
+      <div class="footer"><span>Deus X Defense</span><span>Slide 9</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-10">
+    <div class="slide-inner">
+      <div class="kicker">10 / Deus X Defense + Deus X Defense v2</div>
+      <h2>The v2 narrative: live operation now, platform economics next.</h2>
+      <div class="grid two" style="margin-top:30px">
+        <div class="card"><h3>Outcome logic</h3><ul><li>Every guard shift is a distribution channel.</li><li>Every camera feed becomes a Cortex input.</li><li>Every site event becomes Sentinel training data.</li><li>Every incident becomes a Command evidence record.</li></ul></div>
+        <div class="card"><h3>Why it compounds</h3><ul><li>450 operators generate real-world data from Day 1.</li><li>7,600 deployed operator-hours/nodes can become roughly $45M incremental high-margin SaaS at $1K/node/month.</li><li>Customers can buy one module, then expand into the full Immune System.</li></ul></div>
+      </div>
+      <div class="footer"><span>Deus X Defense v2</span><span>Slide 10</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-11">
+    <div class="slide-inner">
+      <div class="kicker">11 / Product</div>
+      <h2>The product road map is a phase ladder.</h2>
+      <div class="phase-ladder">
+        <div class="phase"><b>Phase 1</b><div><h3>Unify people not working together</h3><p>Manned guards, remote GSOC, drone operators, FAA clearance, manual Atlas workflows, and Cortex receiving camera feeds.</p></div><p>Products: Security-as-a-Service, Drone-as-a-Service, Cortex manual ingestion.</p></div>
+        <div class="phase"><b>Phase 2</b><div><h3>Give teams access to reserved technology</h3><p>Airspace approvals, BVLOS operating credibility, and sub-400ft deconfliction that most commercial teams cannot access.</p></div><p>Product: Atlas - Airspace Safety.</p></div>
+        <div class="phase"><b>Phase 3</b><div><h3>Unified awareness across existing and new tools</h3><p>Camera, radar, RF, EO/IR, acoustic, access control, IoT, and compliance records fused into one operating picture.</p></div><p>Products: Nerve, Atlas - Site Control, Sentinel, Command.</p></div>
+        <div class="phase"><b>Phase 4</b><div><h3>Operating with airspace safety</h3><p>Autonomous patrols and human-machine teaming move from awareness to action.</p></div><p>Product: Atlas - Ground Robotics.</p></div>
+        <div class="phase"><b>Phase 5</b><div><h3>Airspace defense</h3><p>Detect, track, and defeat: the integrated counter-UAS kill chain.</p></div><p>Product: Atlas - Airspace Defense.</p></div>
+      </div>
+      <div class="footer"><span>Product</span><span>Slide 11</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-12">
+    <div class="slide-inner">
+      <div class="kicker">12 / Product</div>
+      <h2>Each product is both a wedge and an expansion path.</h2>
+      <div class="table-wrap" style="margin-top:28px">
+        <table>
+          <thead><tr><th>Product</th><th>Honesty tag</th><th>Primary buyer</th><th>What it unlocks</th></tr></thead>
+          <tbody>
+            <tr><td>Security-as-a-Service</td><td>Live</td><td>Enterprise and CI security owners</td><td>Account access, operator data, recurring services revenue.</td></tr>
+            <tr><td>Drone-as-a-Service</td><td>Live</td><td>Public safety, schools, CI sites</td><td>DFR, patrol, perimeter coverage, BVLOS leverage.</td></tr>
+            <tr><td>Cortex</td><td>In-build</td><td>Multi-sensor facility operators</td><td>On-site AI appliance and fused site view.</td></tr>
+            <tr><td>Atlas - Airspace Safety</td><td>In-build</td><td>Drone operators and site owners</td><td>Sub-400ft deconfliction and airspace permissions.</td></tr>
+            <tr><td>Nerve</td><td>In-build</td><td>Sensor-heavy CI sites</td><td>Normalized sensor fabric and encrypted track stream.</td></tr>
+            <tr><td>Atlas - Site Control</td><td>In-build</td><td>Campus and facility owners</td><td>Building systems, IoT, and access control integration.</td></tr>
+            <tr><td>Sentinel</td><td>In-build</td><td>Platform customers</td><td>Cross-site AI learning from every correction and incident.</td></tr>
+            <tr><td>Command</td><td>In-build</td><td>Regulated entities and boards</td><td>Compliance reports, evidence records, posture, governance.</td></tr>
+            <tr><td>Atlas - Ground Robotics</td><td>Roadmap</td><td>Large perimeter operators</td><td>Autonomous patrol and human-machine response.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footer"><span>Product</span><span>Slide 12</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-13">
+    <div class="slide-inner">
+      <div class="kicker">13 / Product - Phase 1</div>
+      <div class="product-head"><h2 class="product-name">Security-as-a-Service</h2><span class="tag live">Live</span></div>
+      <p class="lede">Managed physical security operations: manned guards, remote GSOC, and on-site operators. Delivered today through Cascadia Global Security and Invictus International Holdings.</p>
+      <div class="grid three" style="margin-top:28px">
+        <div class="card"><h3>What exists now</h3><ul><li>$27M TTM across services lines.</li><li>450 trained operators.</li><li>Cascadia: $21M TTM, 350 operators, Pacific Northwest, nationwide BVLOS waiver holder.</li><li>Invictus: $6M TTM, approximately 100 operators, executive protection, USMC Recon-led.</li></ul></div>
+        <div class="card"><h3>Why it matters</h3><ul><li>Solves cold start.</li><li>Creates trust at the site level.</li><li>Places operators where software can learn from real-world incidents.</li><li>Turns low-margin services into a channel for high-margin software.</li></ul></div>
+        <div class="card"><h3>Phase 1 role</h3><p>Unifies people who have not been working together: manned guards, GSOC operators, drone operators, and site leadership under one operating company.</p></div>
+      </div>
+      <div class="footer"><span>Security-as-a-Service</span><span>Slide 13</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-14">
+    <div class="slide-inner">
+      <div class="kicker">14 / TAM + Investment</div>
+      <h2>Security-as-a-Service monetizes the existing guard budget, then expands it.</h2>
+      <div class="tam-box">
+        <div class="card">
+          <h3>Addressable market</h3>
+          <ul>
+            <li><strong>Global security services: ~$280B (2024) growing to ~$430B by 2030, ~7-8% CAGR</strong> (Grand View Research, Security Services Market Report, 2024).</li>
+            <li><strong>US contract security services: ~$45-50B (2024)</strong>, ~3-4% CAGR (IBISWorld, Security Services in the US, OD5444, 2024).</li>
+            <li>Internal comp: Allied Universal ~$22B revenue (DxD materials).</li>
+            <li>Industry pain: 100-300% annual guard turnover; analog cameras and manual dispatch are the default operating model.</li>
+            <li>DxD wedge: buy or partner into recurring guard spend, then attach software, drones, evidence, and autonomy.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Modeled investment needed</h3>
+          <p><strong>$28M allocation</strong> from the ~$100M raise: approximately $20M working capital facility plus $8M operations equity for M&A, GSOC buildout, onboarding, and enterprise delivery capacity.</p>
+          <p class="note">Modeled allocation - CFO tie-out required.</p>
+        </div>
+      </div>
+      <div class="grid two" style="margin-top:16px">
+        <div class="card tight"><h3>Customer segments</h3><p>Critical infrastructure owners, enterprise security teams, public sector campuses, school districts, executive protection buyers, event operators.</p></div>
+        <div class="card tight"><h3>Verticals unlocked</h3><p>Data centers, energy, nuclear, oil and gas, schools, stadiums, transportation, logistics, life sciences, federal facilities.</p></div>
+      </div>
+      <div class="source">Sources: Grand View Research, Security Services Market Size Report, 2024-2030; IBISWorld, Security Services in the US (OD5444), 2024; Allied Universal revenue comp from DxD materials.</div>
+      <div class="footer"><span>Security-as-a-Service</span><span>Slide 14</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-15">
+    <div class="slide-inner">
+      <div class="kicker">15 / Product - Phase 1</div>
+      <div class="product-head"><h2 class="product-name">Drone-as-a-Service</h2><span class="tag live">Live</span></div>
+      <p class="lede">Drone patrol and Drone-as-First-Responder operations, run by DxD operators under the nationwide BVLOS waiver.</p>
+      <div class="grid three" style="margin-top:28px">
+        <div class="card"><h3>Operating role</h3><ul><li>Revenue-bearing today.</li><li>Bridges security operations into aerial response.</li><li>Leverages Cascadia's nationwide 400ft BVLOS waiver, valid through Jan 31, 2030.</li><li>Supports public safety, schools, energy, and enterprise patrol operations.</li></ul></div>
+        <div class="card"><h3>Proof points</h3><ul><li>Dallas ISD signed: $7.5M sole-source, written into specs for 26 new schools.</li><li>LAPD verbal launch-partner commitment.</li><li>Direct DaaS/DFR pipeline approximately $105M, excluding manned and cUAS.</li></ul></div>
+        <div class="card"><h3>Phase 1 role</h3><p>Adds FAA-cleared drone operators to the human operating base before automation takes over more of the workflow.</p></div>
+      </div>
+      <div class="footer"><span>Drone-as-a-Service</span><span>Slide 15</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-16">
+    <div class="slide-inner">
+      <div class="kicker">16 / TAM + Investment</div>
+      <h2>DaaS turns BVLOS authority into a recurring security product.</h2>
+      <div class="tam-box">
+        <div class="card"><h3>Addressable market</h3><ul><li>Commercial drone and drone services market research commonly forecasts a global market moving from tens of billions today toward $50B+ by 2030.</li><li>Funded demand: $500M+ federal cUAS grants and $625M DHS/FEMA World Cup pool.</li><li>DxD wedge: DFR and patrol customers who need operators, waivers, integration, training, and liability coverage, not just aircraft.</li></ul></div>
+        <div class="card"><h3>Modeled investment needed</h3><p><strong>$10M allocation</strong> for fleet expansion, pilot training, spares, insurance, command integration, and city/school launch support.</p><p class="note">Modeled allocation - CFO tie-out required.</p></div>
+      </div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>Police departments, school districts, GSOC operators, critical infrastructure security teams, emergency management agencies.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>Public safety, education, utilities, data centers, stadiums, transportation corridors, large campuses.</p></div></div>
+      <div class="source">Sources: Fortune Business Insights, Commercial Drone Market (FBI102171), 2025; federal funding figures from DxD materials.</div>
+      <div class="footer"><span>Drone-as-a-Service</span><span>Slide 16</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-17">
+    <div class="slide-inner">
+      <div class="kicker">17 / Product - Phase 1</div>
+      <div class="product-head"><h2 class="product-name">Cortex</h2><span class="tag build">In-build</span></div>
+      <p class="lede">The on-site AI appliance: every camera and sensor a facility operates, aggregated and AI-processed into one picture of the site.</p>
+      <div class="grid three" style="margin-top:28px"><div class="card"><h3>What it does</h3><ul><li>Receives camera feeds in Phase 1.</li><li>Aggregates radar, RF, EO/IR, acoustic, camera, and third-party feeds.</li><li>Normalizes inputs into one fused track stream.</li><li>Runs Sentinel on-device and remains cloud-agnostic.</li></ul></div><div class="card"><h3>Why it matters</h3><p>Cortex is the hardware foothold inside the customer site. Once installed, the site can attach Command, Nerve, Sentinel, and Atlas modules without replacing the whole stack.</p></div><div class="card"><h3>Current state</h3><p>ODM selection underway. Internal MVP timing TBD. Part of the $1K/node/month SaaS overlay model.</p></div></div>
+      <div class="footer"><span>Cortex</span><span>Slide 17</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-18">
+    <div class="slide-inner">
+      <div class="kicker">18 / TAM + Investment</div>
+      <h2>Cortex captures the camera estate already deployed at the edge.</h2>
+      <div class="tam-box"><div class="card"><h3>Addressable market</h3><ul><li><strong>Global video surveillance market: ~$57B (2024) -> ~$92B by 2030, ~8-10% CAGR</strong> (Grand View Research, Video Surveillance Market Report, 2024).</li><li><strong>VSaaS: ~$5.5B (2024) -> ~$15-20B by 2030, ~17% CAGR</strong> (MarketsandMarkets, VSaaS Market, 2024).</li><li><strong>AI in video analytics: ~$10B (2024) -> ~$45B by 2030, ~22% CAGR</strong> (Grand View Research).</li><li>Internal DxD math: $1K/unit/month x 7,600 nodes = ~$45M incremental SaaS ARR.</li><li>DxD wedge: hardware-plus-software appliance for sites that cannot send everything to cloud or rely on a single camera vendor.</li></ul></div><div class="card"><h3>Modeled investment needed</h3><p><strong>$4M allocation</strong> for ODM selection, first-article builds, edge inference hardening, security review, and initial install kits.</p><p class="note">Modeled allocation - CFO tie-out required.</p></div></div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>Facilities with mixed camera estates, GSOC teams, SOC/physical security convergence teams, systems integrators.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>Data centers, energy, schools, airports, hospitals, life sciences, logistics, manufacturing, large campuses.</p></div></div>
+      <div class="source">Sources: Grand View Research, Video Surveillance Market Size Report, 2024; MarketsandMarkets, VSaaS Market, 2024; Grand View Research, AI in Video Analytics Market, 2024.</div>
+      <div class="footer"><span>Cortex</span><span>Slide 18</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-19">
+    <div class="slide-inner">
+      <div class="kicker">19 / Product - Phase 2</div>
+      <div class="product-head"><h2 class="product-name">Atlas - Airspace Safety</h2><span class="tag build">In-build</span></div>
+      <p class="lede">Sub-400ft airspace deconfliction for DFR, delivery, security drones, VTOL, and commercial drone traffic.</p>
+      <div class="grid three" style="margin-top:28px"><div class="card"><h3>What it does</h3><ul><li>Maps low-altitude commercial airspace around protected sites.</li><li>Coordinates security drones, DFR routes, delivery traffic, and site restrictions.</li><li>Provides the airspace management layer needed before autonomous operations scale.</li></ul></div><div class="card"><h3>Why it matters</h3><p>Most customers want drones but do not have the clearance, operating playbook, or deconfliction layer to use them safely around dense infrastructure.</p></div><div class="card"><h3>Current state</h3><p>Internal MVP May 2026. Phase 2: gives teams access to technology and operating permissions currently reserved for sophisticated aviation programs.</p></div></div>
+      <div class="footer"><span>Atlas - Airspace Safety</span><span>Slide 19</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-20">
+    <div class="slide-inner">
+      <div class="kicker">20 / TAM + Investment</div>
+      <h2>Airspace safety is the unlock for commercial autonomy below 400 feet.</h2>
+      <div class="tam-box"><div class="card"><h3>Addressable market</h3><ul><li><strong>Global UTM (Unmanned Traffic Management) market: ~$1.2B (2024) -> ~$5.5B by 2030, ~28% CAGR</strong> (MarketsandMarkets, UTM Market, 2024).</li><li><strong>Advanced Air Mobility (AAM): ~$15B (2025) -> ~$60B+ by 2030, ~30% CAGR</strong> (Mordor Intelligence, AAM Market, 2024).</li><li>DxD wedge: start where safety is mandatory and budgets exist - public safety, events, data centers, airports, and protected campuses.</li><li>Connected demand: World Cup/Olympic operations, Stargate, LAPD, airports, and data centers.</li></ul></div><div class="card"><h3>Modeled investment needed</h3><p><strong>$4M allocation</strong> for MVP buildout, airspace integrations, regulatory workflow, operator UI, and pilot deployments.</p><p class="note">Modeled allocation - CFO tie-out required.</p></div></div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>Drone programs, public-safety agencies, event security teams, aviation compliance owners, CI operators with drone operations.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>Public safety, airports, sports and events, data centers, logistics, delivery corridors, power and utilities.</p></div></div>
+      <div class="source">Sources: MarketsandMarkets, UTM Market, 2024; Mordor Intelligence, Advanced Air Mobility Market, 2024; DxD internal BVLOS and funded-event demand facts.</div>
+      <div class="footer"><span>Atlas - Airspace Safety</span><span>Slide 20</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-21">
+    <div class="slide-inner">
+      <div class="kicker">21 / Product - Phase 3</div>
+      <div class="product-head"><h2 class="product-name">Nerve</h2><span class="tag build">In-build</span></div>
+      <p class="lede">The sensor fabric: every camera, radar, RF, EO/IR, acoustic, and third-party feed ingested at the edge, encrypted, and normalized into a single track stream.</p>
+      <div class="grid three" style="margin-top:28px"><div class="card"><h3>What it does</h3><ul><li>Connects existing and new sensors.</li><li>Normalizes raw feeds into one track stream.</li><li>Encrypts data with AES-256.</li><li>Creates the input layer for Cortex, Atlas, Sentinel, and Command.</li></ul></div><div class="card"><h3>Partner path</h3><p>Co-developed with Atlas IED for critical-infrastructure exclusivity. Partnership was verbal with signing in flight as of April 2026.</p></div><div class="card"><h3>Phase 3 role</h3><p>Unified awareness across existing security tools and new sensor deployments.</p></div></div>
+      <div class="footer"><span>Nerve</span><span>Slide 21</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-22">
+    <div class="slide-inner">
+      <div class="kicker">22 / TAM + Investment</div>
+      <h2>Nerve lets DxD sell into every sensor refresh cycle.</h2>
+      <div class="tam-box"><div class="card"><h3>Addressable market</h3><ul><li><strong>Global perimeter intrusion detection: ~$22B (2024) -> ~$42B by 2030, ~12% CAGR</strong> (MarketsandMarkets, Perimeter Intrusion Detection Systems Market, 2024).</li><li><strong>Physical security market (incl. access control, intrusion, surveillance): ~$130B (2024) -> ~$200B by 2030, ~7-8% CAGR</strong> (Fortune Business Insights, Physical Security Market).</li><li><strong>IoT sensor market: ~$25B (2024) -> ~$70B by 2030, ~18% CAGR</strong> (Grand View Research).</li><li>Atlas IED reach: 95%+ of US schools and 80%+ of US airports (DxD materials).</li><li>DxD wedge: sensor-agnostic normalization rather than ripping and replacing every installed system.</li></ul></div><div class="card"><h3>Modeled investment needed</h3><p><strong>$3M allocation</strong> for Atlas IED integration, sensor protocol work, edge encryption, feed normalization, and first critical-infrastructure pilots.</p><p class="note">Modeled allocation - CFO tie-out required.</p></div></div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>Facility security teams, airport authorities, school districts, energy operators, system integrators, insurers and reinsurers.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>Education, airports, data centers, energy, nuclear, logistics, federal campuses, ports.</p></div></div>
+      <div class="source">Sources: MarketsandMarkets, Perimeter Intrusion Detection Systems Market, 2024; Fortune Business Insights, Physical Security Market; Grand View Research, IoT Sensor Market, 2024; Atlas IED reach from DxD materials.</div>
+      <div class="footer"><span>Nerve</span><span>Slide 22</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-23">
+    <div class="slide-inner">
+      <div class="kicker">23 / Product - Phase 3</div>
+      <div class="product-head"><h2 class="product-name">Atlas - Site Control</h2><span class="tag build">In-build</span></div>
+      <p class="lede">Building systems, IoT, access control, edge AI sensors, radar, RF, and optical systems fused into a single fixed-site awareness layer.</p>
+      <div class="grid three" style="margin-top:28px"><div class="card"><h3>What it does</h3><ul><li>Connects building systems and physical security workflows.</li><li>Integrates access control, IoT, sensors, and camera-derived events.</li><li>Pairs with Nerve for a fixed-site operating picture.</li></ul></div><div class="card"><h3>Why it matters</h3><p>Critical infrastructure does not lack tools. It lacks one accountable view and one operator workflow across tools.</p></div><div class="card"><h3>Current state</h3><p>In-build. Internal MVP Q4 2026 / Q1 2027.</p></div></div>
+      <div class="footer"><span>Atlas - Site Control</span><span>Slide 23</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-24">
+    <div class="slide-inner">
+      <div class="kicker">24 / TAM + Investment</div>
+      <h2>Site Control sits between smart buildings and physical security operations.</h2>
+      <div class="tam-box"><div class="card"><h3>Addressable market</h3><ul><li><strong>Global smart building market: ~$100B (2024) -> ~$265B by 2030, ~18% CAGR</strong> (Grand View Research, Smart Building Market Report, 2024).</li><li><strong>Access control market: ~$11B (2024) -> ~$22B by 2030, ~12% CAGR</strong> (MarketsandMarkets, Access Control Market, 2024).</li><li><strong>PSIM (Physical Security Information Management): ~$3.5B (2024) -> ~$8B by 2030, ~14% CAGR</strong> (Mordor Intelligence).</li><li>DxD wedge: security-critical sites where existing systems are too fragmented to support AI, drones, and compliance reporting.</li></ul></div><div class="card"><h3>Modeled investment needed</h3><p><strong>$3M allocation</strong> for access-control integrations, BMS connectors, site ontology, operator workflows, and pilot deployments.</p><p class="note">Modeled allocation - CFO tie-out required.</p></div></div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>Facilities teams, security operations, real estate owners, school districts, data-center operators, energy asset owners.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>Smart buildings, data centers, schools, hospitals, energy, manufacturing, transportation, large campuses.</p></div></div>
+      <div class="source">Sources: Grand View Research, Smart Building Market Size Report, 2024; MarketsandMarkets, Access Control Market, 2024; Mordor Intelligence, PSIM Market, 2024.</div>
+      <div class="footer"><span>Atlas - Site Control</span><span>Slide 24</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-25">
+    <div class="slide-inner">
+      <div class="kicker">25 / Product - Phase 3</div>
+      <div class="product-head"><h2 class="product-name">Sentinel</h2><span class="tag build">In-build</span></div>
+      <p class="lede">The cross-site AI model: learns from every operator correction, every incident, and every site.</p>
+      <div class="grid three" style="margin-top:28px"><div class="card"><h3>What it does</h3><ul><li>Runs on Cortex.</li><li>Cloud-agnostic.</li><li>Trains on incident data and operator corrections.</li><li>Makes every site smarter from every other site.</li></ul></div><div class="card"><h3>Moat</h3><p>You can copy software. You cannot copy the operation: 450 operators generate real-world training data every shift from Day 1.</p></div><div class="card"><h3>Current state</h3><p>In-build. Internal MVP Q1 2027. Built internally; Alpha Z removed from locked narrative.</p></div></div>
+      <div class="footer"><span>Sentinel</span><span>Slide 25</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-26">
+    <div class="slide-inner">
+      <div class="kicker">26 / TAM + Investment</div>
+      <h2>Sentinel is not a standalone TAM. It is the margin and moat layer.</h2>
+      <div class="tam-box"><div class="card"><h3>Addressable value</h3><ul><li><strong>Edge AI market: ~$21B (2024) -> ~$110B by 2030, ~31% CAGR</strong> (Grand View Research, Edge AI Market Report, 2024).</li><li><strong>Enterprise AI platforms: ~$23B (2024) -> ~$155B by 2030, ~38% CAGR</strong> (MarketsandMarkets, Enterprise AI Market, 2024).</li><li>These validate buyer willingness, but Sentinel's primary value is not a separate license pool.</li><li>It increases retention, accuracy, automation rate, and cross-sell across every deployed module.</li><li>It converts services work into proprietary operational data.</li></ul></div><div class="card"><h3>Modeled investment needed</h3><p><strong>$5M allocation</strong> for data pipeline, model training, edge inference, safety review, MLOps, red-team testing, and customer-specific deployment controls.</p><p class="note">Modeled allocation - CFO tie-out required.</p></div></div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>Every customer segment using DxD operators, Cortex, Nerve, Atlas, or Command.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>All verticals. Sentinel compounds wherever repeated incidents, recurring patrols, and evidence workflows exist.</p></div></div>
+      <div class="source">Sources: Grand View Research, Edge AI Market, 2024; MarketsandMarkets, Enterprise AI Market, 2024. Sentinel modeled as platform moat, not independent TAM.</div>
+      <div class="footer"><span>Sentinel</span><span>Slide 26</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-27">
+    <div class="slide-inner">
+      <div class="kicker">27 / Product - Phase 3</div>
+      <div class="product-head"><h2 class="product-name">Command</h2><span class="tag build">In-build</span></div>
+      <p class="lede">The official record: every action, decision, and piece of evidence in one reviewable narrative. Compliance reports generated, not reconstructed.</p>
+      <div class="grid three" style="margin-top:28px"><div class="card"><h3>Modules</h3><ul><li>REPORT: automated CIRCIA, NERC CIP, SEC 8-K.</li><li>EVIDENCE: immutable forensic record and chain of custody.</li><li>POSTURE: real-time compliance scoring.</li><li>VERIFY: board, insurance, and audit packages.</li><li>SIGNAL: fused cyber, physical, and human threat intelligence.</li></ul></div><div class="card"><h3>Why it matters</h3><p>Regulated operators do not just need detection. They need the record that proves what happened, who knew, what changed, and when.</p></div><div class="card"><h3>Current state</h3><p>In-build. CIRCIA wedge internal MVP Q3 2026. IP acquired, pending DARPA clearance.</p></div></div>
+      <div class="footer"><span>Command</span><span>Slide 27</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-28">
+    <div class="slide-inner">
+      <div class="kicker">28 / TAM + Investment</div>
+      <h2>Command monetizes mandatory reporting and board-level risk.</h2>
+      <div class="tam-box"><div class="card"><h3>Addressable market</h3><ul><li><strong>Global GRC (Governance, Risk & Compliance) market: ~$55B (2024) -> ~$110B by 2030, ~13% CAGR</strong> (Grand View Research, GRC Market Report, 2024).</li><li><strong>Incident response services: ~$18B (2024) -> ~$45B by 2030, ~17% CAGR</strong> (MarketsandMarkets, Incident Response Services Market, 2024).</li><li>CIRCIA alone covers 300K+ entities once the final rule lands.</li><li>Adjacent reporting regimes: NERC CIP-008, SEC 8-K, CMMC, TSA, insurance and board governance.</li><li>Command's wedge: physical-plus-cyber evidence of record.</li></ul></div><div class="card"><h3>Modeled investment needed</h3><p><strong>$4M allocation</strong> for report generation, immutable evidence store, compliance templates, audit workflows, legal review, and regulated-customer pilots.</p><p class="note">Modeled allocation - CFO tie-out required.</p></div></div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>CIRCIA-regulated entities, utilities, public companies, defense contractors, schools, insurers, boards, legal and compliance teams.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>Energy, nuclear, water, telecom, data centers, public companies, federal contractors, aviation, transportation, education.</p></div></div>
+      <div class="source">Sources: Grand View Research, GRC Market Report, 2024; MarketsandMarkets, Incident Response Services Market, 2024; CISA CIRCIA scope from DxD materials.</div>
+      <div class="footer"><span>Command</span><span>Slide 28</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-29">
+    <div class="slide-inner">
+      <div class="kicker">29 / Product - Phase 4</div>
+      <div class="product-head"><h2 class="product-name">Atlas - Ground Robotics</h2><span class="tag roadmap">Roadmap</span></div>
+      <p class="lede">Autonomous patrol and human-machine teaming for perimeter defense: UGVs, robotic patrols, and ground response.</p>
+      <div class="grid three" style="margin-top:28px"><div class="card"><h3>What it does</h3><ul><li>Extends Atlas from awareness into physical patrol.</li><li>Supports perimeter inspection, deterrence, and response.</li><li>Keeps human operators in command while robots take first look and repeated patrol burden.</li></ul></div><div class="card"><h3>Why it matters</h3><p>Ground robotics becomes compelling after Nerve, Cortex, Site Control, and Sentinel know what is happening at the site.</p></div><div class="card"><h3>Current state</h3><p>Roadmap, 2027+. Included as a Phase 4 product per user direction.</p></div></div>
+      <div class="footer"><span>Atlas - Ground Robotics</span><span>Slide 29</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-30">
+    <div class="slide-inner">
+      <div class="kicker">30 / TAM + Investment</div>
+      <h2>Ground robotics brings labor leverage to perimeter operations.</h2>
+      <div class="tam-box"><div class="card"><h3>Addressable market</h3><ul><li><strong>Global security robots market: ~$2.6B (2024) -> ~$8.5B by 2030, ~22% CAGR</strong> (MarketsandMarkets, Security Robots Market, 2024).</li><li><strong>Autonomous mobile robots (AMR): ~$3.5B (2024) -> ~$14B by 2030, ~25% CAGR</strong> (Grand View Research, AMR Market, 2024).</li><li>DxD wedge: sites where DxD already operates people, drones, sensors, and evidence, making robot deployment operationally credible.</li><li>Best-fit early customers: data centers, energy facilities, campuses, and federal perimeters.</li></ul></div><div class="card"><h3>Modeled investment needed</h3><p><strong>$5M allocation</strong> to pull forward from roadmap: partner selection, pilot hardware, autonomy integration, command UI, safety doctrine, and customer trials.</p><p class="note">Modeled allocation - CFO tie-out required.</p></div></div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>Large perimeter operators, facilities with recurring patrol burden, federal sites, data center security teams, energy operators.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>Data centers, energy, nuclear, manufacturing, airports, logistics yards, federal installations, campuses.</p></div></div>
+      <div class="source">Sources: MarketsandMarkets, Security Robots Market, 2024; Grand View Research, Autonomous Mobile Robots Market, 2024.</div>
+      <div class="footer"><span>Atlas - Ground Robotics</span><span>Slide 30</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-31">
+    <div class="slide-inner">
+      <div class="kicker">31 / Atlas - Airspace Defense - Phase 5</div>
+      <div class="product-head"><h2 class="product-name">Atlas - Airspace Defense</h2><span class="tag build">In-build</span></div>
+      <p class="lede">The counter-UAS kill chain: detect, track, and defeat. Powered by Orcrist's exclusive kinetic interceptor for commercial critical infrastructure.</p>
+      <div class="grid three" style="margin-top:28px"><div class="card"><h3>Layer 01 - Sense</h3><p>Single pane of glass, ATAK plugin, AES-256 encrypted MAVLink 2.0. Fuses radar, RF, EO/IR, and acoustic feeds into one track stream.</p></div><div class="card"><h3>Layer 02 - Slew</h3><p>M-ALS effector: autonomous slew-to-cue, multi-modal mobility, voice commands, and sub-second cue-to-track handoff from Cortex.</p></div><div class="card"><h3>Layer 03 - Strike</h3><p>SEAM-1 "Orcrist": approximately $30K per unit, NATO-allied COTS supply chain, IP-67, less than 5 min operator training.</p></div></div>
+      <div class="meta-row"><span class="tag build">Internal MVP Q2/Q3 2026</span><span class="tag signed">Orcrist rights signed/MOU path</span><span class="tag verbal">NATO #1 ranking cited</span></div>
+      <div class="footer"><span>Atlas - Airspace Defense</span><span>Slide 31</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-32">
+    <div class="slide-inner">
+      <div class="kicker">32 / TAM + Investment</div>
+      <h2>cUAS is the near-term revenue spike and concentration risk.</h2>
+      <div class="tam-box"><div class="card"><h3>Addressable market</h3><ul><li><strong>Global anti-drone (counter-UAS) market: $3.11B (2025) -> $3.88B (2026) -> $16.45B (2034), 19.79% CAGR</strong> (Fortune Business Insights, Anti-Drone Market, FBI102593).</li><li><strong>North America: $0.96B in 2025 (30.95% share).</strong></li><li>Internal forecast: cUAS contributes ~$23.2M in FY26 and ~$231.2M in FY27 (~69% of FY27 base-case revenue).</li><li>Demand signals: LAPD, Stargate, NATO #1-ranked $20M procurement, Ukraine, energy/nuclear, defense primes.</li><li>Cost exchange: $20K-$30K hostile drone vs. $1M-$4M legacy interceptor - the procurement crisis driving lower-cost kinetic cUAS.</li></ul></div><div class="card"><h3>Modeled investment needed</h3><p><strong>$20M allocation</strong>: approximately $5M Orcrist equity/purchase rights plus $15M inventory, integration, demonstrations, safety, training, and production readiness.</p><p class="note">Modeled allocation - CFO tie-out required. Protects the FY27 cUAS revenue line.</p></div></div>
+      <div class="grid two" style="margin-top:16px"><div class="card tight"><h3>Customer segments</h3><p>Law enforcement, stadium/event security, defense primes, energy and nuclear operators, data centers, airport authorities, federal buyers.</p></div><div class="card tight"><h3>Verticals unlocked</h3><p>Public safety, military-adjacent commercial infrastructure, data centers, energy, nuclear, airports, events, borders, critical logistics.</p></div></div>
+      <div class="source">Sources: Fortune Business Insights, Anti-Drone Market (FBI102593), 2025; DxD internal FY26/FY27 model and Orcrist economics.</div>
+      <div class="footer"><span>Atlas - Airspace Defense</span><span>Slide 32</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-33">
+    <div class="slide-inner">
+      <div class="kicker">33 / Financials</div>
+      <h2>Working model: directional, not a formal projection.</h2>
+      <div class="grid four" style="margin-top:30px"><div class="card stat"><strong>$73.4M</strong><span>FY2026 base-case revenue.</span></div><div class="card stat"><strong>0.9%</strong><span>FY2026 EBITDA margin.</span></div><div class="card stat"><strong>$337.3M</strong><span>FY2027 base-case revenue.</span></div><div class="card stat"><strong>34.1%</strong><span>FY2027 EBITDA margin.</span></div></div>
+      <div class="table-wrap" style="margin-top:24px"><table><thead><tr><th>Line</th><th>FY2026</th><th>FY2027</th></tr></thead><tbody><tr><td>Total Revenue</td><td>$73.4M</td><td>$337.3M</td></tr><tr><td>Manned Guarding</td><td>$35.0M</td><td>$50.7M</td></tr><tr><td>DaaS</td><td>$14.8M</td><td>$54.8M</td></tr><tr><td>cUAS / Orcrist</td><td>$23.2M</td><td>$231.2M</td></tr><tr><td>Training & Consulting</td><td>$0.4M</td><td>$0.7M</td></tr><tr><td>Gross Margin</td><td>25.9%</td><td>43.4%</td></tr><tr><td>EBITDA</td><td>$0.7M</td><td>$115.0M</td></tr></tbody></table></div>
+      <div class="footer"><span>Financials</span><span>Slide 33</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-34">
+    <div class="slide-inner">
+      <div class="kicker">34 / Financials</div>
+      <h2>Capital is split by risk: working capital, platform equity, operating scale.</h2>
+      <div class="grid three" style="margin-top:30px"><div class="card"><h3>Working capital facility</h3><p><strong>$50M</strong> asset-backed facility to support services scale, inventory, receivables, and program execution.</p></div><div class="card"><h3>Platform & strategic equity</h3><p><strong>$20M</strong>: approximately $15M tech stack lockdown plus approximately $5M Orcrist equity/purchase rights.</p></div><div class="card"><h3>Operations equity</h3><p><strong>$30M</strong> for M&A, GSOC buildout, Accenture/Deloitte demand, and operating capacity.</p></div></div>
+      <div class="big-quote">True SaaS ARR target: $8-$15M in FY26, $35-$60M in FY27.</div>
+      <div class="note">Adjusted ex-cUAS view: FY26 $50.1M revenue / -$10.0M EBITDA; FY27 $106.2M revenue / -$7.5M EBITDA. cUAS concentration risk is explicit.</div>
+      <div class="footer"><span>Financials</span><span>Slide 34</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-35">
+    <div class="slide-inner">
+      <div class="kicker">35 / Traction</div>
+      <h2>The operation is running.</h2>
+      <p class="lede">$27M TTM. 450 trained operators. Day 1 profitable. Three lead customers, one locked coalition, four structural moats - every line tagged Live, Signed, Verbal, In-build, or Roadmap.</p>
+      <div class="grid three" style="margin-top:30px"><div class="card"><span class="tag live">Live</span><h3>ONEOK</h3><p>$1M to $12.5M across the broader pipeline footprint on performance alone.</p></div><div class="card"><span class="tag signed">Signed</span><h3>Dallas ISD</h3><p>$7.5M sole-source signed April 14, 2026. Written into specs for 26 new schools. $6.2B bond vote pending.</p></div><div class="card"><span class="tag verbal">Verbal</span><h3>Stargate / Odin</h3><p>Customer-pulled cUAS. NATO ranked DxD #1 for $20M procurement.</p></div></div>
+      <div class="footer"><span>Traction</span><span>Slide 35</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-36">
+    <div class="slide-inner">
+      <div class="kicker">36 / Traction</div>
+      <h2>Pipeline is named, tagged, and weighted.</h2>
+      <div class="table-wrap" style="margin-top:28px"><table><thead><tr><th>Tier / Partner</th><th>Status</th><th>Value / role</th></tr></thead><tbody><tr><td>Live revenue</td><td>Live</td><td>$27M TTM across Cascadia + Invictus.</td></tr><tr><td>Signed / Verbal</td><td>90%+</td><td>Dallas ISD, ONEOK, LAPD: approximately $22M.</td></tr><tr><td>Qualified direct</td><td>25-35% weighted</td><td>Critical infrastructure, hyperscale, energy, federal: approximately $83-$105M.</td></tr><tr><td>Accenture</td><td>Verbal/channel</td><td>Approximately $350M channel book, about 10% of Accenture's $3.5B Physical AI pipeline.</td></tr><tr><td>Deloitte</td><td>Verbal/channel</td><td>Approximately $250M in negotiation; scope to absorb Deloitte UAS/cUAS programs.</td></tr><tr><td>Orcrist</td><td>Signed</td><td>Exclusive global commercial distribution; approximately $30K interceptor; approximately $5M aligned equity inside raise.</td></tr><tr><td>Atlas IED</td><td>Verbal</td><td>Signing in flight; 95%+ US schools and 80%+ US airports; powers Nerve engine.</td></tr><tr><td>Weighted total</td><td>Modeled</td><td>$55-$100M real weighted number; gross book approximately $700M.</td></tr></tbody></table></div>
+      <div class="footer"><span>Traction</span><span>Slide 36</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-37">
+    <div class="slide-inner">
+      <div class="kicker">37 / Appendix</div>
+      <h2>Architecture: a three-layer kill chain, wrapped in the Immune System.</h2>
+      <div class="table-wrap" style="margin-top:28px"><table><thead><tr><th>Layer</th><th>Function</th><th>System</th><th>Detail</th></tr></thead><tbody><tr><td>Layer 01</td><td>Sense</td><td>Atlas - Airspace Defense Command</td><td>Single pane of glass, ATAK plugin, AES-256 encrypted MAVLink 2.0; fuses radar, RF, EO/IR, acoustic feeds.</td></tr><tr><td>Layer 02</td><td>Slew</td><td>M-ALS effector</td><td>Autonomous slew-to-cue, multi-modal mobility, voice commands, sub-second cue-to-track handoff from Cortex.</td></tr><tr><td>Layer 03</td><td>Strike</td><td>SEAM-1 Orcrist</td><td>$30K/unit, NATO-allied COTS supply chain, IP-67, less than 5 min operator training.</td></tr></tbody></table></div>
+      <div class="grid four" style="margin-top:22px"><div class="card tight"><h3>Nerve</h3><p>Sensor fabric.</p></div><div class="card tight"><h3>Cortex</h3><p>On-site AI.</p></div><div class="card tight"><h3>Atlas</h3><p>Command modules.</p></div><div class="card tight"><h3>Command</h3><p>Official record.</p></div></div>
+      <div class="footer"><span>Appendix</span><span>Slide 37</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-38">
+    <div class="slide-inner">
+      <div class="kicker">38 / Appendix</div>
+      <h2>The risks are real. The deck names them.</h2>
+      <div class="grid two" style="margin-top:30px"><div class="card"><h3>Risk areas</h3><ul><li>FY27 cUAS concentration: approximately 69% of revenue in base case.</li><li>Demand exceeds production at every tier of counter-UAS supply.</li><li>Regulatory and procurement windows create close dates for uncredentialed integrators.</li><li>Orcrist and key technical suppliers must scale production and maintain trusted supply.</li><li>Financial model is directional, updated continuously, and requires CFO tie-out.</li></ul></div><div class="card"><h3>Mitigations</h3><ul><li>Ex-cUAS floor tracked explicitly: FY27 approximately $106.2M.</li><li>Orcrist equity/purchase rights protect supply and economics.</li><li>Nationwide BVLOS waiver and 450 operator base create credentialed operating moat.</li><li>Phase ladder lets customers buy modules without waiting for the full platform.</li><li>Honesty tags separate Live, Signed, Verbal, In-build, and Roadmap claims.</li></ul></div></div>
+      <div class="footer"><span>Appendix</span><span>Slide 38</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-39">
+    <div class="slide-inner">
+      <div class="kicker">39 / Data Room</div>
+      <h2>The diligence package is organized around the underwriting questions.</h2>
+      <div class="table-wrap" style="margin-top:28px"><table><thead><tr><th>Category</th><th>What it contains</th></tr></thead><tbody><tr><td>Financial Model & Projections</td><td>Detailed model, revenue projections, unit economics, and scenario analysis across Base, Bull, and Bear cases.</td></tr><tr><td>Cap Table & Ownership</td><td>Current capitalization table, ownership structure, equity allocation, and dilution schedule.</td></tr><tr><td>Legal & Partnership Agreements</td><td>Partnership MOUs, strategic agreements, IP licenses, and governance documentation.</td></tr><tr><td>IP & Technology</td><td>Patent filings, technology licenses, software architecture, and IP assignment agreements.</td></tr><tr><td>Customer Contracts</td><td>Executed service agreements, LOIs, and active contract summaries.</td></tr><tr><td>Team & HR</td><td>Org chart, key employee agreements, advisory board bios, and compensation structure.</td></tr></tbody></table></div>
+      <div class="footer"><span>Data Room</span><span>Slide 39</span></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-40">
+    <div class="slide-inner">
+      <div class="kicker">40 / Data Room</div>
+      <h2>Next step: NDA, then source-level diligence.</h2>
+      <div class="grid two" style="margin-top:30px"><div class="card"><h3>Access protocol</h3><p>All data-room materials are shared under executed NDA only. Access via pat@deusxdefense.com within 24 hours of NDA execution.</p><ul><li>Investor portal content consolidated here for deck-building use.</li><li>This `v4.html` file is not live and is not wired into portal navigation.</li><li>External TAM citations are included as public-market references and should be source-checked before distribution.</li></ul></div><div class="card"><h3>Final source checks before external use</h3><ul><li>Replace TAM source placeholders with exact page URLs or licensed research extracts.</li><li>CFO tie-out for modeled per-product investment allocation.</li><li>Legal review for customer names, verbal commitments, and procurement language.</li><li>Update honesty tags after any contracts move from verbal to signed.</li></ul></div></div>
+      <div class="big-quote">The pitch: live operation, credible team, urgent regulatory window, and a product ladder that turns physical security spend into software-defined infrastructure.</div>
+      <div class="footer"><span>Data Room</span><span>Slide 40</span></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

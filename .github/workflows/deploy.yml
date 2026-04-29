@@ -36,4 +36,6 @@ jobs:
             --region "$REGION" \
             --source . \
             --allow-unauthenticated \
+            --set-env-vars=NODE_ENV=production \
+            --update-secrets=ACCESS_CODE=portal-access-code:latest,SESSION_SECRET=portal-session-secret:latest \
             --quiet

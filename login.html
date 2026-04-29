@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Deus X Defense &middot; Sign In</title>
+  <link rel="icon" type="image/png" href="dxd-logo-white.png" />
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; overflow: hidden; }
+
+    /* Sign-in gate (extracted from index.html — preserved 1:1) */
+    #gate {
+      position: fixed; inset: 0; background: #000;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; overflow: hidden;
+    }
+    #gate .hero { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+    #gate .gate-radar { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+    #gate .gate-radar .gr-sweep { animation: gr-rotate 4.2s linear infinite; }
+    @keyframes gr-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    #gate .gate-radar .gr-pulse { animation: gr-pulse 4.2s ease-out infinite; opacity: 0; }
+    #gate .gate-radar .gr-pulse-b { animation-delay: 1.4s; }
+    #gate .gate-radar .gr-pulse-c { animation-delay: 2.8s; }
+    @keyframes gr-pulse {
+      0% { transform: scale(0.05); opacity: 0; }
+      8% { opacity: 0.85; }
+      100% { transform: scale(8); opacity: 0; }
+    }
+    #gate .gate-radar .gr-track {
+      animation: gr-orbit var(--orbit, 22s) linear infinite;
+      animation-delay: var(--ostart, 0s);
+      transform-origin: 0 0;
+    }
+    #gate .gate-radar .gr-track.rev { animation-direction: reverse; }
+    @keyframes gr-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    #gate .gate-radar .gr-drone { animation: gr-drone-tilt 6s ease-in-out infinite; }
+    @keyframes gr-drone-tilt { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+    #gate .gate-radar .gr-label {
+      animation: gr-orbit var(--orbit, 22s) linear infinite;
+      animation-delay: var(--ostart, 0s);
+      animation-direction: reverse;
+      transform-origin: 0 0;
+    }
+    #gate .gate-radar .gr-track.rev .gr-label { animation-direction: normal; }
+    #gate .gate-radar .gr-lock { animation: gr-lock 1.6s ease-in-out infinite; transform-origin: center; }
+    @keyframes gr-lock { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+    #gate .gate-reticle {
+      position: absolute; top: 0; left: 0;
+      width: 92px; height: 92px;
+      transform: translate3d(-9999px, -9999px, 0);
+      pointer-events: none; z-index: 3; opacity: 0;
+      transition: opacity 200ms ease;
+      mix-blend-mode: screen;
+      will-change: transform;
+    }
+    #gate .gate-reticle.live { opacity: 1; }
+    #gate .gate-reticle svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    #gate .gate-reticle .ret-ring { animation: ret-pulse 1.6s ease-in-out infinite; transform-origin: center; }
+    @keyframes ret-pulse { 0%, 100% { transform: scale(1); opacity: 0.85; } 50% { transform: scale(1.08); opacity: 1; } }
+    #gate .gate-reticle .ret-spin { animation: ret-spin 6s linear infinite; transform-origin: center; }
+    @keyframes ret-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    #gate .gate-reticle .ret-readout {
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 9px; letter-spacing: 0.18em; fill: #FF506E; text-transform: uppercase;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #gate .gate-radar .gr-sweep,
+      #gate .gate-radar .gr-pulse,
+      #gate .gate-radar .gr-track,
+      #gate .gate-radar .gr-drone,
+      #gate .gate-radar .gr-lock,
+      #gate .gate-radar .gr-label,
+      #gate .gate-reticle .ret-ring,
+      #gate .gate-reticle .ret-spin { animation: none; }
+    }
+    #gate .hero::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.95) 65%, #000 72%),
+        radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 100%);
+    }
+    #gate .hero-title {
+      position: absolute; left: 0; right: 0; bottom: 6vh; z-index: 1; text-align: center;
+      font-family: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+      font-size: clamp(36px, 7vw, 88px); letter-spacing: -1px; color: #FFFFFF;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.8); pointer-events: none; line-height: 1;
+    }
+    #gate .hero-logo {
+      position: absolute; left: 0; right: 0; top: 5vh; z-index: 1; text-align: center;
+      pointer-events: none; color: #FFFFFF;
+      letter-spacing: 0.42em; font-weight: 600; font-size: clamp(12px, 1.4vw, 16px);
+      text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+    }
+    #gate .hero-logo .mark { display: inline-flex; align-items: center; gap: 0.6em; }
+    #gate .hero-logo .x {
+      color: #C8102E;
+      font-family: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+      font-size: 1.5em; letter-spacing: 0; line-height: 1; transform: translateY(-1px);
+    }
+    #gate .panel {
+      position: relative; z-index: 2; width: min(360px, 90vw);
+      padding: 22px 22px 20px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(200, 16, 46, 0.45);
+      border-radius: 4px;
+      backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+      pointer-events: auto;
+    }
+    #gate .title {
+      font-family: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+      font-size: 28px; letter-spacing: -0.5px; color: #FFFFFF;
+      text-align: center; margin: 0 0 18px; line-height: 1;
+    }
+    #gate input[type="password"] {
+      width: 100%; padding: 10px 12px;
+      background: #000; color: #FFF;
+      border: 1px solid #3a3a3a; border-radius: 2px;
+      font-size: 14px; outline: none; font-family: inherit;
+      box-sizing: border-box;
+    }
+    #gate input[type="password"]:focus { border-color: #C8102E; }
+    #gate input[type="password"]:disabled { opacity: 0.55; cursor: not-allowed; }
+    #gate button {
+      margin-top: 12px; width: 100%; padding: 11px 12px;
+      background: #C8102E; color: #FFF;
+      border: 0; border-radius: 2px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      cursor: pointer; font-family: inherit;
+    }
+    #gate button:hover { background: #E01933; }
+    #gate button:disabled { background: #555; cursor: not-allowed; }
+    #gate .error {
+      margin-top: 10px; min-height: 16px; font-size: 12px;
+      color: #FF506E; text-align: center;
+    }
+
+    /* Modal: attempt warning + lockout */
+    #modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78);
+      display: none; align-items: center; justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+    }
+    #modal-backdrop.show { display: flex; }
+    #modal {
+      width: min(440px, 92vw);
+      background: #0d0d0d;
+      border: 1px solid #C8102E;
+      border-radius: 4px;
+      padding: 28px 28px 22px;
+      box-shadow: 0 0 0 1px rgba(200, 16, 46, 0.3), 0 30px 60px rgba(0, 0, 0, 0.7);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    #modal .modal-eyebrow {
+      font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: #FF506E; margin: 0 0 10px;
+    }
+    #modal .modal-title {
+      font-family: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+      font-size: 26px; letter-spacing: -0.5px; line-height: 1.05;
+      color: #FFF; margin: 0 0 14px;
+    }
+    #modal .modal-body { color: #d4d4d4; font-size: 14px; line-height: 1.5; margin: 0 0 18px; }
+    #modal .modal-body strong { color: #FF506E; }
+    #modal .modal-countdown {
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 32px; color: #FF506E; text-align: center;
+      margin: 8px 0 18px; letter-spacing: 0.1em;
+    }
+    #modal .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+    #modal button {
+      padding: 9px 18px;
+      background: #C8102E; color: #FFF;
+      border: 0; border-radius: 2px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      cursor: pointer; font-family: inherit;
+    }
+    #modal button:hover { background: #E01933; }
+    #modal button.secondary { background: transparent; border: 1px solid #555; color: #aaa; }
+    #modal button.secondary:hover { background: #1a1a1a; color: #fff; }
+    #modal button:disabled { background: #555; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <div id="gate" role="dialog" aria-modal="true" aria-label="Investor Portal sign in">
+    <div class="hero" aria-hidden="true">
+      <svg class="gate-radar" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gr-vignette" cx="50%" cy="50%" r="65%">
+            <stop offset="0%"  stop-color="#000" stop-opacity="0"/>
+            <stop offset="70%" stop-color="#000" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#000" stop-opacity="1"/>
+          </radialGradient>
+          <linearGradient id="gr-sweep" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+            <stop offset="0%"  stop-color="#FF1F3A" stop-opacity="0.85"/>
+            <stop offset="60%" stop-color="#FF1F3A" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#FF1F3A" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="gr-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FF506E" stop-opacity="0.95"/>
+            <stop offset="60%" stop-color="#FF506E" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#FF506E" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="800" fill="#000"/>
+        <g opacity="0.18" stroke="#3a0a10" stroke-width="0.6">
+          <path d="M0 100 H1200 M0 200 H1200 M0 300 H1200 M0 400 H1200 M0 500 H1200 M0 600 H1200 M0 700 H1200"/>
+          <path d="M100 0 V800 M200 0 V800 M300 0 V800 M400 0 V800 M500 0 V800 M600 0 V800 M700 0 V800 M800 0 V800 M900 0 V800 M1000 0 V800 M1100 0 V800"/>
+        </g>
+        <g transform="translate(600 400)">
+          <g fill="none" stroke="#C8102E" stroke-width="1.2">
+            <circle r="320" opacity="0.30"/>
+            <circle r="240" opacity="0.28"/>
+            <circle r="180" opacity="0.24"/>
+            <circle r="120" opacity="0.20"/>
+            <circle r="60"  opacity="0.16"/>
+          </g>
+          <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#5a0e18" letter-spacing="0.18em">
+            <text x="62"  y="-3">2KM</text>
+            <text x="122" y="-3">4KM</text>
+            <text x="182" y="-3">6KM</text>
+            <text x="242" y="-3">8KM</text>
+          </g>
+          <circle class="gr-pulse gr-pulse-a" r="40" fill="none" stroke="#FF1F3A" stroke-width="1.5"/>
+          <circle class="gr-pulse gr-pulse-b" r="40" fill="none" stroke="#FF1F3A" stroke-width="1.5"/>
+          <circle class="gr-pulse gr-pulse-c" r="40" fill="none" stroke="#FF1F3A" stroke-width="1.5"/>
+          <g stroke="#5a0e18" stroke-width="0.8" opacity="0.6">
+            <line x1="-340" y1="0" x2="340" y2="0"/>
+            <line x1="0" y1="-340" x2="0" y2="340"/>
+          </g>
+          <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10" fill="#7a1220" letter-spacing="0.2em" text-anchor="middle">
+            <text y="-330">N</text>
+            <text y="345">S</text>
+            <text x="-340" y="3" text-anchor="end">W</text>
+            <text x="340" y="3" text-anchor="start">E</text>
+          </g>
+          <g class="gr-sweep">
+            <path d="M0,0 L320,-90 A320,320 0 0 1 320,90 Z" fill="url(#gr-sweep)"/>
+            <line x1="0" y1="0" x2="320" y2="0" stroke="#FF1F3A" stroke-width="1.4" opacity="0.95"/>
+          </g>
+
+          <g class="gr-track" style="--orbit:26s; --ostart:-3s">
+            <g transform="translate(280 0)">
+              <g class="gr-drone">
+                <circle cx="0" cy="0" r="3" fill="#FF506E"/>
+                <line x1="-9" y1="-9" x2="9" y2="9"  stroke="#FF506E" stroke-width="1.2"/>
+                <line x1="-9" y1="9"  x2="9" y2="-9" stroke="#FF506E" stroke-width="1.2"/>
+                <circle cx="-9" cy="-9" r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
+                <circle cx="9"  cy="-9" r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
+                <circle cx="-9" cy="9"  r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
+                <circle cx="9"  cy="9"  r="2.2" fill="none" stroke="#FF506E" stroke-width="1.2"/>
+              </g>
+              <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
+                <path d="M -16 -16 L -10 -16 M -16 -16 L -16 -10"/>
+                <path d="M  16 -16 L  10 -16 M  16 -16 L  16 -10"/>
+                <path d="M -16  16 L -10  16 M -16  16 L -16  10"/>
+                <path d="M  16  16 L  10  16 M  16  16 L  16  10"/>
+              </g>
+              <g class="gr-label">
+                <text x="22" y="-14" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-014</text>
+              </g>
+            </g>
+          </g>
+
+          <g class="gr-track rev" style="--orbit:18s; --ostart:-7s">
+            <g transform="translate(190 0)">
+              <g class="gr-drone">
+                <circle cx="0" cy="0" r="2.6" fill="#FF506E"/>
+                <line x1="-7" y1="-7" x2="7" y2="7"  stroke="#FF506E" stroke-width="1.1"/>
+                <line x1="-7" y1="7"  x2="7" y2="-7" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="-7" cy="-7" r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="7"  cy="-7" r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="-7" cy="7"  r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="7"  cy="7"  r="1.8" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+              </g>
+              <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
+                <path d="M -13 -13 L -8 -13 M -13 -13 L -13 -8"/>
+                <path d="M  13 -13 L  8 -13 M  13 -13 L  13 -8"/>
+                <path d="M -13  13 L -8  13 M -13  13 L -13  8"/>
+                <path d="M  13  13 L  8  13 M  13  13 L  13  8"/>
+              </g>
+              <g class="gr-label">
+                <text x="18" y="-12" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-027</text>
+              </g>
+            </g>
+          </g>
+
+          <g class="gr-track" style="--orbit:14s; --ostart:-2s">
+            <g transform="translate(120 0)">
+              <g class="gr-drone">
+                <circle cx="0" cy="0" r="2.2" fill="#FFD0D9"/>
+                <line x1="-6" y1="-6" x2="6" y2="6"  stroke="#FFD0D9" stroke-width="1"/>
+                <line x1="-6" y1="6"  x2="6" y2="-6" stroke="#FFD0D9" stroke-width="1"/>
+                <circle cx="-6" cy="-6" r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
+                <circle cx="6"  cy="-6" r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
+                <circle cx="-6" cy="6"  r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
+                <circle cx="6"  cy="6"  r="1.5" fill="none" stroke="#FFD0D9" stroke-width="1"/>
+              </g>
+              <g class="gr-lock" fill="none" stroke="#FFD0D9" stroke-width="0.9" opacity="0.7">
+                <path d="M -11 -11 L -7 -11 M -11 -11 L -11 -7"/>
+                <path d="M  11 -11 L  7 -11 M  11 -11 L  11 -7"/>
+                <path d="M -11  11 L -7  11 M -11  11 L -11  7"/>
+                <path d="M  11  11 L  7  11 M  11  11 L  11  7"/>
+              </g>
+              <g class="gr-label">
+                <text x="16" y="-10" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="8" fill="#FFD0D9" letter-spacing="0.18em">TRK-031</text>
+              </g>
+            </g>
+          </g>
+
+          <g class="gr-track rev" style="--orbit:34s; --ostart:-10s">
+            <g transform="translate(310 0)">
+              <g class="gr-drone">
+                <circle cx="0" cy="0" r="2.8" fill="#FF506E"/>
+                <line x1="-8" y1="-8" x2="8" y2="8"  stroke="#FF506E" stroke-width="1.1"/>
+                <line x1="-8" y1="8"  x2="8" y2="-8" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="-8" cy="-8" r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="8"  cy="-8" r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="-8" cy="8"  r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+                <circle cx="8"  cy="8"  r="2" fill="none" stroke="#FF506E" stroke-width="1.1"/>
+              </g>
+              <g class="gr-lock" fill="none" stroke="#FF1F3A" stroke-width="1">
+                <path d="M -14 -14 L -9 -14 M -14 -14 L -14 -9"/>
+                <path d="M  14 -14 L  9 -14 M  14 -14 L  14 -9"/>
+                <path d="M -14  14 L -9  14 M -14  14 L -14  9"/>
+                <path d="M  14  14 L  9  14 M  14  14 L  14  9"/>
+              </g>
+              <g class="gr-label">
+                <text x="20" y="-12" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" fill="#FF506E" letter-spacing="0.18em">TRK-049</text>
+              </g>
+            </g>
+          </g>
+
+          <circle r="9" fill="url(#gr-glow)"/>
+          <circle r="3" fill="#FF506E"/>
+        </g>
+        <rect width="1200" height="800" fill="url(#gr-vignette)" pointer-events="none"/>
+      </svg>
+
+      <div class="gate-reticle" id="gate-reticle" aria-hidden="true">
+        <svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle class="ret-spin" r="38" fill="none" stroke="#FF1F3A" stroke-width="0.8" stroke-dasharray="3 5" opacity="0.7"/>
+          <g class="ret-ring">
+            <circle r="30" fill="none" stroke="#FF1F3A" stroke-width="1.2"/>
+            <path d="M -30 -22 L -30 -30 L -22 -30" fill="none" stroke="#FF506E" stroke-width="1.4"/>
+            <path d="M  30 -22 L  30 -30 L  22 -30" fill="none" stroke="#FF506E" stroke-width="1.4"/>
+            <path d="M -30  22 L -30  30 L -22  30" fill="none" stroke="#FF506E" stroke-width="1.4"/>
+            <path d="M  30  22 L  30  30 L  22  30" fill="none" stroke="#FF506E" stroke-width="1.4"/>
+          </g>
+          <line x1="-44" y1="0" x2="-10" y2="0" stroke="#FF506E" stroke-width="1"/>
+          <line x1="10"  y1="0" x2="44"  y2="0" stroke="#FF506E" stroke-width="1"/>
+          <line x1="0" y1="-44" x2="0" y2="-10" stroke="#FF506E" stroke-width="1"/>
+          <line x1="0" y1="10"  x2="0" y2="44"  stroke="#FF506E" stroke-width="1"/>
+          <circle r="1.6" fill="#FFD0D9"/>
+          <text class="ret-readout" x="34" y="-32">TRACK</text>
+        </svg>
+      </div>
+      <div class="hero-logo"><span class="mark">DEUS<span class="x">X</span>DEFENSE</span></div>
+      <div class="hero-title">THREATS DON'T WAIT.</div>
+    </div>
+
+    <form class="panel" id="gate-form" autocomplete="off" novalidate>
+      <div class="title">SIGN IN</div>
+      <input id="gate-password" name="password" type="password" autocomplete="current-password" autofocus required aria-label="Access code" placeholder="Access code" />
+      <button type="submit" id="gate-submit">Enter</button>
+      <div class="error" id="gate-error" role="alert" aria-live="polite"></div>
+    </form>
+  </div>
+
+  <!-- Modal: shown on attempt 4 (warning) and attempt 5+ (lockout countdown) -->
+  <div id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal">
+      <p class="modal-eyebrow" id="modal-eyebrow">Notice</p>
+      <h2 class="modal-title" id="modal-title">Heads up</h2>
+      <p class="modal-body" id="modal-body"></p>
+      <div class="modal-countdown" id="modal-countdown" hidden></div>
+      <div class="modal-actions">
+        <button type="button" id="modal-ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cursor-following reticle
+    (function () {
+      const gateEl = document.getElementById('gate');
+      const ret = document.getElementById('gate-reticle');
+      if (!ret || !gateEl) return;
+      let tx = -200, ty = -200, x = -200, y = -200, raf = 0, live = false;
+      const tick = () => {
+        x += (tx - x) * 0.18;
+        y += (ty - y) * 0.18;
+        ret.style.transform = `translate3d(${x - 46}px, ${y - 46}px, 0)`;
+        raf = requestAnimationFrame(tick);
+      };
+      gateEl.addEventListener('mousemove', (e) => {
+        const r = gateEl.getBoundingClientRect();
+        tx = e.clientX - r.left;
+        ty = e.clientY - r.top;
+        if (!live) { live = true; ret.classList.add('live'); x = tx; y = ty; }
+        if (!raf) raf = requestAnimationFrame(tick);
+      });
+      gateEl.addEventListener('mouseleave', () => {
+        live = false;
+        ret.classList.remove('live');
+      });
+    })();
+
+    // Login flow (server-side check via /api/login)
+    (function () {
+      const form = document.getElementById('gate-form');
+      const pwd = document.getElementById('gate-password');
+      const btn = document.getElementById('gate-submit');
+      const err = document.getElementById('gate-error');
+
+      const backdrop = document.getElementById('modal-backdrop');
+      const mEyebrow = document.getElementById('modal-eyebrow');
+      const mTitle = document.getElementById('modal-title');
+      const mBody = document.getElementById('modal-body');
+      const mCountdown = document.getElementById('modal-countdown');
+      const mOk = document.getElementById('modal-ok');
+
+      let countdownTimer = null;
+
+      function fmtSeconds(ms) {
+        const total = Math.max(0, Math.ceil(ms / 1000));
+        const m = Math.floor(total / 60);
+        const s = total % 60;
+        return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }
+
+      function closeModal() {
+        backdrop.classList.remove('show');
+        if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+      }
+
+      function showWarning() {
+        mEyebrow.textContent = 'Warning';
+        mTitle.textContent = 'One attempt remaining';
+        mBody.innerHTML = 'You have <strong>one more attempt</strong> before access is locked for 5 minutes. Double-check the access code before submitting.';
+        mCountdown.hidden = true;
+        mCountdown.textContent = '';
+        mOk.disabled = false;
+        mOk.textContent = 'Got it';
+        backdrop.classList.add('show');
+        setTimeout(() => mOk.focus(), 0);
+      }
+
+      function showLockout(retryAfterMs) {
+        mEyebrow.textContent = 'Locked';
+        mTitle.textContent = 'Access locked';
+        mBody.innerHTML = 'Too many failed attempts. Access is temporarily locked. Please wait for the timer below to expire, then try again.';
+        mCountdown.hidden = false;
+        mOk.disabled = true;
+        mOk.textContent = 'Locked';
+
+        pwd.disabled = true;
+        btn.disabled = true;
+
+        let endsAt = Date.now() + retryAfterMs;
+        const update = () => {
+          const remain = endsAt - Date.now();
+          mCountdown.textContent = fmtSeconds(remain);
+          if (remain <= 0) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+            pwd.disabled = false;
+            btn.disabled = false;
+            mOk.disabled = false;
+            mOk.textContent = 'Try again';
+            mCountdown.textContent = '00:00';
+            err.textContent = '';
+            try { pwd.focus(); pwd.select(); } catch (_) {}
+          }
+        };
+        update();
+        countdownTimer = setInterval(update, 250);
+
+        backdrop.classList.add('show');
+      }
+
+      mOk.addEventListener('click', closeModal);
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        err.textContent = '';
+        if (!pwd.value) return;
+        btn.disabled = true;
+        try {
+          const res = await fetch('/api/login', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ password: pwd.value }),
+          });
+          let data = {};
+          try { data = await res.json(); } catch (_) { data = {}; }
+
+          if (res.ok && data.ok) {
+            // Hard navigation to portal — server will set the cookie and serve index.html
+            window.location.replace('/');
+            return;
+          }
+
+          if (res.status === 429 || data.locked) {
+            showLockout(data.retryAfterMs || (5 * 60 * 1000));
+            return;
+          }
+
+          // Failure with attempts remaining
+          const remaining = typeof data.attemptsRemaining === 'number' ? data.attemptsRemaining : null;
+          if (remaining === 0) {
+            showLockout(data.retryAfterMs || (5 * 60 * 1000));
+          } else if (remaining === 1) {
+            err.textContent = 'Incorrect access code.';
+            showWarning();
+          } else {
+            err.textContent = 'Incorrect access code.';
+          }
+          pwd.select();
+        } catch (_) {
+          err.textContent = 'Network error. Please try again.';
+        } finally {
+          if (!pwd.disabled) btn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
