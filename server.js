@@ -42,6 +42,13 @@ app.use(cookieParser(SESSION_SECRET));
 app.use(express.json({ limit: '4kb' }));
 app.use(express.urlencoded({ extended: false, limit: '4kb' }));
 
+// Defense-in-depth: tell every crawler / unfurler to ignore everything we
+// serve, even non-HTML assets and pages where someone forgot the meta tag.
+app.use((req, res, next) => {
+  res.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
+  next();
+});
+
 // Cache policy.
 app.use((req, res, next) => {
   const p = req.path.toLowerCase();
