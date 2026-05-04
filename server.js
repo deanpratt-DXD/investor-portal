@@ -18,19 +18,24 @@ const path = require('path');
 const app = express();
 const ROOT = __dirname;
 const PORT = parseInt(process.env.PORT || '3000', 10);
+const IS_PROD = process.env.NODE_ENV === 'production' || !!process.env.K_SERVICE;
 
 // --- Auth config -----------------------------------------------------------
 // ACCESS_CODE is loaded from Google Secret Manager and injected as an env var
 // by Cloud Run. SESSION_SECRET signs the auth cookie. Both fall back to local
 // dev defaults so `npm start` works without GCP.
-const ACCESS_CODE = process.env.ACCESS_CODE || 'dxd2026';
+const ACCESS_CODE = process.env.ACCESS_CODE || (IS_PROD ? '' : 'dxd2026');
 const SESSION_SECRET = process.env.SESSION_SECRET
-  || crypto.randomBytes(32).toString('hex'); // ephemeral if unset
+  || (IS_PROD ? '' : crypto.randomBytes(32).toString('hex')); // ephemeral in local dev only
 const COOKIE_NAME = 'dxd_portal_auth';
+const CSRF_COOKIE_NAME = 'dxd_portal_csrf';
 const COOKIE_MAX_AGE_MS = 1000 * 60 * 60 * 12; // 12 hours
 const RATE_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 const RATE_MAX = 5; // 5 attempts per window per IP
-const IS_PROD = process.env.NODE_ENV === 'production' || !!process.env.K_SERVICE;
+
+if (IS_PROD && (!ACCESS_CODE || !SESSION_SECRET)) {
+  throw new Error('ACCESS_CODE and SESSION_SECRET must be set in production');
+}
 
 // Cloud Run sits behind a Google front-end; trust the proxy so req.ip is the
 // real client IP (needed for rate-limit keying and `secure` cookies).
@@ -41,6 +46,49 @@ app.use(compression({ threshold: 1024 }));
 app.use(cookieParser(SESSION_SECRET));
 app.use(express.json({ limit: '4kb' }));
 app.use(express.urlencoded({ extended: false, limit: '4kb' }));
+
+app.use((err, _req, res, next) => {
+  if (!err) return next();
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ ok: false, message: 'Malformed JSON.' });
+  }
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({ ok: false, message: 'Request body too large.' });
+  }
+  return next(err);
+});
+
+// Baseline browser hardening. CSP allows this legacy static portal's inline
+// scripts/styles and same-origin tabs while still blocking object embeds,
+// external framing, and rogue forms.
+app.use((req, res, next) => {
+  const directives = [
+    "default-src 'self' data: blob: https:",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
+    "style-src 'self' 'unsafe-inline' https:",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data: https:",
+    "media-src 'self' data: blob: https:",
+    "connect-src 'self' https:",
+    "frame-src 'self' https:",
+    "frame-ancestors 'self'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "object-src 'none'",
+    'upgrade-insecure-requests',
+  ];
+  res.set('Content-Security-Policy', directives.join('; '));
+  res.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.set('X-Content-Type-Options', 'nosniff');
+  res.set('X-Frame-Options', 'SAMEORIGIN');
+  res.set('Referrer-Policy', 'no-referrer');
+  res.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()');
+  res.set('Cross-Origin-Opener-Policy', 'same-origin');
+  if (req.path.startsWith('/api/')) {
+    res.set('Cache-Control', 'no-store');
+  }
+  next();
+});
 
 // Defense-in-depth: tell every crawler / unfurler to ignore everything we
 // serve, even non-HTML assets and pages where someone forgot the meta tag.
@@ -78,7 +126,8 @@ function setAuthCookie(res) {
 }
 
 function clearAuthCookie(res) {
-  res.clearCookie(COOKIE_NAME, { path: '/' });
+  res.clearCookie(COOKIE_NAME, { path: '/', httpOnly: true, secure: IS_PROD, sameSite: 'lax' });
+  res.clearCookie(CSRF_COOKIE_NAME, { path: '/', httpOnly: true, secure: IS_PROD, sameSite: 'strict' });
 }
 
 function timingSafeEqualStr(a, b) {
@@ -92,6 +141,40 @@ function timingSafeEqualStr(a, b) {
   return crypto.timingSafeEqual(ab, bb);
 }
 
+function createCsrfToken() {
+  return crypto.randomBytes(32).toString('base64url');
+}
+
+function setCsrfCookie(res, token) {
+  res.cookie(CSRF_COOKIE_NAME, token, {
+    httpOnly: true,
+    secure: IS_PROD,
+    sameSite: 'strict',
+    signed: true,
+    maxAge: COOKIE_MAX_AGE_MS,
+    path: '/',
+  });
+}
+
+function requireCsrf(req, res, next) {
+  const cookieToken = req.signedCookies && req.signedCookies[CSRF_COOKIE_NAME];
+  const headerToken = req.get('x-csrf-token') || '';
+  if (!cookieToken || !headerToken || !timingSafeEqualStr(cookieToken, headerToken)) {
+    return res.status(403).json({ ok: false, message: 'Invalid CSRF token.' });
+  }
+  return next();
+}
+
+function logSecurityEvent(req, event, fields = {}) {
+  console.info(JSON.stringify({
+    event,
+    path: req.path,
+    ip: req.ip,
+    userAgent: req.get('user-agent') || '',
+    ...fields,
+  }));
+}
+
 // --- Rate limiter for /api/login ------------------------------------------
 // 5 attempts per 5 minutes per client IP. Successful logins do NOT consume a
 // slot, so a correct password never gets you locked out.
@@ -103,6 +186,7 @@ const loginLimiter = rateLimit({
   skipSuccessfulRequests: true,
   handler: (req, res) => {
     const resetMs = Math.max(0, (req.rateLimit && req.rateLimit.resetTime ? req.rateLimit.resetTime.getTime() : Date.now() + RATE_WINDOW_MS) - Date.now());
+    logSecurityEvent(req, 'login_rate_limited', { retryAfterMs: resetMs });
     res.status(429).json({
       ok: false,
       locked: true,
@@ -114,10 +198,21 @@ const loginLimiter = rateLimit({
 });
 
 // --- Public auth endpoints -------------------------------------------------
-app.post('/api/login', loginLimiter, (req, res) => {
+app.get(['/healthz', '/_healthz', '/api/healthz'], (_req, res) => {
+  res.status(200).type('text/plain').send('ok');
+});
+
+app.get('/api/csrf', (_req, res) => {
+  const csrfToken = createCsrfToken();
+  setCsrfCookie(res, csrfToken);
+  res.json({ csrfToken });
+});
+
+app.post('/api/login', requireCsrf, loginLimiter, (req, res) => {
   const submitted = (req.body && (req.body.password || req.body.code)) || '';
   if (submitted && timingSafeEqualStr(submitted, ACCESS_CODE)) {
     setAuthCookie(res);
+    logSecurityEvent(req, 'login_success');
     return res.json({ ok: true });
   }
   // Failure: report how many attempts remain in this window.
@@ -126,6 +221,7 @@ app.post('/api/login', loginLimiter, (req, res) => {
   const rl = req.rateLimit || { remaining: RATE_MAX - 1, resetTime: new Date(Date.now() + RATE_WINDOW_MS) };
   const remaining = Math.max(0, rl.remaining);
   const retryAfterMs = Math.max(0, rl.resetTime.getTime() - Date.now());
+  logSecurityEvent(req, 'login_failed', { attemptsRemaining: remaining, retryAfterMs });
   return res.status(401).json({
     ok: false,
     locked: false,
@@ -135,7 +231,7 @@ app.post('/api/login', loginLimiter, (req, res) => {
   });
 });
 
-app.post('/api/logout', (_req, res) => {
+app.post('/api/logout', requireCsrf, (_req, res) => {
   clearAuthCookie(res);
   res.json({ ok: true });
 });
@@ -190,6 +286,10 @@ app.use(express.static(ROOT, {
   dotfiles: 'ignore',
   fallthrough: true,
 }));
+
+app.use('/api', (_req, res) => {
+  res.status(404).json({ ok: false, message: 'Not found.' });
+});
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`investor-portal listening on 0.0.0.0:${PORT}`);

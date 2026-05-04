@@ -426,6 +426,18 @@
       const mOk = document.getElementById('modal-ok');
 
       let countdownTimer = null;
+      let csrfToken = '';
+
+      async function refreshCsrfToken() {
+        const res = await fetch('/api/csrf', {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: { 'Accept': 'application/json' },
+        });
+        const data = await res.json();
+        csrfToken = data.csrfToken || '';
+        return csrfToken;
+      }
 
       function fmtSeconds(ms) {
         const total = Math.max(0, Math.ceil(ms / 1000));
@@ -492,10 +504,11 @@
         if (!pwd.value) return;
         btn.disabled = true;
         try {
+          if (!csrfToken) await refreshCsrfToken();
           const res = await fetch('/api/login', {
             method: 'POST',
             credentials: 'same-origin',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-Token': csrfToken },
             body: JSON.stringify({ password: pwd.value }),
           });
           let data = {};
@@ -509,6 +522,12 @@
 
           if (res.status === 429 || data.locked) {
             showLockout(data.retryAfterMs || (5 * 60 * 1000));
+            return;
+          }
+
+          if (res.status === 403) {
+            await refreshCsrfToken();
+            err.textContent = 'Session expired. Please try again.';
             return;
           }
 
@@ -528,6 +547,10 @@
         } finally {
           if (!pwd.disabled) btn.disabled = false;
         }
+      });
+
+      refreshCsrfToken().catch(() => {
+        err.textContent = 'Unable to initialize secure session. Refresh and try again.';
       });
     })();
   </script>
