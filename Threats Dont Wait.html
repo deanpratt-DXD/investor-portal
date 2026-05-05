@@ -54,17 +54,53 @@
 document.addEventListener('DOMContentLoaded', async function() {
   const loading = document.getElementById('__bundler_loading');
   function setStatus(msg) { if (loading) loading.textContent = msg; }
-
-  // Error sink persists across replaceWith since it's on window, not the DOM.
-  window.addEventListener('error', function(e) {
+  function appendBundleError(message) {
     var p = document.body || document.documentElement;
     var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
     d.id = '__bundler_err';
     d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
-    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
+    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') + message;
+  }
+  function parseBundleJson(el, label) {
+    try {
+      return JSON.parse(el.textContent || '');
+    } catch (err) {
+      throw new Error('Invalid ' + label + ' JSON: ' + err.message);
+    }
+  }
+  function decodeBase64(data, uuid) {
+    try {
+      const binaryStr = atob(String(data || '').replace(/\s+/g, ''));
+      const bytes = new Uint8Array(binaryStr.length);
+      for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+      return bytes;
+    } catch (err) {
+      throw new Error('invalid base64 for ' + uuid + ': ' + err.message);
+    }
+  }
+  async function gunzipBytes(bytes, uuid) {
+    if (typeof DecompressionStream === 'undefined') {
+      throw new Error('browser cannot decompress gzip asset ' + uuid);
+    }
+    const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    return new Uint8Array(await new Response(stream).arrayBuffer());
+  }
+  function hasStaticModuleSyntax(source) {
+    return /(^|\n)\s*(import\s+(?!\()|export\s+)/.test(source || '');
+  }
+
+  // Error sink persists across replaceWith since it's on window, not the DOM.
+  window.addEventListener('error', function(e) {
+    if (!e || !e.message) return;
+    appendBundleError(
       '[bundle] ' + (e.message || e.type) +
-      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
+      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '')
+    );
   }, true);
+  window.addEventListener('unhandledrejection', function(e) {
+    const reason = e && e.reason;
+    appendBundleError('[bundle] ' + (reason && reason.message ? reason.message : String(reason || 'Unhandled promise rejection')));
+  });
 
   try {
     const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
@@ -75,50 +111,33 @@ document.addEventListener('DOMContentLoaded', async function() {
       return;
     }
 
-    const manifest = JSON.parse(manifestEl.textContent);
-    let template = JSON.parse(templateEl.textContent);
+    const manifest = parseBundleJson(manifestEl, 'bundle manifest');
+    let template = parseBundleJson(templateEl, 'bundle template');
 
     const uuids = Object.keys(manifest);
     setStatus('Unpacking ' + uuids.length + ' assets...');
 
     const blobUrls = {};
+    const decodeErrors = [];
     await Promise.all(uuids.map(async (uuid) => {
-      const entry = manifest[uuid];
+      const entry = manifest[uuid] || {};
+      const mime = entry.mime || 'application/octet-stream';
       try {
-        const binaryStr = atob(entry.data);
-        const bytes = new Uint8Array(binaryStr.length);
-        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+        if (typeof entry.data !== 'string') throw new Error('missing data');
+        let finalBytes = decodeBase64(entry.data, uuid);
+        if (entry.compressed) finalBytes = await gunzipBytes(finalBytes, uuid);
 
-        let finalBytes = bytes;
-        if (entry.compressed) {
-          if (typeof DecompressionStream !== 'undefined') {
-            const ds = new DecompressionStream('gzip');
-            const writer = ds.writable.getWriter();
-            const reader = ds.readable.getReader();
-            writer.write(bytes);
-            writer.close();
-            const chunks = [];
-            let totalLen = 0;
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              chunks.push(value);
-              totalLen += value.length;
-            }
-            finalBytes = new Uint8Array(totalLen);
-            let offset = 0;
-            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
-          } else {
-            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
-          }
-        }
-
-        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: mime }));
       } catch (err) {
-        console.error('Failed to decode asset ' + uuid + ':', err);
-        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
+        const message = uuid + ' (' + mime + '): ' + err.message;
+        decodeErrors.push(message);
+        console.error('Failed to decode asset ' + message, err);
+        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: mime }));
       }
     }));
+    if (decodeErrors.length) {
+      appendBundleError('Asset decode fallback used for ' + decodeErrors.length + ' item(s):\n' + decodeErrors.join('\n'));
+    }
 
     const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
     const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
@@ -159,6 +178,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     for (const old of dead) {
       const s = document.createElement('script');
       for (const a of old.attributes) s.setAttribute(a.name, a.value);
+      s.async = false;
       s.textContent = old.textContent;
       // text/babel scripts with a src: fetch and inline. transformScriptTags
       // does XHR against the src, but blob:null/ from a file:// origin is
@@ -166,10 +186,17 @@ document.addEventListener('DOMContentLoaded', async function() {
       // which transformScriptTags handles unconditionally.
       if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
         const r = await fetch(s.src);
+        if (!r.ok) throw new Error('Failed to import Babel source ' + s.src + ' (' + r.status + ')');
         s.textContent = await r.text();
         s.removeAttribute('src');
+        if (!s.hasAttribute('data-type') && hasStaticModuleSyntax(s.textContent)) {
+          s.setAttribute('data-type', 'module');
+        }
       }
-      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;
+      const p = s.src ? new Promise(function(resolve, reject) {
+        s.onload = resolve;
+        s.onerror = function() { reject(new Error('Failed to import script ' + s.src)); };
+      }) : null;
       old.replaceWith(s);
       if (p) await p;
     }

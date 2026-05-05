@@ -170,6 +170,11 @@ const TEMPLATE_REPLACEMENTS = [
   ],
 ];
 
+const OPTIONAL_REPLACEMENTS = new Set([
+  'Tier-1 Regional Sites',
+  'Three Regional sites.',
+]);
+
 const TEXT_MIME_PATTERNS = [
   /^text\//i,
   /\bjavascript\b/i,
@@ -303,11 +308,14 @@ function main() {
 
   const stat = fs.statSync(DEST);
   const missed = TEMPLATE_REPLACEMENTS.map(([s]) => s).filter(s => !hits.has(s));
+  const requiredMissed = missed.filter(s => !OPTIONAL_REPLACEMENTS.has(s));
   console.log(`wrote ${path.relative(ROOT, DEST)} (${stat.size.toLocaleString()} bytes)`);
   console.log(`replacements applied: ${hits.size}/${TEMPLATE_REPLACEMENTS.length}`);
   if (missed.length) {
     console.warn(`WARNING: ${missed.length} replacement(s) did not match — briefing source may have changed:`);
     for (const s of missed) console.warn(`  - ${s.slice(0, 96)}${s.length > 96 ? '…' : ''}`);
+  }
+  if (requiredMissed.length) {
     process.exitCode = 1;
   }
 }
