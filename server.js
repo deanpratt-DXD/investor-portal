@@ -41,27 +41,10 @@ if (IS_PROD && (!ACCESS_CODE || !SESSION_SECRET)) {
 // real client IP (needed for rate-limit keying and `secure` cookies).
 app.set('trust proxy', 1);
 
-// gzip everything compressible above ~1KB.
-app.use(compression({ threshold: 1024 }));
-app.use(cookieParser(SESSION_SECRET));
-app.use(express.json({ limit: '4kb' }));
-app.use(express.urlencoded({ extended: false, limit: '4kb' }));
-
-app.use((err, _req, res, next) => {
-  if (!err) return next();
-  if (err.type === 'entity.parse.failed') {
-    return res.status(400).json({ ok: false, message: 'Malformed JSON.' });
-  }
-  if (err.type === 'entity.too.large') {
-    return res.status(413).json({ ok: false, message: 'Request body too large.' });
-  }
-  return next(err);
-});
-
 // Baseline browser hardening. CSP allows this legacy static portal's inline
 // scripts/styles and same-origin tabs while still blocking object embeds,
 // external framing, and rogue forms.
-app.use((req, res, next) => {
+function applySecurityHeaders(req, res, next) {
   const directives = [
     "default-src 'self' data: blob: https:",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https:",
@@ -89,13 +72,33 @@ app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store');
   }
   next();
-});
+}
 
 // Defense-in-depth: tell every crawler / unfurler to ignore everything we
 // serve, even non-HTML assets and pages where someone forgot the meta tag.
-app.use((req, res, next) => {
+function applyNoIndexHeaders(_req, res, next) {
   res.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
   next();
+}
+
+app.use(applySecurityHeaders);
+app.use(applyNoIndexHeaders);
+
+// gzip everything compressible above ~1KB.
+app.use(compression({ threshold: 1024 }));
+app.use(cookieParser(SESSION_SECRET));
+app.use(express.json({ limit: '4kb' }));
+app.use(express.urlencoded({ extended: false, limit: '4kb' }));
+
+app.use((err, _req, res, next) => {
+  if (!err) return next();
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ ok: false, message: 'Malformed JSON.' });
+  }
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({ ok: false, message: 'Request body too large.' });
+  }
+  return next(err);
 });
 
 // Cache policy.
@@ -276,8 +279,10 @@ app.use((req, res, next) => {
 });
 
 // Root rewrite (only reached when authed).
-app.get('/', (_req, res) => {
-  res.sendFile(path.join(ROOT, 'index.html'));
+app.get('/', (_req, res, next) => {
+  res.sendFile(path.join(ROOT, 'index.html'), err => {
+    if (err) next(err);
+  });
 });
 
 // Static files.
@@ -290,6 +295,27 @@ app.use(express.static(ROOT, {
 
 app.use('/api', (_req, res) => {
   res.status(404).json({ ok: false, message: 'Not found.' });
+});
+
+app.use((req, res) => {
+  if (req.path.startsWith('/api/') || String(req.get('accept') || '').includes('application/json')) {
+    return res.status(404).json({ ok: false, message: 'Not found.' });
+  }
+  return res.status(404).type('text/plain').send('Not found');
+});
+
+app.use((err, req, res, next) => {
+  if (res.headersSent) return next(err);
+  const rawStatus = err && (err.status || err.statusCode);
+  const statusCode = Number.isInteger(rawStatus) && rawStatus >= 400 && rawStatus < 600 ? rawStatus : 500;
+  logSecurityEvent(req, 'server_error', {
+    statusCode,
+    message: err && err.message ? String(err.message).slice(0, 240) : 'Unknown server error',
+  });
+  if (req.path.startsWith('/api/') || String(req.get('accept') || '').includes('application/json')) {
+    return res.status(statusCode).json({ ok: false, message: 'Internal server error.' });
+  }
+  return res.status(statusCode).type('text/plain').send('Internal server error');
 });
 
 app.listen(PORT, '0.0.0.0', () => {

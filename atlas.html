@@ -133,10 +133,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
-    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
+    let extResources = [];
+    if (extResEl) {
+      try {
+        extResources = parseBundleJson(extResEl, 'external resources');
+        if (!Array.isArray(extResources)) throw new Error('external resources must be an array');
+      } catch (err) {
+        appendBundleError('[bundle] ' + err.message);
+        console.warn('Bundle external resource map ignored:', err);
+        extResources = [];
+      }
+    }
     const resourceMap = {};
     for (const entry of extResources) {
-      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
+      if (entry && entry.id && blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
     }
 
     setStatus('Rendering...');
@@ -200,6 +210,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
+    appendBundleError('[bundle] Error unpacking: ' + err.message);
     console.error('Bundle unpack error:', err);
   }
 });

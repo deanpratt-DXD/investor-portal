@@ -434,7 +434,11 @@
           credentials: 'same-origin',
           headers: { 'Accept': 'application/json' },
         });
+        if (!res.ok) throw new Error(`CSRF request failed (${res.status})`);
         const data = await res.json();
+        if (!data || typeof data.csrfToken !== 'string' || !data.csrfToken) {
+          throw new Error('CSRF response missing token');
+        }
         csrfToken = data.csrfToken || '';
         return csrfToken;
       }
@@ -464,6 +468,7 @@
       }
 
       function showLockout(retryAfterMs) {
+        if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
         mEyebrow.textContent = 'Locked';
         mTitle.textContent = 'Access locked';
         mBody.innerHTML = 'Too many failed attempts. Access is temporarily locked. Please wait for the timer below to expire, then try again.';
@@ -542,7 +547,8 @@
             err.textContent = 'Incorrect access code.';
           }
           pwd.select();
-        } catch (_) {
+        } catch (error) {
+          console.warn('Login request failed:', error);
           err.textContent = 'Network error. Please try again.';
         } finally {
           if (!pwd.disabled) btn.disabled = false;
