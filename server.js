@@ -202,20 +202,31 @@ function logSecurityEvent(req, event, fields = {}) {
   }));
 }
 
-function handleAccessCodeLogin(req, res, options) {
+function handleAccessCodeLogin(req, res) {
   const submitted = (req.body && (req.body.password || req.body.code)) || '';
-  if (submitted && timingSafeEqualStr(submitted, options.accessCode)) {
-    options.setCookie(res);
-    logSecurityEvent(req, options.successEvent);
-    return res.json({ ok: true });
+
+  const portalMatch = submitted && timingSafeEqualStr(submitted, ACCESS_CODE);
+  const deckMatch = submitted && timingSafeEqualStr(submitted, DECK_ACCESS_CODE);
+
+  if (portalMatch) {
+    setAuthCookie(res);
+    logSecurityEvent(req, 'login_success', { accessLevel: 'portal' });
+    return res.json({ ok: true, redirectTo: '/' });
   }
+
+  if (deckMatch) {
+    setDeckAuthCookie(res);
+    logSecurityEvent(req, 'deck_login_success', { accessLevel: 'deck' });
+    return res.json({ ok: true, redirectTo: '/deck' });
+  }
+
   // Failure: report how many attempts remain in this window.
   // express-rate-limit decrements `remaining` AFTER this handler returns, so
   // the value here reflects what the *next* call will see.
   const rl = req.rateLimit || { remaining: RATE_MAX - 1, resetTime: new Date(Date.now() + RATE_WINDOW_MS) };
   const remaining = Math.max(0, rl.remaining);
   const retryAfterMs = Math.max(0, rl.resetTime.getTime() - Date.now());
-  logSecurityEvent(req, options.failureEvent, { attemptsRemaining: remaining, retryAfterMs });
+  logSecurityEvent(req, 'login_failed', { attemptsRemaining: remaining, retryAfterMs });
   return res.status(401).json({
     ok: false,
     locked: false,
@@ -259,21 +270,7 @@ app.get('/api/csrf', (_req, res) => {
 });
 
 app.post('/api/login', requireCsrf, loginLimiter, (req, res) => {
-  return handleAccessCodeLogin(req, res, {
-    accessCode: ACCESS_CODE,
-    setCookie: setAuthCookie,
-    successEvent: 'login_success',
-    failureEvent: 'login_failed',
-  });
-});
-
-app.post('/api/deck-login', requireCsrf, loginLimiter, (req, res) => {
-  return handleAccessCodeLogin(req, res, {
-    accessCode: DECK_ACCESS_CODE,
-    setCookie: setDeckAuthCookie,
-    successEvent: 'deck_login_success',
-    failureEvent: 'deck_login_failed',
-  });
+  return handleAccessCodeLogin(req, res);
 });
 
 app.post('/api/logout', requireCsrf, (_req, res) => {
@@ -295,7 +292,6 @@ app.get('/api/deck-auth-status', (req, res) => {
 // its assets, and the auth endpoints reachable while signed out.
 const PUBLIC_PATHS = new Set([
   '/login.html',
-  '/deck-login.html',
   '/dxd-logo-white.png',
   '/favicon.ico',
   '/robots.txt',
@@ -309,7 +305,7 @@ function isPublicPath(p) {
 
 app.get(['/deck', '/deck/'], (req, res, next) => {
   if (!canAccessDeck(req)) {
-    return res.redirect(302, '/deck-login.html');
+    return res.redirect(302, '/login.html');
   }
   return res.sendFile(path.join(ROOT, DECK_FILE), err => {
     if (err) next(err);

@@ -520,8 +520,10 @@
           try { data = await res.json(); } catch (_) { data = {}; }
 
           if (res.ok && data.ok) {
-            // Hard navigation to portal — server will set the cookie and serve index.html
-            window.location.replace('/');
+            const redirectTo = typeof data.redirectTo === 'string' && /^\/[A-Za-z0-9/_-]*$/.test(data.redirectTo)
+              ? data.redirectTo
+              : '/';
+            window.location.replace(redirectTo);
             return;
           }
 
