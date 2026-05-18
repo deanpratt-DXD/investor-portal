@@ -25,16 +25,19 @@ const IS_PROD = process.env.NODE_ENV === 'production' || !!process.env.K_SERVICE
 // by Cloud Run. SESSION_SECRET signs the auth cookie. Both fall back to local
 // dev defaults so `npm start` works without GCP.
 const ACCESS_CODE = process.env.ACCESS_CODE || (IS_PROD ? '' : 'dxd2026');
+const DECK_ACCESS_CODE = process.env.DECK_ACCESS_CODE || (IS_PROD ? '' : 'dxddeck');
 const SESSION_SECRET = process.env.SESSION_SECRET
   || (IS_PROD ? '' : crypto.randomBytes(32).toString('hex')); // ephemeral in local dev only
 const COOKIE_NAME = 'dxd_portal_auth';
+const DECK_COOKIE_NAME = 'dxd_deck_auth';
 const CSRF_COOKIE_NAME = 'dxd_portal_csrf';
+const DECK_FILE = 'DxD Investor Deck - New _standalone_.html';
 const COOKIE_MAX_AGE_MS = 1000 * 60 * 60 * 12; // 12 hours
 const RATE_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 const RATE_MAX = 5; // 5 attempts per window per IP
 
-if (IS_PROD && (!ACCESS_CODE || !SESSION_SECRET)) {
-  throw new Error('ACCESS_CODE and SESSION_SECRET must be set in production');
+if (IS_PROD && (!ACCESS_CODE || !DECK_ACCESS_CODE || !SESSION_SECRET)) {
+  throw new Error('ACCESS_CODE, DECK_ACCESS_CODE, and SESSION_SECRET must be set in production');
 }
 
 // Cloud Run sits behind a Google front-end; trust the proxy so req.ip is the
@@ -104,7 +107,7 @@ app.use((err, _req, res, next) => {
 // Cache policy.
 app.use((req, res, next) => {
   const p = req.path.toLowerCase();
-  if (p.endsWith('.html') || p === '/' || p.endsWith('/')) {
+  if (p.endsWith('.html') || p === '/' || p === '/deck' || p.endsWith('/')) {
     res.set('Cache-Control', 'private, max-age=0, must-revalidate');
   } else if (/\.(woff2?|ttf|otf|eot|png|jpe?g|gif|webp|svg|ico|css|js|mjs|map)$/.test(p)) {
     res.set('Cache-Control', 'public, max-age=604800, immutable');
@@ -113,13 +116,25 @@ app.use((req, res, next) => {
 });
 
 // --- Auth helpers ----------------------------------------------------------
-function isAuthed(req) {
-  const v = req.signedCookies && req.signedCookies[COOKIE_NAME];
+function hasSignedAuthCookie(req, cookieName) {
+  const v = req.signedCookies && req.signedCookies[cookieName];
   return v === 'ok';
 }
 
-function setAuthCookie(res) {
-  res.cookie(COOKIE_NAME, 'ok', {
+function isAuthed(req) {
+  return hasSignedAuthCookie(req, COOKIE_NAME);
+}
+
+function isDeckAuthed(req) {
+  return hasSignedAuthCookie(req, DECK_COOKIE_NAME);
+}
+
+function canAccessDeck(req) {
+  return isAuthed(req) || isDeckAuthed(req);
+}
+
+function setSignedAuthCookie(res, cookieName) {
+  res.cookie(cookieName, 'ok', {
     httpOnly: true,
     secure: IS_PROD,
     sameSite: 'lax',
@@ -129,8 +144,17 @@ function setAuthCookie(res) {
   });
 }
 
+function setAuthCookie(res) {
+  setSignedAuthCookie(res, COOKIE_NAME);
+}
+
+function setDeckAuthCookie(res) {
+  setSignedAuthCookie(res, DECK_COOKIE_NAME);
+}
+
 function clearAuthCookie(res) {
   res.clearCookie(COOKIE_NAME, { path: '/', httpOnly: true, secure: IS_PROD, sameSite: 'lax' });
+  res.clearCookie(DECK_COOKIE_NAME, { path: '/', httpOnly: true, secure: IS_PROD, sameSite: 'lax' });
   res.clearCookie(CSRF_COOKIE_NAME, { path: '/', httpOnly: true, secure: IS_PROD, sameSite: 'strict' });
 }
 
@@ -179,7 +203,30 @@ function logSecurityEvent(req, event, fields = {}) {
   }));
 }
 
-// --- Rate limiter for /api/login ------------------------------------------
+function handleAccessCodeLogin(req, res, options) {
+  const submitted = (req.body && (req.body.password || req.body.code)) || '';
+  if (submitted && timingSafeEqualStr(submitted, options.accessCode)) {
+    options.setCookie(res);
+    logSecurityEvent(req, options.successEvent);
+    return res.json({ ok: true });
+  }
+  // Failure: report how many attempts remain in this window.
+  // express-rate-limit decrements `remaining` AFTER this handler returns, so
+  // the value here reflects what the *next* call will see.
+  const rl = req.rateLimit || { remaining: RATE_MAX - 1, resetTime: new Date(Date.now() + RATE_WINDOW_MS) };
+  const remaining = Math.max(0, rl.remaining);
+  const retryAfterMs = Math.max(0, rl.resetTime.getTime() - Date.now());
+  logSecurityEvent(req, options.failureEvent, { attemptsRemaining: remaining, retryAfterMs });
+  return res.status(401).json({
+    ok: false,
+    locked: false,
+    attemptsRemaining: remaining,
+    retryAfterMs,
+    message: 'Incorrect access code.',
+  });
+}
+
+// --- Rate limiter for auth attempts ---------------------------------------
 // 5 attempts per 5 minutes per client IP. Successful logins do NOT consume a
 // slot, so a correct password never gets you locked out.
 const loginLimiter = rateLimit({
@@ -213,25 +260,20 @@ app.get('/api/csrf', (_req, res) => {
 });
 
 app.post('/api/login', requireCsrf, loginLimiter, (req, res) => {
-  const submitted = (req.body && (req.body.password || req.body.code)) || '';
-  if (submitted && timingSafeEqualStr(submitted, ACCESS_CODE)) {
-    setAuthCookie(res);
-    logSecurityEvent(req, 'login_success');
-    return res.json({ ok: true });
-  }
-  // Failure: report how many attempts remain in this window.
-  // express-rate-limit decrements `remaining` AFTER this handler returns, so
-  // the value here reflects what the *next* call will see.
-  const rl = req.rateLimit || { remaining: RATE_MAX - 1, resetTime: new Date(Date.now() + RATE_WINDOW_MS) };
-  const remaining = Math.max(0, rl.remaining);
-  const retryAfterMs = Math.max(0, rl.resetTime.getTime() - Date.now());
-  logSecurityEvent(req, 'login_failed', { attemptsRemaining: remaining, retryAfterMs });
-  return res.status(401).json({
-    ok: false,
-    locked: false,
-    attemptsRemaining: remaining,
-    retryAfterMs,
-    message: 'Incorrect access code.',
+  return handleAccessCodeLogin(req, res, {
+    accessCode: ACCESS_CODE,
+    setCookie: setAuthCookie,
+    successEvent: 'login_success',
+    failureEvent: 'login_failed',
+  });
+});
+
+app.post('/api/deck-login', requireCsrf, loginLimiter, (req, res) => {
+  return handleAccessCodeLogin(req, res, {
+    accessCode: DECK_ACCESS_CODE,
+    setCookie: setDeckAuthCookie,
+    successEvent: 'deck_login_success',
+    failureEvent: 'deck_login_failed',
   });
 });
 
@@ -244,12 +286,17 @@ app.get('/api/auth-status', (req, res) => {
   res.json({ authed: isAuthed(req) });
 });
 
+app.get('/api/deck-auth-status', (req, res) => {
+  res.json({ authed: canAccessDeck(req) });
+});
+
 // --- Auth gate -------------------------------------------------------------
 // Requests that don't carry the auth cookie get redirected (for navigations)
 // or 401'd (for everything else). A small allow-list keeps the login page,
 // its assets, and the auth endpoints reachable while signed out.
 const PUBLIC_PATHS = new Set([
   '/login.html',
+  '/deck-login.html',
   '/dxd-logo-white.png',
   '/favicon.ico',
   '/robots.txt',
@@ -260,6 +307,15 @@ function isPublicPath(p) {
   if (p.startsWith('/api/')) return true; // /api/login, /api/logout, /api/auth-status
   return false;
 }
+
+app.get(['/deck', '/deck/'], (req, res, next) => {
+  if (!canAccessDeck(req)) {
+    return res.redirect(302, '/deck-login.html');
+  }
+  return res.sendFile(path.join(ROOT, DECK_FILE), err => {
+    if (err) next(err);
+  });
+});
 
 app.use((req, res, next) => {
   if (isPublicPath(req.path)) return next();
