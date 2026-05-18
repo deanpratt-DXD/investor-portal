@@ -21,11 +21,10 @@ const PORT = parseInt(process.env.PORT || '3000', 10);
 const IS_PROD = process.env.NODE_ENV === 'production' || !!process.env.K_SERVICE;
 
 // --- Auth config -----------------------------------------------------------
-// ACCESS_CODE is loaded from Google Secret Manager and injected as an env var
-// by Cloud Run. SESSION_SECRET signs the auth cookie. Both fall back to local
-// dev defaults so `npm start` works without GCP.
-const ACCESS_CODE = process.env.ACCESS_CODE || (IS_PROD ? '' : 'dxd2026');
-const DECK_ACCESS_CODE = process.env.DECK_ACCESS_CODE || (IS_PROD ? '' : 'dxddeck');
+// ACCESS_CODE and DECK_ACCESS_CODE are loaded from Google Secret Manager in
+// Cloud Run, or supplied as local environment variables during development.
+const ACCESS_CODE = process.env.ACCESS_CODE || '';
+const DECK_ACCESS_CODE = process.env.DECK_ACCESS_CODE || '';
 const SESSION_SECRET = process.env.SESSION_SECRET
   || (IS_PROD ? '' : crypto.randomBytes(32).toString('hex')); // ephemeral in local dev only
 const COOKIE_NAME = 'dxd_portal_auth';
@@ -36,8 +35,8 @@ const COOKIE_MAX_AGE_MS = 1000 * 60 * 60 * 12; // 12 hours
 const RATE_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 const RATE_MAX = 5; // 5 attempts per window per IP
 
-if (IS_PROD && (!ACCESS_CODE || !DECK_ACCESS_CODE || !SESSION_SECRET)) {
-  throw new Error('ACCESS_CODE, DECK_ACCESS_CODE, and SESSION_SECRET must be set in production');
+if (!ACCESS_CODE || !DECK_ACCESS_CODE || !SESSION_SECRET) {
+  throw new Error('ACCESS_CODE, DECK_ACCESS_CODE, and SESSION_SECRET must be set');
 }
 
 // Cloud Run sits behind a Google front-end; trust the proxy so req.ip is the

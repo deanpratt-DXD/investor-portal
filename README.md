@@ -5,10 +5,11 @@ Static investor portal served by `server.js`.
 ## Local Development
 
 ```sh
-npm start
+ACCESS_CODE='<portal-code>' DECK_ACCESS_CODE='<deck-code>' npm start
 ```
 
-Local development defaults are provided for the portal and deck access codes.
+Do not commit real access codes. Local access codes should be supplied through
+environment variables or a private shell/session configuration.
 
 ## Production Environment
 

@@ -2013,7 +2013,7 @@ git diff -- server.js login.html index.html package.json package-lock.json .gith
 Search for accidental secrets:
 
 ```bash
-rg -n "YOUR_SHARED_ACCESS_CODE|dxd2026|ACCESS_CODE\s*=\s*['\"]|SESSION_SECRET\s*=\s*['\"]" .
+rg -n "YOUR_SHARED_ACCESS_CODE|KNOWN_LEAKED_ACCESS_CODE|ACCESS_CODE\s*=\s*['\"]|SESSION_SECRET\s*=\s*['\"]" .
 ```
 
 For a reusable/new portal, there should be no real password in tracked files.
